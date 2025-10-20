@@ -52,16 +52,16 @@ scoped notation g " ♯[" i "] " f " ← " composable_gf:100 =>
 class SingleSortedCategoryFamily (Obj : Type u)
     (index : Type) [NatIndex index]
     extends SingleSortedStruct Obj index where
-  idemp_sc_sc : ∀ {i : index} {f : Obj}, sc i (sc i f) = sc i f := by intros; rfl
-  idemp_tg_sc : ∀ {i : index} {f : Obj}, tg i (sc i f) = sc i f := by intros; rfl
-  idemp_sc_tg : ∀ {i : index} {f : Obj}, sc i (tg i f) = tg i f := by intros; rfl
-  idemp_tg_tg : ∀ {i : index} {f : Obj}, tg i (tg i f) = tg i f := by intros; rfl
+  sc_sc_is_sc : ∀ {i : index} {f : Obj}, sc i (sc i f) = sc i f := by intros; rfl
+  tg_sc_is_sc : ∀ {i : index} {f : Obj}, tg i (sc i f) = sc i f := by intros; rfl
+  sc_tg_is_tg : ∀ {i : index} {f : Obj}, sc i (tg i f) = tg i f := by intros; rfl
+  tg_tg_is_tg : ∀ {i : index} {f : Obj}, tg i (tg i f) = tg i f := by intros; rfl
   sc_comp_is_sc : ∀ {i : index} {f g : Obj} (comp_gf : sc_is_tg i g f),
       sc i (g ♯[i] f ← comp_gf) = sc i f := by intros; rfl
   tg_comp_is_tg : ∀ {i : index} {f g : Obj} (comp_gf : sc_is_tg i g f),
       tg i (g ♯[i] f ← comp_gf) = tg i g := by intros; rfl
-  comp_sc_is_id : ∀ {i : index} {f : Obj}, f ♯[i] (sc i f) ← idemp_tg_sc.symm = f := by intros; rfl
-  comp_tg_is_id : ∀ {i : index} {f : Obj}, (tg i f) ♯[i] f ← idemp_sc_tg = f := by intros; rfl
+  comp_sc_is_id : ∀ {i : index} {f : Obj}, f ♯[i] (sc i f) ← tg_sc_is_sc.symm = f := by intros; rfl
+  comp_tg_is_id : ∀ {i : index} {f : Obj}, (tg i f) ♯[i] f ← sc_tg_is_tg = f := by intros; rfl
   compr_assoc {i : index} {f g h : Obj}
       (comp_gf : sc_is_tg i g f) (comp_hg : sc_is_tg i h g) :
       sc_is_tg i h (g ♯[i] f ← comp_gf) :=
@@ -77,19 +77,17 @@ class SingleSortedCategoryFamily (Obj : Type u)
 class SingleSorted2CategoryFamily (Obj : Type u)
     (index : Type) [NatIndex index]
     extends SingleSortedCategoryFamily Obj index where
-  idemp_sc : ∀ {k : index} {j : Fin k} {f : Obj},
-      sc k (sc j f) = sc j f ∧
-      sc j f = sc j (sc k f) ∧
-      sc j (sc k f) = sc j (tg k f)
-  idemp_tg : ∀ {k : index} {j : Fin k} {f : Obj},
-      tg k (tg j f) = tg j f ∧
-      tg j f = tg j (tg k f) ∧
-      tg j (tg k f) = tg j (sc k f)
-  sc_comp_is_comp_sc : ∀ {k : index} {j : Fin k} {f g : Obj}
+  sck_scj_is_scj : ∀ {k : index} {j : Fin k} {f : Obj}, sc k (sc j f) = sc j f
+  scj_is_scj_sck : ∀ {k : index} {j : Fin k} {f : Obj}, sc j f = sc j (sc k f)
+  scj_sck_is_scj_tgk : ∀ {k : index} {j : Fin k} {f : Obj}, sc j (sc k f) = sc j (tg k f)
+  tgk_tgj_is_tgj : ∀ {k : index} {j : Fin k} {f : Obj}, tg k (tg j f) = tg j f
+  tgj_is_tgj_tgk : ∀ {k : index} {j : Fin k} {f : Obj}, tg j f = tg j (tg k f)
+  tgj_tgk_is_tgj_sck : ∀ {k : index} {j : Fin k} {f : Obj}, tg j (tg k f) = tg j (sc k f)
+  sck_comp_is_comp_sck : ∀ {k : index} {j : Fin k} {f g : Obj}
       (comp_j_gf : sc_is_tg j g f),
       sc k (g ♯[j] f ← comp_j_gf) =
       (sc k g) ♯[j] (sc k f) ← (by sorry)
-  tg_comp_is_comp_tg : ∀ {k : index} {j : Fin k} {f g : Obj}
+  tgk_comp_is_comp_tgk : ∀ {k : index} {j : Fin k} {f g : Obj}
       (comp_j_gf : sc_is_tg j g f),
       tg k (g ♯[j] f ← comp_j_gf) =
       (tg k g) ♯[j] (tg k f) ← (by sorry)
