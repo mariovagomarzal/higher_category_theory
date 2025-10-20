@@ -3,26 +3,25 @@ Copyright (c) 2025 Mario Vago Marzal. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Enric Cosme Llópez, Raul Ruiz Mora, Mario Vago Marzal
 -/
-import InfinityCategories.SingleSortedCategories.Basic
+import InfinityCategories.HigherCategoryTheory.SingleSortedCategory.Basic
 
 /-!
 TODO: Document the file.
 -/
 
-namespace SingleSortedCategories
+namespace HigherCategoryTheory
 
-instance : SingleSortedCategory (Nat×Nat) where
-  sc := fun _ (_, y₂) ↦ (y₂, y₂)
-  tg := fun _ (x₁, _) ↦ (x₁, x₁)
-  pcomp := fun _ (y₁, y₂) (x₁, x₂) ↦ ⟨y₂ = x₁, fun _ ↦ (y₁, x₂)⟩
+instance : SingleSortedCategory Unit where
+  Sc _ _ := ()
+  Tg _ _ := ()
+  PComp _ _ _ := ⟨True, (fun _ ↦ ())⟩
   pcomp_dom := by
     intros
     apply Iff.intro
     · intros
-      simpa
-    · intro h
-      simp at h
-      simpa
+      rfl
+    · intros
+      trivial
   idemp_sc_sc := by intros; rfl
   idemp_tg_sc := by intros; rfl
   idemp_sc_tg := by intros; rfl
@@ -33,4 +32,4 @@ instance : SingleSortedCategory (Nat×Nat) where
   comp_tg_is_id := by intros; rfl
   assoc := by intros; rfl
 
-end SingleSortedCategories
+end HigherCategoryTheory
