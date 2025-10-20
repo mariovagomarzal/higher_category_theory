@@ -52,39 +52,27 @@ scoped notation g " ♯[" i "] " f " ← " composable_gf:100 =>
 class SingleSortedCategoryFamily (Obj : Type u)
     (index : Type) [NatIndex index]
     extends SingleSortedStruct Obj index where
-  idemp_sc_sc : ∀ {i : index} {f : Obj},
-      sc i f = sc i f
-  idemp_tg_sc : ∀ {i : index} {f : Obj},
-      tg i (sc i f) = sc i f
-  idemp_sc_tg : ∀ {i : index} {f : Obj},
-      sc i (tg i f) = tg i f
-  idemp_tg_tg : ∀ {i : index} {f : Obj},
-      tg i (tg i f) = tg i f
-  sc_comp_is_sc : ∀ {i : index} {f g : Obj}
-      (comp_gf : sc_is_tg i g f),
-      sc i (g ♯[i] f ← comp_gf) = sc i f
-  tg_comp_is_tg : ∀ {i : index} {f g : Obj}
-      (comp_gf : sc_is_tg i g f),
-      tg i (g ♯[i] f ← comp_gf) = tg i g
-  comp_sc_is_id : ∀ {i : index} {f : Obj},
-      f ♯[i] (sc i f) ← idemp_tg_sc.symm = f
-  comp_tg_is_id : ∀ {i : index} {f : Obj},
-      (tg i f) ♯[i] f ← idemp_sc_tg = f
-  comp_h_gf {i : index} {f g h : Obj}
-      (comp_gf : sc_is_tg i g f)
-      (comp_hg : sc_is_tg i h g) :
+  idemp_sc_sc : ∀ {i : index} {f : Obj}, sc i (sc i f) = sc i f := by intros; rfl
+  idemp_tg_sc : ∀ {i : index} {f : Obj}, tg i (sc i f) = sc i f := by intros; rfl
+  idemp_sc_tg : ∀ {i : index} {f : Obj}, sc i (tg i f) = tg i f := by intros; rfl
+  idemp_tg_tg : ∀ {i : index} {f : Obj}, tg i (tg i f) = tg i f := by intros; rfl
+  sc_comp_is_sc : ∀ {i : index} {f g : Obj} (comp_gf : sc_is_tg i g f),
+      sc i (g ♯[i] f ← comp_gf) = sc i f := by intros; rfl
+  tg_comp_is_tg : ∀ {i : index} {f g : Obj} (comp_gf : sc_is_tg i g f),
+      tg i (g ♯[i] f ← comp_gf) = tg i g := by intros; rfl
+  comp_sc_is_id : ∀ {i : index} {f : Obj}, f ♯[i] (sc i f) ← idemp_tg_sc.symm = f := by intros; rfl
+  comp_tg_is_id : ∀ {i : index} {f : Obj}, (tg i f) ♯[i] f ← idemp_sc_tg = f := by intros; rfl
+  compr_assoc {i : index} {f g h : Obj}
+      (comp_gf : sc_is_tg i g f) (comp_hg : sc_is_tg i h g) :
       sc_is_tg i h (g ♯[i] f ← comp_gf) :=
     comp_hg.trans (tg_comp_is_tg comp_gf).symm
-  comp_hg_f {i : index} {f g h : Obj}
-      (comp_gf : sc_is_tg i g f)
-      (comp_hg : sc_is_tg i h g) :
+  compl_assoc {i : index} {f g h : Obj}
+      (comp_gf : sc_is_tg i g f) (comp_hg : sc_is_tg i h g) :
       sc_is_tg i (h ♯[i] g ← comp_hg) f :=
     (sc_comp_is_sc comp_hg).trans comp_gf
-  assoc : ∀ {i : index} {f g h : Obj}
-      (comp_gf : sc_is_tg i g f)
-      (comp_hg : sc_is_tg i h g),
-      (h ♯[i] (g ♯[i] f ← comp_gf) ← (comp_h_gf comp_gf comp_hg)) =
-      ((h ♯[i] g ← comp_hg) ♯[i] f ← (comp_hg_f comp_gf comp_hg))
+  assoc : ∀ {i : index} {f g h : Obj} (comp_gf : sc_is_tg i g f) (comp_hg : sc_is_tg i h g),
+      (h ♯[i] (g ♯[i] f ← comp_gf) ← (compr_assoc comp_gf comp_hg)) =
+      ((h ♯[i] g ← comp_hg) ♯[i] f ← (compl_assoc comp_gf comp_hg)) := by intros; rfl
 
 class SingleSorted2CategoryFamily (Obj : Type u)
     (index : Type) [NatIndex index]

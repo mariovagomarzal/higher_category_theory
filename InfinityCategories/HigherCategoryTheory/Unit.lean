@@ -22,14 +22,5 @@ instance : SingleSortedCategory Unit where
       rfl
     · intros
       trivial
-  idemp_sc_sc := by intros; rfl
-  idemp_tg_sc := by intros; rfl
-  idemp_sc_tg := by intros; rfl
-  idemp_tg_tg := by intros; rfl
-  sc_comp_is_sc := by intros; rfl
-  tg_comp_is_tg := by intros; rfl
-  comp_sc_is_id := by intros; rfl
-  comp_tg_is_id := by intros; rfl
-  assoc := by intros; rfl
 
 end HigherCategoryTheory
