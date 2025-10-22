@@ -156,6 +156,6 @@ class SingleSortedNCategory (Obj : Type u) (n : Nat)
 @[ext]
 class SingleSortedOmegaCategory (Obj : Type u)
     extends SingleSorted2CategoryFamily Obj Nat where
-  cell : ∀ f : Obj, ∃ k : Nat, f = sc k f
+  cell : ∀ f : Obj, ∃ k : Nat, sc k f = f
 
 end HigherCategoryTheory
