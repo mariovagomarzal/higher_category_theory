@@ -9,9 +9,11 @@ import InfinityCategories.HigherCategoryTheory.SingleSortedCategory.Basic
 TODO: Document the file.
 -/
 
-namespace HigherCategoryTheory
+namespace Unit
 
-instance : SingleSortedCategory Unit where
+open HigherCategoryTheory
+
+instance singleSortedCategoryUnit : SingleSortedCategory Unit where
   Sc _ _ := ()
   Tg _ _ := ()
   PComp _ _ _ := ⟨True, (fun _ ↦ ())⟩
@@ -23,7 +25,7 @@ instance : SingleSortedCategory Unit where
     · intros
       trivial
 
-instance : SingleSorted2Category Unit where
+instance singleSorted2CategoryUnit : SingleSorted2Category Unit where
   Sc _ _ := ()
   Tg _ _ := ()
   PComp _ _ _ := ⟨True, (fun _ ↦ ())⟩
@@ -35,4 +37,4 @@ instance : SingleSorted2Category Unit where
     · intros
       trivial
 
-end HigherCategoryTheory
+end Unit
