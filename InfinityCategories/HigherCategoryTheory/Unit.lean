@@ -23,4 +23,16 @@ instance : SingleSortedCategory Unit where
     · intros
       trivial
 
+instance : SingleSorted2Category Unit where
+  Sc _ _ := ()
+  Tg _ _ := ()
+  PComp _ _ _ := ⟨True, (fun _ ↦ ())⟩
+  pcomp_dom := by
+    intros
+    apply Iff.intro
+    · intros
+      rfl
+    · intros
+      trivial
+
 end HigherCategoryTheory
