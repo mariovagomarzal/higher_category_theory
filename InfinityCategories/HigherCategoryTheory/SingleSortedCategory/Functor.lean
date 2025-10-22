@@ -9,7 +9,7 @@ import InfinityCategories.HigherCategoryTheory.SingleSortedCategory.Basic
 TODO: Document the file.
 -/
 
-universe u v
+universe u v w
 
 namespace HigherCategoryTheory
 
@@ -21,7 +21,11 @@ structure SingleSortedFunctorFamily (C : Type u) (D : Type v)
   map_sc_is_sc_map : ∀ {i : index} {f : C}, map (sc i f) = sc i (map f)
   map_tg_is_tg_map : ∀ {i : index} {f : C}, map (tg i f) = tg i (map f)
   comp_map {i : index} {f g : C} (comp_gf : sc_is_tg i g f) :
-    sc_is_tg i (map g) (map f) := by sorry
+      sc_is_tg i (map g) (map f) := calc
+    sc i (map g)
+    _ = map (sc i g) := map_sc_is_sc_map.symm
+    _ = map (tg i f) := congrArg map comp_gf
+    _ = tg i (map f) := map_tg_is_tg_map
   map_comp_is_comp_map : ∀ {i : index} {f g : C} (comp_gf : sc_is_tg i g f),
     map (g ♯[i] f ← comp_gf) = (map g) ♯[i] (map f) ← (comp_map comp_gf)
 
@@ -49,18 +53,54 @@ structure SingleSortedOmegaFunctor (C : Type u) (D : Type v)
     [SingleSortedOmegaCategory D]
     extends SingleSortedFunctorFamily C D Nat
 
--- TODO: Define composition and identity functors, and prove the functor laws.
 namespace SingleSortedFunctorFamily
 
-def comp := Empty
+def comp {C : Type u} {D : Type v} {E : Type w}
+    {index : Type} [NatIndex index]
+    [SingleSortedCategoryFamily C index]
+    [SingleSortedCategoryFamily D index]
+    [SingleSortedCategoryFamily E index]
+    (F : SingleSortedFunctorFamily C D index)
+    (G : SingleSortedFunctorFamily D E index) :
+    SingleSortedFunctorFamily C E index where
+  map := G.map ∘ F.map
+  map_sc_is_sc_map := by sorry
+  map_tg_is_tg_map := by sorry
+  map_comp_is_comp_map := by sorry
 
-def id := Empty
+def id {C : Type u}
+    {index : Type} [NatIndex index]
+    [SingleSortedCategoryFamily C index] :
+    SingleSortedFunctorFamily C C index where
+  map := fun x => x
+  map_sc_is_sc_map := by intros; rfl
+  map_tg_is_tg_map := by intros; rfl
+  map_comp_is_comp_map := by intros; rfl
 
-theorem assoc : True := by sorry
+theorem assoc {C : Type u} {D : Type v} {E : Type w} {F : Type u}
+    {index : Type} [NatIndex index]
+    [SingleSortedCategoryFamily C index]
+    [SingleSortedCategoryFamily D index]
+    [SingleSortedCategoryFamily E index]
+    [SingleSortedCategoryFamily F index]
+    (F1 : SingleSortedFunctorFamily C D index)
+    (F2 : SingleSortedFunctorFamily D E index)
+    (F3 : SingleSortedFunctorFamily E F index) :
+    comp (comp F1 F2) F3 = comp F1 (comp F2 F3) := by sorry
 
-theorem id_left : True := by sorry
+theorem id_left {C : Type u} {D : Type v}
+    {index : Type} [NatIndex index]
+    [SingleSortedCategoryFamily C index]
+    [SingleSortedCategoryFamily D index]
+    (F : SingleSortedFunctorFamily C D index) :
+    comp (id) F = F := by sorry
 
-theorem id_right : True := by sorry
+theorem id_right {C : Type u} {D : Type v}
+    {index : Type} [NatIndex index]
+    [SingleSortedCategoryFamily C index]
+    [SingleSortedCategoryFamily D index]
+    (F : SingleSortedFunctorFamily C D index) :
+    comp F (id) = F := by sorry
 
 end SingleSortedFunctorFamily
 
