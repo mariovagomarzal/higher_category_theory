@@ -150,8 +150,8 @@ class SingleSorted2Category (Obj : Type u)
     extends SingleSorted2CategoryFamily Obj (Fin 2)
 
 @[ext]
-class SingleSortedNCategory (Obj : Type u) (index : Nat)
-    extends SingleSorted2CategoryFamily Obj (Fin index)
+class SingleSortedNCategory (Obj : Type u) (n : Nat)
+    extends SingleSorted2CategoryFamily Obj (Fin n)
 
 @[ext]
 class SingleSortedOmegaCategory (Obj : Type u)
