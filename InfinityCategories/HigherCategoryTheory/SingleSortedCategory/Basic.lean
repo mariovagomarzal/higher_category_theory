@@ -155,7 +155,7 @@ class SingleSortedNCategory (Obj : Type u) (index : Nat)
 
 @[ext]
 class SingleSortedOmegaCategory (Obj : Type u)
-    extends SingleSorted2CategoryFamily Obj Nat
-  -- TODO: Implement the extra axioms of single-sorted ω-categories.
+    extends SingleSorted2CategoryFamily Obj Nat where
+  cell : ∀ f : Obj, ∃ k : Nat, f = sc k f
 
 end HigherCategoryTheory
