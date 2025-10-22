@@ -85,8 +85,7 @@ class SingleSortedCategoryFamily (Obj : Type u) (index : Type) [NatIndex index]
     (sc_comp_is_sc comp_hg).trans comp_gf
   assoc : ∀ {i : index} {f g h : Obj} (comp_gf : sc_is_tg i g f) (comp_hg : sc_is_tg i h g),
       (h ♯[i] (g ♯[i] f ← comp_gf) ← (compr_assoc comp_gf comp_hg)) =
-      ((h ♯[i] g ← comp_hg) ♯[i] f ← (compl_assoc comp_gf comp_hg)) := by
-      intros; rfl
+      ((h ♯[i] g ← comp_hg) ♯[i] f ← (compl_assoc comp_gf comp_hg)) := by intros; rfl
 
 class SingleSorted2CategoryFamily (Obj : Type u)
     (index : Type) [NatIndex index]
