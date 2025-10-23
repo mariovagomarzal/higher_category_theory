@@ -16,8 +16,8 @@ namespace HigherCategoryTheory
 @[ext]
 structure SingleSortedFunctorFamily (C : Type u₁) (D : Type u₂)
     (index : Type) [NatIndex index]
-    [SingleSortedCategoryFamily C index]
-    [SingleSortedCategoryFamily D index] where
+    [SingleSortedCategoryStruct C index]
+    [SingleSortedCategoryStruct D index] where
   map : C → D
   map_sc_is_sc_map : ∀ {i : index} {f : C}, map (sc i f) = sc i (map f)
   map_tg_is_tg_map : ∀ {i : index} {f : C}, map (tg i f) = tg i (map f)
@@ -30,17 +30,19 @@ structure SingleSortedFunctorFamily (C : Type u₁) (D : Type u₂)
   map_comp_is_comp_map : ∀ {i : index} {f g : C} (comp_gf : sc_is_tg i g f),
     map (g ♯[i] f ← comp_gf) = (map g) ♯[i] (map f) ← (comp_map comp_gf)
 
+namespace SingleSortedFunctorFamily
+
 instance {C : Type u₁} {D : Type u₂} {index : Type} [NatIndex index]
-    [SingleSortedCategoryFamily C index]
-    [SingleSortedCategoryFamily D index] :
+    [SingleSortedCategoryStruct C index]
+    [SingleSortedCategoryStruct D index] :
     CoeFun (SingleSortedFunctorFamily C D index) (fun _ => C → D) :=
   ⟨fun F ↦ F.map⟩
 
-def functor_comp {C : Type u₁} {D : Type u₂} {E : Type u₃}
+def comp {C : Type u₁} {D : Type u₂} {E : Type u₃}
     {index : Type} [NatIndex index]
-    [SingleSortedCategoryFamily C index]
-    [SingleSortedCategoryFamily D index]
-    [SingleSortedCategoryFamily E index]
+    [SingleSortedCategoryStruct C index]
+    [SingleSortedCategoryStruct D index]
+    [SingleSortedCategoryStruct E index]
     (G : SingleSortedFunctorFamily D E index)
     (F : SingleSortedFunctorFamily C D index) :
     SingleSortedFunctorFamily C E index where
@@ -69,23 +71,26 @@ def functor_comp {C : Type u₁} {D : Type u₂} {E : Type u₃}
       _ = (G (F g)) ♯[i] (G (F f)) ← (G.comp_map (F.comp_map comp_gf)) :=
         G.map_comp_is_comp_map (F.comp_map comp_gf)
 
-scoped infixr:80 " ⊚ " => functor_comp
-
 def id {C : Type u₁}
     {index : Type} [NatIndex index]
-    [SingleSortedCategoryFamily C index] :
+    [SingleSortedCategoryStruct C index] :
     SingleSortedFunctorFamily C C index where
   map := fun x ↦ x
   map_sc_is_sc_map := rfl
   map_tg_is_tg_map := rfl
-  map_comp_is_comp_map := by intros; rfl
+  map_comp_is_comp_map _ := rfl
+
+end SingleSortedFunctorFamily
+
+scoped infixr:80 " ⊚ " => SingleSortedFunctorFamily.comp
+scoped notation "idₛₛ" => SingleSortedFunctorFamily.id
 
 theorem assoc {C : Type u₁} {D : Type u₂} {E : Type u₃} {F : Type u₁}
     {index : Type} [NatIndex index]
-    [SingleSortedCategoryFamily C index]
-    [SingleSortedCategoryFamily D index]
-    [SingleSortedCategoryFamily E index]
-    [SingleSortedCategoryFamily F index]
+    [SingleSortedCategoryStruct C index]
+    [SingleSortedCategoryStruct D index]
+    [SingleSortedCategoryStruct E index]
+    [SingleSortedCategoryStruct F index]
     (F₁ : SingleSortedFunctorFamily C D index)
     (F₂ : SingleSortedFunctorFamily D E index)
     (F₃ : SingleSortedFunctorFamily E F index) :
@@ -93,17 +98,17 @@ theorem assoc {C : Type u₁} {D : Type u₂} {E : Type u₃} {F : Type u₁}
 
 theorem id_left {C : Type u₁} {D : Type u₂}
     {index : Type} [NatIndex index]
-    [SingleSortedCategoryFamily C index]
-    [SingleSortedCategoryFamily D index]
+    [SingleSortedCategoryStruct C index]
+    [SingleSortedCategoryStruct D index]
     (F : SingleSortedFunctorFamily C D index) :
-    id ⊚ F = F := rfl
+    idₛₛ ⊚ F = F := rfl
 
 theorem id_right {C : Type u₁} {D : Type u₂}
     {index : Type} [NatIndex index]
-    [SingleSortedCategoryFamily C index]
-    [SingleSortedCategoryFamily D index]
+    [SingleSortedCategoryStruct C index]
+    [SingleSortedCategoryStruct D index]
     (F : SingleSortedFunctorFamily C D index) :
-    F ⊚ id = F := rfl
+    F ⊚ idₛₛ = F := rfl
 
 structure SingleSortedFunctor (C : Type u₁) (D : Type u₂)
     [SingleSortedCategory C]
