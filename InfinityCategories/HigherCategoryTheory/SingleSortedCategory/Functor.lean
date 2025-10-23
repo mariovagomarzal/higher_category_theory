@@ -9,11 +9,12 @@ import InfinityCategories.HigherCategoryTheory.SingleSortedCategory.Basic
 TODO: Document the file.
 -/
 
-universe u v w
+universe u₁ u₂ u₃
 
 namespace HigherCategoryTheory
 
-structure SingleSortedFunctorFamily (C : Type u) (D : Type v)
+@[ext]
+structure SingleSortedFunctorFamily (C : Type u₁) (D : Type u₂)
     (index : Type) [NatIndex index]
     [SingleSortedCategoryFamily C index]
     [SingleSortedCategoryFamily D index] where
@@ -29,79 +30,99 @@ structure SingleSortedFunctorFamily (C : Type u) (D : Type v)
   map_comp_is_comp_map : ∀ {i : index} {f g : C} (comp_gf : sc_is_tg i g f),
     map (g ♯[i] f ← comp_gf) = (map g) ♯[i] (map f) ← (comp_map comp_gf)
 
-@[ext]
-structure SingleSortedFunctor (C : Type u) (D : Type v)
-    [SingleSortedCategory C]
-    [SingleSortedCategory D]
-    extends SingleSortedFunctorFamily C D (Fin 1)
+instance {C : Type u₁} {D : Type u₂} {index : Type} [NatIndex index]
+    [SingleSortedCategoryFamily C index]
+    [SingleSortedCategoryFamily D index] :
+    CoeFun (SingleSortedFunctorFamily C D index) (fun _ => C → D) :=
+  ⟨fun F ↦ F.map⟩
 
-@[ext]
-structure SingleSorted2Functor (C : Type u) (D : Type v)
-    [SingleSorted2Category C]
-    [SingleSorted2Category D]
-    extends SingleSortedFunctorFamily C D (Fin 2)
-
-@[ext]
-structure SingleSortedNFunctor (C : Type u) (D : Type v) (n : Nat)
-    [SingleSortedNCategory C n]
-    [SingleSortedNCategory D n]
-    extends SingleSortedFunctorFamily C D (Fin n)
-
-@[ext]
-structure SingleSortedOmegaFunctor (C : Type u) (D : Type v)
-    [SingleSortedOmegaCategory C]
-    [SingleSortedOmegaCategory D]
-    extends SingleSortedFunctorFamily C D Nat
-
-namespace SingleSortedFunctorFamily
-
-def comp {C : Type u} {D : Type v} {E : Type w}
+def functor_comp {C : Type u₁} {D : Type u₂} {E : Type u₃}
     {index : Type} [NatIndex index]
     [SingleSortedCategoryFamily C index]
     [SingleSortedCategoryFamily D index]
     [SingleSortedCategoryFamily E index]
-    (F : SingleSortedFunctorFamily C D index)
-    (G : SingleSortedFunctorFamily D E index) :
+    (G : SingleSortedFunctorFamily D E index)
+    (F : SingleSortedFunctorFamily C D index) :
     SingleSortedFunctorFamily C E index where
-  map := G.map ∘ F.map
-  map_sc_is_sc_map := by sorry
-  map_tg_is_tg_map := by sorry
-  map_comp_is_comp_map := by sorry
+  map := G ∘ F
+  map_sc_is_sc_map := by
+    intro i f
+    calc
+      (G ∘ F) (sc i f)
+      _ = G (F (sc i f)) := rfl
+      _ = G (sc i (F f)) := congrArg G (F.map_sc_is_sc_map)
+      _ = sc i (G (F f)) := G.map_sc_is_sc_map
+  map_tg_is_tg_map := by
+    intro i f
+    calc
+      (G ∘ F) (tg i f)
+      _ = G (F (tg i f)) := rfl
+      _ = G (tg i (F f)) := congrArg G (F.map_tg_is_tg_map)
+      _ = tg i (G (F f)) := G.map_tg_is_tg_map
+  map_comp_is_comp_map := by
+    intro i f g comp_gf
+    calc
+      (G ∘ F) (g ♯[i] f ← comp_gf)
+      _ = G (F (g ♯[i] f ← comp_gf)) := rfl
+      _ = G ((F g) ♯[i] (F f) ← (F.comp_map comp_gf)) :=
+        congrArg G (F.map_comp_is_comp_map comp_gf)
+      _ = (G (F g)) ♯[i] (G (F f)) ← (G.comp_map (F.comp_map comp_gf)) :=
+        G.map_comp_is_comp_map (F.comp_map comp_gf)
 
-def id {C : Type u}
+scoped infixr:80 " ⊚ " => functor_comp
+
+def id {C : Type u₁}
     {index : Type} [NatIndex index]
     [SingleSortedCategoryFamily C index] :
     SingleSortedFunctorFamily C C index where
-  map := fun x => x
-  map_sc_is_sc_map := by intros; rfl
-  map_tg_is_tg_map := by intros; rfl
+  map := fun x ↦ x
+  map_sc_is_sc_map := rfl
+  map_tg_is_tg_map := rfl
   map_comp_is_comp_map := by intros; rfl
 
-theorem assoc {C : Type u} {D : Type v} {E : Type w} {F : Type u}
+theorem assoc {C : Type u₁} {D : Type u₂} {E : Type u₃} {F : Type u₁}
     {index : Type} [NatIndex index]
     [SingleSortedCategoryFamily C index]
     [SingleSortedCategoryFamily D index]
     [SingleSortedCategoryFamily E index]
     [SingleSortedCategoryFamily F index]
-    (F1 : SingleSortedFunctorFamily C D index)
-    (F2 : SingleSortedFunctorFamily D E index)
-    (F3 : SingleSortedFunctorFamily E F index) :
-    comp (comp F1 F2) F3 = comp F1 (comp F2 F3) := by sorry
+    (F₁ : SingleSortedFunctorFamily C D index)
+    (F₂ : SingleSortedFunctorFamily D E index)
+    (F₃ : SingleSortedFunctorFamily E F index) :
+    F₃ ⊚ F₂ ⊚ F₁ = (F₃ ⊚ F₂) ⊚ F₁ := rfl
 
-theorem id_left {C : Type u} {D : Type v}
+theorem id_left {C : Type u₁} {D : Type u₂}
     {index : Type} [NatIndex index]
     [SingleSortedCategoryFamily C index]
     [SingleSortedCategoryFamily D index]
     (F : SingleSortedFunctorFamily C D index) :
-    comp (id) F = F := by sorry
+    id ⊚ F = F := rfl
 
-theorem id_right {C : Type u} {D : Type v}
+theorem id_right {C : Type u₁} {D : Type u₂}
     {index : Type} [NatIndex index]
     [SingleSortedCategoryFamily C index]
     [SingleSortedCategoryFamily D index]
     (F : SingleSortedFunctorFamily C D index) :
-    comp F (id) = F := by sorry
+    F ⊚ id = F := rfl
 
-end SingleSortedFunctorFamily
+structure SingleSortedFunctor (C : Type u₁) (D : Type u₂)
+    [SingleSortedCategory C]
+    [SingleSortedCategory D]
+    extends SingleSortedFunctorFamily C D (Fin 1)
+
+structure SingleSorted2Functor (C : Type u₁) (D : Type u₂)
+    [SingleSorted2Category C]
+    [SingleSorted2Category D]
+    extends SingleSortedFunctorFamily C D (Fin 2)
+
+structure SingleSortedNFunctor (C : Type u₁) (D : Type u₂) (n : Nat)
+    [SingleSortedNCategory C n]
+    [SingleSortedNCategory D n]
+    extends SingleSortedFunctorFamily C D (Fin n)
+
+structure SingleSortedOmegaFunctor (C : Type u₁) (D : Type u₂)
+    [SingleSortedOmegaCategory C]
+    [SingleSortedOmegaCategory D]
+    extends SingleSortedFunctorFamily C D Nat
 
 end HigherCategoryTheory
