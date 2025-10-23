@@ -85,31 +85,6 @@ end SingleSortedFunctorFamily
 scoped infixr:80 " ⊚ " => SingleSortedFunctorFamily.comp
 scoped notation "idₛₛ" => SingleSortedFunctorFamily.id
 
-theorem assoc {C : Type u₁} {D : Type u₂} {E : Type u₃} {F : Type u₁}
-    {index : Type} [NatIndex index]
-    [SingleSortedCategoryStruct C index]
-    [SingleSortedCategoryStruct D index]
-    [SingleSortedCategoryStruct E index]
-    [SingleSortedCategoryStruct F index]
-    (F₁ : SingleSortedFunctorFamily C D index)
-    (F₂ : SingleSortedFunctorFamily D E index)
-    (F₃ : SingleSortedFunctorFamily E F index) :
-    F₃ ⊚ F₂ ⊚ F₁ = (F₃ ⊚ F₂) ⊚ F₁ := rfl
-
-theorem id_left {C : Type u₁} {D : Type u₂}
-    {index : Type} [NatIndex index]
-    [SingleSortedCategoryStruct C index]
-    [SingleSortedCategoryStruct D index]
-    (F : SingleSortedFunctorFamily C D index) :
-    idₛₛ ⊚ F = F := rfl
-
-theorem id_right {C : Type u₁} {D : Type u₂}
-    {index : Type} [NatIndex index]
-    [SingleSortedCategoryStruct C index]
-    [SingleSortedCategoryStruct D index]
-    (F : SingleSortedFunctorFamily C D index) :
-    F ⊚ idₛₛ = F := rfl
-
 structure SingleSortedFunctor (C : Type u₁) (D : Type u₂)
     [SingleSortedCategory C]
     [SingleSortedCategory D]
