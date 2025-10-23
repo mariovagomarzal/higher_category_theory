@@ -16,17 +16,18 @@ universe u
 namespace HigherCategoryTheory
 
 @[ext]
-structure SingleSortedCategoriesFamily (index : Type) [NatIndex index] where
+structure SingleSortedCategoryStructsFamily (index : Type) [NatIndex index] where
   Obj : Type u
-  _inst : SingleSortedCategoryFamily Obj index
+  _inst : SingleSortedCategoryStruct Obj index
 
-attribute [instance] SingleSortedCategoriesFamily._inst
+attribute [instance] SingleSortedCategoryStructsFamily._inst
 
-open CategoryTheory in
-instance SingleSortedCat (index : Type) [NatIndex index] :
-    LargeCategory (SingleSortedCategoriesFamily index) where
+open CategoryTheory
+
+instance SingleSortedCatStruct (index : Type) [NatIndex index] :
+    LargeCategory (SingleSortedCategoryStructsFamily index) where
   Hom C D := SingleSortedFunctorFamily C.Obj D.Obj index
-  id C := id
+  id C := idₛₛ
   comp F G := G ⊚ F
 
 end HigherCategoryTheory
