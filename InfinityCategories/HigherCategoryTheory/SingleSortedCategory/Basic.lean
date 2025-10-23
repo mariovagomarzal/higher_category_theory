@@ -15,56 +15,62 @@ universe u
 
 namespace HigherCategoryTheory
 
-class SingleSortedStruct (Obj : Type u) (index : Type) [NatIndex index] where
+class SingleSortedCategoryStruct (Obj : Type u) (index : Type) [NatIndex index] where
   Sc : index → Obj → Obj
   Tg : index → Obj → Obj
   PComp : index → Obj → Obj →. Obj
   pcomp_dom : ∀ {i : index} {f g : Obj},
     (PComp i g f).Dom ↔ Sc i g = Tg i f
 
-instance {Obj : Type u} {index : Type} [NatIndex index]
-    [S : SingleSortedStruct Obj index]
-    {k : index} : SingleSortedStruct Obj (Fin k) where
+scoped prefix:max "sc " => SingleSortedCategoryStruct.Sc
+scoped prefix:max "tg " => SingleSortedCategoryStruct.Tg
+scoped notation g " ♯.[" i "] " f:100 => SingleSortedCategoryStruct.PComp i g f
+
+def sc_is_tg {Obj : Type u} {index : Type} [NatIndex index]
+    [SingleSortedCategoryStruct Obj index]
+    (i : index) (g f : Obj) : Prop :=
+  sc i g = tg i f
+
+theorem dom_of_sc_is_tg {Obj : Type u} {index : Type} [NatIndex index]
+    [SingleSortedCategoryStruct Obj index]
+    {i : index} {f g : Obj} (comp_gf : sc_is_tg i g f) :
+    (g ♯.[i] f).Dom :=
+  SingleSortedCategoryStruct.pcomp_dom.mpr comp_gf
+
+namespace SingleSortedCategoryStruct
+
+instance instSingleSortedCateogryStructFinIndex {Obj : Type u}
+    {index : Type} [NatIndex index]
+    [S : SingleSortedCategoryStruct Obj index]
+    {k : index} : SingleSortedCategoryStruct Obj (Fin k) where
   Sc j := S.Sc (j : index)
   Tg j := S.Tg (j : index)
   PComp j := S.PComp (j : index)
   pcomp_dom := S.pcomp_dom
 
-scoped prefix:max "sc " => SingleSortedStruct.Sc
-scoped prefix:max "tg " => SingleSortedStruct.Tg
-scoped notation g " ♯.[" i "] " f:100 => SingleSortedStruct.PComp i g f
-
-def sc_is_tg {Obj : Type u} {index : Type} [NatIndex index]
-    [SingleSortedStruct Obj index]
-    (i : index) (g f : Obj) : Prop :=
-  sc i g = tg i f
-
-def get_dom_of_sc_is_tg {Obj : Type u} {index : Type} [NatIndex index]
-    [SingleSortedStruct Obj index]
-    {i : index} {f g : Obj} (comp_gf : sc_is_tg i g f) :
-    (g ♯.[i] f).Dom :=
-  SingleSortedStruct.pcomp_dom.mpr comp_gf
-
 def comp {Obj : Type u} {index : Type} [NatIndex index]
-    [SingleSortedStruct Obj index]
+    [SingleSortedCategoryStruct Obj index]
     (i : index) (g f : Obj) (composable_gf : sc_is_tg i g f) : Obj :=
-  (g ♯.[i] f).get (get_dom_of_sc_is_tg composable_gf)
+  (g ♯.[i] f).get (dom_of_sc_is_tg composable_gf)
 
-scoped notation g " ♯[" i "] " f " ← " comp_gf:100 => comp i g f comp_gf
+end SingleSortedCategoryStruct
+
+scoped notation g " ♯[" i "] " f " ← " comp_gf:100 => SingleSortedCategoryStruct.comp i g f comp_gf
 
 theorem congr_pcomp {Obj : Type u} {index : Type} [NatIndex index]
-    [S : SingleSortedStruct Obj index]
+    [S : SingleSortedCategoryStruct Obj index]
     {i : index} {f₁ f₂ g₁ g₂ : Obj} (eq_g₁g₂ : g₁ = g₂) (eq_f₁f₂ : f₁ = f₂)
     (comp_g₁f₁ : sc_is_tg i g₁ f₁) (comp_g₂f₂ : sc_is_tg i g₂ f₂) :
     g₁ ♯[i] f₁ ← comp_g₁f₁ = g₂ ♯[i] f₂ ← comp_g₂f₂ := by
   have pcomp_eq : g₁ ♯.[i] f₁ = g₂ ♯.[i] f₂ :=
     congrArg₂ (· ♯.[i] ·) eq_g₁g₂ eq_f₁f₂
-  let comp_g₁f₁_dom := get_dom_of_sc_is_tg comp_g₁f₁
-  let comp_g₂f₂_dom := get_dom_of_sc_is_tg comp_g₂f₂
+  let comp_g₁f₁_dom := dom_of_sc_is_tg comp_g₁f₁
+  let comp_g₂f₂_dom := dom_of_sc_is_tg comp_g₂f₂
   apply (Part.eq_iff_of_dom comp_g₁f₁_dom comp_g₂f₂_dom).mpr pcomp_eq
 
+@[ext]
 class SingleSortedCategoryFamily (Obj : Type u) (index : Type) [NatIndex index]
-    extends SingleSortedStruct Obj index where
+    extends SingleSortedCategoryStruct Obj index where
   sc_sc_is_sc : ∀ {i : index} {f : Obj}, sc i (sc i f) = sc i f := by intros; rfl
   tg_sc_is_sc : ∀ {i : index} {f : Obj}, tg i (sc i f) = sc i f := by intros; rfl
   sc_tg_is_tg : ∀ {i : index} {f : Obj}, sc i (tg i f) = tg i f := by intros; rfl
@@ -140,19 +146,15 @@ class SingleSorted2CategoryFamily (Obj : Type u)
       (g₂ ♯[k] g₁ ← comp_k_g₂g₁) ♯[j] (f₂ ♯[k] f₁ ← comp_k_f₂f₁) ←
         (comp_j_exchange comp_k_g₂g₁ comp_k_f₂f₁ comp_j_g₂f₂ comp_j_g₁f₁) := by intros; rfl
 
-@[ext]
 class SingleSortedCategory (Obj : Type u)
     extends SingleSortedCategoryFamily Obj (Fin 1)
 
-@[ext]
 class SingleSorted2Category (Obj : Type u)
     extends SingleSorted2CategoryFamily Obj (Fin 2)
 
-@[ext]
 class SingleSortedNCategory (Obj : Type u) (n : Nat)
     extends SingleSorted2CategoryFamily Obj (Fin n)
 
-@[ext]
 class SingleSortedOmegaCategory (Obj : Type u)
     extends SingleSorted2CategoryFamily Obj Nat where
   cell : ∀ f : Obj, ∃ k : Nat, sc k f = f
