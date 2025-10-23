@@ -85,24 +85,24 @@ end SingleSortedFunctorFamily
 scoped infixr:80 " ⊚ " => SingleSortedFunctorFamily.comp
 scoped notation "idₛₛ" => SingleSortedFunctorFamily.id
 
-structure SingleSortedFunctor (C : Type u₁) (D : Type u₂)
+abbrev SingleSortedFunctor (C : Type u₁) (D : Type u₂)
     [SingleSortedCategory C]
-    [SingleSortedCategory D]
-    extends SingleSortedFunctorFamily C D (Fin 1)
+    [SingleSortedCategory D] :=
+  SingleSortedFunctorFamily C D (Fin 1)
 
-structure SingleSorted2Functor (C : Type u₁) (D : Type u₂)
+abbrev SingleSorted2Functor (C : Type u₁) (D : Type u₂)
     [SingleSorted2Category C]
-    [SingleSorted2Category D]
-    extends SingleSortedFunctorFamily C D (Fin 2)
+    [SingleSorted2Category D] :=
+  SingleSortedFunctorFamily C D (Fin 2)
 
-structure SingleSortedNFunctor (C : Type u₁) (D : Type u₂) (n : Nat)
+abbrev SingleSortedNFunctor (C : Type u₁) (D : Type u₂) (n : Nat)
     [SingleSortedNCategory C n]
-    [SingleSortedNCategory D n]
-    extends SingleSortedFunctorFamily C D (Fin n)
+    [SingleSortedNCategory D n] :=
+  SingleSortedFunctorFamily C D (Fin n)
 
-structure SingleSortedOmegaFunctor (C : Type u₁) (D : Type u₂)
+abbrev SingleSortedOmegaFunctor (C : Type u₁) (D : Type u₂)
     [SingleSortedOmegaCategory C]
-    [SingleSortedOmegaCategory D]
-    extends SingleSortedFunctorFamily C D Nat
+    [SingleSortedOmegaCategory D] :=
+  SingleSortedFunctorFamily C D Nat
 
 end HigherCategoryTheory

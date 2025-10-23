@@ -15,18 +15,49 @@ universe u
 
 namespace HigherCategoryTheory
 
-@[ext]
-structure SingleSortedCategoryStructsFamily (index : Type) [NatIndex index] where
-  Obj : Type u
-  _inst : SingleSortedCategoryStruct Obj index
-
-attribute [instance] SingleSortedCategoryStructsFamily._inst
-
 open CategoryTheory
 
-instance SingleSortedCatStruct (index : Type) [NatIndex index] :
-    LargeCategory (SingleSortedCategoryStructsFamily index) where
-  Hom C D := SingleSortedFunctorFamily C.Obj D.Obj index
+structure ObjectsFamily where
+  Obj : Type u
+
+@[ext]
+structure SingleSortedCategoriesFamily extends ObjectsFamily where
+  _inst : SingleSortedCategory Obj
+
+attribute [instance] SingleSortedCategoriesFamily._inst
+
+instance SingleSortedCat : LargeCategory SingleSortedCategoriesFamily where
+  Hom C D := SingleSortedFunctor C.Obj D.Obj
+  id _ := idₛₛ
+  comp F G := G ⊚ F
+
+structure SingleSorted2CategoriesFamily extends ObjectsFamily where
+  _inst : SingleSorted2Category Obj
+
+attribute [instance] SingleSorted2CategoriesFamily._inst
+
+instance SingleSorted2Cat : LargeCategory SingleSorted2CategoriesFamily where
+  Hom C D := SingleSorted2Functor C.Obj D.Obj
+  id _ := idₛₛ
+  comp F G := G ⊚ F
+
+structure SingleSortedNCategoriesFamily (n : Nat) extends ObjectsFamily where
+  _inst : SingleSortedNCategory Obj n
+
+attribute [instance] SingleSortedNCategoriesFamily._inst
+
+instance SingleSortedNCat {n : Nat} : LargeCategory (SingleSortedNCategoriesFamily n) where
+  Hom C D := SingleSortedNFunctor C.Obj D.Obj n
+  id _ := idₛₛ
+  comp F G := G ⊚ F
+
+structure SingleSortedOmegaCategoriesFamily extends ObjectsFamily where
+  _inst : SingleSortedOmegaCategory Obj
+
+attribute [instance] SingleSortedOmegaCategoriesFamily._inst
+
+instance SingleSortedOmegaCat : LargeCategory SingleSortedOmegaCategoriesFamily where
+  Hom C D := SingleSortedOmegaFunctor C.Obj D.Obj
   id _ := idₛₛ
   comp F G := G ⊚ F
 
