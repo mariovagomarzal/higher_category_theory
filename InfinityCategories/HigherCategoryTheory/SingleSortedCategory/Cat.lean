@@ -27,7 +27,7 @@ open CategoryTheory
 instance SingleSortedCatStruct (index : Type) [NatIndex index] :
     LargeCategory (SingleSortedCategoryStructsFamily index) where
   Hom C D := SingleSortedFunctorFamily C.Obj D.Obj index
-  id C := idₛₛ
+  id _ := idₛₛ
   comp F G := G ⊚ F
 
 end HigherCategoryTheory
