@@ -15,6 +15,7 @@ universe u
 
 namespace HigherCategoryTheory
 
+@[ext]
 class SingleSortedCategoryStruct (Obj : Type u) (index : Type) [NatIndex index] where
   Sc : index → Obj → Obj
   Tg : index → Obj → Obj
@@ -68,7 +69,6 @@ theorem congr_pcomp {Obj : Type u} {index : Type} [NatIndex index]
   let comp_g₂f₂_dom := dom_of_sc_is_tg comp_g₂f₂
   apply (Part.eq_iff_of_dom comp_g₁f₁_dom comp_g₂f₂_dom).mpr pcomp_eq
 
-@[ext]
 class SingleSortedCategoryFamily (Obj : Type u) (index : Type) [NatIndex index]
     extends SingleSortedCategoryStruct Obj index where
   sc_sc_is_sc : ∀ {i : index} {f : Obj}, sc i (sc i f) = sc i f := by intros; rfl
