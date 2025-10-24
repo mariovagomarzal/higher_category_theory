@@ -1,3 +1,6 @@
+# Local files for custom configurations
+*.local.*
+
 # Devenv
 .devenv*
 devenv.local.nix
