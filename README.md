@@ -23,6 +23,10 @@ In this section, we document how to work with the repository. The development
 environment is mainly managed with [Nix][nix] and _[devenv][devenv]_. However,
 it is also documented how to work without the latter.
 
+It is recommended to work with [Visual Studio Code][vscode]. We have also
+included a `.vscode` directory with recommended settings and extensions for
+working with the repository.
+
 ### Nix setup
 
 To set up the development environment with Nix, you need to have Nix and
@@ -76,34 +80,34 @@ lake exe cache get
   ```bash
   lake build InfinityCategories
   ```
-  
+
 - When updating Lean dependencies, it is also important to update the
   dependencie that points to the current project in the `docbuild` directory. To
   do so, run:
-  
+
   ```bash
   lake update # or `lake update <dependency>` for a specific dependency
-  
+
   # Update the dependency pointing to this project
   cd docbuild
   lake update InfinityCategories
   ```
-  
+
 - To build the documentation, run:
 
   ```bash
   cd docbuild
   DOCGEN_SRC="github" lake build InfinityCategories:docs
   ```
-  
+
 - For updating the documentation generation tool you have to update the
   `doc-gen4` dependency in the `docbuild` directory. To do so, run:
-  
+
   ```bash
   cd docbuild
   MATHLIB_NO_CACHE_ON_UPDATE=1 lake update doc-gen4
   ```
-  
+
 - For serving the documentation locally, run:
 
   ```bash
@@ -156,6 +160,7 @@ This project is licensed under the Apache License 2.0. See the
 <!-- External links -->
 [nix]: https://nixos.org/
 [devenv]: https://devenv.sh/
+[vscode]: https://code.visualstudio.com/
 [direnv]: https://direnv.net/
 [elan]: https://github.com/leanprover/elan
 [conventional-commits]: https://www.conventionalcommits.org/en/v1.0.0/
