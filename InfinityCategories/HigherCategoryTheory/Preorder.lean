@@ -6,7 +6,10 @@ Authors: Enric Cosme Llópez, Raul Ruiz Mora, Mario Vago Marzal
 import InfinityCategories.HigherCategoryTheory.SingleSortedCategory.Basic
 
 /-!
-TODO: Document the file.
+# Preorders as single-sorted categories
+
+This file shows that preorders can be viewed as single-sorted categories where morphisms
+correspond to the order relation.
 -/
 
 universe u
@@ -15,6 +18,8 @@ namespace Preorder
 
 open HigherCategoryTheory
 
+/-- The set of comparable pairs $\{(x, y) \mid x \leq y\}$ in a preorder forms a single-sorted
+category, where composition corresponds to transitivity of the order relation. -/
 instance singleSortedCategoryPreorderProduct (α : Type u) [Preorder α] :
     SingleSortedCategory ({(x, y) : α×α | x ≤ y}) where
   Sc := fun _ ⟨(x, _), h⟩ ↦ ⟨(x, x), le_refl x⟩

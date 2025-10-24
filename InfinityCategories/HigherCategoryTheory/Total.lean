@@ -6,13 +6,19 @@ Authors: Enric Cosme Llópez, Raul Ruiz Mora, Mario Vago Marzal
 import InfinityCategories.HigherCategoryTheory.SingleSortedCategory.Basic
 
 /-!
-TODO: Document the file.
+# The total category on pairs
+
+This file defines a single-sorted category structure on the product type $\alpha \times \alpha$
+for any type $\alpha$.
 -/
 
 universe u
 
 namespace HigherCategoryTheory
 
+/-- The product $\alpha \times \alpha$ is a single-sorted category where pairs $(x, y)$ represent
+morphisms from $x$ to $y$. Two pairs $(y_1, y_2)$ and $(x_1, x_2)$ are composable when
+$y_2 = x_1$, with their composite being $(y_1, x_2)$. -/
 instance singleSortedCategoryTotal {α : Type u} : SingleSortedCategory (α×α) where
   Sc := fun _ (_, y) ↦ (y, y)
   Tg := fun _ (x, _) ↦ (x, x)

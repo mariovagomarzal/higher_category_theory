@@ -7,7 +7,10 @@ import Mathlib.Algebra.Group.Defs
 import InfinityCategories.HigherCategoryTheory.SingleSortedCategory.Basic
 
 /-!
-TODO: Document the file.
+# Monoids as single-sorted categories
+
+This file shows that every monoid can be viewed as a single-sorted category, where the monoid
+elements are the morphisms and monoid multiplication is composition.
 -/
 
 universe u
@@ -16,6 +19,8 @@ namespace Monoid
 
 open HigherCategoryTheory
 
+/-- Every monoid `M` is a single-sorted category where all morphisms have the same source and
+target (the unit), and composition is given by monoid multiplication. -/
 instance singleSortedCategoryMonoid (M : Type u) [Monoid M] : SingleSortedCategory M where
   Sc _ _ := 1
   Tg _ _ := 1

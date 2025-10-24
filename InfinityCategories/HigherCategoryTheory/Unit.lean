@@ -6,13 +6,18 @@ Authors: Enric Cosme Llópez, Raul Ruiz Mora, Mario Vago Marzal
 import InfinityCategories.HigherCategoryTheory.SingleSortedCategory.Basic
 
 /-!
-TODO: Document the file.
+# The unit type as single-sorted categories
+
+This file shows that the unit type can be given single-sorted category and 2-category structures,
+representing the trivial category with one object and one morphism.
 -/
 
 namespace Unit
 
 open HigherCategoryTheory
 
+/-- The unit type `Unit` is a single-sorted category with a single morphism (the unique element
+`()`), which is both its own source and target. -/
 instance singleSortedCategoryUnit : SingleSortedCategory Unit where
   Sc _ _ := ()
   Tg _ _ := ()
@@ -25,6 +30,8 @@ instance singleSortedCategoryUnit : SingleSortedCategory Unit where
     · intros
       trivial
 
+/-- The unit type `Unit` is a single-sorted 2-category with a single morphism (the unique element
+`()`), which is both its own source and target. -/
 instance singleSorted2CategoryUnit : SingleSorted2Category Unit where
   Sc _ _ := ()
   Tg _ _ := ()
