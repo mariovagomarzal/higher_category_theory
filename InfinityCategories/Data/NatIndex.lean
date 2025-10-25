@@ -28,7 +28,6 @@ class NatIndex (index : Type) where
 
 namespace NatIndex
 
-
 /-- Coercion from any `NatIndex` type to `Nat`. -/
 instance {index : Type} [NatIndex index] : CoeOut index Nat :=
   ⟨NatIndex.coeIndexNat⟩
@@ -37,6 +36,11 @@ instance {index : Type} [NatIndex index] : CoeOut index Nat :=
 instance {index : Type} [NatIndex index] {k : index} :
     CoeOut (Fin k) index :=
   ⟨NatIndex.coeFinIndex k⟩
+
+/-- Any `NatIndex` type has a _less-than-or-equal_ relation induced by the
+natural numbers. -/
+instance {index : Type} [NatIndex index] : LE index :=
+  ⟨fun i j ↦ coeIndexNat i ≤ coeIndexNat j⟩
 
 /--
 For any `n : Nat`, `Fin n` is a `NatIndex` via `Fin.val` and `Fin.castLE`.
