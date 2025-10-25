@@ -48,21 +48,21 @@ def cell_tg (Obj : Type u) {index : Type} [NatIndex index]
     [SingleSortedCategoryFamily Obj index] (k : index) : Set Obj :=
   {f : Obj | id_tg k f}
 
-theorem cell_eq_cell_tg {Obj : Type u} {index : Type} [NatIndex index]
+theorem cell_eq_cell_tg (Obj : Type u) {index : Type} [NatIndex index]
     [SingleSortedCategoryFamily Obj index] (k : index) :
     cell Obj k = cell_tg Obj k := by
   ext f
   exact id_sc_iff_id_tg k f
 
-def is_discrete_at {Obj : Type u} {index : Type} [NatIndex index]
+def is_discrete_at (Obj : Type u) {index : Type} [NatIndex index]
     [SingleSortedCategoryFamily Obj index] (k : index) : Prop :=
   ∀ f : Obj, f ∈ cell Obj k
 
-def is_discrete_above {Obj : Type u} {index : Type} [NatIndex index]
+def is_discrete_above (Obj : Type u) {index : Type} [NatIndex index]
     [SingleSortedCategoryFamily Obj index] (k : index) : Prop :=
   ∀ {f : Obj} {n : index}, n ≥ k → f ∈ cell Obj n
 
-def is_discrete {Obj : Type u} {index : Type} [NatIndex index]
+def is_discrete (Obj : Type u) {index : Type} [NatIndex index]
     [SingleSortedCategoryFamily Obj index] : Prop :=
   ∀ {f : Obj} {k : index}, f ∈ cell Obj k
 
@@ -85,6 +85,15 @@ def fromUnionCells {Obj : Type u} [SingleSorted2CategoryFamily Obj Nat]
     intro f
     simp at union_cells
     exact union_cells f
+
+def fromDiscreteAbove {Obj : Type u} (n : Nat)
+    [S : SingleSorted2CategoryFamily Obj Nat]
+    (discrete_above : is_discrete_above Obj n) :
+    SingleSortedOmegaCategory Obj where
+  has_cell := by
+    intro f
+    use n
+    exact discrete_above (by rfl)
 
 end SingleSortedOmegaCategory
 
