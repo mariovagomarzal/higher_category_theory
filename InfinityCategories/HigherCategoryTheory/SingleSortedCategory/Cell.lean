@@ -76,7 +76,7 @@ theorem is_union_cells {Obj : Type u} [SingleSortedOmegaCategory Obj] :
     ∀ f : Obj, f ∈ ⋃ k : Nat, cell Obj k := by
   intro f
   simp
-  exact has_cell
+  exact has_cell f
 
 def fromUnionCells {Obj : Type u} [SingleSorted2CategoryFamily Obj Nat]
     (union_cells : ∀ f : Obj, f ∈ ⋃ k : Nat, cell Obj k) :
