@@ -125,21 +125,19 @@ def fromUnionCells {Obj : Type u} [SingleSorted2CategoryFamily Obj Nat]
     exact union_cells f
 
 /--
-Given a structure of `SingleSorted2CategoryFamily` on `Obj` (and index `Nat`) and a natural
-number `n`, if `Obj` is discrete above dimension `n`, then we can construct a
-`SingleSortedOmegaCategory` structure on `Obj` because the `has_cell` axiom is satisfied.
-
-This reflects the fact that a $n$-category is just an $\omega$-category that is discrete
-above dimension `n`.
+Given a structure of `SingleSorted2CategoryFamily` on `Obj` and index `Nat` and, if there exists
+a natural number `n` such that `Obj` is discrete above dimension `n`, then we can construct a
+`SingleSortedOmegaCategory` structure on `Obj` since every morphism will be a $k$-cell for any
+`k ≥ n`.
 -/
-def fromDiscreteAbove {Obj : Type u} (n : Nat)
-    [S : SingleSorted2CategoryFamily Obj Nat]
-    (discrete_above : is_discrete_above Obj n) :
+def fromDiscreteAbove {Obj : Type u} [SingleSorted2CategoryFamily Obj Nat]
+    (discrete_above : ∃ n : Nat, is_discrete_above Obj n) :
     SingleSortedOmegaCategory Obj where
   has_cell := by
     intro f
+    rcases discrete_above with ⟨n, h_discrete⟩
     use n
-    exact discrete_above (by rfl)
+    exact h_discrete (le_refl n)
 
 end SingleSortedOmegaCategory
 
