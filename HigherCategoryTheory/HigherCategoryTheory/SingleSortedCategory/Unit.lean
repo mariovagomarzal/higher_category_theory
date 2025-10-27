@@ -18,7 +18,7 @@ open HigherCategoryTheory
 
 /-- The unit type `Unit` is a single-sorted category with a single morphism (the unique element
 `()`), which is both its own source and target. -/
-instance singleSortedCategoryUnit : SingleSortedCategory Unit where
+instance instSingleSortedCategory : SingleSortedCategory Unit where
   Sc _ _ := ()
   Tg _ _ := ()
   PComp _ _ _ := ⟨True, (fun _ ↦ ())⟩
@@ -32,7 +32,7 @@ instance singleSortedCategoryUnit : SingleSortedCategory Unit where
 
 /-- The unit type `Unit` is a single-sorted 2-category with a single morphism (the unique element
 `()`), which is both its own source and target. -/
-instance singleSorted2CategoryUnit : SingleSorted2Category Unit where
+instance instSingleSorted2Category : SingleSorted2Category Unit where
   Sc _ _ := ()
   Tg _ _ := ()
   PComp _ _ _ := ⟨True, (fun _ ↦ ())⟩
