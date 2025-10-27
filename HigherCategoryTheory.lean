@@ -1,0 +1,9 @@
+import HigherCategoryTheory.Data.NatIndex
+import HigherCategoryTheory.HigherCategoryTheory.SingleSortedCategory.Basic
+import HigherCategoryTheory.HigherCategoryTheory.SingleSortedCategory.Cat
+import HigherCategoryTheory.HigherCategoryTheory.SingleSortedCategory.Cell
+import HigherCategoryTheory.HigherCategoryTheory.SingleSortedCategory.Functor
+import HigherCategoryTheory.HigherCategoryTheory.Monoid
+import HigherCategoryTheory.HigherCategoryTheory.Preorder
+import HigherCategoryTheory.HigherCategoryTheory.Total
+import HigherCategoryTheory.HigherCategoryTheory.Unit

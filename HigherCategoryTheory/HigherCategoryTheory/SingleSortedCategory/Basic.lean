@@ -5,7 +5,7 @@ Authors: Enric Cosme Llópez, Raul Ruiz Mora, Mario Vago Marzal
 -/
 import Mathlib.Data.Pfun
 import Mathlib.Data.Part
-import InfinityCategories.Data.NatIndex
+import HigherCategoryTheory.Data.NatIndex
 
 /-!
 # Single-sorted presentation of higher-order categories
