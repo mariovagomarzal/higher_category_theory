@@ -1,5 +1,7 @@
 import InfinityCategories.Data.NatIndex
 import InfinityCategories.HigherCategoryTheory.SingleSortedCategory.Basic
+import InfinityCategories.HigherCategoryTheory.SingleSortedCategory.Cat
+import InfinityCategories.HigherCategoryTheory.SingleSortedCategory.Cell
 import InfinityCategories.HigherCategoryTheory.SingleSortedCategory.Functor
 import InfinityCategories.HigherCategoryTheory.Monoid
 import InfinityCategories.HigherCategoryTheory.Preorder

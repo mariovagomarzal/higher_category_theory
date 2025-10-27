@@ -277,7 +277,7 @@ class SingleSortedNCategory (Obj : Type u) (n : Nat)
 indexed by `Nat`. -/
 class SingleSortedOmegaCategory (Obj : Type u)
     extends SingleSorted2CategoryFamily Obj Nat where
-  /-- Every element is a k-cell for some `k : Nat`. -/
-  cell : ∀ f : Obj, ∃ k : Nat, sc k f = f
+  /-- Every element is in a k-cell for some `k : Nat`. -/
+  has_cell : ∀ f : Obj, ∃ k : Nat, sc k f = f
 
 end HigherCategoryTheory
