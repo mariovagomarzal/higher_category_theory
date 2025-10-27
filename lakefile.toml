@@ -1,10 +1,10 @@
-name = "InfinityCategories"
+name = "HigherCategoryTheory"
 version = "0.1.0"
 keywords = ["math"]
-defaultTargets = ["InfinityCategories"]
+defaultTargets = ["HigherCategoryTheory"]
 
 [leanOptions]
-pp.unicode.fun = true # pretty-prints `fun a ↦ b`
+pp.unicode.fun = true
 autoImplicit = false
 relaxedAutoImplicit = false
 weak.linter.mathlibStandardSet = true
@@ -16,4 +16,4 @@ scope = "leanprover-community"
 rev = "v4.23.0"
 
 [[lean_lib]]
-name = "InfinityCategories"
+name = "HigherCategoryTheory"

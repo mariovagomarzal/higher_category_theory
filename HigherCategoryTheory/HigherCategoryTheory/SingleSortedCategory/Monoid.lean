@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Enric Cosme Llópez, Raul Ruiz Mora, Mario Vago Marzal
 -/
 import Mathlib.Algebra.Group.Defs
-import InfinityCategories.HigherCategoryTheory.SingleSortedCategory.Basic
+import HigherCategoryTheory.HigherCategoryTheory.SingleSortedCategory.Basic
 
 /-!
 # Monoids as single-sorted categories
@@ -21,7 +21,7 @@ open HigherCategoryTheory
 
 /-- Every monoid `M` is a single-sorted category where all morphisms have the same source and
 target (the unit), and composition is given by monoid multiplication. -/
-instance singleSortedCategoryMonoid (M : Type u) [Monoid M] : SingleSortedCategory M where
+instance instSingleSortedCategory (M : Type u) [Monoid M] : SingleSortedCategory M where
   Sc _ _ := 1
   Tg _ _ := 1
   PComp _ b a := ⟨_, fun _ ↦ b * a⟩

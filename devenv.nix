@@ -53,7 +53,7 @@
   scripts = {
     "build" = {
       exec = ''
-        lake build InfinityCategories $@
+        lake build HigherCategoryTheory $@
       '';
       description = "Build the Lean project using Lake";
     };
@@ -62,7 +62,7 @@
       exec = ''
         lake update $1
         cd docbuild || exit 1
-        lake update InfinityCategories
+        lake update HigherCategoryTheory
         cd ..
       '';
       description = "Update dependencies for the Lean project";
@@ -71,7 +71,7 @@
     "docs" = {
       exec = ''
         cd docbuild || exit 1
-        DOCGEN_SRC="github" lake build InfinityCategories:docs $@
+        DOCGEN_SRC="github" lake build HigherCategoryTheory:docs $@
         cd ..
       '';
       description = "Build the documentation for the Lean project";

@@ -1,4 +1,4 @@
-# A Formalization of ∞-Categories in Lean 4
+# A Formalization of Higher-Order Categories in Lean 4
 
 A formal verification project based on the work by Enric Cosme Llópez on
 _Higher-order categories_.
@@ -6,7 +6,7 @@ _Higher-order categories_.
 ## Overview
 
 In many works on Category Theory, in addition to the usual many-sorted notions
-of n-categories and of ∞-categories, the single-sorted versions of them are
+of n-categories and of ω-categories, the single-sorted versions of them are
 also commonly used.
 
 The aim of this project is to provide a formalization of the latter notions and
@@ -78,7 +78,7 @@ lake exe cache get
 - For building the project, run:
 
   ```bash
-  lake build InfinityCategories
+  lake build HigherCategoryTheory
   ```
 
 - When updating Lean dependencies, it is also important to update the
@@ -90,14 +90,14 @@ lake exe cache get
 
   # Update the dependency pointing to this project
   cd docbuild
-  lake update InfinityCategories
+  lake update HigherCategoryTheory
   ```
 
 - To build the documentation, run:
 
   ```bash
   cd docbuild
-  DOCGEN_SRC="github" lake build InfinityCategories:docs
+  DOCGEN_SRC="github" lake build HigherCategoryTheory:docs
   ```
 
 - For updating the documentation generation tool you have to update the
