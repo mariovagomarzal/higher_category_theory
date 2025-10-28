@@ -36,7 +36,7 @@
 
       markdownlint = {
         enable = true;
-        excludes = ["website/**"];
+        excludes = ["^website/"];
         description = "Run markdownlint to check Markdown files";
       };
 
