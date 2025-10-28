@@ -19,6 +19,8 @@
     base = pkgs.texliveMedium;
   };
 
+  languages.python.enable = true;
+
   packages = with pkgs; [
     just
     git
