@@ -15,5 +15,15 @@ name = "mathlib"
 scope = "leanprover-community"
 rev = "v4.23.0"
 
+[[require]]
+name = "doc-gen4"
+scope = "leanprover"
+rev = "v4.23.0"
+
+[[require]]
+name = "checkdecls"
+scope = "PatrickMassot"
+rev = "3d425859e73fcfbef85b9638c2a91708ef4a22d4"
+
 [[lean_lib]]
 name = "HigherCategoryTheory"
