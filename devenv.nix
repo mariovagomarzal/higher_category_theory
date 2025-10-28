@@ -7,13 +7,23 @@
     GREET = "Lean 4 Development Environment";
   };
 
+  languages.lean4.enable = true;
+
+  languages.ruby = {
+    enable = true;
+    bundler.enable = true;
+  };
+
+  languages.texlive = {
+    enable = true;
+    base = pkgs.texliveMedium;
+  };
+
   packages = with pkgs; [
     just
     git
+    leanblueprint
   ];
-
-  languages.lean4.enable = true;
-  languages.python.enable = true;
 
   git-hooks = {
     hooks = {
@@ -51,7 +61,7 @@
   '';
 
   tasks = {
-    "cache" = {
+    "env:cache" = {
       exec = "just cache";
       after = ["devenv:enterShell"];
       cwd = ".";
