@@ -32,7 +32,7 @@ docs:
   #!/usr/bin/env bash
   set -euxo pipefail
 
-  rm -rf {{docs_dir}}
+  rm -rf {{docs_build_dir}}
 
   mkdir -p {{docs_build_dir}}
   cd {{docs_build_dir}}
