@@ -2,12 +2,14 @@ name: Build the project and deploy to GitHub Pages
 
 # Runs the workflow on pushes and pull requests to the main branch.
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  # TODO: Enable these triggers when ready to automate deployment. Currently disabled due to
+  # issues when building the Lean documentation.
+  # push:
+  #   branches:
+  #     - main
+  # pull_request:
+  #   branches:
+  #     - main
   workflow_dispatch: # Allows manual triggering of the workflow.
 
 # Sets permissions of the `GITHUB_TOKEN` to allow deployment to GitHub Pages.
