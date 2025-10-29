@@ -59,6 +59,10 @@ jobs:
           restore-keys: ${{ runner.os }}-lake-${{ runner.arch }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}
       - name: Build the Lean project within devenv
         run: devenv shell just -- build
+      - name: Build the Lean documentation within devenv
+        run: devenv shell just -- docs
+      - name: Build the Lean Blueprint PDF and web within devenv
+        run: devenv shell just -- blueprint
       - name: Build the project website within devenv
         shell: devenv shell bash -- -e {0}
         env:
