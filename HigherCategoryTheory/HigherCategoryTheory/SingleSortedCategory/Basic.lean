@@ -56,11 +56,11 @@ class SingleSortedCategoryStruct (Obj : Type u) (index : Type) [NatIndex index] 
   PComp : index → Obj → Obj →. Obj
   /-- Composition `PComp i g f` is defined if and only if `Sc i g = Tg i f`. -/
   pcomp_dom : ∀ {i : index} {f g : Obj},
-    (PComp i g f).Dom ↔ Sc i g = Tg i f
+    (PComp i f g).Dom ↔ Sc i g = Tg i f
 
 scoped prefix:max "sc " => SingleSortedCategoryStruct.Sc
 scoped prefix:max "tg " => SingleSortedCategoryStruct.Tg
-scoped notation g " ♯.[" i "] " f:100 => SingleSortedCategoryStruct.PComp i g f
+scoped notation g " ♯.[" i "] " f:100 => SingleSortedCategoryStruct.PComp i f g
 
 /-- The composability condition at dimension `i`. Two morphisms `g` and `f` are composable at
 dimension `i` when `sc i g = tg i f`. -/
@@ -88,12 +88,12 @@ Given `g` and `f` with a proof `composable_gf : sc_is_tg i g f`, this returns th
 composite `g ♯[i] f`. -/
 def comp {Obj : Type u} {index : Type} [NatIndex index]
     [SingleSortedCategoryStruct Obj index]
-    (i : index) (g f : Obj) (composable_gf : sc_is_tg i g f) : Obj :=
+    (i : index) (f g : Obj) (composable_gf : sc_is_tg i g f) : Obj :=
   (g ♯.[i] f).get (dom_of_sc_is_tg composable_gf)
 
 end SingleSortedCategoryStruct
 
-scoped notation g " ♯[" i "] " f " ← " comp_gf:100 => SingleSortedCategoryStruct.comp i g f comp_gf
+scoped notation g " ♯[" i "] " f " ← " comp_gf:100 => SingleSortedCategoryStruct.comp i f g comp_gf
 
 /-- Congruence lemma for composition: if `g₁ = g₂` and `f₁ = f₂`, and both pairs are composable,
 then their composites are equal. -/

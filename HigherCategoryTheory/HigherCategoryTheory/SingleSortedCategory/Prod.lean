@@ -22,9 +22,9 @@ open HigherCategoryTheory
 morphisms from $x$ to $y$. Two pairs $(y_1, y_2)$ and $(x_1, x_2)$ are composable when
 $y_2 = x_1$, with their composite being $(y_1, x_2)$. -/
 instance instSingleSortedCategory {α : Type u} : SingleSortedCategory (α × α) where
-  Sc := fun _ (_, y) ↦ (y, y)
-  Tg := fun _ (x, _) ↦ (x, x)
-  PComp := fun _ (y₁, y₂) (x₁, x₂) ↦ ⟨y₂ = x₁, (fun _ ↦ (y₁, x₂))⟩
+  Sc := fun _ (_, y₂) ↦ (y₂, y₂)
+  Tg := fun _ (x₁, _) ↦ (x₁, x₁)
+  PComp := fun _ (x₁, x₂) (y₁, y₂) ↦ ⟨y₂ = x₁, (fun _ ↦ (y₁, x₂))⟩
   pcomp_dom := by
     intros
     apply Iff.intro
