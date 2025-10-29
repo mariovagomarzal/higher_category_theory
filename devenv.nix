@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   config,
   ...
 }: {
@@ -7,7 +8,15 @@
     GREET = "Lean 4 Development Environment";
   };
 
-  languages.lean4.enable = true;
+  # Use 'elan' to (automatically) manage Lean toolchains. In the CI environment, we disable this
+  # and use 'lean-action' to set up Lean due an issue when building the documentation. Refer to the
+  # GitHub Actions workflow (`.github/workflows/build-and-deploy.yaml`) for more details.
+  languages.lean4 = {
+    # Make the enable option overridable, so in the CI environment we can disable it using a
+    # `devenv.local.nix` file.
+    enable = lib.mkDefault true;
+    package = pkgs.elan;
+  };
 
   languages.ruby = {
     enable = true;
