@@ -19,19 +19,34 @@ the proof of their equivalence in Lean 4.
 
 ## Development
 
-In this section, we document how to work with the repository. The development
-environment is mainly managed with [Nix][nix] and _[devenv][devenv]_. However,
-it is also documented how to work without the latter.
+This section documents how to set up and work with the repository.
 
-It is recommended to work with [Visual Studio Code][vscode]. We have also
-included a `.vscode` directory with recommended settings and extensions for
-working with the repository.
+### Code editor
+
+It is recommended to work with [Visual Studio Code][vscode]. We have included
+a `.vscode` directory with recommended settings and extensions.
+
+### Running tasks
+
+Development tasks (building, documentation, etc.) are managed using
+[Just][just], a command runner similar to `make`. To see all available recipes,
+run:
+
+```bash
+just
+```
+
+This will display a list of available commands with their descriptions. You can
+inspect the `justfile` in the root of the repository to see the detailed
+implementation of each recipe.
 
 ### Nix setup
 
-To set up the development environment with Nix, you need to have Nix and
-_devenv_ installed. Once you have them, you can enter the development shell
-by running the following command in the root of the repository:
+The development environment is configured with [Nix][nix] and
+_[devenv][devenv]_, which automatically installs all required tools and
+dependencies.
+
+To enter the development shell, run:
 
 ```bash
 devenv shell
@@ -39,81 +54,33 @@ devenv shell
 
 > [!TIP]
 > If using [direnv][direnv], you can automatically load the development
-> environment whenever you enter the repository directory by running
-> `direnv allow` once in the root of the repository.
+> environment by running `direnv allow` once in the root of the repository.
 
-Once inside the development shell, all the necessary tools and dependencies
-will be available. Run the following command to see available packages, scripts,
-tasks and processes:
-
-```bash
-devenv info
-```
-
-Check out the `devenv.nix` file for more details on the development environment.
+Once inside the shell, all tools will be available. Run `devenv info` to see
+what's included.
 
 ### Manual setup
 
-This section provides manual setup instructions for working with the repository
-without _devenv_. It documents the same dependencies and tasks configured in
-`devenv.nix`.
+If not using Nix, you need to manually install the following tools:
 
-The following tools are required to work with the repository:
+- **Git**: Version control system.
+- **Lean 4**: Theorem prover and toolchain (recommended: install via
+  [elan][elan]).
+- **Just**: Command runner for development tasks.
 
-- **Git**: The version control system.
-- **Lean 4**: The Lean theorem prover and its toolchain (including Lake, the
-  Lean build tool). If installing Lean manually, it is recommended to use
-  [elan][elan] to manage Lean installations.
-- **Python**: For running the documentation server.
+For building documentation, you'll also need:
 
-After installing the Lean dependencies, cache the upstream Lean dependencies to
-save time compiling Mathlib and other dependencies:
+- **Ruby** with Bundler: For Jekyll static site generation.
+- **TeX Live**: For LaTeX/PDF generation (blueprint).
+- **leanblueprint**: Tool for generating Lean blueprints.
+- **Python**: For serving the documentation website locally.
+
+After installing Lean, cache the upstream dependencies to avoid long
+compilation times:
 
 ```bash
-lake exe cache get
+just cache
 ```
-
-#### Common tasks
-
-- For building the project, run:
-
-  ```bash
-  lake build HigherCategoryTheory
-  ```
-
-- When updating Lean dependencies, it is also important to update the
-  dependencie that points to the current project in the `docbuild` directory. To
-  do so, run:
-
-  ```bash
-  lake update # or `lake update <dependency>` for a specific dependency
-
-  # Update the dependency pointing to this project
-  cd docbuild
-  lake update HigherCategoryTheory
-  ```
-
-- To build the documentation, run:
-
-  ```bash
-  cd docbuild
-  DOCGEN_SRC="github" lake build HigherCategoryTheory:docs
-  ```
-
-- For updating the documentation generation tool you have to update the
-  `doc-gen4` dependency in the `docbuild` directory. To do so, run:
-
-  ```bash
-  cd docbuild
-  MATHLIB_NO_CACHE_ON_UPDATE=1 lake update doc-gen4
-  ```
-
-- For serving the documentation locally, run:
-
-  ```bash
-  cd docbuild/.lake/build/doc # make sure to build the docs first
-  python -m http.server 8000 # or any other port
-  ```
 
 ## Conventions
 
@@ -163,6 +130,7 @@ This project is licensed under the Apache License 2.0. See the
 [vscode]: https://code.visualstudio.com/
 [direnv]: https://direnv.net/
 [elan]: https://github.com/leanprover/elan
+[just]: https://just.systems/
 [conventional-commits]: https://www.conventionalcommits.org/en/v1.0.0/
 [enric]: https://github.com/encosllo
 [raul]: https://github.com/ruizmoraraul
