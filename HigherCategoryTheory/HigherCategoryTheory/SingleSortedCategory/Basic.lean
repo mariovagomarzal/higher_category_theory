@@ -155,33 +155,33 @@ class SingleSorted2CategoryFamily (Obj : Type u)
     extends SingleSortedCategoryFamily Obj index where
   /-- `sc k (sc j f) = sc j f` for `j : Fin k`: applying source at dimension `k` to a source at
   dimension `j < k` yields the source at dimension `j`. -/
-  sck_scj_is_scj : ∀ {k : index} {j : index} {f : Obj} (_j_lt_k : j < k),
+  sck_scj_is_scj : ∀ {k j : index} {f : Obj} (_j_lt_k : j < k),
       sc k (sc j f) = sc j f := by intros; rfl
   /-- `sc j (sc k f) = sc j f` for `j : Fin k`: applying source at dimension `j` to a source at
   dimension `k > j` yields the source at dimension `j`. -/
-  scj_sck_is_scj : ∀ {k : index} {j : index} {f : Obj} (_j_lt_k : j < k),
+  scj_sck_is_scj : ∀ {k j : index} {f : Obj} (_j_lt_k : j < k),
       sc j (sc k f) = sc j f := by intros; rfl
   /-- `sc j (tg k f) = sc j f` for `j : Fin k`: applying source at dimension `j` to a target at
   dimension `k > j` yields the source at dimension `j`. -/
-  scj_tgk_is_scj : ∀ {k : index} {j : index} {f : Obj} (_j_lt_k : j < k),
+  scj_tgk_is_scj : ∀ {k j : index} {f : Obj} (_j_lt_k : j < k),
       sc j (tg k f) = sc j f := by intros; rfl
   /-- `tg k (tg j f) = tg j f` for `j : Fin k`: applying target at dimension `k` to a target at
   dimension `j < k` yields the target at dimension `j`. -/
-  tgk_tgj_is_tgj : ∀ {k : index} {j : index} {f : Obj} (_j_lt_k : j < k),
+  tgk_tgj_is_tgj : ∀ {k j : index} {f : Obj} (_j_lt_k : j < k),
       tg k (tg j f) = tg j f := by intros; rfl
   /-- `tg j (tg k f) = tg j f` for `j : Fin k`: applying target at dimension `j` to a target at
   dimension `k > j` yields the target at dimension `j`. -/
-  tgj_tgk_is_tgj : ∀ {k : index} {j : index} {f : Obj} (_j_lt_k : j < k),
+  tgj_tgk_is_tgj : ∀ {k j : index} {f : Obj} (_j_lt_k : j < k),
       tg j (tg k f) = tg j f := by intros; rfl
   /-- `tg j (sc k f) = tg j f` for `j : Fin k`: applying target at dimension `j` to a source at
   dimension `k > j` yields the target at dimension `j`. -/
-  tgj_sck_is_tgj : ∀ {k : index} {j : index} {f : Obj} (_j_lt_k : j < k),
+  tgj_sck_is_tgj : ∀ {k j : index} {f : Obj} (_j_lt_k : j < k),
       tg j (sc k f) = tg j f := by intros; rfl
   /-- If `g` and `f` are composable at dimension `j < k`, then `sc k g` and `sc k f` are
   composable at dimension `j`. This expresses that source at dimension `k` is functorial with
   respect to composition at dimension `j`. This is an auxiliary method for the distributivity
   axioms. -/
-  comp_j_sc {k : index} {j : index} {f g : Obj} (j_lt_k : j < k) (comp_j_gf : sc_is_tg j g f) :
+  comp_j_sc {k j : index} {f g : Obj} (j_lt_k : j < k) (comp_j_gf : sc_is_tg j g f) :
       sc_is_tg j (sc k g) (sc k f) := calc
     sc j (sc k g)
     _ = sc j g := scj_sck_is_scj j_lt_k
@@ -191,7 +191,7 @@ class SingleSorted2CategoryFamily (Obj : Type u)
   composable at dimension `j`. This expresses that target at dimension `k` is functorial with
   respect to composition at dimension `j`. This is an auxiliary method for the distributivity
   axioms. -/
-  comp_j_tg {k : index} {j : index} {f g : Obj} (j_lt_k : j < k) (comp_j_gf : sc_is_tg j g f) :
+  comp_j_tg {k j : index} {f g : Obj} (j_lt_k : j < k) (comp_j_gf : sc_is_tg j g f) :
       sc_is_tg j (tg k g) (tg k f) := calc
     sc j (tg k g)
     _ = sc j g := scj_tgk_is_scj j_lt_k
@@ -199,13 +199,13 @@ class SingleSorted2CategoryFamily (Obj : Type u)
     _ = tg j (tg k f) := (tgj_tgk_is_tgj j_lt_k).symm
   /-- Source at dimension `k` distributes over composition at dimension `j < k`:
   `sc k (g ♯[j] f) = (sc k g) ♯[j] (sc k f)`. -/
-  sck_compj_is_compj_sck : ∀ {k : index} {j : index} {f g : Obj} (j_lt_k : j < k)
+  sck_compj_is_compj_sck : ∀ {k j : index} {f g : Obj} (j_lt_k : j < k)
       (comp_j_gf : sc_is_tg j g f),
       sc k (g ♯[j] f ← comp_j_gf) =
       (sc k g) ♯[j] (sc k f) ← (comp_j_sc j_lt_k comp_j_gf) := by intros; rfl
   /-- Target at dimension `k` distributes over composition at dimension `j < k`:
   `tg k (g ♯[j] f) = (tg k g) ♯[j] (tg k f)`. -/
-  tgk_compj_is_compj_tgk : ∀ {k : index} {j : index} {f g : Obj} (j_lt_k : j < k)
+  tgk_compj_is_compj_tgk : ∀ {k j : index} {f g : Obj} (j_lt_k : j < k)
       (comp_j_gf : sc_is_tg j g f),
       tg k (g ♯[j] f ← comp_j_gf) =
       (tg k g) ♯[j] (tg k f) ← (comp_j_tg j_lt_k comp_j_gf) := by intros; rfl
@@ -213,7 +213,7 @@ class SingleSorted2CategoryFamily (Obj : Type u)
   composable morphisms, then the vertical composite (at dimension `k`) of the horizontal
   composites (at dimension `j`) is composable. This is an auxiliary method for the interchange
   axiom. -/
-  comp_k_exchange {k : index} {j : index} {f₁ f₂ g₁ g₂ : Obj} (j_lt_k : j < k)
+  comp_k_exchange {k j : index} {f₁ f₂ g₁ g₂ : Obj} (j_lt_k : j < k)
       (comp_k_g₂g₁ : sc_is_tg k g₂ g₁) (comp_k_f₂f₁ : sc_is_tg k f₂ f₁)
       (comp_j_g₂f₂ : sc_is_tg j g₂ f₂) (comp_j_g₁f₁ : sc_is_tg j g₁ f₁) :
       sc_is_tg k (g₂ ♯[j] f₂ ← comp_j_g₂f₂) (g₁ ♯[j] f₁ ← comp_j_g₁f₁) := calc
@@ -228,7 +228,7 @@ class SingleSorted2CategoryFamily (Obj : Type u)
   composable morphisms, then the horizontal composite (at dimension `j`) of the vertical
   composites (at dimension `k`) is composable. This is an auxiliary method for the interchange
   axiom. -/
-  comp_j_exchange {k : index} {j : index} {f₁ f₂ g₁ g₂ : Obj} (j_lt_k : j < k)
+  comp_j_exchange {k j : index} {f₁ f₂ g₁ g₂ : Obj} (j_lt_k : j < k)
       (comp_k_g₂g₁ : sc_is_tg k g₂ g₁) (comp_k_f₂f₁ : sc_is_tg k f₂ f₁)
       (comp_j_g₂f₂ : sc_is_tg j g₂ f₂) (comp_j_g₁f₁ : sc_is_tg j g₁ f₁) :
       sc_is_tg j (g₂ ♯[k] g₁ ← comp_k_g₂g₁) (f₂ ♯[k] f₁ ← comp_k_f₂f₁) := calc
@@ -253,7 +253,7 @@ class SingleSorted2CategoryFamily (Obj : Type u)
   we have `(g₂ ♯[j] f₂) ♯[k] (g₁ ♯[j] f₁) = (g₂ ♯[k] g₁) ♯[j] (f₂ ♯[k] f₁)`.
   This asserts that the two ways of composing the diagram (vertically then horizontally, or
   horizontally then vertically) yield the same result. -/
-  exchange : ∀ {k : index} {j : index} {f₁ f₂ g₁ g₂ : Obj} (j_lt_k : j < k)
+  exchange : ∀ {k j : index} {f₁ f₂ g₁ g₂ : Obj} (j_lt_k : j < k)
       (comp_k_g₂g₁ : sc_is_tg k g₂ g₁) (comp_k_f₂f₁ : sc_is_tg k f₂ f₁)
       (comp_j_g₂f₂ : sc_is_tg j g₂ f₂) (comp_j_g₁f₁ : sc_is_tg j g₁ f₁),
       (g₂ ♯[j] f₂ ← comp_j_g₂f₂) ♯[k] (g₁ ♯[j] f₁ ← comp_j_g₁f₁) ←
