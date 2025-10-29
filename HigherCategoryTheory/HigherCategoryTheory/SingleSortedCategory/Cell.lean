@@ -111,7 +111,7 @@ theorem is_union_cells {Obj : Type u} [SingleSortedOmegaCategory Obj] :
     ∀ f : Obj, f ∈ ⋃ k : Nat, cell Obj k := by
   intro f
   simp
-  exact has_cell f
+  exact has_cell
 
 /-- Given a structure of `SingleSorted2CategoryFamily` on `Obj` (and index `Nat`), if `Obj` can be
 expressed as the union of its $k$-cells, then we can construct a `SingleSortedOmegaCategory`

@@ -11,7 +11,7 @@ import HigherCategoryTheory.Data.NatIndex
 # Single-sorted presentation of higher-order categories
 
 This file defines the single-sorted presentation of higher order categories, where objects,
-morphisms, 2-morphisms, and higher cells all live in a single type, distinguished by source and
+morphisms, 2-morphisms, and higher morphisms all live in a single type, distinguished by source and
 target operations, and a partial composition operation at each dimension.
 
 ## Notation
@@ -82,17 +82,6 @@ theorem dom_of_sc_is_tg {Obj : Type u} {index : Type} [NatIndex index]
   SingleSortedCategoryStruct.pcomp_dom.mpr comp_gf
 
 namespace SingleSortedCategoryStruct
-
-/-- Given a `SingleSortedCategoryStruct` indexed by `index`, we can restrict to indices in
-`Fin k` for any `k : index`, inheriting the same structure. -/
-instance instSingleSortedCateogryStructFinIndex {Obj : Type u}
-    {index : Type} [NatIndex index]
-    [S : SingleSortedCategoryStruct Obj index]
-    {k : index} : SingleSortedCategoryStruct Obj (Fin k) where
-  Sc j := S.Sc (j : index)
-  Tg j := S.Tg (j : index)
-  PComp j := S.PComp (j : index)
-  pcomp_dom := S.pcomp_dom
 
 /-- The (total) composition operation at dimension `i`, defined for composable morphisms.
 Given `g` and `f` with a proof `composable_gf : sc_is_tg i g f`, this returns the
@@ -166,78 +155,92 @@ class SingleSorted2CategoryFamily (Obj : Type u)
     extends SingleSortedCategoryFamily Obj index where
   /-- `sc k (sc j f) = sc j f` for `j : Fin k`: applying source at dimension `k` to a source at
   dimension `j < k` yields the source at dimension `j`. -/
-  sck_scj_is_scj : ∀ {k : index} {j : Fin k} {f : Obj}, sc k (sc j f) = sc j f := by intros; rfl
+  sck_scj_is_scj : ∀ {k : index} {j : index} {f : Obj} (_j_lt_k : j < k),
+      sc k (sc j f) = sc j f := by intros; rfl
   /-- `sc j (sc k f) = sc j f` for `j : Fin k`: applying source at dimension `j` to a source at
   dimension `k > j` yields the source at dimension `j`. -/
-  scj_sck_is_scj : ∀ {k : index} {j : Fin k} {f : Obj}, sc j (sc k f) = sc j f := by intros; rfl
+  scj_sck_is_scj : ∀ {k : index} {j : index} {f : Obj} (_j_lt_k : j < k),
+      sc j (sc k f) = sc j f := by intros; rfl
   /-- `sc j (tg k f) = sc j f` for `j : Fin k`: applying source at dimension `j` to a target at
   dimension `k > j` yields the source at dimension `j`. -/
-  scj_tgk_is_scj : ∀ {k : index} {j : Fin k} {f : Obj}, sc j (tg k f) = sc j f := by intros; rfl
+  scj_tgk_is_scj : ∀ {k : index} {j : index} {f : Obj} (_j_lt_k : j < k),
+      sc j (tg k f) = sc j f := by intros; rfl
   /-- `tg k (tg j f) = tg j f` for `j : Fin k`: applying target at dimension `k` to a target at
   dimension `j < k` yields the target at dimension `j`. -/
-  tgk_tgj_is_tgj : ∀ {k : index} {j : Fin k} {f : Obj}, tg k (tg j f) = tg j f := by intros; rfl
+  tgk_tgj_is_tgj : ∀ {k : index} {j : index} {f : Obj} (_j_lt_k : j < k),
+      tg k (tg j f) = tg j f := by intros; rfl
   /-- `tg j (tg k f) = tg j f` for `j : Fin k`: applying target at dimension `j` to a target at
   dimension `k > j` yields the target at dimension `j`. -/
-  tgj_tgk_is_tgj : ∀ {k : index} {j : Fin k} {f : Obj}, tg j (tg k f) = tg j f := by intros; rfl
+  tgj_tgk_is_tgj : ∀ {k : index} {j : index} {f : Obj} (_j_lt_k : j < k),
+      tg j (tg k f) = tg j f := by intros; rfl
   /-- `tg j (sc k f) = tg j f` for `j : Fin k`: applying target at dimension `j` to a source at
   dimension `k > j` yields the target at dimension `j`. -/
-  tgj_sck_is_tgj : ∀ {k : index} {j : Fin k} {f : Obj}, tg j (sc k f) = tg j f := by intros; rfl
+  tgj_sck_is_tgj : ∀ {k : index} {j : index} {f : Obj} (_j_lt_k : j < k),
+      tg j (sc k f) = tg j f := by intros; rfl
   /-- If `g` and `f` are composable at dimension `j < k`, then `sc k g` and `sc k f` are
   composable at dimension `j`. This expresses that source at dimension `k` is functorial with
   respect to composition at dimension `j`. This is an auxiliary method for the distributivity
   axioms. -/
-  comp_j_sc {k : index} {j : Fin k} {f g : Obj} (comp_j_gf : sc_is_tg j g f) :
-      sc_is_tg j (sc k g) (sc k f) :=
-    (scj_sck_is_scj.trans comp_j_gf).trans tgj_sck_is_tgj.symm
+  comp_j_sc {k : index} {j : index} {f g : Obj} (j_lt_k : j < k) (comp_j_gf : sc_is_tg j g f) :
+      sc_is_tg j (sc k g) (sc k f) := calc
+    sc j (sc k g)
+    _ = sc j g := scj_sck_is_scj j_lt_k
+    _ = tg j f := comp_j_gf
+    _ = tg j (sc k f) := (tgj_sck_is_tgj j_lt_k).symm
   /-- If `g` and `f` are composable at dimension `j < k`, then `tg k g` and `tg k f` are
   composable at dimension `j`. This expresses that target at dimension `k` is functorial with
   respect to composition at dimension `j`. This is an auxiliary method for the distributivity
   axioms. -/
-  comp_j_tg {k : index} {j : Fin k} {f g : Obj} (comp_j_gf : sc_is_tg j g f) :
-      sc_is_tg j (tg k g) (tg k f) :=
-    (scj_tgk_is_scj.trans comp_j_gf).trans tgj_tgk_is_tgj.symm
+  comp_j_tg {k : index} {j : index} {f g : Obj} (j_lt_k : j < k) (comp_j_gf : sc_is_tg j g f) :
+      sc_is_tg j (tg k g) (tg k f) := calc
+    sc j (tg k g)
+    _ = sc j g := scj_tgk_is_scj j_lt_k
+    _ = tg j f := comp_j_gf
+    _ = tg j (tg k f) := (tgj_tgk_is_tgj j_lt_k).symm
   /-- Source at dimension `k` distributes over composition at dimension `j < k`:
   `sc k (g ♯[j] f) = (sc k g) ♯[j] (sc k f)`. -/
-  sck_compj_is_compj_sck : ∀ {k : index} {j : Fin k} {f g : Obj}
+  sck_compj_is_compj_sck : ∀ {k : index} {j : index} {f g : Obj} (j_lt_k : j < k)
       (comp_j_gf : sc_is_tg j g f),
       sc k (g ♯[j] f ← comp_j_gf) =
-      (sc k g) ♯[j] (sc k f) ← (comp_j_sc comp_j_gf) := by intros; rfl
+      (sc k g) ♯[j] (sc k f) ← (comp_j_sc j_lt_k comp_j_gf) := by intros; rfl
   /-- Target at dimension `k` distributes over composition at dimension `j < k`:
   `tg k (g ♯[j] f) = (tg k g) ♯[j] (tg k f)`. -/
-  tgk_compj_is_compj_tgk : ∀ {k : index} {j : Fin k} {f g : Obj}
+  tgk_compj_is_compj_tgk : ∀ {k : index} {j : index} {f g : Obj} (j_lt_k : j < k)
       (comp_j_gf : sc_is_tg j g f),
       tg k (g ♯[j] f ← comp_j_gf) =
-      (tg k g) ♯[j] (tg k f) ← (comp_j_tg comp_j_gf) := by intros; rfl
+      (tg k g) ♯[j] (tg k f) ← (comp_j_tg j_lt_k comp_j_gf) := by intros; rfl
   /-- The interchange law at dimension `k` over `j < k`: if we have a 2×2 pasting diagram of
   composable morphisms, then the vertical composite (at dimension `k`) of the horizontal
   composites (at dimension `j`) is composable. This is an auxiliary method for the interchange
   axiom. -/
-  comp_k_exchange {k : index} {j : Fin k} {f₁ f₂ g₁ g₂ : Obj}
+  comp_k_exchange {k : index} {j : index} {f₁ f₂ g₁ g₂ : Obj} (j_lt_k : j < k)
       (comp_k_g₂g₁ : sc_is_tg k g₂ g₁) (comp_k_f₂f₁ : sc_is_tg k f₂ f₁)
       (comp_j_g₂f₂ : sc_is_tg j g₂ f₂) (comp_j_g₁f₁ : sc_is_tg j g₁ f₁) :
       sc_is_tg k (g₂ ♯[j] f₂ ← comp_j_g₂f₂) (g₁ ♯[j] f₁ ← comp_j_g₁f₁) := calc
     sc k (g₂ ♯[j] f₂ ← comp_j_g₂f₂)
-    _ = (sc k g₂) ♯[j] (sc k f₂) ← (comp_j_sc comp_j_g₂f₂) := sck_compj_is_compj_sck comp_j_g₂f₂
-    _ = (tg k g₁) ♯[j] (tg k f₁) ← (comp_j_tg comp_j_g₁f₁) :=
-      congr_pcomp comp_k_g₂g₁ comp_k_f₂f₁ (comp_j_sc comp_j_g₂f₂) (comp_j_tg comp_j_g₁f₁)
-    _ = tg k (g₁ ♯[j] f₁ ← comp_j_g₁f₁) := (tgk_compj_is_compj_tgk comp_j_g₁f₁).symm
+    _ = (sc k g₂) ♯[j] (sc k f₂) ← (comp_j_sc j_lt_k comp_j_g₂f₂) :=
+      sck_compj_is_compj_sck j_lt_k comp_j_g₂f₂
+    _ = (tg k g₁) ♯[j] (tg k f₁) ← (comp_j_tg j_lt_k comp_j_g₁f₁) :=
+      congr_pcomp comp_k_g₂g₁ comp_k_f₂f₁
+        (comp_j_sc j_lt_k comp_j_g₂f₂) (comp_j_tg j_lt_k comp_j_g₁f₁)
+    _ = tg k (g₁ ♯[j] f₁ ← comp_j_g₁f₁) := (tgk_compj_is_compj_tgk j_lt_k comp_j_g₁f₁).symm
   /-- The interchange law at dimension `j` over `k > j`: if we have a 2×2 pasting diagram of
   composable morphisms, then the horizontal composite (at dimension `j`) of the vertical
   composites (at dimension `k`) is composable. This is an auxiliary method for the interchange
   axiom. -/
-  comp_j_exchange {k : index} {j : Fin k} {f₁ f₂ g₁ g₂ : Obj}
+  comp_j_exchange {k : index} {j : index} {f₁ f₂ g₁ g₂ : Obj} (j_lt_k : j < k)
       (comp_k_g₂g₁ : sc_is_tg k g₂ g₁) (comp_k_f₂f₁ : sc_is_tg k f₂ f₁)
       (comp_j_g₂f₂ : sc_is_tg j g₂ f₂) (comp_j_g₁f₁ : sc_is_tg j g₁ f₁) :
       sc_is_tg j (g₂ ♯[k] g₁ ← comp_k_g₂g₁) (f₂ ♯[k] f₁ ← comp_k_f₂f₁) := calc
     sc j (g₂ ♯[k] g₁ ← comp_k_g₂g₁)
-    _ = sc j (sc k (g₂ ♯[k] g₁ ← comp_k_g₂g₁)) := scj_sck_is_scj.symm
+    _ = sc j (sc k (g₂ ♯[k] g₁ ← comp_k_g₂g₁)) := (scj_sck_is_scj j_lt_k).symm
     _ = sc j (sc k g₁) := congrArg (fun x => sc j x) (sc_comp_is_sc comp_k_g₂g₁)
-    _ = sc j g₁ := scj_sck_is_scj
+    _ = sc j g₁ := scj_sck_is_scj j_lt_k
     _ = tg j f₁ := comp_j_g₁f₁
-    _ = tg j (sc k f₁) := tgj_sck_is_tgj.symm
+    _ = tg j (sc k f₁) := (tgj_sck_is_tgj j_lt_k).symm
     _ = tg j (sc k (f₂ ♯[k] f₁ ← comp_k_f₂f₁)) :=
       congrArg (fun x => tg j x) (sc_comp_is_sc comp_k_f₂f₁).symm
-    _ = tg j (f₂ ♯[k] f₁ ← comp_k_f₂f₁) := tgj_sck_is_tgj
+    _ = tg j (f₂ ♯[k] f₁ ← comp_k_f₂f₁) := tgj_sck_is_tgj j_lt_k
   /-- The interchange law (exchange axiom): given a 2×2 pasting diagram of composable morphisms
   ```
   g₂ --[j]--> f₂
@@ -250,13 +253,13 @@ class SingleSorted2CategoryFamily (Obj : Type u)
   we have `(g₂ ♯[j] f₂) ♯[k] (g₁ ♯[j] f₁) = (g₂ ♯[k] g₁) ♯[j] (f₂ ♯[k] f₁)`.
   This asserts that the two ways of composing the diagram (vertically then horizontally, or
   horizontally then vertically) yield the same result. -/
-  exchange : ∀ {k : index} {j : Fin k} {f₁ f₂ g₁ g₂ : Obj}
+  exchange : ∀ {k : index} {j : index} {f₁ f₂ g₁ g₂ : Obj} (j_lt_k : j < k)
       (comp_k_g₂g₁ : sc_is_tg k g₂ g₁) (comp_k_f₂f₁ : sc_is_tg k f₂ f₁)
       (comp_j_g₂f₂ : sc_is_tg j g₂ f₂) (comp_j_g₁f₁ : sc_is_tg j g₁ f₁),
       (g₂ ♯[j] f₂ ← comp_j_g₂f₂) ♯[k] (g₁ ♯[j] f₁ ← comp_j_g₁f₁) ←
-        (comp_k_exchange comp_k_g₂g₁ comp_k_f₂f₁ comp_j_g₂f₂ comp_j_g₁f₁) =
+        (comp_k_exchange j_lt_k comp_k_g₂g₁ comp_k_f₂f₁ comp_j_g₂f₂ comp_j_g₁f₁) =
       (g₂ ♯[k] g₁ ← comp_k_g₂g₁) ♯[j] (f₂ ♯[k] f₁ ← comp_k_f₂f₁) ←
-        (comp_j_exchange comp_k_g₂g₁ comp_k_f₂f₁ comp_j_g₂f₂ comp_j_g₁f₁) := by intros; rfl
+        (comp_j_exchange j_lt_k comp_k_g₂g₁ comp_k_f₂f₁ comp_j_g₂f₂ comp_j_g₁f₁) := by intros; rfl
 
 /-- A single-sorted category: a `SingleSortedCategoryFamily` with a single dimension, indexed by
 `Fin 1`. -/
@@ -278,6 +281,6 @@ indexed by `Nat`. -/
 class SingleSortedOmegaCategory (Obj : Type u)
     extends SingleSorted2CategoryFamily Obj Nat where
   /-- Every element is in a k-cell for some `k : Nat`. -/
-  has_cell : ∀ f : Obj, ∃ k : Nat, sc k f = f
+  has_cell : ∀ {f : Obj}, ∃ k : Nat, sc k f = f
 
 end HigherCategoryTheory
