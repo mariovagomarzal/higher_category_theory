@@ -83,6 +83,7 @@ blueprint-web:
 [doc("Build the project website.")]
 website JEKYLL_ENV="": docs blueprint-print blueprint-web
   rm -rf {{website_target}}
+  cd {{website_dir}} && bundle install
   cd {{website_dir}} && JEKYLL_ENV={{JEKYLL_ENV}} bundle exec jekyll build -d ../{{website_target}}
 
 [group("docs")]
