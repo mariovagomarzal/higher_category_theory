@@ -16,3 +16,6 @@ devenv.local.nix
 
 # lake
 **/.lake
+
+# Lean documentation build directory
+docbuild

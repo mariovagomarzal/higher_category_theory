@@ -1,0 +1,11 @@
+# print output folder
+print
+
+# web output folder
+web
+
+# web artifacts
+*.paux
+
+# lean artifacts
+lean_decls

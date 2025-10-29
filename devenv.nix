@@ -5,15 +5,27 @@
 }: {
   env = {
     GREET = "Lean 4 Development Environment";
-    DOCS_SERVER_PORT = "8000";
   };
 
-  packages = with pkgs; [
-    git
-  ];
-
   languages.lean4.enable = true;
+
+  languages.ruby = {
+    enable = true;
+    bundler.enable = true;
+  };
+
+  languages.texlive = {
+    enable = true;
+    base = pkgs.texliveMedium;
+  };
+
   languages.python.enable = true;
+
+  packages = with pkgs; [
+    just
+    git
+    leanblueprint
+  ];
 
   git-hooks = {
     hooks = {
@@ -24,6 +36,7 @@
 
       markdownlint = {
         enable = true;
+        excludes = ["^website/"];
         description = "Run markdownlint to check Markdown files";
       };
 
@@ -50,60 +63,12 @@
     echo $GREET
   '';
 
-  scripts = {
-    "build" = {
-      exec = ''
-        lake build HigherCategoryTheory $@
-      '';
-      description = "Build the Lean project using Lake";
-    };
-
-    "update" = {
-      exec = ''
-        lake update $1
-        cd docbuild || exit 1
-        lake update HigherCategoryTheory
-        cd ..
-      '';
-      description = "Update dependencies for the Lean project";
-    };
-
-    "docs" = {
-      exec = ''
-        cd docbuild || exit 1
-        DOCGEN_SRC="github" lake build HigherCategoryTheory:docs $@
-        cd ..
-      '';
-      description = "Build the documentation for the Lean project";
-    };
-
-    "update-docs" = {
-      exec = ''
-        cd docbuild || exit 1
-        MATHLIB_NO_CACHE_ON_UPDATE=1 lake update doc-gen4
-        cd ..
-      '';
-    };
-  };
-
   tasks = {
-    "lean:cache" = {
-      exec = "lake exe cache get";
+    "env:cache" = {
+      exec = "just cache";
       after = ["devenv:enterShell"];
       cwd = ".";
-      description = ''
-        Cache upstream Lean dependencies to save time compiling Mathlib and
-        other dependencies
-      '';
-    };
-  };
-
-  processes = {
-    "docs-server" = {
-      exec = ''
-        python -m http.server $DOCS_SERVER_PORT
-      '';
-      cwd = "docbuild/.lake/build/doc";
+      description = "Run the 'cache' Just recipe";
     };
   };
 }
