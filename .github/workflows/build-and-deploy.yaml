@@ -2,14 +2,12 @@ name: Build the project and deploy to GitHub Pages
 
 # Runs the workflow on pushes and pull requests to the main branch.
 on:
-  # TODO: Enable these triggers when ready to automate deployment. Currently disabled due to
-  # issues when building the Lean documentation.
-  # push:
-  #   branches:
-  #     - main
-  # pull_request:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
   workflow_dispatch: # Allows manual triggering of the workflow.
 
 # Sets permissions of the `GITHUB_TOKEN` to allow deployment to GitHub Pages.
@@ -34,6 +32,22 @@ jobs:
           name: devenv
       - name: Install devenv
         run: nix profile install nixpkgs#devenv
+      # TODO: The following two steps are a workaround to avoid an issue where the documentation
+      # won't build because of an error building the `UnicodeBasic` doc-gen4 dependency when using
+      # Lean or 'elan' installed via Nix in the CI environment. The following issue may be related:
+      #   https://github.com/fgdorais/lean4-unicode-basic/issues/81
+      - name: Install 'elan' for automatic Lean toolchain management without Nix
+        uses: leanprover/lean-action@434f25c2f80ded67bba02502ad3a86f25db50709 # v1.3.0
+        with:
+          # Disable caching since we use our own cache configuration below.
+          use-github-cache: false
+          use-mathlib-cache: false
+          # Don't auto-configure the Lean action; we just want 'elan' installed.
+          auto-config: false
+      - name: Disable Lean management in devenv
+        run: |
+          echo "Creating 'devenv.local.nix' to disable Lean toolchain management in devenv."
+          echo "{...}: {languages.lean4.enable = false;}" > devenv.local.nix
       - name: Cache Lean dependencies
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
@@ -45,6 +59,10 @@ jobs:
           restore-keys: ${{ runner.os }}-lake-${{ runner.arch }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}
       - name: Build the Lean project within devenv
         run: devenv shell just -- build
+      - name: Build the Lean documentation within devenv
+        run: devenv shell just -- docs
+      - name: Build the Lean Blueprint PDF and web within devenv
+        run: devenv shell just -- blueprint
       - name: Build the project website within devenv
         shell: devenv shell bash -- -e {0}
         env:

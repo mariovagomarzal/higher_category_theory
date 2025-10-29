@@ -32,7 +32,7 @@ docs:
   #!/usr/bin/env bash
   set -euxo pipefail
 
-  rm -rf {{docs_dir}}
+  rm -rf {{docs_build_dir}}
 
   mkdir -p {{docs_build_dir}}
   cd {{docs_build_dir}}
@@ -80,9 +80,14 @@ blueprint-web:
   cp -r {{blueprint_web_dir}} {{blueprint_web_target}}
 
 [group("docs")]
+[doc("Build the Blueprint (PDF and web).")]
+blueprint: blueprint-print blueprint-web
+
+[group("docs")]
 [doc("Build the project website.")]
-website JEKYLL_ENV="": docs blueprint-print blueprint-web
+website JEKYLL_ENV="":
   rm -rf {{website_target}}
+  cd {{website_dir}} && bundle install
   cd {{website_dir}} && JEKYLL_ENV={{JEKYLL_ENV}} bundle exec jekyll build -d ../{{website_target}}
 
 [group("docs")]
