@@ -25,7 +25,7 @@ target operations, and a partial composition operation at each dimension.
 ## Implementation notes
 
 The formalization uses the `NatIndex` typeclass to handle index sets uniformly, allowing both
-finite dimensions (via `Fin n`) and infinite dimensions (via `Nat`). This design choice enables
+finite dimensions (via `Fin n`) and infinite dimensions (via `ℕ`). This design choice enables
 defining $n$-categories and $\omega$-categories within a single framework.
 
 The partial composition operation `PComp` is a partial function that returns a `Part Obj` (partial
@@ -260,16 +260,16 @@ class SingleSortedCategory (Obj : Type u)
 class SingleSorted2Category (Obj : Type u)
     extends SingleSorted2CategoryFamily Obj (Fin 2)
 
-/-- A single-sorted n-category for a fixed `n : Nat`: a `SingleSorted2CategoryFamily` with `n`
+/-- A single-sorted n-category for a fixed `n : ℕ`: a `SingleSorted2CategoryFamily` with `n`
 dimensions, indexed by `Fin n`. -/
-class SingleSortedNCategory (Obj : Type u) (n : Nat)
+class SingleSortedNCategory (Obj : Type u) (n : ℕ)
     extends SingleSorted2CategoryFamily Obj (Fin n)
 
 /-- A single-sorted ω-category: a `SingleSorted2CategoryFamily` with infinitely many dimensions,
-indexed by `Nat`. -/
+indexed by `ℕ`. -/
 class SingleSortedOmegaCategory (Obj : Type u)
-    extends SingleSorted2CategoryFamily Obj Nat where
-  /-- Every element is a k-cell for some `k : Nat`. -/
-  is_cell : ∀ f : Obj, ∃ k : Nat, sc k f = f
+    extends SingleSorted2CategoryFamily Obj ℕ where
+  /-- Every element is a k-cell for some `k : ℕ`. -/
+  is_cell : ∀ f : Obj, ∃ k : ℕ, sc k f = f
 
 end HigherCategoryTheory

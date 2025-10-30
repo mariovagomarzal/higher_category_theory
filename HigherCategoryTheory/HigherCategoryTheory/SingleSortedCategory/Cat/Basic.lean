@@ -72,16 +72,16 @@ instance SingleSorted2Cat : LargeCategory SingleSorted2CategoriesFamily where
 /-- A family of single-sorted $n$-categories for a fixed natural number `n`, consisting of a type
 `Obj` equipped with a `SingleSortedNCategory` instance. This structure serves as the objects in
 the large category `SingleSortedNCat`. -/
-structure SingleSortedNCategoriesFamily (n : Nat) extends ObjectsFamily where
+structure SingleSortedNCategoriesFamily (n : ℕ) extends ObjectsFamily where
   /-- The `SingleSortedNCategory` structure on the underlying type. -/
   _inst : SingleSortedNCategory Obj n
 
 attribute [instance] SingleSortedNCategoriesFamily._inst
 
-/-- The large category of single-sorted $n$-categories for a fixed `n : Nat`. Objects are families
+/-- The large category of single-sorted $n$-categories for a fixed `n : ℕ`. Objects are families
 of single-sorted $n$-categories (`SingleSortedNCategoriesFamily n`), and morphisms are
 single-sorted $n$-functors between them. -/
-instance SingleSortedNCat {n : Nat} : LargeCategory (SingleSortedNCategoriesFamily n) where
+instance SingleSortedNCat {n : ℕ} : LargeCategory (SingleSortedNCategoriesFamily n) where
   Hom C D := SingleSortedNFunctor C.Obj D.Obj n
   id _ := idₛₛ
   comp F G := G ⊚ F
