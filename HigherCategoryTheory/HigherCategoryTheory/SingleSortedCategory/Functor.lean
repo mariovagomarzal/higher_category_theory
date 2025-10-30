@@ -108,6 +108,7 @@ def comp {C : Type u₁} {D : Type u₂} {E : Type u₃}
       _ = (G (F g)) ♯[i] (G (F f)) ← (G.comp_map (F.comp_map comp_gf)) :=
         G.map_comp_is_comp_map (F.comp_map comp_gf)
 
+@[inherit_doc]
 scoped[HigherCategoryTheory] infixr:80 " ⊚ " => SingleSortedFunctorFamily.comp
 
 /-- The identity functor on a single-sorted category `C`. It maps each morphism to itself and
@@ -121,6 +122,7 @@ def id {C : Type u₁}
   map_tg_is_tg_map _ _ := rfl
   map_comp_is_comp_map _ := rfl
 
+@[inherit_doc]
 scoped[HigherCategoryTheory] notation "idₛ" => SingleSortedFunctorFamily.id
 
 end SingleSortedFunctorFamily
