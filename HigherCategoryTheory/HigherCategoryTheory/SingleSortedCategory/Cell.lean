@@ -111,15 +111,15 @@ theorem is_union_cells {Obj : Type u} [SingleSortedOmegaCategory Obj] :
     ∀ f : Obj, f ∈ ⋃ k : Nat, cell Obj k := by
   intro f
   simp
-  exact has_cell
+  exact is_cell
 
 /-- Given a structure of `SingleSorted2CategoryFamily` on `Obj` (and index `Nat`), if `Obj` can be
 expressed as the union of its $k$-cells, then we can construct a `SingleSortedOmegaCategory`
-structure on `Obj` because the `has_cell` axiom is satisfied. -/
+structure on `Obj` because the `is_cell` axiom is satisfied. -/
 def fromUnionCells {Obj : Type u} [SingleSorted2CategoryFamily Obj Nat]
     (union_cells : ∀ f : Obj, f ∈ ⋃ k : Nat, cell Obj k) :
     SingleSortedOmegaCategory Obj where
-  has_cell := by
+  is_cell := by
     intro f
     simp at union_cells
     exact union_cells f
@@ -133,7 +133,7 @@ a natural number `n` such that `Obj` is discrete above dimension `n`, then we ca
 def fromDiscreteAbove {Obj : Type u} [SingleSorted2CategoryFamily Obj Nat]
     (discrete_above : ∃ n : Nat, is_discrete_above Obj n) :
     SingleSortedOmegaCategory Obj where
-  has_cell := by
+  is_cell := by
     intro f
     rcases discrete_above with ⟨n, h_discrete⟩
     use n
