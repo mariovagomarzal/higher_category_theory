@@ -108,16 +108,16 @@ open SingleSortedCategoryFamily
 /-- In an $\omega$-category, every morphism `f` belongs to $C_k$ for some $k : \mathbb{N}$.
 This is equivalent to the condition $C = \bigcup_{k \in \mathbb{N}} C_k$. -/
 theorem is_union_cells {Obj : Type u} [SingleSortedOmegaCategory Obj] :
-    ∀ f : Obj, f ∈ ⋃ k : Nat, cell Obj k := by
+    ∀ f : Obj, f ∈ ⋃ k : ℕ, cell Obj k := by
   intro f
   simp
   exact is_cell _
 
-/-- Given a structure of `SingleSorted2CategoryFamily` on `Obj` (and index `Nat`), if `Obj` can be
+/-- Given a structure of `SingleSorted2CategoryFamily` on `Obj` (and index `ℕ`), if `Obj` can be
 expressed as the union of its $k$-cells, then we can construct a `SingleSortedOmegaCategory`
 structure on `Obj` because the `is_cell` axiom is satisfied. -/
-def fromUnionCells {Obj : Type u} [SingleSorted2CategoryFamily Obj Nat]
-    (union_cells : ∀ f : Obj, f ∈ ⋃ k : Nat, cell Obj k) :
+def fromUnionCells {Obj : Type u} [SingleSorted2CategoryFamily Obj ℕ]
+    (union_cells : ∀ f : Obj, f ∈ ⋃ k : ℕ, cell Obj k) :
     SingleSortedOmegaCategory Obj where
   is_cell := by
     intro f
@@ -125,13 +125,13 @@ def fromUnionCells {Obj : Type u} [SingleSorted2CategoryFamily Obj Nat]
     exact union_cells f
 
 /--
-Given a structure of `SingleSorted2CategoryFamily` on `Obj` and index `Nat` and, if there exists
+Given a structure of `SingleSorted2CategoryFamily` on `Obj` and index `ℕ` and, if there exists
 a natural number `n` such that `Obj` is discrete above dimension `n`, then we can construct a
 `SingleSortedOmegaCategory` structure on `Obj` since every morphism will be a $k$-cell for any
 `k ≥ n`.
 -/
-def fromDiscreteAbove {Obj : Type u} [SingleSorted2CategoryFamily Obj Nat]
-    (discrete_above : ∃ n : Nat, is_discrete_above Obj n) :
+def fromDiscreteAbove {Obj : Type u} [SingleSorted2CategoryFamily Obj ℕ]
+    (discrete_above : ∃ n : ℕ, is_discrete_above Obj n) :
     SingleSortedOmegaCategory Obj where
   is_cell := by
     intro f

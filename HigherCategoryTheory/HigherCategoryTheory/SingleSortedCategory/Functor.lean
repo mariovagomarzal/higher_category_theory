@@ -65,14 +65,16 @@ on a morphism `f`. -/
 instance {C : Type u₁} {D : Type u₂} {index : Type} [NatIndex index]
     [SingleSortedCategoryStruct C index]
     [SingleSortedCategoryStruct D index] :
-    CoeFun (SingleSortedFunctorFamily C D index) (fun _ => C → D) :=
+    CoeFun (SingleSortedFunctorFamily C D index) (fun _ ↦ C → D) :=
   ⟨fun F ↦ F.map⟩
 
-/-- Composition of functors. Given functors `F : C → D` and `G : D → E`, their composite
+/--
+Composition of functors. Given functors `F : C → D` and `G : D → E`, their composite
 `G ⊚ F : C → E` is defined by `(G ⊚ F) f = G (F f)`.
 
 This operation preserves all the required functor properties: it preserves sources, targets,
-and composition at each dimension. -/
+and composition at each dimension.
+-/
 def comp {C : Type u₁} {D : Type u₂} {E : Type u₃}
     {index : Type} [NatIndex index]
     [SingleSortedCategoryStruct C index]
@@ -136,7 +138,7 @@ abbrev SingleSorted2Functor (C : Type u₁) (D : Type u₂)
   SingleSortedFunctorFamily C D (Fin 2)
 
 /-- A `SingleSortedNFunctor` is a functor between single-sorted $n$-categories. -/
-abbrev SingleSortedNFunctor (C : Type u₁) (D : Type u₂) (n : Nat)
+abbrev SingleSortedNFunctor (C : Type u₁) (D : Type u₂) (n : ℕ)
     [SingleSortedNCategory C n]
     [SingleSortedNCategory D n] :=
   SingleSortedFunctorFamily C D (Fin n)
@@ -145,6 +147,6 @@ abbrev SingleSortedNFunctor (C : Type u₁) (D : Type u₂) (n : Nat)
 abbrev SingleSortedOmegaFunctor (C : Type u₁) (D : Type u₂)
     [SingleSortedOmegaCategory C]
     [SingleSortedOmegaCategory D] :=
-  SingleSortedFunctorFamily C D Nat
+  SingleSortedFunctorFamily C D ℕ
 
 end HigherCategoryTheory
