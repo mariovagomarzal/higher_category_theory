@@ -58,15 +58,16 @@ structure SingleSortedFunctorFamily (C : Type u₁) (D : Type u₂)
   map_comp_is_comp_map : ∀ {i : index} {f g : C} (comp_gf : sc_is_tg i g f),
     map (g ♯[i] f ← comp_gf) = (map g) ♯[i] (map f) ← (comp_map comp_gf)
 
-namespace SingleSortedFunctorFamily
-
 /-- Coercion allowing us to write `F f` instead of `F.map f` for the action of a functor `F`
 on a morphism `f`. -/
-instance {C : Type u₁} {D : Type u₂} {index : Type} [NatIndex index]
+instance CoeFun.instSingleSortedFunctorFamily {C : Type u₁} {D : Type u₂}
+    {index : Type} [NatIndex index]
     [SingleSortedCategoryStruct C index]
     [SingleSortedCategoryStruct D index] :
-    CoeFun (SingleSortedFunctorFamily C D index) (fun _ ↦ C → D) :=
+    CoeFun (SingleSortedFunctorFamily C D index) fun _ ↦ C → D :=
   ⟨fun F ↦ F.map⟩
+
+namespace SingleSortedFunctorFamily
 
 /--
 Composition of functors. Given functors `F : C → D` and `G : D → E`, their composite
