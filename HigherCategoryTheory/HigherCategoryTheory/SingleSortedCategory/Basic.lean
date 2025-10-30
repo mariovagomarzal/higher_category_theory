@@ -81,17 +81,13 @@ theorem dom_of_sc_is_tg {Obj : Type u} {index : Type} [NatIndex index]
     (g ♯.[i] f).Dom :=
   SingleSortedCategoryStruct.pcomp_dom.mpr comp_gf
 
-namespace SingleSortedCategoryStruct
-
 /-- The (total) composition operation at dimension `i`, defined for composable morphisms.
 Given `f` and `g` with a proof `composable_gf : sc_is_tg i g f`, this returns the
 composite `g ♯[i] f`. -/
-def comp {Obj : Type u} {index : Type} [NatIndex index]
+def SingleSortedCategoryStruct.comp {Obj : Type u} {index : Type} [NatIndex index]
     [SingleSortedCategoryStruct Obj index]
     (i : index) (f g : Obj) (composable_gf : sc_is_tg i g f) : Obj :=
   (g ♯.[i] f).get (dom_of_sc_is_tg composable_gf)
-
-end SingleSortedCategoryStruct
 
 scoped notation g " ♯[" i "] " f " ← " comp_gf:100 => SingleSortedCategoryStruct.comp i f g comp_gf
 
