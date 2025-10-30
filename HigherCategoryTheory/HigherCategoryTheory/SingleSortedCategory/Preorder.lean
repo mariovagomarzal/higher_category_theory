@@ -24,7 +24,7 @@ instance instSingleSortedCategoryOfProduct (α : Type u) [Preorder α] :
     SingleSortedCategory ({(x, y) : α × α | x ≤ y}) where
   Sc := fun _ ⟨(y₁, _), h⟩ ↦ ⟨(y₁, y₁), le_refl y₁⟩
   Tg := fun _ ⟨(_, x₂), h⟩ ↦ ⟨(x₂, x₂), le_refl x₂⟩
-  PComp := fun _ ⟨(x₁, x₂), h₁⟩ ⟨(y₁, y₂), h₂⟩ ↦
+  PComp := fun _ ⟨(y₁, y₂), h₂⟩ ⟨(x₁, x₂), h₁⟩ ↦
     ⟨y₁ = x₂, fun h ↦ ⟨(x₁, y₂), calc
       x₁ ≤ x₂ := h₁
       _ = y₁ := h.symm

@@ -24,7 +24,7 @@ target (the unit), and composition is given by monoid multiplication. -/
 instance instSingleSortedCategory (M : Type u) [Monoid M] : SingleSortedCategory M where
   Sc _ _ := 1
   Tg _ _ := 1
-  PComp _ a b := ⟨_, fun _ ↦ b * a⟩
+  PComp _ b a := ⟨_, fun _ ↦ b * a⟩
   pcomp_dom := by
     intros
     apply Iff.intro
