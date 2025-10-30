@@ -109,13 +109,13 @@ single-sorted category at each dimension. -/
 class SingleSortedCategoryFamily (Obj : Type u) (index : Type) [NatIndex index]
     extends SingleSortedCategoryStruct Obj index where
   /-- Applying source twice at dimension `i` is idempotent. -/
-  sc_sc_is_sc : ∀ {i : index} {f : Obj}, sc i (sc i f) = sc i f := by intros; rfl
+  sc_sc_is_sc : ∀ (i : index) (f : Obj), sc i (sc i f) = sc i f := by intros; rfl
   /-- The target of a source is itself. -/
-  tg_sc_is_sc : ∀ {i : index} {f : Obj}, tg i (sc i f) = sc i f := by intros; rfl
+  tg_sc_is_sc : ∀ (i : index) (f : Obj), tg i (sc i f) = sc i f := by intros; rfl
   /-- The source of a target is itself. -/
-  sc_tg_is_tg : ∀ {i : index} {f : Obj}, sc i (tg i f) = tg i f := by intros; rfl
+  sc_tg_is_tg : ∀ (i : index) (f : Obj), sc i (tg i f) = tg i f := by intros; rfl
   /-- Applying target twice at dimension `i` is idempotent. -/
-  tg_tg_is_tg : ∀ {i : index} {f : Obj}, tg i (tg i f) = tg i f := by intros; rfl
+  tg_tg_is_tg : ∀ (i : index) (f : Obj), tg i (tg i f) = tg i f := by intros; rfl
   /-- The source of a composite `g ♯[i] f` is the source of `f`. -/
   sc_comp_is_sc : ∀ {i : index} {f g : Obj} (comp_gf : sc_is_tg i g f),
       sc i (g ♯[i] f ← comp_gf) = sc i f := by intros; rfl
@@ -123,9 +123,11 @@ class SingleSortedCategoryFamily (Obj : Type u) (index : Type) [NatIndex index]
   tg_comp_is_tg : ∀ {i : index} {f g : Obj} (comp_gf : sc_is_tg i g f),
       tg i (g ♯[i] f ← comp_gf) = tg i g := by intros; rfl
   /-- Composing `f` with its source `sc i f` yields `f`. -/
-  comp_sc_is_id : ∀ {i : index} {f : Obj}, f ♯[i] (sc i f) ← tg_sc_is_sc.symm = f := by intros; rfl
+  comp_sc_is_id : ∀ (i : index) (f : Obj),
+      f ♯[i] (sc i f) ← (tg_sc_is_sc _ _).symm = f := by intros; rfl
   /-- Composing the target `tg i f` with `f` yields `f`. -/
-  comp_tg_is_id : ∀ {i : index} {f : Obj}, (tg i f) ♯[i] f ← sc_tg_is_tg = f := by intros; rfl
+  comp_tg_is_id : ∀ (i : index) (f : Obj),
+    (tg i f) ♯[i] f ← (sc_tg_is_tg _ _) = f := by intros; rfl
   /-- If `g` and `f` compose and `h` and `g` compose, then `h` and `g ♯[i] f` compose. This is an
   auxiliary method for the associativity axiom. -/
   compr_assoc {i : index} {f g h : Obj}
@@ -151,44 +153,44 @@ class SingleSorted2CategoryFamily (Obj : Type u)
     extends SingleSortedCategoryFamily Obj index where
   /-- Applying source at dimension `k` to a source at a lower dimension `j < k` yields the source
   at dimension `j`. -/
-  sck_scj_is_scj : ∀ {k j : index} {f : Obj} (_j_lt_k : j < k),
-      sc k (sc j f) = sc j f := by intros; rfl
+  sck_scj_is_scj : ∀ {k j : index} (f : Obj),
+      j < k → sc k (sc j f) = sc j f := by intros; rfl
   /-- Applying source at dimension `j` to a source at a higher dimension `k > j` yields the source
   at dimension `j`. -/
-  scj_sck_is_scj : ∀ {k j : index} {f : Obj} (_j_lt_k : j < k),
-      sc j (sc k f) = sc j f := by intros; rfl
+  scj_sck_is_scj : ∀ {k j : index} (f : Obj),
+      j < k → sc j (sc k f) = sc j f := by intros; rfl
   /-- Applying source at dimension `j` to a target at a higher dimension `k > j` yields the source
   at dimension `j`. -/
-  scj_tgk_is_scj : ∀ {k j : index} {f : Obj} (_j_lt_k : j < k),
-      sc j (tg k f) = sc j f := by intros; rfl
+  scj_tgk_is_scj : ∀ {k j : index} (f : Obj),
+      j < k → sc j (tg k f) = sc j f := by intros; rfl
   /-- Applying target at dimension `k` to a target at a lower dimension `j < k` yields the target
   at dimension `j`. -/
-  tgk_tgj_is_tgj : ∀ {k j : index} {f : Obj} (_j_lt_k : j < k),
-      tg k (tg j f) = tg j f := by intros; rfl
+  tgk_tgj_is_tgj : ∀ {k j : index} (f : Obj),
+      j < k → tg k (tg j f) = tg j f := by intros; rfl
   /-- Applying target at dimension `j` to a target at a higher dimension `k > j` yields the target
   at dimension `j`. -/
-  tgj_tgk_is_tgj : ∀ {k j : index} {f : Obj} (_j_lt_k : j < k),
-      tg j (tg k f) = tg j f := by intros; rfl
+  tgj_tgk_is_tgj : ∀ {k j : index} (f : Obj),
+      j < k → tg j (tg k f) = tg j f := by intros; rfl
   /-- Applying target at dimension `j` to a source at a higher dimension `k > j` yields the target
   at dimension `j`. -/
-  tgj_sck_is_tgj : ∀ {k j : index} {f : Obj} (_j_lt_k : j < k),
-      tg j (sc k f) = tg j f := by intros; rfl
+  tgj_sck_is_tgj : ∀ {k j : index} (f : Obj),
+      j < k → tg j (sc k f) = tg j f := by intros; rfl
   /-- If `g` and `f` are composable at dimension `j < k`, then `sc k g` and `sc k f` are composable
   at dimension `j`. This is an auxiliary method for the distributivity axioms. -/
   comp_j_sc {k j : index} {f g : Obj} (j_lt_k : j < k) (comp_j_gf : sc_is_tg j g f) :
       sc_is_tg j (sc k g) (sc k f) := calc
     sc j (sc k g)
-    _ = sc j g := scj_sck_is_scj j_lt_k
+    _ = sc j g := scj_sck_is_scj _ j_lt_k
     _ = tg j f := comp_j_gf
-    _ = tg j (sc k f) := (tgj_sck_is_tgj j_lt_k).symm
+    _ = tg j (sc k f) := (tgj_sck_is_tgj _ j_lt_k).symm
   /-- If `g` and `f` are composable at dimension `j < k`, then `tg k g` and `tg k f` are composable
   at dimension `j`. This is an auxiliary method for the distributivity axioms. -/
   comp_j_tg {k j : index} {f g : Obj} (j_lt_k : j < k) (comp_j_gf : sc_is_tg j g f) :
       sc_is_tg j (tg k g) (tg k f) := calc
     sc j (tg k g)
-    _ = sc j g := scj_tgk_is_scj j_lt_k
+    _ = sc j g := scj_tgk_is_scj _ j_lt_k
     _ = tg j f := comp_j_gf
-    _ = tg j (tg k f) := (tgj_tgk_is_tgj j_lt_k).symm
+    _ = tg j (tg k f) := (tgj_tgk_is_tgj _ j_lt_k).symm
   /-- Source at dimension `k` distributes over composition at dimension `j < k`. -/
   sck_compj_is_compj_sck : ∀ {k j : index} {f g : Obj} (j_lt_k : j < k)
       (comp_j_gf : sc_is_tg j g f),
@@ -219,14 +221,14 @@ class SingleSorted2CategoryFamily (Obj : Type u)
       (comp_j_g₂f₂ : sc_is_tg j g₂ f₂) (comp_j_g₁f₁ : sc_is_tg j g₁ f₁) :
       sc_is_tg j (g₂ ♯[k] g₁ ← comp_k_g₂g₁) (f₂ ♯[k] f₁ ← comp_k_f₂f₁) := calc
     sc j (g₂ ♯[k] g₁ ← comp_k_g₂g₁)
-    _ = sc j (sc k (g₂ ♯[k] g₁ ← comp_k_g₂g₁)) := (scj_sck_is_scj j_lt_k).symm
+    _ = sc j (sc k (g₂ ♯[k] g₁ ← comp_k_g₂g₁)) := (scj_sck_is_scj _ j_lt_k).symm
     _ = sc j (sc k g₁) := congrArg (fun x => sc j x) (sc_comp_is_sc comp_k_g₂g₁)
-    _ = sc j g₁ := scj_sck_is_scj j_lt_k
+    _ = sc j g₁ := scj_sck_is_scj _ j_lt_k
     _ = tg j f₁ := comp_j_g₁f₁
-    _ = tg j (sc k f₁) := (tgj_sck_is_tgj j_lt_k).symm
+    _ = tg j (sc k f₁) := (tgj_sck_is_tgj _ j_lt_k).symm
     _ = tg j (sc k (f₂ ♯[k] f₁ ← comp_k_f₂f₁)) :=
       congrArg (fun x => tg j x) (sc_comp_is_sc comp_k_f₂f₁).symm
-    _ = tg j (f₂ ♯[k] f₁ ← comp_k_f₂f₁) := tgj_sck_is_tgj j_lt_k
+    _ = tg j (f₂ ♯[k] f₁ ← comp_k_f₂f₁) := tgj_sck_is_tgj _ j_lt_k
   /--
   Given a $2 \times 2$ pasting diagram of composable morphisms,
   ```
@@ -268,6 +270,6 @@ indexed by `Nat`. -/
 class SingleSortedOmegaCategory (Obj : Type u)
     extends SingleSorted2CategoryFamily Obj Nat where
   /-- Every element is a k-cell for some `k : Nat`. -/
-  is_cell : ∀ {f : Obj}, ∃ k : Nat, sc k f = f
+  is_cell : ∀ f : Obj, ∃ k : Nat, sc k f = f
 
 end HigherCategoryTheory

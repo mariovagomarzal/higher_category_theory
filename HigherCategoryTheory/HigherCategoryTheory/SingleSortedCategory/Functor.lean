@@ -43,17 +43,17 @@ structure SingleSortedFunctorFamily (C : Type u₁) (D : Type u₂)
   /-- The underlying function on morphisms. -/
   map : C → D
   /-- The map preserves sources: `F (sc i f) = sc i (F f)`. -/
-  map_sc_is_sc_map : ∀ {i : index} {f : C}, map (sc i f) = sc i (map f)
+  map_sc_is_sc_map : ∀ (i : index) (f : C), map (sc i f) = sc i (map f)
   /-- The map preserves targets: `F (tg i f) = tg i (F f)`. -/
-  map_tg_is_tg_map : ∀ {i : index} {f : C}, map (tg i f) = tg i (map f)
+  map_tg_is_tg_map : ∀ (i : index) (f : C), map (tg i f) = tg i (map f)
   /-- If `g` and `f` are composable in `C`, then `F g` and `F f` are composable in `D`. An
   auxiliary method for defining `map_comp_is_comp_map`. -/
   comp_map {i : index} {f g : C} (comp_gf : sc_is_tg i g f) :
       sc_is_tg i (map g) (map f) := calc
     sc i (map g)
-    _ = map (sc i g) := map_sc_is_sc_map.symm
+    _ = map (sc i g) := (map_sc_is_sc_map _ _).symm
     _ = map (tg i f) := congrArg map comp_gf
-    _ = tg i (map f) := map_tg_is_tg_map
+    _ = tg i (map f) := map_tg_is_tg_map _ _
   /-- The map preserves composition: `F (g ♯[i] f) = (F g) ♯[i] (F f)`. -/
   map_comp_is_comp_map : ∀ {i : index} {f g : C} (comp_gf : sc_is_tg i g f),
     map (g ♯[i] f ← comp_gf) = (map g) ♯[i] (map f) ← (comp_map comp_gf)
@@ -87,15 +87,15 @@ def comp {C : Type u₁} {D : Type u₂} {E : Type u₃}
     calc
       (G ∘ F) (sc i f)
       _ = G (F (sc i f)) := rfl
-      _ = G (sc i (F f)) := congrArg G (F.map_sc_is_sc_map)
-      _ = sc i (G (F f)) := G.map_sc_is_sc_map
+      _ = G (sc i (F f)) := congrArg G (F.map_sc_is_sc_map _ _)
+      _ = sc i (G (F f)) := G.map_sc_is_sc_map _ _
   map_tg_is_tg_map := by
     intro i f
     calc
       (G ∘ F) (tg i f)
       _ = G (F (tg i f)) := rfl
-      _ = G (tg i (F f)) := congrArg G (F.map_tg_is_tg_map)
-      _ = tg i (G (F f)) := G.map_tg_is_tg_map
+      _ = G (tg i (F f)) := congrArg G (F.map_tg_is_tg_map _ _)
+      _ = tg i (G (F f)) := G.map_tg_is_tg_map _ _
   map_comp_is_comp_map := by
     intro i f g comp_gf
     calc
@@ -113,8 +113,8 @@ def id {C : Type u₁}
     [SingleSortedCategoryStruct C index] :
     SingleSortedFunctorFamily C C index where
   map := fun x ↦ x
-  map_sc_is_sc_map := rfl
-  map_tg_is_tg_map := rfl
+  map_sc_is_sc_map _ _ := rfl
+  map_tg_is_tg_map _ _ := rfl
   map_comp_is_comp_map _ := rfl
 
 end SingleSortedFunctorFamily
