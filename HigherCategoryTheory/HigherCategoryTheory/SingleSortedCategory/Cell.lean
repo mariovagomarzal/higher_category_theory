@@ -51,13 +51,13 @@ theorem id_sc_iff_id_tg {Obj : Type u} {index : Type} [NatIndex index]
     calc
       tg k f
       _ = tg k (sc k f) := congrArg (tg k) sc_eq.symm
-      _ = sc k f := tg_sc_is_sc
+      _ = sc k f := tg_sc_is_sc _ _
       _ = f := sc_eq
   · intro tg_eq
     calc
       sc k f
       _ = sc k (tg k f) := congrArg (sc k) tg_eq.symm
-      _ = tg k f := sc_tg_is_tg
+      _ = tg k f := sc_tg_is_tg _ _
       _ = f := tg_eq
 
 /-- The set $C_k$ of all $k$-cells in `Obj`, defined as those morphisms `f` satisfying
@@ -91,13 +91,13 @@ morphisms are $n$-cells. This means there are no non-identity morphisms at any d
 than or equal to $k$. -/
 def is_discrete_above (Obj : Type u) {index : Type} [NatIndex index]
     [SingleSortedCategoryFamily Obj index] (k : index) : Prop :=
-  ∀ {f : Obj} {n : index}, n ≥ k → f ∈ cell Obj n
+  ∀ {n : index} (f : Obj), n ≥ k → f ∈ cell Obj n
 
 /-- A category `Obj` is discrete if it is discrete at every dimension, meaning every morphism
 is a $k$-cell for all $k$. This corresponds to a category with only identity morphisms. -/
 def is_discrete (Obj : Type u) {index : Type} [NatIndex index]
     [SingleSortedCategoryFamily Obj index] : Prop :=
-  ∀ {f : Obj} {k : index}, f ∈ cell Obj k
+  ∀ (k : index) (f : Obj), f ∈ cell Obj k
 
 end SingleSortedCategoryFamily
 
@@ -111,7 +111,7 @@ theorem is_union_cells {Obj : Type u} [SingleSortedOmegaCategory Obj] :
     ∀ f : Obj, f ∈ ⋃ k : Nat, cell Obj k := by
   intro f
   simp
-  exact is_cell
+  exact is_cell _
 
 /-- Given a structure of `SingleSorted2CategoryFamily` on `Obj` (and index `Nat`), if `Obj` can be
 expressed as the union of its $k$-cells, then we can construct a `SingleSortedOmegaCategory`
@@ -137,7 +137,7 @@ def fromDiscreteAbove {Obj : Type u} [SingleSorted2CategoryFamily Obj Nat]
     intro f
     rcases discrete_above with ⟨n, h_discrete⟩
     use n
-    exact h_discrete (le_refl n)
+    exact h_discrete _ (le_refl n)
 
 end SingleSortedOmegaCategory
 
