@@ -49,7 +49,7 @@ categories (`SingleSortedCategoriesFamily`), and morphisms are single-sorted fun
 them. -/
 instance SingleSortedCat : LargeCategory SingleSortedCategoriesFamily where
   Hom C D := SingleSortedFunctor C.Obj D.Obj
-  id _ := idₛₛ
+  id _ := idₛ
   comp F G := G ⊚ F
 
 /-- A family of single-sorted 2-categories, consisting of a type `Obj` equipped with a
@@ -66,7 +66,7 @@ attribute [instance] SingleSorted2CategoriesFamily._inst
 them. -/
 instance SingleSorted2Cat : LargeCategory SingleSorted2CategoriesFamily where
   Hom C D := SingleSorted2Functor C.Obj D.Obj
-  id _ := idₛₛ
+  id _ := idₛ
   comp F G := G ⊚ F
 
 /-- A family of single-sorted $n$-categories for a fixed natural number `n`, consisting of a type
@@ -83,7 +83,7 @@ of single-sorted $n$-categories (`SingleSortedNCategoriesFamily n`), and morphis
 single-sorted $n$-functors between them. -/
 instance SingleSortedNCat {n : ℕ} : LargeCategory (SingleSortedNCategoriesFamily n) where
   Hom C D := SingleSortedNFunctor C.Obj D.Obj n
-  id _ := idₛₛ
+  id _ := idₛ
   comp F G := G ⊚ F
 
 /-- A family of single-sorted $\omega$-categories, consisting of a type `Obj` equipped with a
@@ -100,7 +100,7 @@ $\omega$-categories (`SingleSortedOmegaCategoriesFamily`), and morphisms are sin
 $\omega$-functors between them. -/
 instance SingleSortedOmegaCat : LargeCategory SingleSortedOmegaCategoriesFamily where
   Hom C D := SingleSortedOmegaFunctor C.Obj D.Obj
-  id _ := idₛₛ
+  id _ := idₛ
   comp F G := G ⊚ F
 
 end HigherCategoryTheory

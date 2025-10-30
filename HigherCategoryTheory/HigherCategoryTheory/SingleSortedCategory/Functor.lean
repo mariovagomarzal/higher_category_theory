@@ -16,7 +16,7 @@ respectively.
 ## Notation
 
 * `G ⊚ F`: Composition of functors `G` and `F`.
-* `idₛₛ`: The identity functor.
+* `idₛ`: The identity functor.
 
 ## Implementation notes
 
@@ -121,7 +121,7 @@ def id {C : Type u₁}
   map_tg_is_tg_map _ _ := rfl
   map_comp_is_comp_map _ := rfl
 
-scoped[HigherCategoryTheory] notation "idₛₛ" => SingleSortedFunctorFamily.id
+scoped[HigherCategoryTheory] notation "idₛ" => SingleSortedFunctorFamily.id
 
 end SingleSortedFunctorFamily
 
