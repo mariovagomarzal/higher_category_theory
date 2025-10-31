@@ -55,8 +55,19 @@ class SingleSortedCategoryStruct (Obj : Type u) (index : Type) [NatIndex index] 
   /-- Partial composition operation at dimension `i`. -/
   PComp : index → Obj → Obj →. Obj
   /-- Composition `PComp i g f` is defined if and only if `Sc i g = Tg i f`. -/
-  pcomp_dom : ∀ {i : index} {f g : Obj},
-    (PComp i g f).Dom ↔ Sc i g = Tg i f
+  pcomp_dom : ∀ {i : index} {f g : Obj}, (PComp i g f).Dom ↔ Sc i g = Tg i f := by
+    /- In most cases, when defining the partial composition `Pcomp`, the domain condition trivially
+    coincides with the condition `Sc i g = Tg i f`. Thus, in these cases, proving both directions of
+    the implication simply consists of simplifying the hypothesis and the goal, and providing
+    the hypothesis as the conclusion. -/
+    intros
+    apply Iff.intro <;> {
+      intro h
+      simp at *
+      -- We use `try` because in the simplest cases `simp at *` already closes the goal, making
+      -- `exact h` unnecessary.
+      try exact h
+    }
 
 @[inherit_doc] scoped prefix:max "sc " => SingleSortedCategoryStruct.Sc
 @[inherit_doc] scoped prefix:max "tg " => SingleSortedCategoryStruct.Tg

@@ -25,13 +25,5 @@ instance instSingleSortedCategory {α : Type u} : SingleSortedCategory (α × α
   Sc := fun _ (_, y₂) ↦ (y₂, y₂)
   Tg := fun _ (x₁, _) ↦ (x₁, x₁)
   PComp := fun _ (y₁, y₂) (x₁, x₂) ↦ ⟨y₂ = x₁, (fun _ ↦ (y₁, x₂))⟩
-  pcomp_dom := by
-    intros
-    apply Iff.intro
-    · intros
-      simpa
-    · intro h
-      simp at h
-      exact h
 
 end Prod
