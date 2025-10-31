@@ -42,21 +42,21 @@ structure SingleSortedFunctorFamily (C : Type u₁) (D : Type u₂)
     [SingleSortedCategoryStruct D index] where
   /-- The underlying function on morphisms. -/
   map : C → D
-  /-- The map preserves sources: `F (sc i f) = sc i (F f)`. -/
-  map_sc_is_sc_map : ∀ (i : index) (f : C), map (sc i f) = sc i (map f)
-  /-- The map preserves targets: `F (tg i f) = tg i (F f)`. -/
-  map_tg_is_tg_map : ∀ (i : index) (f : C), map (tg i f) = tg i (map f)
+  /-- The map preserves sources: `F (sc k f) = sc k (F f)`. -/
+  map_sc_is_sc_map : ∀ (k : index) (f : C), map (sc k f) = sc k (map f)
+  /-- The map preserves targets: `F (tg k f) = tg k (F f)`. -/
+  map_tg_is_tg_map : ∀ (k : index) (f : C), map (tg k f) = tg k (map f)
   /-- If `g` and `f` are composable in `C`, then `F g` and `F f` are composable in `D`. An
   auxiliary method for defining `map_comp_is_comp_map`. -/
-  comp_map {i : index} {f g : C} (comp_gf : sc_is_tg i g f) :
-      sc_is_tg i (map g) (map f) := calc
-    sc i (map g)
-    _ = map (sc i g) := (map_sc_is_sc_map _ _).symm
-    _ = map (tg i f) := congrArg map comp_gf
-    _ = tg i (map f) := map_tg_is_tg_map _ _
-  /-- The map preserves composition: `F (g ♯[i] f) = (F g) ♯[i] (F f)`. -/
-  map_comp_is_comp_map : ∀ {i : index} {f g : C} (comp_gf : sc_is_tg i g f),
-    map (g ♯[i] f ← comp_gf) = (map g) ♯[i] (map f) ← (comp_map comp_gf)
+  comp_map {k : index} {f g : C} (comp_gf : sc_is_tg k g f) :
+      sc_is_tg k (map g) (map f) := calc
+    sc k (map g)
+    _ = map (sc k g) := (map_sc_is_sc_map _ _).symm
+    _ = map (tg k f) := congrArg map comp_gf
+    _ = tg k (map f) := map_tg_is_tg_map _ _
+  /-- The map preserves composition: `F (g ♯[k] f) = (F g) ♯[k] (F f)`. -/
+  map_comp_is_comp_map : ∀ {k : index} {f g : C} (comp_gf : sc_is_tg k g f),
+    map (g ♯[k] f ← comp_gf) = (map g) ♯[k] (map f) ← (comp_map comp_gf)
 
 /-- Coercion allowing us to write `F f` instead of `F.map f` for the action of a functor `F`
 on a morphism `f`. -/
@@ -86,27 +86,27 @@ def comp {C : Type u₁} {D : Type u₂} {E : Type u₃}
     SingleSortedFunctorFamily C E index where
   map := G ∘ F
   map_sc_is_sc_map := by
-    intro i f
+    intro k f
     calc
-      (G ∘ F) (sc i f)
-      _ = G (F (sc i f)) := rfl
-      _ = G (sc i (F f)) := congrArg G (F.map_sc_is_sc_map _ _)
-      _ = sc i (G (F f)) := G.map_sc_is_sc_map _ _
+      (G ∘ F) (sc k f)
+      _ = G (F (sc k f)) := rfl
+      _ = G (sc k (F f)) := congrArg G (F.map_sc_is_sc_map _ _)
+      _ = sc k (G (F f)) := G.map_sc_is_sc_map _ _
   map_tg_is_tg_map := by
-    intro i f
+    intro k f
     calc
-      (G ∘ F) (tg i f)
-      _ = G (F (tg i f)) := rfl
-      _ = G (tg i (F f)) := congrArg G (F.map_tg_is_tg_map _ _)
-      _ = tg i (G (F f)) := G.map_tg_is_tg_map _ _
+      (G ∘ F) (tg k f)
+      _ = G (F (tg k f)) := rfl
+      _ = G (tg k (F f)) := congrArg G (F.map_tg_is_tg_map _ _)
+      _ = tg k (G (F f)) := G.map_tg_is_tg_map _ _
   map_comp_is_comp_map := by
-    intro i f g comp_gf
+    intro k f g comp_gf
     calc
-      (G ∘ F) (g ♯[i] f ← comp_gf)
-      _ = G (F (g ♯[i] f ← comp_gf)) := rfl
-      _ = G ((F g) ♯[i] (F f) ← (F.comp_map comp_gf)) :=
+      (G ∘ F) (g ♯[k] f ← comp_gf)
+      _ = G (F (g ♯[k] f ← comp_gf)) := rfl
+      _ = G ((F g) ♯[k] (F f) ← (F.comp_map comp_gf)) :=
         congrArg G (F.map_comp_is_comp_map comp_gf)
-      _ = (G (F g)) ♯[i] (G (F f)) ← (G.comp_map (F.comp_map comp_gf)) :=
+      _ = (G (F g)) ♯[k] (G (F f)) ← (G.comp_map (F.comp_map comp_gf)) :=
         G.map_comp_is_comp_map (F.comp_map comp_gf)
 
 @[inherit_doc]
