@@ -16,8 +16,6 @@ namespace HigherCategoryTheory
 
 namespace SingleSortedNCategory
 
-open SingleSortedCategoryStruct
-
 -- TODO: Try to generalize the following tactics to work for every axiom.
 macro "discrete_above" n:ident base_axiom:ident : tactic =>
   `(tactic| (
@@ -94,11 +92,12 @@ macro "discrete_above2_4comp" n:ident base_axiom:ident : tactic =>
       · simp [dif_neg j_lt_n]
   ))
 
-/-- Given a structure of `SingleSortedNCategory` on `Obj` (for some `n : Nat`), we can construct
-another structure of `SingleSortedMCategory` on `Obj` (for some `m : Nat` with `n ≤ m`) by adding
-$m - n$ discrete dimensions above the `n`-th dimension. -/
-def toSingleSortedMCategory {n : ℕ} {Obj : Type u} [nS : SingleSortedNCategory n Obj]
-    (m : ℕ) : SingleSortedNCategory m Obj where
+/-- Given a structure of `SingleSortedNCategory` on `Obj` (for some `n : Nat`), we can construct a
+more general structure of `SingleSorted2CategoryFamily` on `Obj` for any `NatIndex` `index` by
+adding discrete dimensions above the `n`-th dimension. -/
+def toSingleSorted2CategoryFamilyDiscreteAbove {n : ℕ} {Obj : Type u}
+    (nS : SingleSortedNCategory n Obj)
+    (index : Type) [NatIndex index] : SingleSorted2CategoryFamily index Obj where
   Sc k := if h : k < n then nS.Sc ⟨k, h⟩ else id
   Tg k := if h : k < n then nS.Tg ⟨k, h⟩ else id
   PComp k g f := if h : k < n then nS.PComp ⟨k, h⟩ g f else ⟨g = f, fun _ ↦ f⟩
@@ -121,6 +120,14 @@ def toSingleSortedMCategory {n : ℕ} {Obj : Type u} [nS : SingleSortedNCategory
   sck_compj_is_compj_sck := by discrete_above2_1comp n nS.sck_compj_is_compj_sck
   tgk_compj_is_compj_tgk := by discrete_above2_1comp n nS.tgk_compj_is_compj_tgk
   exchange := by discrete_above2_4comp n nS.exchange
+
+/-- Given a structure of `SingleSortedNCategory` on `Obj` (for some `n : Nat`), we can construct
+another structure of `SingleSortedMCategory` on `Obj` (for some `m : Nat` with `n ≤ m`) by adding
+$m - n$ discrete dimensions above the `n`-th dimension. -/
+def toSingleSortedMCategoryDiscreteAbove {n : ℕ} {Obj : Type u}
+    (nS : SingleSortedNCategory n Obj)
+    (m : Nat) : SingleSortedNCategory m Obj :=
+  toSingleSorted2CategoryFamilyDiscreteAbove nS (Fin m)
 
 end SingleSortedNCategory
 

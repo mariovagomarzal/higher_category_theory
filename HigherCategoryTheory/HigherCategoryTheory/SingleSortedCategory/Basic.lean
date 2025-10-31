@@ -266,18 +266,18 @@ class SingleSorted2CategoryFamily (index : Type) [NatIndex index]
 
 /-- A single-sorted category: a `SingleSortedCategoryFamily` with a single dimension, indexed by
 `Fin 1`. -/
-class SingleSortedCategory (Obj : Type u)
-    extends SingleSortedCategoryFamily (Fin 1) Obj
+abbrev SingleSortedCategory (Obj : Type u) :=
+    SingleSortedCategoryFamily (Fin 1) Obj
 
 /-- A single-sorted 2-category: a `SingleSorted2CategoryFamily` with two dimensions, indexed by
 `Fin 2`. -/
-class SingleSorted2Category (Obj : Type u)
-    extends SingleSorted2CategoryFamily (Fin 2) Obj
+abbrev SingleSorted2Category (Obj : Type u) :=
+    SingleSorted2CategoryFamily (Fin 2) Obj
 
 /-- A single-sorted n-category for a fixed `n : ℕ`: a `SingleSorted2CategoryFamily` with `n`
 dimensions, indexed by `Fin n`. -/
-class SingleSortedNCategory (n : ℕ) (Obj : Type u)
-    extends SingleSorted2CategoryFamily (Fin n) Obj
+abbrev SingleSortedNCategory (n : ℕ) (Obj : Type u) :=
+  SingleSorted2CategoryFamily (Fin n) Obj
 
 /-- A single-sorted ω-category: a `SingleSorted2CategoryFamily` with infinitely many dimensions,
 indexed by `ℕ`. -/
