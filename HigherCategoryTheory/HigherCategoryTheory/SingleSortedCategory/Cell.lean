@@ -101,9 +101,9 @@ def is_discrete {index : Type} [NatIndex index] (Obj : Type u)
 
 end SingleSortedCategoryFamily
 
-namespace SingleSortedOmegaCategory
-
 open SingleSortedCategoryFamily
+
+namespace SingleSortedOmegaCategory
 
 /-- In an $\omega$-category, every morphism `f` belongs to $C_k$ for some $k : \mathbb{N}$.
 This is equivalent to the condition $C = \bigcup_{k \in \mathbb{N}} C_k$. -/
@@ -124,21 +124,21 @@ def fromUnionCells {Obj : Type u} [SingleSorted2CategoryFamily ℕ Obj]
     simp at union_cells
     exact union_cells f
 
+end SingleSortedOmegaCategory
+
 /--
 Given a structure of `SingleSorted2CategoryFamily` on `Obj` and index `ℕ` and, if there exists
 a natural number `n` such that `Obj` is discrete above dimension `n`, then we can construct a
 `SingleSortedOmegaCategory` structure on `Obj` since every morphism will be a $k$-cell for any
 `k ≥ n`.
 -/
-def fromDiscreteAbove {Obj : Type u} [SingleSorted2CategoryFamily ℕ Obj]
-    (discrete_above : ∃ n : ℕ, is_discrete_above Obj n) :
+def SingleSorted2CategoryFamily.toSingleSortedOmegaCategoryFromDiscreteAbove {Obj : Type u}
+    [SingleSorted2CategoryFamily ℕ Obj] (discrete_above : ∃ n : ℕ, is_discrete_above Obj n) :
     SingleSortedOmegaCategory Obj where
   is_cell := by
     intro f
     rcases discrete_above with ⟨n, h_discrete⟩
     use n
     exact h_discrete _ (le_refl n)
-
-end SingleSortedOmegaCategory
 
 end HigherCategoryTheory
