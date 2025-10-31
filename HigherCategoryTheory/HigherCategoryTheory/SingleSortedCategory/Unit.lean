@@ -22,13 +22,6 @@ instance instSingleSortedCategory : SingleSortedCategory Unit where
   Sc _ _ := ()
   Tg _ _ := ()
   PComp _ _ _ := ⟨True, (fun _ ↦ ())⟩
-  pcomp_dom := by
-    intros
-    apply Iff.intro
-    · intros
-      rfl
-    · intros
-      trivial
 
 /-- The unit type `Unit` is a single-sorted 2-category with a single morphism (the unique element
 `()`), which is both its own source and target. -/
@@ -36,12 +29,5 @@ instance instSingleSorted2Category : SingleSorted2Category Unit where
   Sc _ _ := ()
   Tg _ _ := ()
   PComp _ _ _ := ⟨True, (fun _ ↦ ())⟩
-  pcomp_dom := by
-    intros
-    apply Iff.intro
-    · intros
-      rfl
-    · intros
-      trivial
 
 end Unit

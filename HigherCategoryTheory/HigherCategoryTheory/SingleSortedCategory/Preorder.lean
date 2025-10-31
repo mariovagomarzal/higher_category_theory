@@ -29,14 +29,5 @@ instance instSingleSortedCategoryOfProduct (α : Type u) [Preorder α] :
       x₁ ≤ x₂ := h₁
       _ = y₁ := h.symm
       _ ≤ y₂ := h₂⟩⟩
-  pcomp_dom := by
-    intros
-    apply Iff.intro
-    · intros
-      simpa
-    · intro h
-      simp
-      simp at h
-      exact h
 
 end Preorder
