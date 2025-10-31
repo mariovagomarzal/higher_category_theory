@@ -75,6 +75,7 @@ class SingleSortedCategoryStruct (index : Type) [NatIndex index] (Obj : Type u) 
 
 /-- The composability condition at dimension `k`. Two morphisms `g` and `f` are composable at
 dimension `k` when `sc k g = tg k f`. -/
+@[simp]
 def sc_is_tg {index : Type} [NatIndex index] {Obj : Type u}
     [SingleSortedCategoryStruct index Obj]
     (k : index) (g f : Obj) : Prop :=
@@ -95,6 +96,7 @@ theorem dom_of_sc_is_tg {index : Type} [NatIndex index] {Obj : Type u}
 /-- The (total) composition operation at dimension `k`, defined for composable morphisms.
 Given `f` and `g` with a proof `composable_gf : sc_is_tg k g f`, this returns the
 composite `g ♯[k] f`. -/
+@[simp]
 def SingleSortedCategoryStruct.comp {index : Type} [NatIndex index] {Obj : Type u}
     [SingleSortedCategoryStruct index Obj]
     (k : index) (g f : Obj) (composable_gf : sc_is_tg k g f) : Obj :=
