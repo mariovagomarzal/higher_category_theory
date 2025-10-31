@@ -37,8 +37,8 @@ universe u
 
 namespace HigherCategoryTheory
 
-/-- A `SingleSortedCategoryStruct` on a type `Obj` indexed by a type `index` (equipped with
-`NatIndex`) consists of:
+/-- A `SingleSortedCategoryStruct` indexed by a type `index` (equipped with `NatIndex`) on a
+type `Obj` consists of:
 - Source and target operations `Sc` and `Tg` at each dimension `k : index`.
 - A partial composition operation `PComp` at each dimension.
 - An axiom `pcomp_dom` asserting that composition is defined precisely when
@@ -47,7 +47,7 @@ namespace HigherCategoryTheory
 This is the basic structure underlying single-sorted categories, before imposing any other
 axioms (like identity laws, associativity, etc.). -/
 @[ext]
-class SingleSortedCategoryStruct (Obj : Type u) (index : Type) [NatIndex index] where
+class SingleSortedCategoryStruct (index : Type) [NatIndex index] (Obj : Type u) where
   /-- Source operation at dimension `k`. -/
   Sc : index → Obj → Obj
   /-- Target operation at dimension `k`. -/
@@ -75,8 +75,8 @@ class SingleSortedCategoryStruct (Obj : Type u) (index : Type) [NatIndex index] 
 
 /-- The composability condition at dimension `k`. Two morphisms `g` and `f` are composable at
 dimension `k` when `sc k g = tg k f`. -/
-def sc_is_tg {Obj : Type u} {index : Type} [NatIndex index]
-    [SingleSortedCategoryStruct Obj index]
+def sc_is_tg {index : Type} [NatIndex index] {Obj : Type u}
+    [SingleSortedCategoryStruct index Obj]
     (k : index) (g f : Obj) : Prop :=
   sc k g = tg k f
 
@@ -86,8 +86,8 @@ composition `g ♯.[k] f` is defined.
 
 This can be used to get a proof of the domain of the partial composition.
 -/
-theorem dom_of_sc_is_tg {Obj : Type u} {index : Type} [NatIndex index]
-    [SingleSortedCategoryStruct Obj index]
+theorem dom_of_sc_is_tg {index : Type} [NatIndex index] {Obj : Type u}
+    [SingleSortedCategoryStruct index Obj]
     {k : index} {f g : Obj} (comp_gf : sc_is_tg k g f) :
     (g ♯.[k] f).Dom :=
   SingleSortedCategoryStruct.pcomp_dom.mpr comp_gf
@@ -95,8 +95,8 @@ theorem dom_of_sc_is_tg {Obj : Type u} {index : Type} [NatIndex index]
 /-- The (total) composition operation at dimension `k`, defined for composable morphisms.
 Given `f` and `g` with a proof `composable_gf : sc_is_tg k g f`, this returns the
 composite `g ♯[k] f`. -/
-def SingleSortedCategoryStruct.comp {Obj : Type u} {index : Type} [NatIndex index]
-    [SingleSortedCategoryStruct Obj index]
+def SingleSortedCategoryStruct.comp {index : Type} [NatIndex index] {Obj : Type u}
+    [SingleSortedCategoryStruct index Obj]
     (k : index) (g f : Obj) (composable_gf : sc_is_tg k g f) : Obj :=
   (g ♯.[k] f).get (dom_of_sc_is_tg composable_gf)
 
@@ -105,8 +105,8 @@ scoped notation g " ♯[" k "] " f " ← " comp_gf:100 => SingleSortedCategorySt
 
 /-- Congruence lemma for composition: if `g₁ = g₂` and `f₁ = f₂`, and both pairs are composable,
 then their composites are equal. -/
-theorem congr_pcomp {Obj : Type u} {index : Type} [NatIndex index]
-    [S : SingleSortedCategoryStruct Obj index]
+theorem congr_pcomp {index : Type} [NatIndex index] {Obj : Type u}
+    [S : SingleSortedCategoryStruct index Obj]
     {k : index} {f₁ f₂ g₁ g₂ : Obj} (eq_g₁g₂ : g₁ = g₂) (eq_f₁f₂ : f₁ = f₂)
     (comp_g₁f₁ : sc_is_tg k g₁ f₁) (comp_g₂f₂ : sc_is_tg k g₂ f₂) :
     g₁ ♯[k] f₁ ← comp_g₁f₁ = g₂ ♯[k] f₂ ← comp_g₂f₂ := by
@@ -118,8 +118,8 @@ theorem congr_pcomp {Obj : Type u} {index : Type} [NatIndex index]
 
 /-- A `SingleSortedCategoryFamily` is a `SingleSortedCategoryStruct` satisfying the axioms of a
 single-sorted category at each dimension. -/
-class SingleSortedCategoryFamily (Obj : Type u) (index : Type) [NatIndex index]
-    extends SingleSortedCategoryStruct Obj index where
+class SingleSortedCategoryFamily (index : Type) [NatIndex index] (Obj : Type u)
+    extends SingleSortedCategoryStruct index Obj where
   /-- Applying source twice at dimension `k` is idempotent. -/
   sc_sc_is_sc : ∀ (k : index) (f : Obj), sc k (sc k f) = sc k f := by intros; rfl
   /-- The target of a source is itself. -/
@@ -160,9 +160,9 @@ class SingleSortedCategoryFamily (Obj : Type u) (index : Type) [NatIndex index]
 
 /-- A `SingleSorted2CategoryFamily` is a `SingleSortedCategoryFamily` with additional axioms
 ensuring compatibility between two dimensions of composition. -/
-class SingleSorted2CategoryFamily (Obj : Type u)
-    (index : Type) [NatIndex index]
-    extends SingleSortedCategoryFamily Obj index where
+class SingleSorted2CategoryFamily (index : Type) [NatIndex index]
+    (Obj : Type u)
+    extends SingleSortedCategoryFamily index Obj where
   /-- Applying source at dimension `k` to a source at a lower dimension `j < k` yields the source
   at dimension `j`. -/
   sck_scj_is_scj : ∀ {k j : index} (f : Obj),
@@ -265,22 +265,22 @@ class SingleSorted2CategoryFamily (Obj : Type u)
 /-- A single-sorted category: a `SingleSortedCategoryFamily` with a single dimension, indexed by
 `Fin 1`. -/
 class SingleSortedCategory (Obj : Type u)
-    extends SingleSortedCategoryFamily Obj (Fin 1)
+    extends SingleSortedCategoryFamily (Fin 1) Obj
 
 /-- A single-sorted 2-category: a `SingleSorted2CategoryFamily` with two dimensions, indexed by
 `Fin 2`. -/
 class SingleSorted2Category (Obj : Type u)
-    extends SingleSorted2CategoryFamily Obj (Fin 2)
+    extends SingleSorted2CategoryFamily (Fin 2) Obj
 
 /-- A single-sorted n-category for a fixed `n : ℕ`: a `SingleSorted2CategoryFamily` with `n`
 dimensions, indexed by `Fin n`. -/
-class SingleSortedNCategory (Obj : Type u) (n : ℕ)
-    extends SingleSorted2CategoryFamily Obj (Fin n)
+class SingleSortedNCategory (n : ℕ) (Obj : Type u)
+    extends SingleSorted2CategoryFamily (Fin n) Obj
 
 /-- A single-sorted ω-category: a `SingleSorted2CategoryFamily` with infinitely many dimensions,
 indexed by `ℕ`. -/
 class SingleSortedOmegaCategory (Obj : Type u)
-    extends SingleSorted2CategoryFamily Obj ℕ where
+    extends SingleSorted2CategoryFamily ℕ Obj where
   /-- Every element is a k-cell for some `k : ℕ`. -/
   is_cell : ∀ f : Obj, ∃ k : ℕ, sc k f = f
 
