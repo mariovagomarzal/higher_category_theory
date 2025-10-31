@@ -20,7 +20,7 @@ respectively.
 
 ## Implementation notes
 
-The type class `CoeFun` allows treating a `F : SingleSortedFunctorFamily C D index` as a function,
+The type class `CoeFun` allows treating a `F : SingleSortedFunctorFamily index C D` as a function,
 writing `F f` instead of `F.map f` for the action of `F` on a morphism `f`.
 
 Each single-sorted functor type is defined as an abbreviation of the more general
@@ -36,10 +36,10 @@ namespace HigherCategoryTheory
 /-- A `SingleSortedFunctorFamily` from `C` to `D` (both indexed by `index`) is a mapping that
 preserves the single-sorted category structure. -/
 @[ext]
-structure SingleSortedFunctorFamily (C : Type u₁) (D : Type u₂)
-    (index : Type) [NatIndex index]
-    [SingleSortedCategoryStruct C index]
-    [SingleSortedCategoryStruct D index] where
+structure SingleSortedFunctorFamily (index : Type) [NatIndex index]
+    (C : Type u₁) (D : Type u₂)
+    [SingleSortedCategoryStruct index C]
+    [SingleSortedCategoryStruct index D] where
   /-- The underlying function on morphisms. -/
   map : C → D
   /-- The map preserves sources: `F (sc k f) = sc k (F f)`. -/
@@ -60,11 +60,11 @@ structure SingleSortedFunctorFamily (C : Type u₁) (D : Type u₂)
 
 /-- Coercion allowing us to write `F f` instead of `F.map f` for the action of a functor `F`
 on a morphism `f`. -/
-instance CoeFun.instSingleSortedFunctorFamily {C : Type u₁} {D : Type u₂}
-    {index : Type} [NatIndex index]
-    [SingleSortedCategoryStruct C index]
-    [SingleSortedCategoryStruct D index] :
-    CoeFun (SingleSortedFunctorFamily C D index) fun _ ↦ C → D :=
+instance CoeFun.instSingleSortedFunctorFamily {index : Type} [NatIndex index]
+    {C : Type u₁} {D : Type u₂}
+    [SingleSortedCategoryStruct index C]
+    [SingleSortedCategoryStruct index D] :
+    CoeFun (SingleSortedFunctorFamily index C D) fun _ ↦ C → D :=
   ⟨fun F ↦ F.map⟩
 
 namespace SingleSortedFunctorFamily
@@ -76,14 +76,14 @@ Composition of functors. Given functors `F : C → D` and `G : D → E`, their c
 This operation preserves all the required functor properties: it preserves sources, targets,
 and composition at each dimension.
 -/
-def comp {C : Type u₁} {D : Type u₂} {E : Type u₃}
-    {index : Type} [NatIndex index]
-    [SingleSortedCategoryStruct C index]
-    [SingleSortedCategoryStruct D index]
-    [SingleSortedCategoryStruct E index]
-    (G : SingleSortedFunctorFamily D E index)
-    (F : SingleSortedFunctorFamily C D index) :
-    SingleSortedFunctorFamily C E index where
+def comp {index : Type} [NatIndex index]
+    {C : Type u₁} {D : Type u₂} {E : Type u₃}
+    [SingleSortedCategoryStruct index C]
+    [SingleSortedCategoryStruct index D]
+    [SingleSortedCategoryStruct index E]
+    (G : SingleSortedFunctorFamily index D E)
+    (F : SingleSortedFunctorFamily index C D) :
+    SingleSortedFunctorFamily index C E where
   map := G ∘ F
   map_sc_is_sc_map := by
     intro k f
@@ -114,10 +114,10 @@ scoped[HigherCategoryTheory] infixr:80 " ⊚ " => SingleSortedFunctorFamily.comp
 
 /-- The identity functor on a single-sorted category `C`. It maps each morphism to itself and
 trivially preserves all structure. -/
-def id {C : Type u₁}
-    {index : Type} [NatIndex index]
-    [SingleSortedCategoryStruct C index] :
-    SingleSortedFunctorFamily C C index where
+def id {index : Type} [NatIndex index]
+    {C : Type u₁}
+    [SingleSortedCategoryStruct index C] :
+    SingleSortedFunctorFamily index C C where
   map := fun x ↦ x
   map_sc_is_sc_map _ _ := rfl
   map_tg_is_tg_map _ _ := rfl
@@ -132,24 +132,24 @@ end SingleSortedFunctorFamily
 abbrev SingleSortedFunctor (C : Type u₁) (D : Type u₂)
     [SingleSortedCategory C]
     [SingleSortedCategory D] :=
-  SingleSortedFunctorFamily C D (Fin 1)
+  SingleSortedFunctorFamily (Fin 1) C D
 
 /-- A `SingleSorted2Functor` is a functor between single-sorted 2-categories. -/
 abbrev SingleSorted2Functor (C : Type u₁) (D : Type u₂)
     [SingleSorted2Category C]
     [SingleSorted2Category D] :=
-  SingleSortedFunctorFamily C D (Fin 2)
+  SingleSortedFunctorFamily (Fin 2) C D
 
 /-- A `SingleSortedNFunctor` is a functor between single-sorted $n$-categories. -/
-abbrev SingleSortedNFunctor (C : Type u₁) (D : Type u₂) (n : ℕ)
-    [SingleSortedNCategory C n]
-    [SingleSortedNCategory D n] :=
-  SingleSortedFunctorFamily C D (Fin n)
+abbrev SingleSortedNFunctor (n : ℕ) (C : Type u₁) (D : Type u₂)
+    [SingleSortedNCategory n C]
+    [SingleSortedNCategory n D] :=
+  SingleSortedFunctorFamily (Fin n) C D
 
 /-- A `SingleSortedOmegaFunctor` is a functor between single-sorted $\omega$-categories. -/
 abbrev SingleSortedOmegaFunctor (C : Type u₁) (D : Type u₂)
     [SingleSortedOmegaCategory C]
     [SingleSortedOmegaCategory D] :=
-  SingleSortedFunctorFamily C D ℕ
+  SingleSortedFunctorFamily ℕ C D
 
 end HigherCategoryTheory

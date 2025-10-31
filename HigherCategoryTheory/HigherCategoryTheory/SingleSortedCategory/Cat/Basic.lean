@@ -74,7 +74,7 @@ instance SingleSorted2Cat : LargeCategory SingleSorted2CategoriesFamily where
 the large category `SingleSortedNCat`. -/
 structure SingleSortedNCategoriesFamily (n : ℕ) extends ObjectsFamily where
   /-- The `SingleSortedNCategory` structure on the underlying type. -/
-  _inst : SingleSortedNCategory Obj n
+  _inst : SingleSortedNCategory n Obj
 
 attribute [instance] SingleSortedNCategoriesFamily._inst
 
@@ -82,7 +82,7 @@ attribute [instance] SingleSortedNCategoriesFamily._inst
 of single-sorted $n$-categories (`SingleSortedNCategoriesFamily n`), and morphisms are
 single-sorted $n$-functors between them. -/
 instance SingleSortedNCat {n : ℕ} : LargeCategory (SingleSortedNCategoriesFamily n) where
-  Hom C D := SingleSortedNFunctor C.Obj D.Obj n
+  Hom C D := SingleSortedNFunctor n C.Obj D.Obj
   id _ := idₛ
   comp F G := G ⊚ F
 
