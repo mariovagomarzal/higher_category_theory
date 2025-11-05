@@ -5,12 +5,13 @@ Authors: Enric Cosme Llópez, Raul Ruiz Mora, Mario Vago Marzal
 -/
 import HigherCategoryTheory.HigherCategoryTheory.SingleSortedCategory.Basic
 import HigherCategoryTheory.HigherCategoryTheory.SingleSortedCategory.Cell
+import HigherCategoryTheory.HigherCategoryTheory.SingleSortedCategory.Functor
 
 /-!
 TODO: Document this file.
 -/
 
-universe u
+universe u u₁ u₂
 
 namespace HigherCategoryTheory
 
@@ -121,14 +122,54 @@ def toSingleSorted2CategoryFamilyDiscreteAbove {n : ℕ} {Obj : Type u}
   tgk_compj_is_compj_tgk := by discrete_above2_1comp n nS.tgk_compj_is_compj_tgk
   exchange := by discrete_above2_4comp n nS.exchange
 
+-- TODO: Document the case when `m < n`, which consists in forgetting `n - m` dimensions.
 /-- Given a structure of `SingleSortedNCategory` on `Obj` (for some `n : Nat`), we can construct
-another structure of `SingleSortedMCategory` on `Obj` (for some `m : Nat` with `n ≤ m`) by adding
-$m - n$ discrete dimensions above the `n`-th dimension. -/
+another structure of `SingleSortedNCategory` on `Obj` (for some `m : Nat`) by adding $m - n$
+discrete dimensions above the `n`-th dimension. -/
 def toSingleSortedMCategoryDiscreteAbove {n : ℕ} {Obj : Type u}
     (nS : SingleSortedNCategory n Obj)
     (m : Nat) : SingleSortedNCategory m Obj :=
   toSingleSorted2CategoryFamilyDiscreteAbove nS (Fin m)
 
 end SingleSortedNCategory
+
+namespace SingleSortedFunctorFamily
+
+/-- Given a structure of `SingleSortedNFunctor` between `C` and `D` (for some `n : Nat`), we can
+construct a more general structure of `SingleSortedFunctorFamily` between `C` and `D` for any
+`NatIndex` `index` with `C` and `D` endowed with the structures of `SingleSorted2CategoryFamily`
+obtained by the defined discretization method. -/
+def toSingleSortedMFunctorDiscreteAbove {n : ℕ} {C : Type u₁} {D : Type u₂}
+    [nC : SingleSortedNCategory n C]
+    [nD : SingleSortedNCategory n D]
+    (nF : SingleSortedNFunctor n C D)
+    (index : Type) [NatIndex index] :
+    letI := nC.toSingleSorted2CategoryFamilyDiscreteAbove index
+    letI := nD.toSingleSorted2CategoryFamilyDiscreteAbove index
+    SingleSortedFunctorFamily index C D :=
+  let _ := nC.toSingleSorted2CategoryFamilyDiscreteAbove index
+  let _ := nD.toSingleSorted2CategoryFamilyDiscreteAbove index
+  {
+    map := nF.map
+    map_sc_is_sc_map := by sorry
+    map_tg_is_tg_map := by sorry
+    map_comp_is_comp_map := by sorry
+  }
+
+/-- Given a structure of `SingleSortedNFunctor` between `C` and `D` (for some `n : Nat`), we can
+construct another structure of `SingleSortedNFunctor` between `C` and `D` (for some `m : Nat`) with
+`C` and `D` endowed with the structures of `SingleSortedNCategory` obtained by the defined
+discretization method. -/
+def toSingleSortedMFunctorDiscreteAboveN {n : ℕ} {C : Type u₁} {D : Type u₂}
+    [nC : SingleSortedNCategory n C]
+    [nD : SingleSortedNCategory n D]
+    (nF : SingleSortedNFunctor n C D)
+    (m : Nat) :
+    letI := nC.toSingleSortedMCategoryDiscreteAbove m
+    letI := nD.toSingleSortedMCategoryDiscreteAbove m
+    SingleSortedNFunctor m C D :=
+  nF.toSingleSortedMFunctorDiscreteAbove (Fin m)
+
+end SingleSortedFunctorFamily
 
 end HigherCategoryTheory
