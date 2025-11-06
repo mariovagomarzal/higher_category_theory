@@ -96,6 +96,7 @@ macro "discrete_above2_4comp" n:ident base_axiom:ident : tactic =>
 /-- Given a structure of `SingleSortedNCategory` on `Obj` (for some `n : Nat`), we can construct a
 more general structure of `SingleSorted2CategoryFamily` on `Obj` for any `NatIndex` `index` by
 adding discrete dimensions above the `n`-th dimension. -/
+@[simp]
 def toSingleSorted2CategoryFamilyDiscreteAbove {n : ℕ} {Obj : Type u}
     (nS : SingleSortedNCategory n Obj)
     (index : Type) [NatIndex index] : SingleSorted2CategoryFamily index Obj where
@@ -126,6 +127,7 @@ def toSingleSorted2CategoryFamilyDiscreteAbove {n : ℕ} {Obj : Type u}
 /-- Given a structure of `SingleSortedNCategory` on `Obj` (for some `n : Nat`), we can construct
 another structure of `SingleSortedNCategory` on `Obj` (for some `m : Nat`) by adding $m - n$
 discrete dimensions above the `n`-th dimension. -/
+@[simp]
 def toSingleSortedMCategoryDiscreteAbove {n : ℕ} {Obj : Type u}
     (nS : SingleSortedNCategory n Obj)
     (m : Nat) : SingleSortedNCategory m Obj :=
@@ -135,10 +137,32 @@ end SingleSortedNCategory
 
 namespace SingleSortedFunctorFamily
 
+-- TODO: As with the previous tactics related to categories, try to generalize these tactics to work
+-- for every axiom.
+macro "functor_discrete_above" n:ident base_axiom:ident : tactic =>
+  `(tactic| (
+    intro k f
+    by_cases k_lt_n : k < $n
+    · simp [dif_pos k_lt_n]
+      apply $base_axiom
+    · simp [dif_neg k_lt_n]
+  ))
+
+macro "functor_discrete_above_1comp" n:ident base_axiom:ident : tactic =>
+  `(tactic| (
+    intro k f g comp_gf
+    by_cases k_lt_n : k < $n
+    · simp [dif_pos k_lt_n]
+      simp [dif_pos k_lt_n] at comp_gf
+      apply $base_axiom comp_gf
+    · simp [dif_neg k_lt_n]
+  ))
+
 /-- Given a structure of `SingleSortedNFunctor` between `C` and `D` (for some `n : Nat`), we can
 construct a more general structure of `SingleSortedFunctorFamily` between `C` and `D` for any
 `NatIndex` `index` with `C` and `D` endowed with the structures of `SingleSorted2CategoryFamily`
 obtained by the defined discretization method. -/
+@[simp]
 def toSingleSortedMFunctorDiscreteAbove {n : ℕ} {C : Type u₁} {D : Type u₂}
     [nC : SingleSortedNCategory n C]
     [nD : SingleSortedNCategory n D]
@@ -151,15 +175,16 @@ def toSingleSortedMFunctorDiscreteAbove {n : ℕ} {C : Type u₁} {D : Type u₂
   let _ := nD.toSingleSorted2CategoryFamilyDiscreteAbove index
   {
     map := nF.map
-    map_sc_is_sc_map := by sorry
-    map_tg_is_tg_map := by sorry
-    map_comp_is_comp_map := by sorry
+    map_sc_is_sc_map := by functor_discrete_above n nF.map_sc_is_sc_map
+    map_tg_is_tg_map := by functor_discrete_above n nF.map_tg_is_tg_map
+    map_comp_is_comp_map := by functor_discrete_above_1comp n nF.map_comp_is_comp_map
   }
 
 /-- Given a structure of `SingleSortedNFunctor` between `C` and `D` (for some `n : Nat`), we can
 construct another structure of `SingleSortedNFunctor` between `C` and `D` (for some `m : Nat`) with
 `C` and `D` endowed with the structures of `SingleSortedNCategory` obtained by the defined
 discretization method. -/
+@[simp]
 def toSingleSortedMFunctorDiscreteAboveN {n : ℕ} {C : Type u₁} {D : Type u₂}
     [nC : SingleSortedNCategory n C]
     [nD : SingleSortedNCategory n D]
