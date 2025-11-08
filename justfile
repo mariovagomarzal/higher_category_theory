@@ -2,18 +2,11 @@
 default:
     @just --list --unsorted
 
+# Lean project variables
 lean_project := "HigherCategoryTheory"
 get_lean_version := "$(cat lean-toolchain | cut -d':' -f2)"
 
-[group("env")]
-[doc("Cache dependencies for the Lean project.")]
-cache:
-  lake exe cache get
-
-[doc("Build the Lean project.")]
-build TARGETS=lean_project:
-  lake build {{TARGETS}}
-
+# Documentation variables
 website_dir := "website/"
 website_target := website_dir + "_site/"
 docs_build_dir := "docbuild/"
@@ -25,6 +18,21 @@ blueprint_print_file := blueprint_print_dir + "print.pdf"
 blueprint_print_target := website_dir + "print.pdf"
 blueprint_web_dir := blueprint_dir + "web/"
 blueprint_web_target := website_dir + "blueprint/"
+
+[group("env")]
+[doc("Cache dependencies for the Lean project.")]
+cache:
+  lake exe cache get
+
+[group("env")]
+[doc("Install Ruby dependencies for the website.")]
+bundler:
+  cd {{website_dir}} && bundle install
+
+[group("lean")]
+[doc("Build the Lean project.")]
+build TARGETS=lean_project:
+  lake build {{TARGETS}}
 
 [group("docs")]
 [doc("Build the documentation for the Lean project.")]
@@ -87,7 +95,6 @@ blueprint: blueprint-print blueprint-web
 [doc("Build the project website.")]
 website JEKYLL_ENV="":
   rm -rf {{website_target}}
-  cd {{website_dir}} && bundle install
   cd {{website_dir}} && JEKYLL_ENV={{JEKYLL_ENV}} bundle exec jekyll build -d ../{{website_target}}
 
 [group("docs")]

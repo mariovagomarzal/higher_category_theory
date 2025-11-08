@@ -79,5 +79,12 @@
       cwd = ".";
       description = "Run the 'cache' Just recipe";
     };
+
+    "env:bundler" = {
+      exec = "just bundler";
+      after = ["devenv:enterShell"];
+      cwd = ".";
+      description = "Run the 'bundler' Just recipe";
+    };
   };
 }
