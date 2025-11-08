@@ -29,6 +29,10 @@ cache:
 bundler:
   cd {{website_dir}} && bundle install
 
+[group("env")]
+[doc("Run all the environment setup tasks. Intended for non-Nix environments.")]
+env: cache bundler
+
 [group("lean")]
 [doc("Build the Lean project.")]
 build TARGETS=lean_project:
