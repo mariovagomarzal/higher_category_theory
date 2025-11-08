@@ -93,4 +93,4 @@ website JEKYLL_ENV="":
 [group("docs")]
 [doc("Serve the project website locally.")]
 serve:
-  cd {{website_target}} && python -m http.server 8000
+  cd {{website_target}} && jekyll serve
