@@ -53,6 +53,16 @@
         enable = true;
         description = "Run the Alejandra formatter on Nix files";
       };
+
+      bibtool = {
+        enable = true;
+        name = "bibtool";
+        description = "Format BibTeX files using bibtool";
+        package = pkgs.bibtool;
+        entry = "./scripts/bibtool_format.py";
+        files = "\\.bib$";
+        pass_filenames = true;
+      };
     };
   };
 
