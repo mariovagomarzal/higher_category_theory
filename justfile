@@ -9,6 +9,7 @@ get_lean_version := "$(cat lean-toolchain | cut -d':' -f2)"
 # Documentation variables
 website_dir := "website/"
 website_target := website_dir + "_site/"
+references := "docs/references.bib"
 docs_build_dir := "docbuild/"
 docs_dir := docs_build_dir + ".lake/build/doc/"
 docs_target := website_dir + "docs/"
@@ -65,6 +66,9 @@ docs:
   scope = "leanprover"
   rev = "{{get_lean_version}}"
   EOF
+
+  mkdir -p docs/
+  cp ../{{references}} docs/
 
   MATHLIB_NO_CACHE_ON_UPDATE=1 lake update {{lean_project}}
   lake build {{lean_project}}:docs
