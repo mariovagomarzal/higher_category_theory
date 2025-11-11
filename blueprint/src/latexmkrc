@@ -1,5 +1,4 @@
-# This file configures the latexmk command you can use to compile
-# the pdf version of the blueprint
+# Latexmk configuration file, used to compile the printable version of the Blueprint.
 $pdf_mode = 1;
-$pdflatex = 'xelatex -synctex=1';
+$pdflatex = 'lualatex -synctex=1';
 @default_files = ('print.tex');

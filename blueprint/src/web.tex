@@ -1,27 +1,11 @@
-% This file makes a web version of the blueprint
-% It should include all the \usepackage needed for this version.
-% The template includes standard AMS packages.
-% It is otherwise a very minimal preamble (you should probably at least
-% add cleveref and tikz-cd).
-
+%= Entry point for the web version of the Blueprint. =%
 \documentclass{report}
 
-\usepackage{amssymb, amsthm, amsmath}
-\usepackage{hyperref}
-\usepackage[showmore, dep_graph]{blueprint}
-
-
-\input{macros/common}
-\input{macros/web}
-
-\home{}
-\github{https://github.com/mariovagomarzal/higher_category_theory}
-\dochome{https://mariovagomarzal.github.io/higher_category_theory/docs}
-
-\title{A Formalization of Higher-Order Categories in Lean 4}
-\author{Enric Cosme Llópez \and Raul Ruiz Mora \and Mario Vago Marzal}
+\input{preamble/common}
+\input{preamble/web}
 
 \begin{document}
-\maketitle
-\input{content}
+  \maketitle
+
+  \input{content}
 \end{document}
