@@ -1,11 +1,14 @@
-# print output folder
-print
+# Print output folder
+print/
 
-# web output folder
-web
+# Web output folder
+web/
 
-# web artifacts
+# Web artifacts
 *.paux
 
-# lean artifacts
+# Lean artifacts
 lean_decls
+
+# References file
+references.bib

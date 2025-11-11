@@ -5,16 +5,16 @@
 .devenv*
 devenv.local.nix
 
-# direnv
+# Direnv
 .direnv
 
-# pre-commit
+# Pre-commit
 .pre-commit-config.yaml
 
-# gitlint
+# Gitlint
 .gitlint
 
-# lake
+# Lake
 **/.lake
 
 # Lean documentation build directory

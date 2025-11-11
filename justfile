@@ -14,6 +14,7 @@ docs_build_dir := "docbuild/"
 docs_dir := docs_build_dir + ".lake/build/doc/"
 docs_target := website_dir + "docs/"
 blueprint_dir := "blueprint/"
+blueprint_src := blueprint_dir + "src/"
 blueprint_print_dir := blueprint_dir + "print/"
 blueprint_print_file := blueprint_print_dir + "print.pdf"
 blueprint_print_target := website_dir + "print.pdf"
@@ -77,8 +78,15 @@ docs:
   rm -rf {{docs_target}}
   cp -r {{docs_dir}} {{docs_target}}
 
+[private]
 [group("docs")]
-[doc("Build the Blueprint PDF.")]
+[doc("Copy the references file to the blueprint source directory.")]
+blueprint-references:
+  cp {{references}} {{blueprint_src}}
+
+[private]
+[group("docs")]
+[doc("Build the blueprint PDF.")]
 blueprint-print:
   rm -rf {{blueprint_print_dir}}
   leanblueprint pdf
@@ -86,8 +94,9 @@ blueprint-print:
   rm -f {{blueprint_print_target}}
   cp {{blueprint_print_file}} {{blueprint_print_target}}
 
+[private]
 [group("docs")]
-[doc("Build the Blueprint website.")]
+[doc("Build the blueprint website.")]
 blueprint-web:
   rm -rf {{blueprint_web_dir}}
   leanblueprint web
@@ -96,8 +105,8 @@ blueprint-web:
   cp -r {{blueprint_web_dir}} {{blueprint_web_target}}
 
 [group("docs")]
-[doc("Build the Blueprint (PDF and web).")]
-blueprint: blueprint-print blueprint-web
+[doc("Build the project blueprint (PDF and web).")]
+blueprint: blueprint-references blueprint-print blueprint-web
 
 [group("docs")]
 [doc("Build the project website.")]
