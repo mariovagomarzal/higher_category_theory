@@ -5,7 +5,8 @@ print/
 web/
 
 # Web artifacts
-*.paux
+web.paux
+web.bbl
 
 # Lean artifacts
 lean_decls
