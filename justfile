@@ -118,3 +118,10 @@ website JEKYLL_ENV="":
 [doc("Serve the project website locally.")]
 serve:
   cd {{website_target}} && jekyll serve
+
+[group("style")]
+[doc("Format references files with bibtool.")]
+format-references INPUT_FILES=references:
+  @./scripts/bibtool_format.py {{INPUT_FILES}}
+
+alias fr := format-references
