@@ -31,12 +31,14 @@ namespace SingleSortedCategoryFamily
 
 /-- A morphism `f` is a $k$-cell (via source) if `sc k f = f`. This means `f` behaves as an
 identity at dimension $k$. -/
+@[simp]
 def id_sc {index : Type} [NatIndex index] {Obj : Type u}
     [SingleSortedCategoryFamily index Obj] (k : index) (f : Obj) : Prop :=
   sc k f = f
 
 /-- A morphism `f` is a $k$-cell (via target) if `tg k f = f`. This means `f` behaves as an
 identity at dimension $k$. -/
+@[simp]
 def id_tg {index : Type} [NatIndex index] {Obj : Type u}
     [SingleSortedCategoryFamily index Obj] (k : index) (f : Obj) : Prop :=
   tg k f = f
@@ -62,12 +64,14 @@ theorem id_sc_iff_id_tg {index : Type} [NatIndex index] {Obj : Type u}
 
 /-- The set $C_k$ of all $k$-cells in `Obj`, defined as those morphisms `f` satisfying
 `sc k f = f`. -/
+@[simp]
 def cell {index : Type} [NatIndex index] (Obj : Type u)
     [SingleSortedCategoryFamily index Obj] (k : index) : Set Obj :=
   {f : Obj | id_sc k f}
 
 /-- The set of all $k$-cells in `Obj`, defined via the target operation as those morphisms `f`
 satisfying `tg k f = f`. -/
+@[simp]
 def cell_tg {index : Type} [NatIndex index] (Obj : Type u)
     [SingleSortedCategoryFamily index Obj] (k : index) : Set Obj :=
   {f : Obj | id_tg k f}
