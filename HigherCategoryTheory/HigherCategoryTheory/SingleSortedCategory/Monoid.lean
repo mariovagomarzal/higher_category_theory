@@ -25,17 +25,8 @@ instance instSingleSortedCategory (M : Type u) [Monoid M] : SingleSortedCategory
   Sc _ _ := 1
   Tg _ _ := 1
   PComp _ b a := ⟨_, fun _ ↦ b * a⟩
-  pcomp_dom := by
-    intros
-    apply Iff.intro
-    · intros
-      rfl
-    · intro h
-      simp
-      simp at h
-      exact h
-  comp_sc_is_id := mul_one _
-  comp_tg_is_id := one_mul _
+  comp_sc_is_id _ _ := mul_one _
+  comp_tg_is_id _ _ := one_mul _
   assoc _ _ := (mul_assoc _ _ _).symm
 
 end Monoid

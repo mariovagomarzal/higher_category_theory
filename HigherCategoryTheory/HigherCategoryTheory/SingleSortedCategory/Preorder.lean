@@ -22,21 +22,12 @@ open HigherCategoryTheory
 category, where composition corresponds to transitivity of the order relation. -/
 instance instSingleSortedCategoryOfProduct (α : Type u) [Preorder α] :
     SingleSortedCategory ({(x, y) : α × α | x ≤ y}) where
-  Sc := fun _ ⟨(x, _), h⟩ ↦ ⟨(x, x), le_refl x⟩
-  Tg := fun _ ⟨(_, y), h⟩ ↦ ⟨(y, y), le_refl y⟩
-  PComp := fun _ ⟨(x₂, y₂), h₂⟩ ⟨(x₁, y₁), h₁⟩ ↦
-    ⟨x₂ = y₁, fun h ↦ ⟨(x₁, y₂), calc
-      x₁ ≤ y₁ := h₁
-      _ = x₂ := h.symm
+  Sc := fun _ ⟨(y₁, _), h⟩ ↦ ⟨(y₁, y₁), le_refl y₁⟩
+  Tg := fun _ ⟨(_, x₂), h⟩ ↦ ⟨(x₂, x₂), le_refl x₂⟩
+  PComp := fun _ ⟨(y₁, y₂), h₂⟩ ⟨(x₁, x₂), h₁⟩ ↦
+    ⟨y₁ = x₂, fun h ↦ ⟨(x₁, y₂), calc
+      x₁ ≤ x₂ := h₁
+      _ = y₁ := h.symm
       _ ≤ y₂ := h₂⟩⟩
-  pcomp_dom := by
-    intros
-    apply Iff.intro
-    · intros
-      simpa
-    · intro h
-      simp
-      simp at h
-      exact h
 
 end Preorder

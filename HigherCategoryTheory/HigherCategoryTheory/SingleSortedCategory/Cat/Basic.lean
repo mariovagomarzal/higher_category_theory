@@ -10,16 +10,14 @@ import HigherCategoryTheory.HigherCategoryTheory.SingleSortedCategory.Functor
 /-!
 # Categories of single-sorted higher-order categories
 
-This file defines the large categories whose objects are single-sorted categories, 2-categories,
+This file defines the categories whose objects are single-sorted categories, 2-categories,
 $n$-categories, and $\omega$-categories, with functors as morphisms.
 
 ## Implementation notes
 
 The "Family" structures (`SingleSortedCategoriesFamily`, `SingleSorted2CategoriesFamily`, etc.)
 extend `ObjectsFamily` and carry the appropriate type class instance. These families serve as the
-objects of the corresponding large categories. The large category instances use `LargeCategory`
-from Mathlib's category theory library, with functors as morphisms and functor composition as
-the composition operation.
+objects of the corresponding categories.
 -/
 
 universe u
@@ -35,7 +33,7 @@ structure ObjectsFamily where
   Obj : Type u
 
 /-- A family of single-sorted categories, consisting of a type `Obj` equipped with a
-`SingleSortedCategory` instance. This structure serves as the objects in the large category
+`SingleSortedCategory` instance. This structure serves as the objects in the category
 `SingleSortedCat`. -/
 @[ext]
 structure SingleSortedCategoriesFamily extends ObjectsFamily where
@@ -44,16 +42,15 @@ structure SingleSortedCategoriesFamily extends ObjectsFamily where
 
 attribute [instance] SingleSortedCategoriesFamily._inst
 
-/-- The large category of single-sorted categories. Objects are families of single-sorted
-categories (`SingleSortedCategoriesFamily`), and morphisms are single-sorted functors between
-them. -/
-instance SingleSortedCat : LargeCategory SingleSortedCategoriesFamily where
+/-- The category of single-sorted categories. Objects are families of single-sorted categories
+(`SingleSortedCategoriesFamily`), and morphisms are single-sorted functors between them. -/
+instance SingleSortedCat : Category SingleSortedCategoriesFamily where
   Hom C D := SingleSortedFunctor C.Obj D.Obj
-  id _ := idₛₛ
+  id _ := idₛ
   comp F G := G ⊚ F
 
 /-- A family of single-sorted 2-categories, consisting of a type `Obj` equipped with a
-`SingleSorted2Category` instance. This structure serves as the objects in the large category
+`SingleSorted2Category` instance. This structure serves as the objects in the category
 `SingleSorted2Cat`. -/
 structure SingleSorted2CategoriesFamily extends ObjectsFamily where
   /-- The `SingleSorted2Category` structure on the underlying type. -/
@@ -61,33 +58,32 @@ structure SingleSorted2CategoriesFamily extends ObjectsFamily where
 
 attribute [instance] SingleSorted2CategoriesFamily._inst
 
-/-- The large category of single-sorted 2-categories. Objects are families of single-sorted
-2-categories (`SingleSorted2CategoriesFamily`), and morphisms are single-sorted 2-functors between
-them. -/
-instance SingleSorted2Cat : LargeCategory SingleSorted2CategoriesFamily where
+/-- The category of single-sorted 2-categories. Objects are families of single-sorted 2-categories
+(`SingleSorted2CategoriesFamily`), and morphisms are single-sorted 2-functors between them. -/
+instance SingleSorted2Cat : Category SingleSorted2CategoriesFamily where
   Hom C D := SingleSorted2Functor C.Obj D.Obj
-  id _ := idₛₛ
+  id _ := idₛ
   comp F G := G ⊚ F
 
 /-- A family of single-sorted $n$-categories for a fixed natural number `n`, consisting of a type
-`Obj` equipped with a `SingleSortedNCategory` instance. This structure serves as the objects in
-the large category `SingleSortedNCat`. -/
-structure SingleSortedNCategoriesFamily (n : Nat) extends ObjectsFamily where
+`Obj` equipped with a `SingleSortedNCategory` instance. This structure serves as the objects in the
+category `SingleSortedNCat`. -/
+structure SingleSortedNCategoriesFamily (n : ℕ) extends ObjectsFamily where
   /-- The `SingleSortedNCategory` structure on the underlying type. -/
-  _inst : SingleSortedNCategory Obj n
+  _inst : SingleSortedNCategory n Obj
 
 attribute [instance] SingleSortedNCategoriesFamily._inst
 
-/-- The large category of single-sorted $n$-categories for a fixed `n : Nat`. Objects are families
-of single-sorted $n$-categories (`SingleSortedNCategoriesFamily n`), and morphisms are
-single-sorted $n$-functors between them. -/
-instance SingleSortedNCat {n : Nat} : LargeCategory (SingleSortedNCategoriesFamily n) where
-  Hom C D := SingleSortedNFunctor C.Obj D.Obj n
-  id _ := idₛₛ
+/-- The category of single-sorted $n$-categories for a fixed `n : ℕ`. Objects are families of
+single-sorted $n$-categories (`SingleSortedNCategoriesFamily n`), and morphisms are single-sorted
+$n$-functors between them. -/
+instance SingleSortedNCat {n : ℕ} : Category (SingleSortedNCategoriesFamily n) where
+  Hom C D := SingleSortedNFunctor n C.Obj D.Obj
+  id _ := idₛ
   comp F G := G ⊚ F
 
 /-- A family of single-sorted $\omega$-categories, consisting of a type `Obj` equipped with a
-`SingleSortedOmegaCategory` instance. This structure serves as the objects in the large category
+`SingleSortedOmegaCategory` instance. This structure serves as the objects in the category
 `SingleSortedOmegaCat`. -/
 structure SingleSortedOmegaCategoriesFamily extends ObjectsFamily where
   /-- The `SingleSortedOmegaCategory` structure on the underlying type. -/
@@ -95,12 +91,12 @@ structure SingleSortedOmegaCategoriesFamily extends ObjectsFamily where
 
 attribute [instance] SingleSortedOmegaCategoriesFamily._inst
 
-/-- The large category of single-sorted $\omega$-categories. Objects are families of single-sorted
+/-- The category of single-sorted $\omega$-categories. Objects are families of single-sorted
 $\omega$-categories (`SingleSortedOmegaCategoriesFamily`), and morphisms are single-sorted
 $\omega$-functors between them. -/
-instance SingleSortedOmegaCat : LargeCategory SingleSortedOmegaCategoriesFamily where
+instance SingleSortedOmegaCat : Category SingleSortedOmegaCategoriesFamily where
   Hom C D := SingleSortedOmegaFunctor C.Obj D.Obj
-  id _ := idₛₛ
+  id _ := idₛ
   comp F G := G ⊚ F
 
 end HigherCategoryTheory
