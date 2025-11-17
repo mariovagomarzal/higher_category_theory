@@ -108,6 +108,15 @@ blueprint-web:
 [doc("Build the project blueprint (PDF and web).")]
 blueprint: blueprint-references blueprint-print blueprint-web
 
+alias bp := blueprint
+
+[group("docs")]
+[doc("Serve the project blueprint website locally.")]
+blueprint-serve:
+  leanblueprint serve
+
+alias bps := blueprint-serve
+
 [group("docs")]
 [doc("Build the project website.")]
 website JEKYLL_ENV="":

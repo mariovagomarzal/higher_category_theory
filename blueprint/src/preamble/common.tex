@@ -1,11 +1,21 @@
-%= Common preamble and macros for both print and web versions of the Blueprint. =%
-
-%== Math support. ==%
-\usepackage{mathtools, amssymb, amsthm}
+%= Common preamble and macros for both print and web versions. =%
 
 %== Hyperlinks support. ==%
 \usepackage{hyperref}
 
+%== Math support. ==%
+\usepackage{amsmath, amssymb, amsthm}
+
 %== Title and authors information. ==%
 \title{A Formalization of Higher-Order Categories in Lean 4}
 \author{Enric Cosme Llópez \and Raul Ruiz Mora \and Mario Vago Marzal}
+
+%== Theorem environments. ==%
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
