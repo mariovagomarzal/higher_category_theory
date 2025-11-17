@@ -3,8 +3,8 @@ Copyright (c) 2025 Mario Vago Marzal. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Enric Cosme Llópez, Raul Ruiz Mora, Mario Vago Marzal
 -/
-import HigherCategoryTheory.HigherCategoryTheory.SingleSortedCategory.Basic
-import HigherCategoryTheory.HigherCategoryTheory.SingleSortedCategory.Cell
+import HigherCategoryTheory.SingleSorted.Basic
+import HigherCategoryTheory.SingleSorted.Cell
 
 /-!
 TODO: Document this file.

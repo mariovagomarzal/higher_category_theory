@@ -4,8 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Enric Cosme Llópez, Raul Ruiz Mora, Mario Vago Marzal
 -/
 import Mathlib.CategoryTheory.Category.Basic
-import HigherCategoryTheory.HigherCategoryTheory.SingleSortedCategory.Basic
-import HigherCategoryTheory.HigherCategoryTheory.SingleSortedCategory.Functor
+import HigherCategoryTheory.SingleSorted.Basic
+import HigherCategoryTheory.SingleSorted.Functor
 
 /-!
 # Categories of single-sorted higher-order categories
