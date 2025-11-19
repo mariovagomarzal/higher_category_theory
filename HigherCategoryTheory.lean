@@ -1,11 +1,2 @@
-import HigherCategoryTheory.Data.NatIndex
 import HigherCategoryTheory.SingleSorted.Basic
-import HigherCategoryTheory.SingleSorted.Cat.Basic
-import HigherCategoryTheory.SingleSorted.Cat.Discretization
-import HigherCategoryTheory.SingleSorted.Cat.Underlying
-import HigherCategoryTheory.SingleSorted.Cell
 import HigherCategoryTheory.SingleSorted.Functor
-import HigherCategoryTheory.SingleSorted.Monoid
-import HigherCategoryTheory.SingleSorted.Preorder
-import HigherCategoryTheory.SingleSorted.Prod
-import HigherCategoryTheory.SingleSorted.Unit
