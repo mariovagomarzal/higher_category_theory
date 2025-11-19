@@ -3,7 +3,9 @@ Copyright (c) 2025 Mario Vago Marzal. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Enric Cosme Llópez, Raul Ruiz Mora, Mario Vago Marzal
 -/
-import HigherCategoryTheory.SingleSorted.Basic
+import HigherCategoryTheory.SingleSorted.Defs.SingleSortedCategory
+import HigherCategoryTheory.SingleSorted.Defs.SingleSortedNCategory
+import HigherCategoryTheory.SingleSorted.Defs.SingleSortedOmegaCategory
 
 /-!
 # Functors between single-sorted categories

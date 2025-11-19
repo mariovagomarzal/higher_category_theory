@@ -5,7 +5,6 @@ Authors: Enric Cosme Llópez, Raul Ruiz Mora, Mario Vago Marzal
 -/
 import Mathlib.Data.Part
 import Mathlib.Data.PFun
-import Mathlib.Order.Fin.Basic
 
 /-!
 # Single-sorted presentation of higher-order categories
@@ -265,14 +264,5 @@ class SingleSortedCategory (index : Type) [LinearOrder index] (obj : Type u)
 open SingleSortedCategory in
 attribute [simp] sck_scj_is_scj scj_sck_is_scj scj_tgk_is_scj tgk_tgj_is_tgj tgj_tgk_is_tgj
   tgj_sck_is_tgj sck_compj_is_compj_sck tgk_compj_is_compj_tgk exchange
-
-/-- TODO: Comment. -/
-abbrev SingleSortedNCategory (n : ℕ) (obj : Type u) :=
-  SingleSortedCategory (Fin n) obj
-
-/-- TODO: Comment. -/
-class SingleSortedOmegaCategory (obj : Type u) extends SingleSortedCategory ℕ obj where
-  /-- Every element is a k-cell for some `k : ℕ`. -/
-  is_cell : ∀ f : obj, ∃ k : ℕ, sc k f = f
 
 end HigherCategoryTheory
