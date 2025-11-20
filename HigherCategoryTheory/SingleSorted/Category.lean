@@ -349,17 +349,6 @@ end SingleSortedCategory
 /-- TODO: Comment. -/
 abbrev SingleSortedNCategory (n : ℕ) (obj : Type u) := SingleSortedCategory (Fin n) obj
 
-/-- TODO: Comment. -/
-abbrev SingleSorted1Category (obj : Type u) := SingleSortedNCategory 1 obj
-
-namespace SingleSorted1Category
-
-/-- TODO: Comment. -/
-def ofPreSingleSortedCategory {obj : Type u} (PS1 : PreSingleSortedCategory (Fin 1) obj) :
-    SingleSorted1Category obj := {PS1 with}
-
-end SingleSorted1Category
-
 open SingleSortedCategory in
 /-- TODO: Comment. -/
 class SingleSortedOmegaCategory (obj : Type u) extends SingleSortedCategory ℕ obj where
@@ -368,11 +357,5 @@ class SingleSortedOmegaCategory (obj : Type u) extends SingleSortedCategory ℕ 
 
 -- Use axioms of `SingleSortedOmegaCategory` as simp lemmas.
 attribute [simp] SingleSortedOmegaCategory.is_cell
-
-namespace SingleSortedOmegaCategory
-
--- TODO: Add useful lemmas and definitions about `SingleSortedOmegaCategory` here.
-
-end SingleSortedOmegaCategory
 
 end HigherCategoryTheory
