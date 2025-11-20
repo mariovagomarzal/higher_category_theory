@@ -27,7 +27,7 @@ namespace HigherCategoryTheory
 
 /-- TODO: Comment. -/
 macro (name := hcat_disch) "hcat_disch" : tactic =>
-  `(tactic| (intros; rfl))
+  `(tactic| first | (intros; rfl) | omega | grind)
 
 /-- TODO: Comment. -/
 class SingleSortedCategoryStruct (index : Type) (obj : Type u) where
@@ -56,7 +56,7 @@ class SingleSortedCategoryStruct (index : Type) (obj : Type u) where
 namespace SingleSortedCategoryStruct
 
 variable {index : Type} {obj : Type u} [SingleSortedCategoryStruct index obj]
-variable {k : index} {f f₁ f₂ g g₁ g₂ : obj}
+variable {k : index} {f g : obj}
 
 @[inherit_doc]
 scoped[HigherCategoryTheory] notation g " ♯.[" k "] " f:100 =>
@@ -84,6 +84,16 @@ def comp (k : index) (g f : obj) (sc_tg_gf : sc_is_tg k g f) : obj :=
 scoped[HigherCategoryTheory] notation g " ♯[" k "] " f " ← " sc_tg_gf:100 =>
   SingleSortedCategoryStruct.comp k g f sc_tg_gf
 
+end SingleSortedCategoryStruct
+
+-- Export the main components of `SingleSortedCategoryStruct` for easier access.
+export SingleSortedCategoryStruct (sc tg sc_is_tg)
+
+section Congruence
+
+variable {index : Type} {obj : Type u} [SingleSortedCategoryStruct index obj]
+variable {k : index} {f₁ f₂ g₁ g₂ : obj}
+
 /-- TODO: Comment. -/
 theorem congr_dom (eq_f : f₁ = f₂) (eq_g : g₁ = g₂) (dom_g₁f₁ : (g₁ ♯.[k] f₁).Dom) :
     (g₂ ♯.[k] f₂).Dom := by
@@ -95,20 +105,23 @@ theorem congr_sc_is_tg (eq_f : f₁ = f₂) (eq_g : g₁ = g₂) (sc_tg_g₁f₁
   grind
 
 /-- TODO: Comment. -/
-theorem congr_pcomp (eq_f : f₁ = f₂) (eq_g : g₁ = g₂) :
+theorem congr_pcomp (k : index) (eq_f : f₁ = f₂) (eq_g : g₁ = g₂) :
     g₁ ♯.[k] f₁ = g₂ ♯.[k] f₂  := by
   grind
 
 /-- TODO: Comment. -/
-theorem congr_comp (eq_f : f₁ = f₂) (eq_g : g₁ = g₂)
+theorem congr_comp₁ (eq_f : f₁ = f₂) (eq_g : g₁ = g₂)
     (sc_tg_g₁f₁ : sc_is_tg k g₁ f₁) :
     g₁ ♯[k] f₁ ← sc_tg_g₁f₁ = g₂ ♯[k] f₂ ← congr_sc_is_tg eq_f eq_g sc_tg_g₁f₁ := by
   grind
 
-end SingleSortedCategoryStruct
+/-- TODO: Comment. -/
+theorem congr_comp₂ (eq_f : f₁ = f₂) (eq_g : g₁ = g₂)
+    (sc_tg_g₂f₂ : sc_is_tg k g₂ f₂) :
+    g₁ ♯[k] f₁ ← congr_sc_is_tg eq_f.symm eq_g.symm sc_tg_g₂f₂ = g₂ ♯[k] f₂ ← sc_tg_g₂f₂ := by
+  grind
 
--- Export the main components of `SingleSortedCategoryStruct` for easier access.
-export SingleSortedCategoryStruct (sc tg sc_is_tg)
+end Congruence
 
 /-- TODO: Comment. -/
 class PreSingleSortedCategory (index : Type) [LinearOrder index] (obj : Type u)
@@ -160,7 +173,6 @@ open PreSingleSortedCategory in
 attribute [simp] sck_sck_is_sck tgk_sck_is_sck sck_tgk_is_tgk tgk_tgk_is_tgk sck_compk_is_sck
   tgk_compk_is_tgk compk_sck_is_id compk_tgk_is_id assoc
 
-open SingleSortedCategoryStruct in
 /-- TODO: Comment. -/
 class SingleSortedCategory (index : Type) [LinearOrder index] (obj : Type u)
     extends PreSingleSortedCategory index obj where
@@ -224,7 +236,7 @@ class SingleSortedCategory (index : Type) [LinearOrder index] (obj : Type u)
     _ = (sc k g₂) ♯[j] (sc k f₂) ← (sc_tg_j_sc j_lt_k sc_tg_k_g₂f₂) :=
       sck_compj_is_compj_sck j_lt_k sc_tg_k_g₂f₂
     _ = (tg k g₁) ♯[j] (tg k f₁) ← (sc_tg_j_tg j_lt_k sc_tg_k_g₁f₁) :=
-      congr_comp sc_tg_k_f₂f₁ sc_tg_k_g₂g₁ (sc_tg_j_sc j_lt_k sc_tg_k_g₂f₂)
+      congr_comp₁ sc_tg_k_f₂f₁ sc_tg_k_g₂g₁ (sc_tg_j_sc j_lt_k sc_tg_k_g₂f₂)
     _ = _ := (tgk_compj_is_compj_tgk j_lt_k sc_tg_k_g₁f₁).symm
   /-- Given a $2 \times 2$ pasting diagram of composable morphisms, we can compose first
   horizontally and then vertically. This is an auxiliary method for the `exchange` axiom. -/
@@ -269,12 +281,11 @@ attribute [simp] sck_scj_is_scj scj_sck_is_scj scj_tgk_is_scj tgk_tgj_is_tgj tgj
 
 namespace SingleSortedCategory
 
-export PreSingleSortedCategory (sck_sck_is_sck tgk_sck_is_sck sck_tgk_is_tgk tgk_tgk_is_tgk
-  sck_compk_is_sck tgk_compk_is_tgk compk_sck_is_id compk_tgk_is_id assoc)
-
-section Cells
+open PreSingleSortedCategory
 
 variable {index : Type} [LinearOrder index] {obj : Type u} [SingleSortedCategory index obj]
+
+section Cells
 
 /-- A morphism `f` is a $k$-cell (via source) if `sc k f = f`. This means `f` behaves as an
 identity at dimension $k$. -/
@@ -321,7 +332,7 @@ def cells_tg (k : index) (obj : Type u) [SingleSortedCategory index obj] : Set o
   {f : obj | cell_tg k f}
 
 /-- TODO: Comment. -/
-theorem cell_sc_eq_cell_tg (k : index) :
+theorem cell_sc_eq_cell_tg (k : index) (obj : Type u) [SingleSortedCategory index obj] :
     cells_sc k obj = cells_tg k obj := by
   ext f
   exact cell_sc_iff_cell_tg k f
@@ -343,20 +354,9 @@ abbrev SingleSorted1Category (obj : Type u) := SingleSortedNCategory 1 obj
 
 namespace SingleSorted1Category
 
-def ofPreSingleSortedCategory {obj : Type u} (pS : PreSingleSortedCategory (Fin 1) obj) :
-    SingleSorted1Category obj :=
-  { pS with
-    sck_scj_is_scj := by omega
-    scj_sck_is_scj := by omega
-    scj_tgk_is_scj := by omega
-    tgk_tgj_is_tgj := by omega
-    tgj_tgk_is_tgj := by omega
-    tgj_sck_is_tgj := by omega
-    sc_tg_j_sc := by omega
-    sc_tg_j_tg := by omega
-    sck_compj_is_compj_sck := by omega
-    tgk_compj_is_compj_tgk := by omega
-    exchange := by omega }
+/-- TODO: Comment. -/
+def ofPreSingleSortedCategory {obj : Type u} (PS1 : PreSingleSortedCategory (Fin 1) obj) :
+    SingleSorted1Category obj := {PS1 with}
 
 end SingleSorted1Category
 
@@ -366,14 +366,12 @@ class SingleSortedOmegaCategory (obj : Type u) extends SingleSortedCategory ℕ 
   /-- Every element is a k-cell for some `k : ℕ`. -/
   is_cell : ∀ f : obj, ∃ k : ℕ, cell k f
 
+-- Use axioms of `SingleSortedOmegaCategory` as simp lemmas.
+attribute [simp] SingleSortedOmegaCategory.is_cell
+
 namespace SingleSortedOmegaCategory
 
-export SingleSortedCategory (sck_sck_is_sck tgk_sck_is_sck sck_tgk_is_tgk tgk_tgk_is_tgk
-  sck_compk_is_sck tgk_compk_is_tgk compk_sck_is_id compk_tgk_is_id assoc sck_scj_is_scj
-  scj_sck_is_scj scj_tgk_is_scj tgk_tgj_is_tgj tgj_tgk_is_tgj tgj_sck_is_tgj sc_tg_j_sc
-  sc_tg_j_tg sck_compj_is_compj_sck tgk_compj_is_compj_tgk exchange)
-
--- TODO: Add useful lemmas about `SingleSortedOmegaCategory` here.
+-- TODO: Add useful lemmas and definitions about `SingleSortedOmegaCategory` here.
 
 end SingleSortedOmegaCategory
 
