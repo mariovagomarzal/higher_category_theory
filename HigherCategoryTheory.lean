@@ -1,5 +1,2 @@
-import HigherCategoryTheory.SingleSorted.Defs.SingleSortedCategory
-import HigherCategoryTheory.SingleSorted.Defs.SingleSortedNCategory
-import HigherCategoryTheory.SingleSorted.Defs.Cell
-import HigherCategoryTheory.SingleSorted.Defs.SingleSortedOmegaCategory
+import HigherCategoryTheory.SingleSorted.Category
 import HigherCategoryTheory.SingleSorted.Functor
