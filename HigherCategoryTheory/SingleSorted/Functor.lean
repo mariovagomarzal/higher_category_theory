@@ -16,12 +16,7 @@ respectively.
 ## Notation
 
 * `G ⊚ F`: Composition of functors `G` and `F`.
-* `idₛ`: The identity functor.
-
-## Implementation notes
-
-The type class `CoeFun` allows treating a `F : SingleSortedFunctorFamily index C D` as a function,
-writing `F f` instead of `F.map f` for the action of `F` on a morphism `f`.
+* `idₛ`: The identity functor on a single-sorted category.
 -/
 
 universe u₁ u₂ u₃
@@ -34,9 +29,9 @@ structure SingleSortedFunctor (index : Type) [LinearOrder index] (C : Type u₁)
   /-- The underlying function on morphisms. -/
   map : C → D
   /-- The map preserves sources. -/
-  map_sc_is_sc_map : ∀ (k : index) (f : C), map (sc k f) = sc k (map f)
+  map_sc_is_sc_map : ∀ (k : index) (f : C), map (sc k f) = sc k (map f) := by hcat_disch
   /-- The map preserves targets. -/
-  map_tg_is_tg_map : ∀ (k : index) (f : C), map (tg k f) = tg k (map f)
+  map_tg_is_tg_map : ∀ (k : index) (f : C), map (tg k f) = tg k (map f) := by hcat_disch
   /-- If `g` and `f` are composable in `C`, then `F g` and `F f` are composable in `D`. This is an
   auxiliary method for defining `map_comp_is_comp_map`. -/
   protected comp_map {k : index} {f g : C} (sc_tg_gf : sc_is_tg k g f) :
@@ -47,19 +42,23 @@ structure SingleSortedFunctor (index : Type) [LinearOrder index] (C : Type u₁)
     _ = tg k (map f) := map_tg_is_tg_map k f
   /-- The map preserves composition. -/
   map_comp_is_comp_map : ∀ {k : index} {f g : C} (sc_tg_gf : sc_is_tg k g f),
-    map (g ♯[k] f ← sc_tg_gf) = (map g) ♯[k] (map f) ← (comp_map sc_tg_gf)
+    map (g ♯[k] f ← sc_tg_gf) = (map g) ♯[k] (map f) ← (comp_map sc_tg_gf) := by hcat_disch
 
-/-- Coercion allowing us to write `F f` instead of `F.map f` for the action of a functor `F`
-on a morphism `f`. -/
-instance CoeFun.instSingleSortedFunctor {index : Type} [LinearOrder index]
-    {C : Type u₁} {D : Type u₂} [SingleSortedCategory index C] [SingleSortedCategory index D] :
-    CoeFun (SingleSortedFunctor index C D) fun _ ↦ C → D :=
-  ⟨fun F ↦ F.map⟩
+-- Use `SingleSortedFunctor` axioms as simp lemmas.
+open SingleSortedFunctor in
+attribute [simp] map_sc_is_sc_map map_tg_is_tg_map map_comp_is_comp_map
 
 namespace SingleSortedFunctor
 
-variable {index : Type} [LinearOrder index] {C : Type u₁} {D : Type u₂} {E : Type u₃}
-  [SingleSortedCategory index C] [SingleSortedCategory index D] [SingleSortedCategory index E]
+variable {index : Type} [LinearOrder index]
+  {C : Type u₁} [SingleSortedCategory index C]
+  {D : Type u₂} [SingleSortedCategory index D]
+  {E : Type u₃} [SingleSortedCategory index E]
+
+/-- Coercion allowing us to write `F f` instead of `F.map f` for the action of a functor `F`
+on a morphism `f`. -/
+instance instCoeFun : CoeFun (SingleSortedFunctor index C D) fun _ ↦ C → D :=
+  ⟨fun F ↦ F.map⟩
 
 /--
 Composition of functors. Given functors `F : C → D` and `G : D → E`, their composite
@@ -68,9 +67,10 @@ Composition of functors. Given functors `F : C → D` and `G : D → E`, their c
 This operation preserves all the required functor properties: it preserves sources, targets,
 and composition at each dimension.
 -/
+@[simp]
 def comp (G : SingleSortedFunctor index D E) (F : SingleSortedFunctor index C D) :
     SingleSortedFunctor index C E where
-  map := fun f ↦ G (F f)
+  map f := G (F f)
   map_sc_is_sc_map := by
     intro k f
     calc
@@ -92,27 +92,28 @@ def comp (G : SingleSortedFunctor index D E) (F : SingleSortedFunctor index C D)
       _ = (G (F g)) ♯[k] (G (F f)) ← G.comp_map (F.comp_map sc_tg_gf) :=
         G.map_comp_is_comp_map (F.comp_map sc_tg_gf)
 
+@[inherit_doc] scoped[HigherCategoryTheory] infixr:100 " ⊚ " => SingleSortedFunctor.comp
+
 /-- The identity functor on a single-sorted category `C`. It maps each morphism to itself and
 trivially preserves all structure. -/
-def id : SingleSortedFunctor index C C where
-  map := fun x ↦ x
-  map_sc_is_sc_map _ _ := rfl
-  map_tg_is_tg_map _ _ := rfl
-  map_comp_is_comp_map _ := rfl
+@[simp]
+def id (C : Type u₁) [SingleSortedCategory index C] : SingleSortedFunctor index C C where
+  map f := f
 
-@[inherit_doc] scoped[HigherCategoryTheory] infixr:80 " ⊚ " => SingleSortedFunctor.comp
 @[inherit_doc] scoped[HigherCategoryTheory] notation "idₛ" => SingleSortedFunctor.id
 
 end SingleSortedFunctor
 
 /-- TODO: Comment. -/
-abbrev SingleSortedNFunctor (n : ℕ) (C : Type u₁) (D : Type u₂)
-    [SingleSortedNCategory n C] [SingleSortedNCategory n D] :=
+abbrev SingleSortedNFunctor (n : ℕ)
+    (C : Type u₁) [SingleSortedNCategory n C]
+    (D : Type u₂) [SingleSortedNCategory n D] :=
   SingleSortedFunctor (Fin n) C D
 
 /-- TODO: Comment. -/
-abbrev SingleSortedOmegaFunctor (C : Type u₁) (D : Type u₂)
-    [SingleSortedOmegaCategory C] [SingleSortedOmegaCategory D] :=
+abbrev SingleSortedOmegaFunctor
+    (C : Type u₁) [SingleSortedOmegaCategory C]
+    (D : Type u₂) [SingleSortedOmegaCategory D] :=
   SingleSortedFunctor ℕ C D
 
 end HigherCategoryTheory
