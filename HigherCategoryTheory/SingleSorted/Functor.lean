@@ -42,7 +42,8 @@ structure SingleSortedFunctor (index : Type) [LinearOrder index] (C : Type u₁)
     _ = tg k (map f) := map_tg_is_tg_map k f
   /-- The map preserves composition. -/
   map_comp_is_comp_map : ∀ {k : index} {f g : C} (sc_tg_gf : sc_is_tg k g f),
-    map (g ♯[k] f ← sc_tg_gf) = (map g) ♯[k] (map f) ← (comp_map sc_tg_gf) := by hcat_disch
+      map (g ♯[k] f ← sc_tg_gf) = (map g) ♯[k] (map f) ← (comp_map sc_tg_gf) := by
+    hcat_disch
 
 -- Use `SingleSortedFunctor` axioms as simp lemmas.
 open SingleSortedFunctor in
@@ -57,8 +58,7 @@ variable {index : Type} [LinearOrder index]
 
 /-- Coercion allowing us to write `F f` instead of `F.map f` for the action of a functor `F`
 on a morphism `f`. -/
-instance instCoeFun : CoeFun (SingleSortedFunctor index C D) fun _ ↦ C → D :=
-  ⟨fun F ↦ F.map⟩
+instance instCoeFun : CoeFun (SingleSortedFunctor index C D) fun _ ↦ C → D := ⟨fun F ↦ F.map⟩
 
 /--
 Composition of functors. Given functors `F : C → D` and `G : D → E`, their composite

@@ -64,16 +64,13 @@ scoped[HigherCategoryTheory] notation g " ♯.[" k "] " f:100 =>
 
 /-- TODO: Comment. -/
 @[simp]
-def sc_is_tg (k : index) (g f : obj) : Prop :=
-  sc k g = tg k f
+def sc_is_tg (k : index) (g f : obj) : Prop := sc k g = tg k f
 
 /-- TODO: Comment. -/
-theorem dom_of_sc_is_tg (sc_tg_gf : sc_is_tg k g f) : (g ♯.[k] f).Dom :=
-  pcomp_dom.mpr sc_tg_gf
+theorem dom_of_sc_is_tg (sc_tg_gf : sc_is_tg k g f) : (g ♯.[k] f).Dom := pcomp_dom.mpr sc_tg_gf
 
 /-- TODO: Comment. -/
-theorem sc_is_tg_of_dom (dom_gf : (g ♯.[k] f).Dom) : sc_is_tg k g f :=
-  pcomp_dom.mp dom_gf
+theorem sc_is_tg_of_dom (dom_gf : (g ♯.[k] f).Dom) : sc_is_tg k g f := pcomp_dom.mp dom_gf
 
 /-- TODO: Comment. -/
 @[simp]
@@ -136,16 +133,20 @@ class PreSingleSortedCategory (index : Type) [LinearOrder index] (obj : Type u)
   tgk_tgk_is_tgk : ∀ (k : index) (f : obj), tg k (tg k f) = tg k f := by hcat_disch
   /-- The source of a composite `g ♯[k] f` is the source of `f`. -/
   sck_compk_is_sck : ∀ {k : index} {f g : obj} (sc_tg_gf : sc_is_tg k g f),
-      sc k (g ♯[k] f ← sc_tg_gf) = sc k f := by hcat_disch
+      sc k (g ♯[k] f ← sc_tg_gf) = sc k f := by
+    hcat_disch
   /-- The target of a composite `g ♯[k] f` is the target of `g`. -/
   tgk_compk_is_tgk : ∀ {k : index} {f g : obj} (sc_tg_gf : sc_is_tg k g f),
-      tg k (g ♯[k] f ← sc_tg_gf) = tg k g := by hcat_disch
+      tg k (g ♯[k] f ← sc_tg_gf) = tg k g := by
+    hcat_disch
   /-- Composing `f` with its source `sc k f` yields `f`. -/
   compk_sck_is_id : ∀ (k : index) (f : obj),
-      f ♯[k] (sc k f) ← (tgk_sck_is_sck k f).symm = f := by hcat_disch
+      f ♯[k] (sc k f) ← (tgk_sck_is_sck k f).symm = f := by
+    hcat_disch
   /-- Composing the target `tg k f` with `f` yields `f`. -/
   compk_tgk_is_id : ∀ (k : index) (f : obj),
-    (tg k f) ♯[k] f ← (sck_tgk_is_tgk k f) = f := by hcat_disch
+      (tg k f) ♯[k] f ← (sck_tgk_is_tgk k f) = f := by
+    hcat_disch
   /-- If `g` and `f` compose and `h` and `g` compose, then `h ♯[k] g` and `f` compose. This is an
   auxiliary method for the associativity axiom. -/
   protected compl_assoc {k : index} {f g h : obj}
@@ -166,7 +167,8 @@ class PreSingleSortedCategory (index : Type) [LinearOrder index] (obj : Type u)
   `f` exist and are equal, that is, composition is associative. -/
   assoc : ∀ {k : index} {f g h : obj} (sc_tg_gf : sc_is_tg k g f) (sc_tg_hg : sc_is_tg k h g),
       ((h ♯[k] g ← sc_tg_hg) ♯[k] f ← (compl_assoc sc_tg_gf sc_tg_hg)) =
-      (h ♯[k] (g ♯[k] f ← sc_tg_gf) ← (compr_assoc sc_tg_gf sc_tg_hg)) := by hcat_disch
+      (h ♯[k] (g ♯[k] f ← sc_tg_gf) ← (compr_assoc sc_tg_gf sc_tg_hg)) := by
+    hcat_disch
 
 -- Use axioms of `PreSingleSortedCategory` as simp lemmas.
 open PreSingleSortedCategory in
@@ -178,28 +180,22 @@ class SingleSortedCategory (index : Type) [LinearOrder index] (obj : Type u)
     extends PreSingleSortedCategory index obj where
   /-- Applying source at dimension `k` to a source at a lower dimension `j < k` yields the source
   at dimension `j`. -/
-  sck_scj_is_scj : ∀ {k j : index} (f : obj),
-      j < k → sc k (sc j f) = sc j f := by hcat_disch
+  sck_scj_is_scj : ∀ {k j : index} (f : obj), j < k → sc k (sc j f) = sc j f := by hcat_disch
   /-- Applying source at dimension `j` to a source at a higher dimension `k > j` yields the source
   at dimension `j`. -/
-  scj_sck_is_scj : ∀ {k j : index} (f : obj),
-      j < k → sc j (sc k f) = sc j f := by hcat_disch
+  scj_sck_is_scj : ∀ {k j : index} (f : obj), j < k → sc j (sc k f) = sc j f := by hcat_disch
   /-- Applying source at dimension `j` to a target at a higher dimension `k > j` yields the source
   at dimension `j`. -/
-  scj_tgk_is_scj : ∀ {k j : index} (f : obj),
-      j < k → sc j (tg k f) = sc j f := by hcat_disch
+  scj_tgk_is_scj : ∀ {k j : index} (f : obj), j < k → sc j (tg k f) = sc j f := by hcat_disch
   /-- Applying target at dimension `k` to a target at a lower dimension `j < k` yields the target
   at dimension `j`. -/
-  tgk_tgj_is_tgj : ∀ {k j : index} (f : obj),
-      j < k → tg k (tg j f) = tg j f := by hcat_disch
+  tgk_tgj_is_tgj : ∀ {k j : index} (f : obj), j < k → tg k (tg j f) = tg j f := by hcat_disch
   /-- Applying target at dimension `j` to a target at a higher dimension `k > j` yields the target
   at dimension `j`. -/
-  tgj_tgk_is_tgj : ∀ {k j : index} (f : obj),
-      j < k → tg j (tg k f) = tg j f := by hcat_disch
+  tgj_tgk_is_tgj : ∀ {k j : index} (f : obj), j < k → tg j (tg k f) = tg j f := by hcat_disch
   /-- Applying target at dimension `j` to a source at a higher dimension `k > j` yields the target
   at dimension `j`. -/
-  tgj_sck_is_tgj : ∀ {k j : index} (f : obj),
-      j < k → tg j (sc k f) = tg j f := by hcat_disch
+  tgj_sck_is_tgj : ∀ {k j : index} (f : obj), j < k → tg j (sc k f) = tg j f := by hcat_disch
   /-- If `g` and `f` are composable at dimension `j < k`, then `sc k g` and `sc k f` are composable
   at dimension `j`. This is an auxiliary method for the distributivity axioms. -/
   protected sc_tg_j_sc {k j : index} {f g : obj} (j_lt_k : j < k) (sc_tg_j_gf : sc_is_tg j g f) :
@@ -220,12 +216,14 @@ class SingleSortedCategory (index : Type) [LinearOrder index] (obj : Type u)
   sck_compj_is_compj_sck : ∀ {k j : index} {f g : obj} (j_lt_k : j < k)
       (sc_tg_j_gf : sc_is_tg j g f),
       sc k (g ♯[j] f ← sc_tg_j_gf) =
-      (sc k g) ♯[j] (sc k f) ← (sc_tg_j_sc j_lt_k sc_tg_j_gf) := by hcat_disch
+      (sc k g) ♯[j] (sc k f) ← (sc_tg_j_sc j_lt_k sc_tg_j_gf) := by
+    hcat_disch
   /-- Target at dimension `k` distributes over composition at dimension `j < k`. -/
   tgk_compj_is_compj_tgk : ∀ {k j : index} {f g : obj} (j_lt_k : j < k)
       (sc_tg_j_gf : sc_is_tg j g f),
       tg k (g ♯[j] f ← sc_tg_j_gf) =
-      (tg k g) ♯[j] (tg k f) ← (sc_tg_j_tg j_lt_k sc_tg_j_gf) := by hcat_disch
+      (tg k g) ♯[j] (tg k f) ← (sc_tg_j_tg j_lt_k sc_tg_j_gf) := by
+    hcat_disch
   /-- Given a $2 \times 2$ pasting diagram of composable morphisms, we can compose first vertically
   and then horizontally. This is an auxiliary method for the `exchange` axiom. -/
   protected sc_tg_k_exchange {k j : index} {f₁ f₂ g₁ g₂ : obj} (j_lt_k : j < k)
