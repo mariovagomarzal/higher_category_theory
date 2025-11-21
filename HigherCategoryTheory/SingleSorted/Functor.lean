@@ -9,9 +9,7 @@ import HigherCategoryTheory.SingleSorted.Category
 # Functors between single-sorted categories
 
 This file defines the notion of functor between single-sorted categories, along with
-the operations of functor composition and the identity functor. Functors between single-sorted
-(1, 2, $n$, and ω) categories are referred to as single-sorted (1, 2, $n$, and ω) functors,
-respectively.
+the operations of functor composition and the identity functor.
 
 ## Notation
 
