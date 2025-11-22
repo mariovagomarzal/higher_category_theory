@@ -8,20 +8,40 @@ import HigherCategoryTheory.SingleSorted.Category
 /-!
 # Functors between single-sorted categories
 
-This file defines the notion of functor between single-sorted categories, along with
-the operations of functor composition and the identity functor.
+This file defines functors between single-sorted categories and establishes the basic categorical
+structure of functor composition and identity.
+
+A functor between single-sorted categories is a structure-preserving map that uniformly respects
+sources, targets, and composition at all dimensions. Unlike traditional category theory where
+functors act on objects and morphisms separately, in the single-sorted presentation a functor is
+simply a function on the underlying type that preserves the structure.
+
+## Main definitions
+
+* `SingleSortedFunctor`: A structure-preserving map between single-sorted categories, consisting of
+  a function that preserves sources, targets, and composition at each dimension.
+* `SingleSortedNFunctor`: Functors between single-sorted $n$-categories.
+* `SingleSortedOmegaFunctor`: Functors between single-sorted $\omega$-categories.
 
 ## Notation
 
+* `F f`: Application of functor `F` to morphism `f` (via coercion from `F.map f`).
 * `G ⊚ F`: Composition of functors `G` and `F`.
-* `idₛ`: The identity functor on a single-sorted category.
+* `idₛ C`: The identity functor on a single-sorted category `C`.
 -/
 
 universe u₁ u₂ u₃
 
 namespace HigherCategoryTheory
 
-/-- TODO: Comment. -/
+/--
+A functor between single-sorted categories.
+
+A `SingleSortedFunctor index C D` is a structure-preserving map from a single-sorted category `C` to
+a single-sorted category `D`. It consists of:
+* A function `map : C → D` on morphisms.
+* Proofs that `map` preserves sources, targets, and composition at each dimension.
+-/
 structure SingleSortedFunctor (index : Type) [LinearOrder index] (C : Type u₁) (D : Type u₂)
     [SingleSortedCategory index C] [SingleSortedCategory index D] where
   /-- The underlying function on morphisms. -/
@@ -54,17 +74,13 @@ variable {index : Type} [LinearOrder index]
   {D : Type u₂} [SingleSortedCategory index D]
   {E : Type u₃} [SingleSortedCategory index E]
 
-/-- Coercion allowing us to write `F f` instead of `F.map f` for the action of a functor `F`
-on a morphism `f`. -/
+/-- Coercion allowing us to write `F f` instead of `F.map f` for the action of a functor `F` on a
+morphism `f`. -/
 instance instCoeFun : CoeFun (SingleSortedFunctor index C D) fun _ ↦ C → D := ⟨fun F ↦ F.map⟩
 
-/--
-Composition of functors. Given functors `F : C → D` and `G : D → E`, their composite
-`G ⊚ F : C → E` is defined by `(G ⊚ F) f = G (F f)`.
-
-This operation preserves all the required functor properties: it preserves sources, targets,
-and composition at each dimension.
--/
+/-- Composition of functors. Given functors `F : C → D` and `G : D → E`, their composite `G ⊚ F : C
+→ E` is defined by `(G ⊚ F) f = G (F f)`. This operation preserves all the required functor
+properties. -/
 @[simp]
 def comp (G : SingleSortedFunctor index D E) (F : SingleSortedFunctor index C D) :
     SingleSortedFunctor index C E where
@@ -102,13 +118,13 @@ def id (C : Type u₁) [SingleSortedCategory index C] : SingleSortedFunctor inde
 
 end SingleSortedFunctor
 
-/-- TODO: Comment. -/
+/-- A functor between single-sorted $n$-categories. -/
 abbrev SingleSortedNFunctor (n : ℕ)
     (C : Type u₁) [SingleSortedNCategory n C]
     (D : Type u₂) [SingleSortedNCategory n D] :=
   SingleSortedFunctor (Fin n) C D
 
-/-- TODO: Comment. -/
+/-- A functor between single-sorted $\omega$-categories. -/
 abbrev SingleSortedOmegaFunctor
     (C : Type u₁) [SingleSortedOmegaCategory C]
     (D : Type u₂) [SingleSortedOmegaCategory D] :=
