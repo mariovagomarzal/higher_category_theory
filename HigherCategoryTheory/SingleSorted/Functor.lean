@@ -56,7 +56,7 @@ structure SingleSortedFunctor (index : Type) [LinearOrder index] (C : Type u₁)
       sc_is_tg k (map g) (map f) := calc
     sc k (map g)
     _ = map (sc k g) := (map_sc_is_sc_map k g).symm
-    _ = map (tg k f) := congrArg map sc_tg_gf
+    _ = map (tg k f) := by rw [sc_tg_gf]
     _ = tg k (map f) := map_tg_is_tg_map k f
   /-- The map preserves composition. -/
   map_comp_is_comp_map : ∀ {k : index} {f g : C} (sc_tg_gf : sc_is_tg k g f),
@@ -89,20 +89,19 @@ def comp (G : SingleSortedFunctor index D E) (F : SingleSortedFunctor index C D)
     intro k f
     calc
       G (F (sc k f))
-      _ = G (sc k (F f)) := congrArg G (F.map_sc_is_sc_map k f)
+      _ = G (sc k (F f)) := by rw [F.map_sc_is_sc_map k f]
       _ = sc k (G (F f)) := G.map_sc_is_sc_map k (F f)
   map_tg_is_tg_map := by
     intro k f
     calc
       G (F (tg k f))
-      _ = G (tg k (F f)) := congrArg G (F.map_tg_is_tg_map k f)
+      _ = G (tg k (F f)) := by rw [F.map_tg_is_tg_map k f]
       _ = tg k (G (F f)) := G.map_tg_is_tg_map k (F f)
   map_comp_is_comp_map := by
     intro k f g sc_tg_gf
     calc
       G (F (g ♯[k] f ← sc_tg_gf))
-      _ = G ((F g) ♯[k] (F f) ← F.comp_map sc_tg_gf) :=
-        congrArg G (F.map_comp_is_comp_map sc_tg_gf)
+      _ = G ((F g) ♯[k] (F f) ← F.comp_map sc_tg_gf) := by rw [F.map_comp_is_comp_map sc_tg_gf]
       _ = (G (F g)) ♯[k] (G (F f)) ← G.comp_map (F.comp_map sc_tg_gf) :=
         G.map_comp_is_comp_map (F.comp_map sc_tg_gf)
 
