@@ -195,28 +195,28 @@ establish dimension-specific properties before enforcing cross-dimensional compa
 class PreSingleSortedCategory (index : Type) [LinearOrder index] (obj : Type u)
     extends SingleSortedCategoryStruct index obj where
   /-- Applying source twice at dimension `k` is idempotent. -/
-  sck_sck_is_sck : ∀ (k : index) (f : obj), sc k (sc k f) = sc k f := by hcat_disch
+  sck_sck_eq_sck : ∀ (k : index) (f : obj), sc k (sc k f) = sc k f := by hcat_disch
   /-- The target of a source is itself. -/
-  tgk_sck_is_sck : ∀ (k : index) (f : obj), tg k (sc k f) = sc k f := by hcat_disch
+  tgk_sck_eq_sck : ∀ (k : index) (f : obj), tg k (sc k f) = sc k f := by hcat_disch
   /-- The source of a target is itself. -/
-  sck_tgk_is_tgk : ∀ (k : index) (f : obj), sc k (tg k f) = tg k f := by hcat_disch
+  sck_tgk_eq_tgk : ∀ (k : index) (f : obj), sc k (tg k f) = tg k f := by hcat_disch
   /-- Applying target twice at dimension `k` is idempotent. -/
-  tgk_tgk_is_tgk : ∀ (k : index) (f : obj), tg k (tg k f) = tg k f := by hcat_disch
+  tgk_tgk_eq_tgk : ∀ (k : index) (f : obj), tg k (tg k f) = tg k f := by hcat_disch
   /-- The source of a composite `g ♯[k] f` is the source of `f`. -/
-  sck_compk_is_sck : ∀ {k : index} {f g : obj} (sc_tg_gf : sc_is_tg k g f),
+  sck_compk_eq_sck : ∀ {k : index} {f g : obj} (sc_tg_gf : sc_is_tg k g f),
       sc k (g ♯[k] f ← sc_tg_gf) = sc k f := by
     hcat_disch
   /-- The target of a composite `g ♯[k] f` is the target of `g`. -/
-  tgk_compk_is_tgk : ∀ {k : index} {f g : obj} (sc_tg_gf : sc_is_tg k g f),
+  tgk_compk_eq_tgk : ∀ {k : index} {f g : obj} (sc_tg_gf : sc_is_tg k g f),
       tg k (g ♯[k] f ← sc_tg_gf) = tg k g := by
     hcat_disch
   /-- Composing `f` with its source `sc k f` yields `f`. -/
-  compk_sck_is_id : ∀ (k : index) (f : obj),
-      f ♯[k] (sc k f) ← (tgk_sck_is_sck k f).symm = f := by
+  compk_sck_eq_id : ∀ (k : index) (f : obj),
+      f ♯[k] (sc k f) ← (tgk_sck_eq_sck k f).symm = f := by
     hcat_disch
   /-- Composing the target `tg k f` with `f` yields `f`. -/
-  compk_tgk_is_id : ∀ (k : index) (f : obj),
-      (tg k f) ♯[k] f ← (sck_tgk_is_tgk k f) = f := by
+  compk_tgk_eq_id : ∀ (k : index) (f : obj),
+      (tg k f) ♯[k] f ← (sck_tgk_eq_tgk k f) = f := by
     hcat_disch
   /-- If `g` and `f` compose and `h` and `g` compose, then `h ♯[k] g` and `f` compose. This is an
   auxiliary method for the associativity axiom. -/
@@ -224,7 +224,7 @@ class PreSingleSortedCategory (index : Type) [LinearOrder index] (obj : Type u)
       (sc_tg_gf : sc_is_tg k g f) (sc_tg_hg : sc_is_tg k h g) :
       sc_is_tg k (h ♯[k] g ← sc_tg_hg) f := calc
     _
-    _ = sc k g := sck_compk_is_sck sc_tg_hg
+    _ = sc k g := sck_compk_eq_sck sc_tg_hg
     _ = tg k f := sc_tg_gf
   /-- If `g` and `f` compose and `h` and `g` compose, then `h` and `g ♯[k] f` compose. This is an
   auxiliary method for the associativity axiom. -/
@@ -233,7 +233,7 @@ class PreSingleSortedCategory (index : Type) [LinearOrder index] (obj : Type u)
       sc_is_tg k h (g ♯[k] f ← sc_tg_gf) := calc
     sc k h
     _ = tg k g := sc_tg_hg
-    _ = _ := (tgk_compk_is_tgk sc_tg_gf).symm
+    _ = _ := (tgk_compk_eq_tgk sc_tg_gf).symm
   /-- The **associative property**: if `g` and `f` compose and `h` and `g` compose, then the two
   ways of composing `h`, `g`, and `f` exist and are equal. -/
   assoc : ∀ {k : index} {f g h : obj} (sc_tg_gf : sc_is_tg k g f) (sc_tg_hg : sc_is_tg k h g),
@@ -243,8 +243,8 @@ class PreSingleSortedCategory (index : Type) [LinearOrder index] (obj : Type u)
 
 -- Use axioms of `PreSingleSortedCategory` as simp lemmas.
 open PreSingleSortedCategory in
-attribute [simp] sck_sck_is_sck tgk_sck_is_sck sck_tgk_is_tgk tgk_tgk_is_tgk sck_compk_is_sck
-  tgk_compk_is_tgk compk_sck_is_id compk_tgk_is_id assoc
+attribute [simp] sck_sck_eq_sck tgk_sck_eq_sck sck_tgk_eq_tgk tgk_tgk_eq_tgk sck_compk_eq_sck
+  tgk_compk_eq_tgk compk_sck_eq_id compk_tgk_eq_id assoc
 
 /--
 A **single-sorted category** is a `PreSingleSortedCategory` with additional axioms ensuring
@@ -261,46 +261,46 @@ class SingleSortedCategory (index : Type) [LinearOrder index] (obj : Type u)
     extends PreSingleSortedCategory index obj where
   /-- Applying source at dimension `k` to a source at a lower dimension `j < k` yields the source
   at dimension `j`. -/
-  sck_scj_is_scj : ∀ {k j : index} (f : obj), j < k → sc k (sc j f) = sc j f := by hcat_disch
+  sck_scj_eq_scj : ∀ {k j : index} (f : obj), j < k → sc k (sc j f) = sc j f := by hcat_disch
   /-- Applying source at dimension `j` to a source at a higher dimension `k > j` yields the source
   at dimension `j`. -/
-  scj_sck_is_scj : ∀ {k j : index} (f : obj), j < k → sc j (sc k f) = sc j f := by hcat_disch
+  scj_sck_eq_scj : ∀ {k j : index} (f : obj), j < k → sc j (sc k f) = sc j f := by hcat_disch
   /-- Applying source at dimension `j` to a target at a higher dimension `k > j` yields the source
   at dimension `j`. -/
-  scj_tgk_is_scj : ∀ {k j : index} (f : obj), j < k → sc j (tg k f) = sc j f := by hcat_disch
+  scj_tgk_eq_scj : ∀ {k j : index} (f : obj), j < k → sc j (tg k f) = sc j f := by hcat_disch
   /-- Applying target at dimension `k` to a target at a lower dimension `j < k` yields the target
   at dimension `j`. -/
-  tgk_tgj_is_tgj : ∀ {k j : index} (f : obj), j < k → tg k (tg j f) = tg j f := by hcat_disch
+  tgk_tgj_eq_tgj : ∀ {k j : index} (f : obj), j < k → tg k (tg j f) = tg j f := by hcat_disch
   /-- Applying target at dimension `j` to a target at a higher dimension `k > j` yields the target
   at dimension `j`. -/
-  tgj_tgk_is_tgj : ∀ {k j : index} (f : obj), j < k → tg j (tg k f) = tg j f := by hcat_disch
+  tgj_tgk_eq_tgj : ∀ {k j : index} (f : obj), j < k → tg j (tg k f) = tg j f := by hcat_disch
   /-- Applying target at dimension `j` to a source at a higher dimension `k > j` yields the target
   at dimension `j`. -/
-  tgj_sck_is_tgj : ∀ {k j : index} (f : obj), j < k → tg j (sc k f) = tg j f := by hcat_disch
+  tgj_sck_eq_tgj : ∀ {k j : index} (f : obj), j < k → tg j (sc k f) = tg j f := by hcat_disch
   /-- If `g` and `f` are composable at dimension `j < k`, then `sc k g` and `sc k f` are composable
   at dimension `j`. This is an auxiliary method for the distributivity axioms. -/
   protected sc_tg_j_sc {k j : index} {f g : obj} (j_lt_k : j < k) (sc_tg_j_gf : sc_is_tg j g f) :
       sc_is_tg j (sc k g) (sc k f) := calc
     sc j (sc k g)
-    _ = sc j g := scj_sck_is_scj g j_lt_k
+    _ = sc j g := scj_sck_eq_scj g j_lt_k
     _ = tg j f := sc_tg_j_gf
-    _ = tg j (sc k f) := (tgj_sck_is_tgj f j_lt_k).symm
+    _ = tg j (sc k f) := (tgj_sck_eq_tgj f j_lt_k).symm
   /-- If `g` and `f` are composable at dimension `j < k`, then `tg k g` and `tg k f` are composable
   at dimension `j`. This is an auxiliary method for the distributivity axioms. -/
   protected sc_tg_j_tg {k j : index} {f g : obj} (j_lt_k : j < k) (sc_tg_j_gf : sc_is_tg j g f) :
       sc_is_tg j (tg k g) (tg k f) := calc
     sc j (tg k g)
-    _ = sc j g := scj_tgk_is_scj g j_lt_k
+    _ = sc j g := scj_tgk_eq_scj g j_lt_k
     _ = tg j f := sc_tg_j_gf
-    _ = tg j (tg k f) := (tgj_tgk_is_tgj f j_lt_k).symm
+    _ = tg j (tg k f) := (tgj_tgk_eq_tgj f j_lt_k).symm
   /-- Source at dimension `k` distributes over composition at dimension `j < k`. -/
-  sck_compj_is_compj_sck : ∀ {k j : index} {f g : obj} (j_lt_k : j < k)
+  sck_compj_eq_compj_sck : ∀ {k j : index} {f g : obj} (j_lt_k : j < k)
       (sc_tg_j_gf : sc_is_tg j g f),
       sc k (g ♯[j] f ← sc_tg_j_gf) =
       (sc k g) ♯[j] (sc k f) ← (sc_tg_j_sc j_lt_k sc_tg_j_gf) := by
     hcat_disch
   /-- Target at dimension `k` distributes over composition at dimension `j < k`. -/
-  tgk_compj_is_compj_tgk : ∀ {k j : index} {f g : obj} (j_lt_k : j < k)
+  tgk_compj_eq_compj_tgk : ∀ {k j : index} {f g : obj} (j_lt_k : j < k)
       (sc_tg_j_gf : sc_is_tg j g f),
       tg k (g ♯[j] f ← sc_tg_j_gf) =
       (tg k g) ♯[j] (tg k f) ← (sc_tg_j_tg j_lt_k sc_tg_j_gf) := by
@@ -313,10 +313,10 @@ class SingleSortedCategory (index : Type) [LinearOrder index] (obj : Type u)
       sc_is_tg k (g₂ ♯[j] f₂ ← sc_tg_k_g₂f₂) (g₁ ♯[j] f₁ ← sc_tg_k_g₁f₁) := calc
     _
     _ = (sc k g₂) ♯[j] (sc k f₂) ← (sc_tg_j_sc j_lt_k sc_tg_k_g₂f₂) :=
-      sck_compj_is_compj_sck j_lt_k sc_tg_k_g₂f₂
+      sck_compj_eq_compj_sck j_lt_k sc_tg_k_g₂f₂
     _ = (tg k g₁) ♯[j] (tg k f₁) ← (sc_tg_j_tg j_lt_k sc_tg_k_g₁f₁) :=
       congr_comp₁ sc_tg_k_f₂f₁ sc_tg_k_g₂g₁ (sc_tg_j_sc j_lt_k sc_tg_k_g₂f₂)
-    _ = _ := (tgk_compj_is_compj_tgk j_lt_k sc_tg_k_g₁f₁).symm
+    _ = _ := (tgk_compj_eq_compj_tgk j_lt_k sc_tg_k_g₁f₁).symm
   /-- Given a $2 \times 2$ pasting diagram of composable morphisms, we can compose first
   horizontally and then vertically. This is an auxiliary method for the `exchange` axiom. -/
   protected sc_tg_j_exchange {k j : index} {f₁ f₂ g₁ g₂ : obj} (j_lt_k : j < k)
@@ -324,13 +324,13 @@ class SingleSortedCategory (index : Type) [LinearOrder index] (obj : Type u)
       (sc_tg_k_g₂f₂ : sc_is_tg j g₂ f₂) (sc_tg_k_g₁f₁ : sc_is_tg j g₁ f₁) :
       sc_is_tg j (g₂ ♯[k] g₁ ← sc_tg_k_g₂g₁) (f₂ ♯[k] f₁ ← sc_tg_k_f₂f₁) := calc
     _
-    _ = sc j (sc k (g₂ ♯[k] g₁ ← sc_tg_k_g₂g₁)) := (scj_sck_is_scj _ j_lt_k).symm
-    _ = sc j (sc k g₁) := by rw [sck_compk_is_sck sc_tg_k_g₂g₁]
-    _ = sc j g₁ := scj_sck_is_scj g₁ j_lt_k
+    _ = sc j (sc k (g₂ ♯[k] g₁ ← sc_tg_k_g₂g₁)) := (scj_sck_eq_scj _ j_lt_k).symm
+    _ = sc j (sc k g₁) := by rw [sck_compk_eq_sck sc_tg_k_g₂g₁]
+    _ = sc j g₁ := scj_sck_eq_scj g₁ j_lt_k
     _ = tg j f₁ := sc_tg_k_g₁f₁
-    _ = tg j (sc k f₁) := (tgj_sck_is_tgj f₁ j_lt_k).symm
-    _ = tg j (sc k (f₂ ♯[k] f₁ ← sc_tg_k_f₂f₁)) := by rw [sck_compk_is_sck sc_tg_k_f₂f₁]
-    _ = tg j (f₂ ♯[k] f₁ ← sc_tg_k_f₂f₁) := tgj_sck_is_tgj _ j_lt_k
+    _ = tg j (sc k f₁) := (tgj_sck_eq_tgj f₁ j_lt_k).symm
+    _ = tg j (sc k (f₂ ♯[k] f₁ ← sc_tg_k_f₂f₁)) := by rw [sck_compk_eq_sck sc_tg_k_f₂f₁]
+    _ = tg j (f₂ ♯[k] f₁ ← sc_tg_k_f₂f₁) := tgj_sck_eq_tgj _ j_lt_k
   /--
   The **exchange law**: Given a $2 \times 2$ pasting diagram of composable morphisms,
   ```
@@ -355,8 +355,8 @@ class SingleSortedCategory (index : Type) [LinearOrder index] (obj : Type u)
 
 -- Use axioms of `SingleSortedCategory` as simp lemmas.
 open SingleSortedCategory in
-attribute [simp] sck_scj_is_scj scj_sck_is_scj scj_tgk_is_scj tgk_tgj_is_tgj tgj_tgk_is_tgj
-  tgj_sck_is_tgj sck_compj_is_compj_sck tgk_compj_is_compj_tgk exchange
+attribute [simp] sck_scj_eq_scj scj_sck_eq_scj scj_tgk_eq_scj tgk_tgj_eq_tgj tgj_tgk_eq_tgj
+  tgj_sck_eq_tgj sck_compj_eq_compj_sck tgk_compj_eq_compj_tgk exchange
 
 section Cells
 

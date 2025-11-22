@@ -47,25 +47,25 @@ structure SingleSortedFunctor (index : Type) [LinearOrder index] (C : Type u₁)
   /-- The underlying function on morphisms. -/
   map : C → D
   /-- The map preserves sources. -/
-  map_sc_is_sc_map : ∀ (k : index) (f : C), map (sc k f) = sc k (map f) := by hcat_disch
+  map_sc_eq_sc_map : ∀ (k : index) (f : C), map (sc k f) = sc k (map f) := by hcat_disch
   /-- The map preserves targets. -/
-  map_tg_is_tg_map : ∀ (k : index) (f : C), map (tg k f) = tg k (map f) := by hcat_disch
+  map_tg_eq_tg_map : ∀ (k : index) (f : C), map (tg k f) = tg k (map f) := by hcat_disch
   /-- If `g` and `f` are composable in `C`, then `F g` and `F f` are composable in `D`. This is an
-  auxiliary method for defining `map_comp_is_comp_map`. -/
+  auxiliary method for defining `map_comp_eq_comp_map`. -/
   protected comp_map {k : index} {f g : C} (sc_tg_gf : sc_is_tg k g f) :
       sc_is_tg k (map g) (map f) := calc
     sc k (map g)
-    _ = map (sc k g) := (map_sc_is_sc_map k g).symm
+    _ = map (sc k g) := (map_sc_eq_sc_map k g).symm
     _ = map (tg k f) := by rw [sc_tg_gf]
-    _ = tg k (map f) := map_tg_is_tg_map k f
+    _ = tg k (map f) := map_tg_eq_tg_map k f
   /-- The map preserves composition. -/
-  map_comp_is_comp_map : ∀ {k : index} {f g : C} (sc_tg_gf : sc_is_tg k g f),
+  map_comp_eq_comp_map : ∀ {k : index} {f g : C} (sc_tg_gf : sc_is_tg k g f),
       map (g ♯[k] f ← sc_tg_gf) = (map g) ♯[k] (map f) ← (comp_map sc_tg_gf) := by
     hcat_disch
 
 -- Use `SingleSortedFunctor` axioms as simp lemmas.
 open SingleSortedFunctor in
-attribute [simp] map_sc_is_sc_map map_tg_is_tg_map map_comp_is_comp_map
+attribute [simp] map_sc_eq_sc_map map_tg_eq_tg_map map_comp_eq_comp_map
 
 namespace SingleSortedFunctor
 
@@ -85,25 +85,25 @@ properties. -/
 def comp (G : SingleSortedFunctor index D E) (F : SingleSortedFunctor index C D) :
     SingleSortedFunctor index C E where
   map f := G (F f)
-  map_sc_is_sc_map := by
+  map_sc_eq_sc_map := by
     intro k f
     calc
       G (F (sc k f))
-      _ = G (sc k (F f)) := by rw [F.map_sc_is_sc_map k f]
-      _ = sc k (G (F f)) := G.map_sc_is_sc_map k (F f)
-  map_tg_is_tg_map := by
+      _ = G (sc k (F f)) := by rw [F.map_sc_eq_sc_map k f]
+      _ = sc k (G (F f)) := G.map_sc_eq_sc_map k (F f)
+  map_tg_eq_tg_map := by
     intro k f
     calc
       G (F (tg k f))
-      _ = G (tg k (F f)) := by rw [F.map_tg_is_tg_map k f]
-      _ = tg k (G (F f)) := G.map_tg_is_tg_map k (F f)
-  map_comp_is_comp_map := by
+      _ = G (tg k (F f)) := by rw [F.map_tg_eq_tg_map k f]
+      _ = tg k (G (F f)) := G.map_tg_eq_tg_map k (F f)
+  map_comp_eq_comp_map := by
     intro k f g sc_tg_gf
     calc
       G (F (g ♯[k] f ← sc_tg_gf))
-      _ = G ((F g) ♯[k] (F f) ← F.comp_map sc_tg_gf) := by rw [F.map_comp_is_comp_map sc_tg_gf]
+      _ = G ((F g) ♯[k] (F f) ← F.comp_map sc_tg_gf) := by rw [F.map_comp_eq_comp_map sc_tg_gf]
       _ = (G (F g)) ♯[k] (G (F f)) ← G.comp_map (F.comp_map sc_tg_gf) :=
-        G.map_comp_is_comp_map (F.comp_map sc_tg_gf)
+        G.map_comp_eq_comp_map (F.comp_map sc_tg_gf)
 
 @[inherit_doc] scoped[HigherCategoryTheory] infixr:100 " ⊚ " => SingleSortedFunctor.comp
 

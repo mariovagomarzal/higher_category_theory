@@ -40,7 +40,7 @@ open PreSingleSortedCategory in
 The source-based and target-based definitions of $k$-cells are equivalent.
 
 A morphism `f` satisfies `sc k f = f` if and only if it satisfies `tg k f = f`. This equivalence
-relies on the idempotency axioms `tgk_sck_is_sck` and `sck_tgk_is_tgk`.
+relies on the idempotency axioms `tgk_sck_eq_sck` and `sck_tgk_eq_tgk`.
 -/
 theorem cell_sc_iff_cell_tg (k : index) (f : obj) :
     cell_sc k f ↔ cell_tg k f := by
@@ -49,13 +49,13 @@ theorem cell_sc_iff_cell_tg (k : index) (f : obj) :
     calc
       tg k f
       _ = tg k (sc k f) := by rw [sc_eq]
-      _ = sc k f := tgk_sck_is_sck k f
+      _ = sc k f := tgk_sck_eq_sck k f
       _ = f := sc_eq
   · intro tg_eq
     calc
       sc k f
       _ = sc k (tg k f) := by rw [tg_eq]
-      _ = tg k f := sck_tgk_is_tgk k f
+      _ = tg k f := sck_tgk_eq_tgk k f
       _ = f := tg_eq
 
 /-- The set of all $k$-cells using the source-based definition. This is an abbreviation for `cells k
