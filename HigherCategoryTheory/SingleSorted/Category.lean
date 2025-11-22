@@ -10,26 +10,73 @@ import Mathlib.Order.Fin.Basic
 /-!
 # Single-sorted presentation of higher-order categories
 
-This file defines the single-sorted presentation of higher order categories, where objects,
+This file defines the single-sorted presentation of higher-order categories, where objects,
 morphisms, 2-morphisms, and higher morphisms all live in a single type, distinguished by source and
 target operations, and a partial composition operation at each dimension.
 
+In a single-sorted presentation, unlike the traditional many-sorted approach, all morphisms
+(including what would traditionally be called objects, 1-morphisms, 2-morphisms, etc.) are elements
+of a single type. The dimension of a morphism is determined by source and target operations at each
+level, and composition is defined as a partial operation that is only defined when certain
+source-target matching conditions are satisfied.
+
+## Main definitions
+
+* `SingleSortedCategoryStruct`: The basic structure with source, target, and partial composition
+  operations, along with the composability condition.
+* `PreSingleSortedCategory`: A structure satisfying the single-sorted category axioms at each
+  dimension.
+* `SingleSortedCategory`: A structure with additional axioms ensuring compatibility between
+  different dimensions.
+* `SingleSortedNCategory`: A single-sorted $n$-category is a `SingleSortedCategory` with index type
+  `Fin n`, representing categories with exactly `n` dimensions.
+* `SingleSortedOmegaCategory`: A single-sorted $\omega$-category is a `SingleSortedCategory` with
+  index type `ℕ`, together with an axiom ensuring every morphism is a $k$-cell for some finite `k`.
+
 ## Notation
 
+* `sc` and `tg`: Source and target operations at each dimension.
+* `sc_is_tg k g f`: The composability condition at dimension `k`, stating that the source of `g` at
+  dimension `k` equals the target of `f` at dimension `k`.
 * `g ♯.[k] f`: The partial composition of `g` and `f` at dimension `k`.
-* `g ♯[k] f ← sc_tg_gf`: The composition of `g` and `f` at dimension `k`, given a proof
-  `sc_tg_gf` that the source of `g` at dimension `k` equals the target of `f` at dimension `k`.
+* `g ♯[k] f ← sc_tg_gf`: The composition of `g` and `f` at dimension `k`, given a proof `sc_tg_gf`
+  that the source of `g` at dimension `k` equals the target of `f` at dimension `k`.
+
+## Implementation notes
+
+The formalization uses partial functions (`PFun`) from Mathlib to represent composition, that is,
+functions that return a value of type `Part obj`.  The `pcomp_dom` axiom characterizes exactly when
+composition is defined.
+
+The `hcat_disch` tactic is provided as a proof automation tool that handles many routine goals in
+the development of higher category theory. It is used extensively as the default proof method for
+most of the definitions of the library.
+
+## References
+
+* [vidal2024higher]
 -/
 
 universe u
 
 namespace HigherCategoryTheory
 
-/-- TODO: Comment. -/
+/--
+A tactic for discharging common goals in higher category theory proofs. This tactic first attempts
+reflexivity (for definitional equalities), then omega (for arithmetic goals on indices), and finally
+grind (for more complex goals involving equational reasoning).
+
+TODO: This tactic is incomplete and highly inefficient.
+-/
 macro (name := hcat_disch) "hcat_disch" : tactic =>
   `(tactic| first | (intros; rfl) | omega | grind)
 
-/-- TODO: Comment. -/
+/--
+The basic structure of a single-sorted category, parametrized by an index type.
+
+This structure contains only the data and the composability condition; the structure axioms are
+defined in `PreSingleSortedCategory` and `SingleSortedCategory`.
+-/
 class SingleSortedCategoryStruct (index : Type) (obj : Type u) where
   /-- Source operation at dimension `k`. -/
   sc : index → obj → obj
@@ -62,17 +109,24 @@ variable {k : index} {f g : obj}
 scoped[HigherCategoryTheory] notation g " ♯.[" k "] " f:100 =>
   SingleSortedCategoryStruct.pcomp k g f
 
-/-- TODO: Comment. -/
+/-- A method to express the composability condition for morphisms `g` and `f` at dimension `k`, that
+is, that the source of `g` at dimension `k` equals the target of `f` at dimension `k`. -/
 @[simp]
 def sc_is_tg (k : index) (g f : obj) : Prop := sc k g = tg k f
 
-/-- TODO: Comment. -/
-theorem dom_of_sc_is_tg (sc_tg_gf : sc_is_tg k g f) : (g ♯.[k] f).Dom := pcomp_dom.mpr sc_tg_gf
+/-- If `g` and `f` satisfy the composability condition `sc_is_tg k g f`, then the partial
+composition `g ♯.[k] f` is defined. This lemma represents the forward direction of the
+`pcomp_dom` axiom. -/
+lemma dom_of_sc_is_tg (sc_tg_gf : sc_is_tg k g f) : (g ♯.[k] f).Dom := pcomp_dom.mpr sc_tg_gf
 
-/-- TODO: Comment. -/
-theorem sc_is_tg_of_dom (dom_gf : (g ♯.[k] f).Dom) : sc_is_tg k g f := pcomp_dom.mp dom_gf
+/-- If the partial composition `g ♯.[k] f` is defined, then `g` and `f` satisfy the composability
+condition `sc_is_tg k g f`. This is the backward direction of the `pcomp_dom` axiom, that is, the
+converse of `dom_of_sc_is_tg`. -/
+lemma sc_is_tg_of_dom (dom_gf : (g ♯.[k] f).Dom) : sc_is_tg k g f := pcomp_dom.mp dom_gf
 
-/-- TODO: Comment. -/
+/-- The (total) composition operation at dimension `k`, defined for composable morphisms.
+Given morphisms `f` and `g` with a proof of `sc_is_tg k g f`, this returns their composite
+`g ♯[k] f`. -/
 @[simp]
 def comp (k : index) (g f : obj) (sc_tg_gf : sc_is_tg k g f) : obj :=
   (g ♯.[k] f).get (dom_of_sc_is_tg sc_tg_gf)
@@ -91,36 +145,53 @@ section Congruence
 variable {index : Type} {obj : Type u} [SingleSortedCategoryStruct index obj]
 variable {k : index} {f₁ f₂ g₁ g₂ : obj}
 
-/-- TODO: Comment. -/
-theorem congr_dom (eq_f : f₁ = f₂) (eq_g : g₁ = g₂) (dom_g₁f₁ : (g₁ ♯.[k] f₁).Dom) :
+/-- Congruence lemma for the domain of partial composition: if `f₁ = f₂` and `g₁ = g₂`, and the
+partial composition `g₁ ♯.[k] f₁` is defined, then `g₂ ♯.[k] f₂` is also defined. -/
+lemma congr_dom (eq_f : f₁ = f₂) (eq_g : g₁ = g₂) (dom_g₁f₁ : (g₁ ♯.[k] f₁).Dom) :
     (g₂ ♯.[k] f₂).Dom := by
   grind
 
-/-- TODO: Comment. -/
-theorem congr_sc_is_tg (eq_f : f₁ = f₂) (eq_g : g₁ = g₂) (sc_tg_g₁f₁ : sc_is_tg k g₁ f₁) :
+/-- Congruence lemma for composability: if `f₁ = f₂` and `g₁ = g₂`, and `g₁` is composable with
+`f₁` at dimension `k`, then `g₂` is composable with `f₂` at dimension `k`. -/
+lemma congr_sc_is_tg (eq_f : f₁ = f₂) (eq_g : g₁ = g₂) (sc_tg_g₁f₁ : sc_is_tg k g₁ f₁) :
     sc_is_tg k g₂ f₂ := by
   grind
 
-/-- TODO: Comment. -/
-theorem congr_pcomp (k : index) (eq_f : f₁ = f₂) (eq_g : g₁ = g₂) :
+/-- Congruence lemma for partial composition: if `f₁ = f₂` and `g₁ = g₂`, then the partial
+compositions `g₁ ♯.[k] f₁` and `g₂ ♯.[k] f₂` are equal as partial functions. -/
+lemma congr_pcomp (k : index) (eq_f : f₁ = f₂) (eq_g : g₁ = g₂) :
     g₁ ♯.[k] f₁ = g₂ ♯.[k] f₂  := by
   grind
 
-/-- TODO: Comment. -/
-theorem congr_comp₁ (eq_f : f₁ = f₂) (eq_g : g₁ = g₂)
+/-- Congruence lemma for total composition (first-pair version): if `f₁ = f₂` and `g₁ = g₂`, then
+the compositions `g₁ ♯[k] f₁` and `g₂ ♯[k] f₂` are equal, using the composability proof from the
+first pair. -/
+lemma congr_comp₁ (eq_f : f₁ = f₂) (eq_g : g₁ = g₂)
     (sc_tg_g₁f₁ : sc_is_tg k g₁ f₁) :
     g₁ ♯[k] f₁ ← sc_tg_g₁f₁ = g₂ ♯[k] f₂ ← congr_sc_is_tg eq_f eq_g sc_tg_g₁f₁ := by
   grind
 
-/-- TODO: Comment. -/
-theorem congr_comp₂ (eq_f : f₁ = f₂) (eq_g : g₁ = g₂)
+/-- Congruence lemma for total composition (second-pair verion): if `f₁ = f₂` and `g₁ = g₂`, then
+the compositions `g₁ ♯[k] f₁` and `g₂ ♯[k] f₂` are equal, using the composability proof from the
+second pair. -/
+lemma congr_comp₂ (eq_f : f₁ = f₂) (eq_g : g₁ = g₂)
     (sc_tg_g₂f₂ : sc_is_tg k g₂ f₂) :
     g₁ ♯[k] f₁ ← congr_sc_is_tg eq_f.symm eq_g.symm sc_tg_g₂f₂ = g₂ ♯[k] f₂ ← sc_tg_g₂f₂ := by
   grind
 
 end Congruence
 
-/-- TODO: Comment. -/
+/--
+A preliminary version of a single-sorted category.
+
+This structure captures the axioms that govern behavior within a single dimension, including:
+* **Idempotency**: Sources and targets are idempotent.
+* **Identity laws**: Composing with sources and targets yields identities.
+* **Associativity**: Composition is associative at each dimension.
+
+This serves as an intermediate step in the construction of `SingleSortedCategory`, allowing us to
+establish dimension-specific properties before enforcing cross-dimensional compatibility.
+-/
 class PreSingleSortedCategory (index : Type) [LinearOrder index] (obj : Type u)
     extends SingleSortedCategoryStruct index obj where
   /-- Applying source twice at dimension `k` is idempotent. -/
@@ -163,8 +234,8 @@ class PreSingleSortedCategory (index : Type) [LinearOrder index] (obj : Type u)
     sc k h
     _ = tg k g := sc_tg_hg
     _ = _ := (tgk_compk_is_tgk sc_tg_gf).symm
-  /-- If `g` and `f` compose and `h` and `g` compose, then the two ways of composing `h`, `g`, and
-  `f` exist and are equal, that is, composition is associative. -/
+  /-- The **associative property**: if `g` and `f` compose and `h` and `g` compose, then the two
+  ways of composing `h`, `g`, and `f` exist and are equal. -/
   assoc : ∀ {k : index} {f g h : obj} (sc_tg_gf : sc_is_tg k g f) (sc_tg_hg : sc_is_tg k h g),
       ((h ♯[k] g ← sc_tg_hg) ♯[k] f ← (compl_assoc sc_tg_gf sc_tg_hg)) =
       (h ♯[k] (g ♯[k] f ← sc_tg_gf) ← (compr_assoc sc_tg_gf sc_tg_hg)) := by
@@ -175,7 +246,17 @@ open PreSingleSortedCategory in
 attribute [simp] sck_sck_is_sck tgk_sck_is_sck sck_tgk_is_tgk tgk_tgk_is_tgk sck_compk_is_sck
   tgk_compk_is_tgk compk_sck_is_id compk_tgk_is_id assoc
 
-/-- TODO: Comment. -/
+/--
+A **single-sorted category** is a `PreSingleSortedCategory` with additional axioms ensuring
+compatibility between different dimensions.
+
+This structure extends `PreSingleSortedCategory` by adding cross-dimensional axioms that govern how
+operations at different dimensions interact:
+* **Source/target interaction**: How source and target operations at different dimensions commute.
+* **Distributivity**: Source and target operations distribute over composition at lower dimensions.
+* **Exchange law**: Stating that composing first horizontally then vertically yields the same result
+  as composing first vertically then horizontally
+-/
 class SingleSortedCategory (index : Type) [LinearOrder index] (obj : Type u)
     extends PreSingleSortedCategory index obj where
   /-- Applying source at dimension `k` to a source at a lower dimension `j < k` yields the source
@@ -251,7 +332,7 @@ class SingleSortedCategory (index : Type) [LinearOrder index] (obj : Type u)
     _ = tg j (sc k (f₂ ♯[k] f₁ ← sc_tg_k_f₂f₁)) := by rw [sck_compk_is_sck sc_tg_k_f₂f₁]
     _ = tg j (f₂ ♯[k] f₁ ← sc_tg_k_f₂f₁) := tgj_sck_is_tgj _ j_lt_k
   /--
-  Given a $2 \times 2$ pasting diagram of composable morphisms,
+  The **exchange law**: Given a $2 \times 2$ pasting diagram of composable morphisms,
   ```
   g₂ --[j]--> f₂
    |           |
@@ -260,7 +341,7 @@ class SingleSortedCategory (index : Type) [LinearOrder index] (obj : Type u)
    ↓           ↓
   g₁ --[j]--> f₁,
   ```
-  where `j < k`, the two ways of composing the diagram (vertically then horizontally, or
+  where `j < k`, the two ways of composing the diagram (first vertically then horizontally, or first
   horizontally then vertically) yield the same result.
   -/
   exchange : ∀ {k j : index} {f₁ f₂ g₁ g₂ : obj} (j_lt_k : j < k)
@@ -281,26 +362,28 @@ section Cells
 
 variable {index : Type} [LinearOrder index] {obj : Type u} [SingleSortedCategory index obj]
 
-/-- A morphism `f` is a $k$-cell if `sc k f = f`. This means `f` behaves as an identity at dimension
-$k$. -/
+/-- A morphism `f` is a **$k$-cell** if `sc k f = f`. -/
 @[simp]
 def cell (k : index) (f : obj) : Prop :=
   sc k f = f
 
-/-- TODO: Comment. -/
+/-- The set of all **$k$-cells** in a single-sorted category. -/
 @[simp]
 def cells (k : index) (obj : Type u) [SingleSortedCategory index obj] : Set obj :=
   {f : obj | cell k f}
 
 end Cells
 
-/-- TODO: Comment. -/
+/-- A **single-sorted $n$-category** is a `SingleSortedCategory` with index type `Fin n`,
+representing a category with exactly `n` dimensions. -/
 abbrev SingleSortedNCategory (n : ℕ) (obj : Type u) := SingleSortedCategory (Fin n) obj
 
 open SingleSortedCategory in
-/-- TODO: Comment. -/
+/-- A **single-sorted $\omega$-category** is a `SingleSortedCategory` with index type `ℕ`,
+representing a category with infinitely (countably) many dimensions and an additional axiom ensuring
+that every morphism is a $k$-cell for some finite `k`. -/
 class SingleSortedOmegaCategory (obj : Type u) extends SingleSortedCategory ℕ obj where
-  /-- Every element is a k-cell for some `k : ℕ`. -/
+  /-- Every morphism is a $k$-cell for some `k : ℕ`. -/
   is_cell : ∀ f : obj, ∃ k : ℕ, cell k f
 
 -- Use axioms of `SingleSortedOmegaCategory` as simp lemmas.
