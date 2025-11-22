@@ -21,11 +21,15 @@ namespace HigherCategoryTheory
 /-- TODO: Comment. -/
 structure StructureFamily (bundled : Type u → Type u) : Type (u + 1) where
   obj : Type u
-  str : bundled obj
+  str : bundled obj := by infer_instance
 
 namespace StructureFamily
 
 variable {bundled : Type u → Type u} {C : StructureFamily bundled}
+
+set_option checkBinderAnnotations false in
+/-- TODO: Comment. -/
+def of (obj : Type u) [str : bundled obj] : StructureFamily bundled := ⟨obj, str⟩
 
 /-- TODO: Comment. -/
 instance instCoeSort : CoeSort (StructureFamily bundled) (Type u) := ⟨StructureFamily.obj⟩
@@ -40,6 +44,11 @@ open CategoryTheory
 /-- TODO: Comment. -/
 abbrev SingleSortedCat (index : Type) [LinearOrder index] :=
   StructureFamily.{u} (SingleSortedCategory index)
+
+-- TODO: Comment.
+example {index : Type} [LinearOrder index] {C : Type u} [SingleSortedCategory index C] :
+    SingleSortedCat index :=
+  StructureFamily.of C
 
 /-- TODO: Comment. -/
 abbrev SingleSortedNCat (n : ℕ) := StructureFamily.{u} (SingleSortedNCategory n)
