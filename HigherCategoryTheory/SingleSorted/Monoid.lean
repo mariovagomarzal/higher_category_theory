@@ -9,7 +9,7 @@ import HigherCategoryTheory.SingleSorted.Category
 /-!
 # Monoids as single-sorted categories
 
-This file establishes that every monoid can be viewed as a single-sorted $1$-category.
+This file defines monoid-related instances of single-sorted categories.
 -/
 
 universe u
