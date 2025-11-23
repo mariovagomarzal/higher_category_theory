@@ -16,66 +16,57 @@ namespace HigherCategoryTheory
 
 namespace SingleSortedNCategory
 
+macro (name := inherit_axiom) "inherit_axiom" axiom_name:ident : tactic =>
+  `(tactic| (intros; simp; apply $axiom_name <;> (simp at *; omega)))
+
 open SingleSortedCategoryFamily in
 def toUnderlyingSingleSortedMCategory {n : ℕ} {Obj : Type u}
     (nS : SingleSortedNCategory n Obj)
     (m : Fin n) :
     SingleSortedNCategory m (cell Obj m) where
-  Sc k f := by
-    simp
-    have k_lt_n : k < n := Nat.lt_trans k.isLt m.isLt
-    let sc_k_f : Obj := nS.Sc ⟨k, k_lt_n⟩ f
-    use sc_k_f
-    exact nS.sck_scj_is_scj f k.isLt
-  Tg k f := by
-    rw [cell_eq_cell_tg]
-    simp
-    have k_lt_n : k < n := Nat.lt_trans k.isLt m.isLt
-    let tg_k_f : Obj := nS.Tg ⟨k, k_lt_n⟩ f
-    use tg_k_f
-    exact nS.tgk_tgj_is_tgj f k.isLt
+  Sc k f := ⟨nS.Sc ⟨k, Nat.lt_trans k.isLt m.isLt⟩ f, by
+    exact nS.sck_scj_is_scj f k.isLt⟩
+  Tg k f := ⟨nS.Tg ⟨k, Nat.lt_trans k.isLt m.isLt⟩ f, by
+    apply (nS.id_sc_iff_id_tg m (nS.Tg ⟨k, Nat.lt_trans k.isLt m.isLt⟩ f)).mpr
+    exact nS.tgk_tgj_is_tgj f k.isLt⟩
   PComp k g f :=
+    let k_lt_n : k < n := Nat.lt_trans k.isLt m.isLt
     {
-      Dom := by
-        have k_lt_n : k < n := Nat.lt_trans k.isLt m.isLt
-        exact (nS.PComp ⟨k, k_lt_n⟩ g f).Dom
-      get nS_pcomp_dom := by
-        have k_lt_n : k < n := Nat.lt_trans k.isLt m.isLt
-        let nS_comp_gf := nS.pcomp_dom.mp nS_pcomp_dom
-        let pcomp_k_gf : Obj := nS.comp (⟨k, k_lt_n⟩ : Fin n) g f nS_comp_gf
-        simp
-        use pcomp_k_gf
-        calc
-          sc m pcomp_k_gf
-          _ = _ := nS.sck_compj_is_compj_sck k.isLt nS_comp_gf
-          _ = pcomp_k_gf := congr_pcomp g.property f.property _ _
+      Dom := (nS.PComp ⟨k, Nat.lt_trans k.isLt m.isLt⟩ g f).Dom
+      get nS_pcomp_dom :=
+        let comp_gf := nS.comp (⟨k, k_lt_n⟩ : Fin n) g f (nS.pcomp_dom.mp nS_pcomp_dom)
+        ⟨comp_gf, by
+          simp
+          calc
+            _
+            _ = _ := nS.sck_compj_is_compj_sck k.isLt (nS.pcomp_dom.mp nS_pcomp_dom)
+            _ = comp_gf := congr_pcomp g.property f.property _ _⟩
     }
-  -- TODO: Prove remaining axioms
-  pcomp_dom := by sorry
-  sc_sc_is_sc := by sorry
-  tg_sc_is_sc := by sorry
-  sc_tg_is_tg := by sorry
-  tg_tg_is_tg := by sorry
-  sc_comp_is_sc := by sorry
-  tg_comp_is_tg := by sorry
-  comp_sc_is_id := by sorry
-  comp_tg_is_id := by sorry
-  compr_assoc := by sorry
-  compl_assoc := by sorry
-  assoc := by sorry
-  sck_scj_is_scj := by sorry
-  scj_sck_is_scj := by sorry
-  scj_tgk_is_scj := by sorry
-  tgk_tgj_is_tgj := by sorry
-  tgj_tgk_is_tgj := by sorry
-  tgj_sck_is_tgj := by sorry
-  comp_j_sc := by sorry
-  comp_j_tg := by sorry
-  sck_compj_is_compj_sck := by sorry
-  tgk_compj_is_compj_tgk := by sorry
-  comp_k_exchange := by sorry
-  comp_j_exchange := by sorry
-  exchange := by sorry
+  pcomp_dom := by inherit_axiom nS.pcomp_dom
+  sc_sc_is_sc := by inherit_axiom nS.sc_sc_is_sc
+  tg_sc_is_sc := by inherit_axiom nS.tg_sc_is_sc
+  sc_tg_is_tg := by inherit_axiom nS.sc_tg_is_tg
+  tg_tg_is_tg := by inherit_axiom nS.tg_tg_is_tg
+  sc_comp_is_sc := by inherit_axiom nS.sc_comp_is_sc
+  tg_comp_is_tg := by inherit_axiom nS.tg_comp_is_tg
+  comp_sc_is_id := by
+    intros
+    rw [Subtype.mk.injEq]
+    exact nS.comp_sc_is_id _ _
+  comp_tg_is_id := by
+    intros
+    rw [Subtype.mk.injEq]
+    exact nS.comp_tg_is_id _ _
+  assoc := by inherit_axiom nS.assoc
+  sck_scj_is_scj := by inherit_axiom nS.sck_scj_is_scj
+  scj_sck_is_scj := by inherit_axiom nS.scj_sck_is_scj
+  scj_tgk_is_scj := by inherit_axiom nS.scj_tgk_is_scj
+  tgk_tgj_is_tgj := by inherit_axiom nS.tgk_tgj_is_tgj
+  tgj_tgk_is_tgj := by inherit_axiom nS.tgj_tgk_is_tgj
+  tgj_sck_is_tgj := by inherit_axiom nS.tgj_sck_is_tgj
+  sck_compj_is_compj_sck := by inherit_axiom nS.sck_compj_is_compj_sck
+  tgk_compj_is_compj_tgk := by inherit_axiom nS.tgk_compj_is_compj_tgk
+  exchange := by inherit_axiom nS.exchange
 
 end SingleSortedNCategory
 
