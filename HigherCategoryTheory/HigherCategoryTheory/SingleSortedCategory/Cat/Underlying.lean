@@ -30,18 +30,17 @@ def toUnderlyingSingleSortedMCategory {n : ℕ} {Obj : Type u}
     apply (nS.id_sc_iff_id_tg m (nS.Tg ⟨k, Nat.lt_trans k.isLt m.isLt⟩ f)).mpr
     exact nS.tgk_tgj_is_tgj f k.isLt⟩
   PComp k g f :=
+    let k_lt_n : k < n := Nat.lt_trans k.isLt m.isLt
     {
       Dom := (nS.PComp ⟨k, Nat.lt_trans k.isLt m.isLt⟩ g f).Dom
-      get nS_pcomp_dom := by
-        have k_lt_n : k < n := Nat.lt_trans k.isLt m.isLt
-        let nS_comp_gf := nS.pcomp_dom.mp nS_pcomp_dom
-        let pcomp_k_gf : Obj := nS.comp (⟨k, k_lt_n⟩ : Fin n) g f nS_comp_gf
-        simp
-        use pcomp_k_gf
-        calc
-          sc m pcomp_k_gf
-          _ = _ := nS.sck_compj_is_compj_sck k.isLt nS_comp_gf
-          _ = pcomp_k_gf := congr_pcomp g.property f.property _ _
+      get nS_pcomp_dom :=
+        let comp_gf := nS.comp (⟨k, k_lt_n⟩ : Fin n) g f (nS.pcomp_dom.mp nS_pcomp_dom)
+        ⟨comp_gf, by
+          simp
+          calc
+            _
+            _ = _ := nS.sck_compj_is_compj_sck k.isLt (nS.pcomp_dom.mp nS_pcomp_dom)
+            _ = comp_gf := congr_pcomp g.property f.property _ _⟩
     }
   pcomp_dom := by inherit_axiom nS.pcomp_dom
   sc_sc_is_sc := by inherit_axiom nS.sc_sc_is_sc
