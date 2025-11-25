@@ -111,6 +111,13 @@ blueprint: blueprint-references blueprint-print blueprint-web
 alias bp := blueprint
 
 [group("docs")]
+[doc("Check that all Lean declarations used in the blueprint exist in the project.")]
+blueprint-check:
+  leanblueprint checkdecls
+
+alias bpc := blueprint-check
+
+[group("docs")]
 [doc("Serve the project blueprint website locally.")]
 blueprint-serve:
   leanblueprint serve
