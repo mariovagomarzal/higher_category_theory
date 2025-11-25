@@ -24,7 +24,7 @@ universe u
 
 namespace HigherCategoryTheory
 
-variable {index : Type} [LinearOrder index] {obj : Type u} [SingleSortedCategory index obj]
+variable {index : Type} [LinearOrder index] {obj : Type u} [S : SingleSortedCategory index obj]
 
 /-- A morphism `f` is a $k$-cell (via source) if `sc k f = f`. This is an abbreviation for `cell k
 f`, the original definition of $k$-cells found in `Category.lean`. -/
@@ -35,7 +35,6 @@ abbrev cell_sc (k : index) (f : obj) := cell k f
 def cell_tg (k : index) (f : obj) : Prop :=
   tg k f = f
 
-open PreSingleSortedCategory in
 /--
 The source-based and target-based definitions of $k$-cells are equivalent.
 
@@ -49,13 +48,13 @@ theorem cell_sc_iff_cell_tg (k : index) (f : obj) :
     calc
       tg k f
       _ = tg k (sc k f) := by rw [sc_eq]
-      _ = sc k f := tgk_sck_eq_sck k f
+      _ = sc k f := S.tgk_sck_eq_sck k f
       _ = f := sc_eq
   · intro tg_eq
     calc
       sc k f
       _ = sc k (tg k f) := by rw [tg_eq]
-      _ = tg k f := sck_tgk_eq_tgk k f
+      _ = tg k f := S.sck_tgk_eq_tgk k f
       _ = f := tg_eq
 
 /-- The set of all $k$-cells using the source-based definition. This is an abbreviation for `cells k
