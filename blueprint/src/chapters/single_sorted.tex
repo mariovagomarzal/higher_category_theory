@@ -1,0 +1,345 @@
+\chapter[Single-sorted presentation]{Single-sorted presentation of higher-order categories}
+\label{ch:single_sorted}
+
+In the single-sorted presentation of higher-order categories, objects, morphisms, 2-morphisms, and
+all higher morphisms live in a single set, distinguished by source and target operations at each
+dimension. Also, composition at each dimension is defined as a partial operation that is only
+defined when appropriate source-target matching conditions are satisfied. In this chapter, we
+present the very basic definitions and axioms of single-sorted categories and single-sorted functors
+between them.
+
+\begin{notation}
+  Throughout the text, if not otherwise specified, we will use $\Index$ to denote a set of indices
+  equipped with a linear order relation $<$.
+\end{notation}
+
+\section{Single-sorted categories}
+
+We start by defining the necessary data for defining a single-sorted category.
+
+\begin{definition}
+  \label{def:SingleSortedCategoryStruct}
+  \lean{HigherCategoryTheory.SingleSortedCategoryStruct}
+  \leanok
+  Let $C$ be a set whose elements will be called \emph{morphisms}. The required data for defining a
+  single-sorted $\Index$-category structure on $C$ consists of:
+
+  \begin{itemize}
+    \item A unary operation $\Sc^i \colon C \to C$ for each index $i \in \Index$, called the
+      \emph{source} at dimension $i$.
+    \item A unary operation $\Tg^i \colon C \to C$ for each index $i \in \Index$, called the
+      \emph{target} at dimension $i$.
+    \item A partial binary operation $\Pcomp^i \colon C \times C \rightharpoonup C$ for each index
+      $i \in \Index$, called the \emph{composition} at dimension $i$.
+  \end{itemize}
+
+  The composition $g \Pcomp^i f$ is defined if and only if $\Sc^i (g) = \Tg^i (f)$, in which case we
+  say that $g$ and $f$ are \emph{composable} at dimension $i$.
+
+  We will represent the above data as a tuple $\cat{C} = (C, (\Sc^i, \Tg^i, \Pcomp^i)_{i \in
+  \Index})$.
+\end{definition}
+
+We split the axioms of single-sorted categories into two parts: first, those concerning only one
+dimension at a time, and then those concerning the interaction between different dimensions. This
+division is made by first defining the notion of pre-single-sorted category:
+
+\begin{definition}
+  \label{def:PreSingleSortedCategory}
+  \uses{def:SingleSortedCategoryStruct}
+  \lean{HigherCategoryTheory.PreSingleSortedCategory}
+  \leanok
+  A \emph{pre-single-sorted $\Index$-category} is a tuple $\cat{C} = (C, (\Sc^i, \Tg^i, \Pcomp^i)_{i
+  \in \Index})$ satisfying, for each index $i \in \Index$, the following axioms:
+
+  \begin{itemize}
+    \item For all $f \in C$,
+      \begin{align*}
+        \Sc^i (\Sc^i (f)) = \Sc^i (f), \qquad & \Tg^i (\Sc^i (f)) = \Sc^i (f), \\
+        \Sc^i (\Tg^i (f)) = \Tg^i (f), \qquad & \Tg^i (\Tg^i (f)) = \Tg^i (f).
+      \end{align*}
+    \item For all $f, g \in C$, if $g$ and $f$ are composable, then
+      \begin{align*}
+        \Sc^i (g \Pcomp^i f) = \Sc^i (f), \qquad & \Tg^i (g \Pcomp^i f) = \Tg^i (g).
+      \end{align*}
+    \item For all $f \in C$, the morphisms $f$ and $\Sc^i (f)$ are composable and
+      \[
+        f \Pcomp^i \Sc^i (f) = f.
+      \]
+    \item For all $f \in C$, the morphisms $\Tg^i (f)$ and $f$ are composable and
+      \[
+        \Tg^i (f) \Pcomp^i f = f.
+      \]
+    \item For all $f, g, h \in C$, if $h$ and $g$ are composable, and $g$ and $f$ are composable,
+      then $h \Pcomp^i g$ and $f$ and $h$ and $g \Pcomp^i f$ are composable, and
+      \[
+        (h \Pcomp^i g) \Pcomp^i f = h \Pcomp^i (g \Pcomp^i f).
+      \]
+  \end{itemize}
+\end{definition}
+
+We finally define a single-sorted category structure by extending the above definition with the
+axioms concerning the interaction between different dimensions:
+
+\begin{definition}[Single-sorted category]
+  \label{def:SingleSortedCategory}
+  \uses{def:PreSingleSortedCategory}
+  \lean{HigherCategoryTheory.SingleSortedCategory}
+  \leanok
+  A \emph{single-sorted $\Index$-category} is a pre-single-sorted $\Index$-category $\cat{C} = (C,
+  (\Sc^i, \Tg^i, \Pcomp^i)_{i \in \Index})$ satisfying, in addition to the axioms of
+  pre-single-sorted categories, the following cross-dimensional axioms:
+
+  \begin{itemize}
+    \item For all $f \in C$ and all indices $j, k \in \Index$ with $j < k$,
+      \begin{align*}
+        \Sc^k (\Sc^j (f)) = \Sc^j (f), \qquad & \Sc^j (\Sc^k (f)) = \Sc^j (f), \\
+        \Sc^j (\Tg^k (f)) = \Sc^j (f), \qquad & \Tg^k (\Tg^j (f)) = \Tg^j (f), \\
+        \Tg^j (\Tg^k (f)) = \Tg^j (f), \qquad & \Tg^j (\Sc^k (f)) = \Tg^j (f).
+      \end{align*}
+    \item For all $f, g \in C$ and all indices $j, k \in \Index$ with $j < k$, if $g$ and $f$ are
+      composable at dimension $j$, then $\Sc^k (g)$ and $\Sc^k (f)$ and $\Tg^k (g)$ and $\Tg^k (f)$
+      are also composable at dimension $j$, and
+      \begin{align*}
+        \Sc^k (g \Pcomp^j f) = \Sc^k (g) \Pcomp^j \Sc^k (f), \\
+        \Tg^k (g \Pcomp^j f) = \Tg^k (g) \Pcomp^j \Tg^k (f).
+      \end{align*}
+    \item For all $f_1, f_2, g_1, g_2 \in C$ and all indices $j, k \in \Index$ with $j < k$,
+      suppose we have composable morphisms forming a $2 \times 2$ pasting diagram where $g_2$ and
+      $f_2$ are composable at dimension $j$, $g_1$ and $f_1$ are composable at dimension $j$, $g_2$
+      and $g_1$ are composable at dimension $k$, and $f_2$ and $f_1$ are composable at dimension
+      $k$. Then, the morphisms $(g_2 \Pcomp^j f_2)$ and $(g_1 \Pcomp^j f_1)$ are composable at
+      dimension $k$, and the morphisms $(g_2 \Pcomp^k g_1)$ and $(f_2 \Pcomp^k f_1)$ are composable
+      at dimension $j$, and
+      \[
+        (g_2 \Pcomp^j f_2) \Pcomp^k (g_1 \Pcomp^j f_1) = (g_2 \Pcomp^k g_1) \Pcomp^j (f_2 \Pcomp^k
+        f_1).
+      \]
+      That is, composing first at dimension $j$ and then at dimension $k$ yields the same result as
+      composing first at dimension $k$ and then at dimension $j$.
+
+    \end{itemize}
+\end{definition}
+
+\begin{definition}[Single-sorted finite category]
+  \label{def:SingleSortedNCategory}
+  \uses{def:SingleSortedCategory}
+  \lean{HigherCategoryTheory.SingleSortedNCategory}
+  \leanok
+  Given a natural number $n \in \NN$, a \emph{single-sorted $n$-category} is a single-sorted
+  category indexed by the finite set $n = \set{0, 1, \ldots, n-1}$.
+\end{definition}
+
+We now define the notion of cell or identity morphism at a given dimension in a single-sorted
+category.
+
+\begin{definition}[Cell]
+  \label{def:cell}
+  \uses{def:SingleSortedCategory}
+  \lean{ HigherCategoryTheory.cell, HigherCategoryTheory.cell_sc, HigherCategoryTheory.cells,
+    HigherCategoryTheory.cells_sc, }
+  \leanok
+  Let $\cat{C}$ be a single-sorted $\Index$-category and $k \in \Index$. We say that a morphism $f
+  \in C$ is a \emph{$k$-cell} or \emph{identity morphism at dimension $k$} if and only if
+  \[
+    \Sc^k (f) = f.
+  \]
+
+  We will denote the set of $k$-cells of $\cat{C}$ by $C_k$.
+\end{definition}
+
+The above definition defines $k$-cells using the source operation, however, it is also possible to
+define them using the targer operation and, using the axioms of single-sorted categories, one can
+prove that both definitions are equivalent.
+
+\begin{definition}[Target-based cell]
+  \label{def:cell_tg}
+  \uses{def:SingleSortedCategory}
+  \lean{HigherCategoryTheory.cell_tg, HigherCategoryTheory.cells_tg}
+  \leanok
+  Let $\cat{C}$ be a single-sorted $\Index$-category and $k \in \Index$. A morphism $f \in C$ is a
+  \emph{target-based $k$-cell} if and only if
+  \[
+    \Tg^k (f) = f.
+  \]
+\end{definition}
+
+\begin{theorem}[Equivalence of cell definitions]
+  \label{thm:cell_sc_iff_cell_tg}
+  \uses{def:cell, def:cell_tg}
+  \lean{HigherCategoryTheory.cell_sc_iff_cell_tg, HigherCategoryTheory.cells_sc_eq_cells_tg}
+  \leanok
+  Let $\cat{C}$ be a single-sorted $\Index$-category and $k \in \Index$. A morphism $f \in C$ is a
+  $k$-cell if and only if it is a target-based $k$-cell.
+
+  It follows that the set of $k$-cells $C_k$ is equal to the set of target-based $k$-cells.
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  Let $f \in C$. Suppose first that $f$ is a $k$-cell, i.e., $\Sc^k (f) = f$. By the axioms of
+  single-sorted categories, we have that
+  \[
+    \Tg^k (f) = \Tg^k (\Sc^k (f)) = \Sc^k (f) = f,
+  \]
+  so $f$ is a target-based $k$-cell.
+
+  Conversely, suppose that $f$ is a target-based $k$-cell, i.e., $\Tg^k (f) = f$. By the axioms of
+  single-sorted categories, we have that
+  \[
+    \Sc^k (f) = \Sc^k (\Tg^k (f)) = \Tg^k (f) = f,
+  \]
+  so $f$ is a $k$-cell.
+\end{proof}
+
+\begin{definition}[Single-sorted omega category]
+  \label{def:SingleSortedOmegaCategory}
+  \uses{def:cell}
+  \lean{HigherCategoryTheory.SingleSortedOmegaCategory}
+  \leanok
+  A \emph{single-sorted $\omega$-category} is a single-sorted category indexed by the set of natural
+  numbers $\NN$, satisfying and additional axiom: for all $f \in C$, there exists a dimension $k \in
+  \NN$ such that $f$ is a $k$-cell.
+\end{definition}
+
+\section{Single-sorted functors}
+
+Unlike traditional category theory where functors act separately on objects and morphisms, here a
+single-sorted functor is simply a function on the set of morphisms that preserves sources, targets,
+and composition at each dimension.
+
+\begin{definition}[Single-sorted functor]
+  \label{def:SingleSortedFunctor}
+  \uses{def:SingleSortedCategory}
+  \lean{HigherCategoryTheory.SingleSortedFunctor}
+  \leanok
+  Let $\cat{C} = (C, (\Sc^i, \Tg^i, \Pcomp^i)_{i \in \Index})$ and $\cat{D} = (D, (\Sc^i, \Tg^i,
+  \Pcomp^i)_{i \in \Index})$ be single-sorted $\Index$-categories. A \emph{single-sorted
+  $\Index$-functor} from $\cat{C}$ to $\cat{D}$ is a map $F \colon C \to D$ satisfying, for each
+  index $k \in \Index$, the following preservation properties:
+
+  \begin{itemize}
+    \item For all $f \in C$,
+      \[
+        F (\Sc^k (f)) = \Sc^k (F (f)), \qquad F (\Tg^k (f)) = \Tg^k (F (f)).
+      \]
+    \item For all $f, g \in C$, if $g$ and $f$ are composable at dimension $k$, then $F (g)$ and
+      $F (f)$ are also composable at dimension $k$, and
+      \[
+        F (g \Pcomp^k f) = F (g) \Pcomp^k F (f).
+      \]
+  \end{itemize}
+\end{definition}
+
+We can define composition of single-sorted functors as the usual composition of functions, and the
+identity single-sorted functor as the identity function on the set of morphisms. The following
+results assert that these constructions yield valid single-sorted functors.
+
+\begin{theorem}[Composition of single-sorted functors]
+  \label{thm:SingleSortedFunctor_comp}
+  \uses{def:SingleSortedFunctor}
+  \lean{HigherCategoryTheory.SingleSortedFunctor.comp}
+  \leanok
+  Let $\cat{C}, \cat{D}, \cat{E}$ be single-sorted $\Index$-categories, and let $F \colon \cat{C}
+  \to \cat{D}$ and $G \colon \cat{D} \to \cat{E}$ be single-sorted $\Index$-functors. Then, the
+  composition $G \circ F \colon \cat{C} \to \cat{E}$ is also a single-sorted $\Index$-functor.
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  % TODO: Complete proof.
+\end{proof}
+
+\begin{theorem}[Identity single-sorted functor]
+  \label{thm:SingleSortedFunctor_id}
+  \uses{def:SingleSortedFunctor}
+  \lean{HigherCategoryTheory.SingleSortedFunctor.id}
+  \leanok
+  Let $\cat{C}$ be a single-sorted $\Index$-category. Then, the identity function $\id_C \colon C
+  \to C$ is a single-sorted $\Index$-functor from $\cat{C}$ to itself.
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  It trivially follows from reflexivity.
+\end{proof}
+
+\begin{definition}[Single-sorted finite functor]
+  \label{def:SingleSortedNFunctor}
+  \uses{def:SingleSortedNCategory, def:SingleSortedFunctor}
+  \lean{HigherCategoryTheory.SingleSortedNFunctor}
+  \leanok
+  Given a natural number $n \in \NN$, a \emph{single-sorted $n$-functor} is a single-sorted
+  functor between single-sorted $n$-categories.
+\end{definition}
+
+\begin{definition}[Single-sorted omega functor]
+  \label{def:SingleSortedOmegaFunctor}
+  \uses{def:SingleSortedOmegaCategory, def:SingleSortedFunctor}
+  \lean{HigherCategoryTheory.SingleSortedOmegaFunctor}
+  \leanok
+  A \emph{single-sorted $\omega$-functor} is a single-sorted functor between single-sorted
+  $\omega$-categories.
+\end{definition}
+
+\section{The category of single-sorted categories}
+
+Lastly, we define the category whose objects are single-sorted categories and whose morphisms are
+single-sorted functors.
+
+\begin{definition}[Category of single-sorted categories]
+  \label{def:SingleSortedCategory_category}
+  \uses{
+    def:SingleSortedCategory,
+    def:SingleSortedFunctor,
+    thm:SingleSortedFunctor_comp,
+    thm:SingleSortedFunctor_id,
+  }
+  \lean{HigherCategoryTheory.SingleSortedCat.category}
+  \leanok
+  The \emph{category of single-sorted $\Index$-categories}, denoted by $\Index\Cat$, is defined as
+  follows:
+
+  \begin{itemize}
+    \item Its objects are single-sorted $\Index$-categories.
+    \item Its morphisms are single-sorted $\Index$-functors between single-sorted
+      $\Index$-categories.
+    \item Composition of morphisms is given by composition of single-sorted functors, which is
+      well defined by Theorem~\ref{thm:SingleSortedFunctor_comp}.
+    \item The identity morphism for each object is given by the identity single-sorted functor,
+      which is well defined by Theorem~\ref{thm:SingleSortedFunctor_id}.
+  \end{itemize}
+\end{definition}
+
+\begin{proof}
+  \leanok
+  The required category laws trivially follow from the corresponding properties of function
+  composition.
+\end{proof}
+
+\begin{notation}
+  Since single-sorted $n$-categories are just single-sorted $\Index$-categories where $\Index$ is
+  the finite set $n$, it follows that we can define the category of single-sorted $n$-categories
+  and single-sorted $n$-functors between them, denoted by $n\Cat$.
+\end{notation}
+
+\begin{definition}[Category of single-sorted omega categories]
+  \label{def:SingleSortedOmegaCategory_category}
+  \uses{
+    def:SingleSortedOmegaCategory,
+    def:SingleSortedOmegaFunctor,
+    thm:SingleSortedFunctor_comp,
+    thm:SingleSortedFunctor_id,
+  }
+  \lean{HigherCategoryTheory.SingleSortedOmegaCat.category}
+  \leanok
+  The \emph{category of single-sorted $\omega$-categories}, denoted by $\omega\Cat$, is defined
+  analogously to Definition~\ref{def:SingleSortedCategory_category}, but using single-sorted
+  $\omega$-categories and single-sorted $\omega$-functors instead.
+\end{definition}
+
+\begin{proof}
+  \leanok
+  As in Definition~\ref{def:SingleSortedCategory_category}, the required category laws trivially
+  follow from the corresponding properties of function composition.
+\end{proof}
