@@ -358,6 +358,10 @@ open SingleSortedCategory in
 attribute [simp] sck_scj_eq_scj scj_sck_eq_scj scj_tgk_eq_scj tgk_tgj_eq_tgj tgj_tgk_eq_tgj
   tgj_sck_eq_tgj sck_compj_eq_compj_sck tgk_compj_eq_compj_tgk exchange
 
+/-- A **single-sorted $n$-category** is a `SingleSortedCategory` with index type `Fin n`,
+representing a category with exactly `n` dimensions. -/
+abbrev SingleSortedNCategory (n : ℕ) (obj : Type u) := SingleSortedCategory (Fin n) obj
+
 section Cells
 
 variable {index : Type} [LinearOrder index] {obj : Type u} [SingleSortedCategory index obj]
@@ -373,10 +377,6 @@ def cells (k : index) (obj : Type u) [SingleSortedCategory index obj] : Set obj 
   {f : obj | cell k f}
 
 end Cells
-
-/-- A **single-sorted $n$-category** is a `SingleSortedCategory` with index type `Fin n`,
-representing a category with exactly `n` dimensions. -/
-abbrev SingleSortedNCategory (n : ℕ) (obj : Type u) := SingleSortedCategory (Fin n) obj
 
 open SingleSortedCategory in
 /-- A **single-sorted $\omega$-category** is a `SingleSortedCategory` with index type `ℕ`,
