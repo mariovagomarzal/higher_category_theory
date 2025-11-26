@@ -111,7 +111,7 @@ scoped[HigherCategoryTheory] notation g " ♯.[" k "] " f:100 =>
 
 /-- A method to express the composability condition for morphisms `g` and `f` at dimension `k`, that
 is, that the source of `g` at dimension `k` equals the target of `f` at dimension `k`. -/
-@[simp]
+@[simp high]
 def sc_is_tg (k : index) (g f : obj) : Prop := sc k g = tg k f
 
 /-- If `g` and `f` satisfy the composability condition `sc_is_tg k g f`, then the partial
@@ -127,7 +127,7 @@ lemma sc_is_tg_of_dom (dom_gf : (g ♯.[k] f).Dom) : sc_is_tg k g f := pcomp_dom
 /-- The (total) composition operation at dimension `k`, defined for composable morphisms.
 Given morphisms `f` and `g` with a proof of `sc_is_tg k g f`, this returns their composite
 `g ♯[k] f`. -/
-@[simp]
+@[simp high]
 def comp (k : index) (g f : obj) (sc_tg_gf : sc_is_tg k g f) : obj :=
   (g ♯.[k] f).get (dom_of_sc_is_tg sc_tg_gf)
 
