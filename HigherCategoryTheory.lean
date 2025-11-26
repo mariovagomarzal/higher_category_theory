@@ -2,3 +2,4 @@ import HigherCategoryTheory.SingleSorted.Category
 import HigherCategoryTheory.SingleSorted.Functor
 import HigherCategoryTheory.SingleSorted.Cells
 import HigherCategoryTheory.SingleSorted.Cat
+import HigherCategoryTheory.SingleSorted.Underlying
