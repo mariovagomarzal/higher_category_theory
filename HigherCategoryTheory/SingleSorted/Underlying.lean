@@ -18,7 +18,7 @@ namespace HigherCategoryTheory
 -- TODO: Improve the tactic.
 /-- TODO: Comment. -/
 macro (name := inherit_axiom) "inherit_axiom" axiom_name:ident : tactic =>
-  `(tactic| (intros; simp; try (apply $axiom_name <;> (simp at *; assumption))))
+  `(tactic| (intros; rw [Subtype.mk.injEq]; try (apply $axiom_name <;> (simp at *; assumption))))
 
 variable {n : ℕ} {obj : Type u}
 
@@ -51,14 +51,8 @@ def SingleSortedNCategory.underlying (S : SingleSortedNCategory n obj) (m : Fin 
   tgk_tgk_eq_tgk := by inherit_axiom S.tgk_tgk_eq_tgk
   sck_compk_eq_sck := by inherit_axiom S.sck_compk_eq_sck
   tgk_compk_eq_tgk := by inherit_axiom S.tgk_compk_eq_tgk
-  compk_sck_eq_id := by
-    intros
-    rw [Subtype.mk.injEq]
-    apply S.compk_sck_eq_id
-  compk_tgk_eq_id := by
-    intros
-    rw [Subtype.mk.injEq]
-    apply S.compk_tgk_eq_id
+  compk_sck_eq_id := by inherit_axiom S.compk_sck_eq_id
+  compk_tgk_eq_id := by inherit_axiom S.compk_tgk_eq_id
   assoc := by inherit_axiom S.assoc
   sck_scj_eq_scj := by inherit_axiom S.sck_scj_eq_scj
   scj_sck_eq_scj := by inherit_axiom S.scj_sck_eq_scj
@@ -97,14 +91,8 @@ def SingleSortedOmegaCategory.underlying (S : SingleSortedOmegaCategory obj) (m 
   tgk_tgk_eq_tgk := by inherit_axiom S.tgk_tgk_eq_tgk
   sck_compk_eq_sck := by inherit_axiom S.sck_compk_eq_sck
   tgk_compk_eq_tgk := by inherit_axiom S.tgk_compk_eq_tgk
-  compk_sck_eq_id := by
-    intros
-    rw [Subtype.mk.injEq]
-    apply S.compk_sck_eq_id
-  compk_tgk_eq_id := by
-    intros
-    rw [Subtype.mk.injEq]
-    apply S.compk_tgk_eq_id
+  compk_sck_eq_id := by inherit_axiom S.compk_sck_eq_id
+  compk_tgk_eq_id := by inherit_axiom S.compk_tgk_eq_id
   assoc := by inherit_axiom S.assoc
   sck_scj_eq_scj := by inherit_axiom S.sck_scj_eq_scj
   scj_sck_eq_scj := by inherit_axiom S.scj_sck_eq_scj
