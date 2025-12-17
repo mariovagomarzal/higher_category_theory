@@ -26,10 +26,8 @@ variable {n : ℕ} {obj : Type u}
 @[simp]
 def SingleSortedNCategory.underlying (S : SingleSortedNCategory n obj) (m : Fin n) :
     SingleSortedNCategory m (cells m obj) where
-  sc k f := ⟨S.sc ⟨k, lt_trans k.isLt m.isLt⟩ f, by exact S.sck_scj_eq_scj f k.isLt⟩
-  tg k f := ⟨S.tg ⟨k, lt_trans k.isLt m.isLt⟩ f, by
-    apply (cell_sc_iff_cell_tg m _).mpr
-    exact S.tgk_tgj_eq_tgj f k.isLt⟩
+  sc k f := ⟨S.sc ⟨k, lt_trans k.isLt m.isLt⟩ f, by apply underlying_source_is_cell; exact k.isLt⟩
+  tg k f := ⟨S.tg ⟨k, lt_trans k.isLt m.isLt⟩ f, by apply underlying_target_is_cell; exact k.isLt⟩
   pcomp k g f :=
   let k_lt_n : k < n := Nat.lt_trans k.isLt m.isLt
   let S_pcomp := S.pcomp ⟨k, Nat.lt_trans k.isLt m.isLt⟩ g f
@@ -68,10 +66,8 @@ def SingleSortedNCategory.underlying (S : SingleSortedNCategory n obj) (m : Fin 
 @[simp]
 def SingleSortedOmegaCategory.underlying (S : SingleSortedOmegaCategory obj) (m : ℕ) :
     SingleSortedNCategory m (cells m obj) where
-  sc k f := ⟨S.sc k f, by exact S.sck_scj_eq_scj f k.isLt⟩
-  tg k f := ⟨S.tg k f, by
-    apply (cell_sc_iff_cell_tg m _).mpr
-    exact S.tgk_tgj_eq_tgj f k.isLt⟩
+  sc k f := ⟨S.sc k f, by apply underlying_source_is_cell; exact k.isLt⟩
+  tg k f := ⟨S.tg k f, by apply underlying_target_is_cell; exact k.isLt⟩
   pcomp k g f :=
   {
     Dom := (S.pcomp k g f).Dom
