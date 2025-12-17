@@ -1,0 +1,58 @@
+\chapter{Underlying transformations}
+\label{ch:underlying}
+
+In this chapter, for any two naturals $n$ and $m$ with $m < n$, we provide a way to transform
+single-sorted $n$-categories (or $\omega$-categories) into single-sorted $m$-categories by
+\emph{forgetting} morphisms that are not $m$-cells in the original category.
+
+Similarly, we provide a way to transform single-sorted $n$-functors (or $\omega$-functors) into
+single-sorted $m$-functors by forgetting the action on morphisms that are not $m$-cells in the
+original category.
+
+We conclude the chapter by showing that these transformations are functorial, i.e., they define a
+functor from $n\Cat$ (or $\omega\Cat$) to $m\Cat$.
+
+\section{Underlying single-sorted categories}
+
+\begin{lemma}
+  \label{lem:underlying_source_is_cell}
+  \uses{def:cell}
+  \lean{HigherCategoryTheory.underlying_source_is_cell}
+  \leanok
+  Let $\cat{C}$ be a single-sorted $\Index$-category and $m \in \Index$. Then, for every $f \in
+  \cat{C}$ and every $k \in \Index$ such that $k < m$, we have that $\Sc^k (f)$ is a $m$-cell in
+  $\cat{C}$.
+\end{lemma}
+
+\begin{proof}
+  \leanok
+  Applying one of the axioms of interchangeability of sources between dimensions, we have that
+  \[
+    \Sc^m (\Sc^k f) = \Sc^k (f).
+  \]
+\end{proof}
+
+\begin{lemma}
+  \label{lem:underlying_target_is_cell}
+  \uses{thm:cell_sc_iff_cell_tg}
+  \lean{HigherCategoryTheory.underlying_target_is_cell}
+  \leanok
+  Let $\cat{C}$ be a single-sorted $\Index$-category and $m \in \Index$. Then, for every $f \in
+  \cat{C}$ and every $k \in \Index$ such that $k < m$, we have that $\Tg^k (f)$ is a $m$-cell in
+  $\cat{C}$.
+\end{lemma}
+
+\begin{proof}
+  \leanok
+  Applying one of the axioms of interchangeability targets between dimensions, we
+  have that
+  \[
+    \Tg^m (\Tg^k f) = \Tg^k (f).
+  \]
+  That is, $\Tg^k (f)$ is a target-based $m$-cell in $\cat{C}$. However, we know that every
+  target-based $m$-cell is also a $m$-cell.
+\end{proof}
+
+\section{Underlying single-sorted functors}
+
+\section{Functoriality of the underlying transformations}
