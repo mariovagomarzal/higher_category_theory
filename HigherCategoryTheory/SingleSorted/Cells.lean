@@ -79,11 +79,14 @@ theorem cells_sc_eq_cells_tg (k : index) (obj : Type u) [SingleSortedCategory in
   ext f
   exact cell_sc_iff_cell_tg k f
 
+/-! TODO: Comment. -/
 section Underlying
 
+/-- TODO: Comment. -/
 lemma underlying_source_is_cell {k m : index} (f : obj) (k_lt_m : k < m) : cell m (sc k f) := by
   exact S.sck_scj_eq_scj f k_lt_m
 
+/-- TODO: Comment. -/
 lemma underlying_target_is_cell {k m : index} (f : obj) (k_lt_m : k < m) : cell m (tg k f) := by
   have : tg m (tg k f) = tg k f := by
     exact S.tgk_tgj_eq_tgj f k_lt_m
