@@ -247,7 +247,29 @@ results assert that these constructions yield valid single-sorted functors.
 
 \begin{proof}
   \leanok
-  % TODO: Complete proof.
+  Let $k \in \Index$. For all $f \in C$, since $F$ and $G$ are single-sorted functors, we have that
+  \[
+    (G \circ F) (\Sc^k (f)) = G (F (\Sc^k (f))) = G (\Sc^k (F (f)))
+    = \Sc^k (G (F (f))) = \Sc^k ((G \circ F) (f)),
+  \]
+  and similarly,
+  \[
+    (G \circ F) (\Tg^k (f)) = G (F (\Tg^k (f))) = G (\Tg^k (F (f)))
+    = \Tg^k (G (F (f))) = \Tg^k ((G \circ F) (f)),
+  \]
+  that is, $G \circ F$ preserves sources and targets at dimension $k$.
+
+  Now, let $f, g \in C$ be composable at dimension $k$. We have that
+  \[
+    \begin{split}
+      (G \circ F) (g \Pcomp^k f)
+      & = G (F (g \Pcomp^k f)) \\
+      & = G (F (g) \Pcomp^k F (f)) \\
+      & = G (F (g)) \Pcomp^k G (F (f)) \\
+      & = (G \circ F) (g) \Pcomp^k (G \circ F) (f),
+    \end{split}
+  \]
+  so $G \circ F$ preserves composition at dimension $k$.
 \end{proof}
 
 \begin{theorem}[Identity single-sorted functor]
