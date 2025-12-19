@@ -305,8 +305,10 @@ class SingleSortedCategory (index : Type) [LinearOrder index] (obj : Type u)
       tg k (g ♯[j] f ← sc_tg_j_gf) =
       (tg k g) ♯[j] (tg k f) ← (sc_tg_j_tg j_lt_k sc_tg_j_gf) := by
     hcat_disch
-  /-- Given a $2 \times 2$ pasting diagram of composable morphisms, we can compose first vertically
-  and then horizontally. This is an auxiliary method for the `exchange` axiom. -/
+  /-- Given morphisms `f₁, f₂, g₁, g₂` where `g₂` is composable with `f₂` at dimension `j`, `g₁` is
+  composable with `f₁` at dimension `j`, `g₂` is composable with `g₁` at dimension `k`, and `f₂` is
+  composable with `f₁` at dimension `k` (with `j < k`), then `g₂ ♯[j] f₂` is composable with
+  `g₁ ♯[j] f₁` at dimension `k`. This is an auxiliary method for the `exchange` axiom. -/
   protected sc_tg_k_exchange {k j : index} {f₁ f₂ g₁ g₂ : obj} (j_lt_k : j < k)
       (sc_tg_k_g₂g₁ : sc_is_tg k g₂ g₁) (sc_tg_k_f₂f₁ : sc_is_tg k f₂ f₁)
       (sc_tg_k_g₂f₂ : sc_is_tg j g₂ f₂) (sc_tg_k_g₁f₁ : sc_is_tg j g₁ f₁) :
@@ -317,8 +319,10 @@ class SingleSortedCategory (index : Type) [LinearOrder index] (obj : Type u)
     _ = (tg k g₁) ♯[j] (tg k f₁) ← (sc_tg_j_tg j_lt_k sc_tg_k_g₁f₁) :=
       congr_comp₁ sc_tg_k_f₂f₁ sc_tg_k_g₂g₁ (sc_tg_j_sc j_lt_k sc_tg_k_g₂f₂)
     _ = _ := (tgk_compj_eq_compj_tgk j_lt_k sc_tg_k_g₁f₁).symm
-  /-- Given a $2 \times 2$ pasting diagram of composable morphisms, we can compose first
-  horizontally and then vertically. This is an auxiliary method for the `exchange` axiom. -/
+  /-- Given morphisms `f₁, f₂, g₁, g₂` where `g₂` is composable with `f₂` at dimension `j`, `g₁` is
+  composable with `f₁` at dimension `j`, `g₂` is composable with `g₁` at dimension `k`, and `f₂` is
+  composable with `f₁` at dimension `k` (with `j < k`), then `g₂ ♯[k] g₁` is composable with
+  `f₂ ♯[k] f₁` at dimension `j`. This is an auxiliary method for the `exchange` axiom. -/
   protected sc_tg_j_exchange {k j : index} {f₁ f₂ g₁ g₂ : obj} (j_lt_k : j < k)
       (sc_tg_k_g₂g₁ : sc_is_tg k g₂ g₁) (sc_tg_k_f₂f₁ : sc_is_tg k f₂ f₁)
       (sc_tg_k_g₂f₂ : sc_is_tg j g₂ f₂) (sc_tg_k_g₁f₁ : sc_is_tg j g₁ f₁) :
@@ -332,17 +336,15 @@ class SingleSortedCategory (index : Type) [LinearOrder index] (obj : Type u)
     _ = tg j (sc k (f₂ ♯[k] f₁ ← sc_tg_k_f₂f₁)) := by rw [sck_compk_eq_sck sc_tg_k_f₂f₁]
     _ = tg j (f₂ ♯[k] f₁ ← sc_tg_k_f₂f₁) := tgj_sck_eq_tgj _ j_lt_k
   /--
-  The **exchange law**: Given a $2 \times 2$ pasting diagram of composable morphisms,
-  ```
-  g₂ --[j]--> f₂
-   |           |
-  [k]         [k]
-   |           |
-   ↓           ↓
-  g₁ --[j]--> f₁,
-  ```
-  where `j < k`, the two ways of composing the diagram (first vertically then horizontally, or first
-  horizontally then vertically) yield the same result.
+  The **exchange law**: Given morphisms `f₁, f₂, g₁, g₂` and indices `j < k` such that:
+  - `g₂` is composable with `f₂` at dimension `j`,
+  - `g₁` is composable with `f₁` at dimension `j`,
+  - `g₂` is composable with `g₁` at dimension `k`, and
+  - `f₂` is composable with `f₁` at dimension `k`,
+
+  then both `(g₂ ♯[j] f₂) ♯[k] (g₁ ♯[j] f₁)` and `(g₂ ♯[k] g₁) ♯[j] (f₂ ♯[k] f₁)` are defined and
+  equal. That is, composing first at dimension `j` and then at dimension `k` yields the same result
+  as composing first at dimension `k` and then at dimension `j`.
   -/
   exchange : ∀ {k j : index} {f₁ f₂ g₁ g₂ : obj} (j_lt_k : j < k)
       (sc_tg_k_g₂g₁ : sc_is_tg k g₂ g₁) (sc_tg_k_f₂f₁ : sc_is_tg k f₂ f₁)
