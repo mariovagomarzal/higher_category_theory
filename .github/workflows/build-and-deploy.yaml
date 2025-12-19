@@ -10,6 +10,11 @@ on:
       - main
   workflow_dispatch: # Allows manual triggering of the workflow.
 
+# Cancel in-progress runs when a new run is triggered on the same PR or branch.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 # Sets permissions of the `GITHUB_TOKEN` to allow deployment to GitHub Pages.
 permissions:
   contents: read # Read access to repository contents.
@@ -75,6 +80,7 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    if: github.event_name == 'push'
     steps:
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5
