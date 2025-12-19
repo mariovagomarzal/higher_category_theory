@@ -94,12 +94,7 @@ def SingleSortedNFunctor.underlying (F : SingleSortedNFunctor n C D) (m : Fin n)
   let uSC := SC.underlying m
   let uSD := SD.underlying m
   {
-    map f := ⟨F f, by
-      simp
-      calc
-        sc m (F f)
-        _ = F (sc m f) := (F.map_sc_eq_sc_map m f).symm
-        _ = F f := by rw [f.property]⟩
+    map f := ⟨F f, by apply underlying_functor_is_cell⟩
     map_sc_eq_sc_map := by inherit_axiom F.map_sc_eq_sc_map
     map_tg_eq_tg_map := by inherit_axiom F.map_tg_eq_tg_map
     map_comp_eq_comp_map := by inherit_axiom F.map_comp_eq_comp_map
@@ -114,12 +109,7 @@ def SingleSortedOmegaFunctor.underlying (F : SingleSortedOmegaFunctor C D) (m : 
   let uSC := ωSC.underlying m
   let uSD := ωSD.underlying m
   {
-    map f := ⟨F f, by
-      simp
-      calc
-        sc m (F f)
-        _ = F (sc m f) := (F.map_sc_eq_sc_map m f).symm
-        _ = F f := by rw [f.property]⟩
+    map f := ⟨F f, by apply underlying_functor_is_cell⟩
     map_sc_eq_sc_map := by inherit_axiom F.map_sc_eq_sc_map
     map_tg_eq_tg_map := by inherit_axiom F.map_tg_eq_tg_map
     map_comp_eq_comp_map := by inherit_axiom F.map_comp_eq_comp_map

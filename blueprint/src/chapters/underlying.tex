@@ -98,4 +98,41 @@ functor from $n\Cat$ (or $\omega\Cat$) to $m\Cat$.
 
 \section{Underlying single-sorted functors}
 
+\begin{lemma}
+  \label{lem:underlying_functor_is_cell}
+  \uses{def:cell, def:SingleSortedFunctor}
+  \lean{HigherCategoryTheory.underlying_functor_is_cell}
+  \leanok
+  Let $\cat{C}$ and $\cat{D}$ be single-sorted $\Index$-categories, $F \colon \cat{C} \to
+  \cat{D}$ be a single-sorted functor, and $m \in \Index$. Then, for every $f \in C_m$ we have that
+  $F(f) \in D_m$, i.e., the image of $m$-cells under a single-sorted functor are $m$-cells.
+\end{lemma}
+
+\begin{proof}
+  \leanok
+  Applying one of the axioms of single-sorted functors and the fact that $f$ is a $m$-cell, we
+  have that
+  \[
+    \Sc^m (F(f)) = F(\Sc^m (f)) = F(f).
+  \]
+\end{proof}
+
+\begin{definition}[Underlying single-sorted functor]
+  \label{def:SingleSortedFunctor_underlying}
+  \uses{lem:underlying_functor_is_cell}
+  \lean{
+    HigherCategoryTheory.SingleSortedNFunctor.underlying,
+    HigherCategoryTheory.SingleSortedOmegaFunctor.underlying,
+  }
+  \leanok
+  Let $\cat{C}$ and $\cat{D}$ be single-sorted $\Index$-categories, $F \colon \cat{C} \to
+  \cat{D}$ be a single-sorted functor, and $m \in \Index$. We define the
+  \emph{underlying single-sorted $m$-functor} of $F$ as the single-sorted $m$-functor $F_m \colon
+  \cat{C}_m \to \cat{D}_m$ defined as the corestriction of $F$ to the sets of $m$-cells
+  $C_m$ and $D_m$.
+
+  Note that, by Lemma~\ref{lem:underlying_functor_is_cell}, this function is well-defined. Also, the
+  axioms of single-sorted functors for $F_m$ follow directly from the corresponding axioms for $F$.
+\end{definition}
+
 \section{Functoriality of the underlying transformations}

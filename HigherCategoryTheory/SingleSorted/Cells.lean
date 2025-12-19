@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Enric Cosme Llópez, Raul Ruiz Mora, Mario Vago Marzal
 -/
 import HigherCategoryTheory.SingleSorted.Category
+import HigherCategoryTheory.SingleSorted.Functor
 
 /-!
 # Cells in single-sorted categories
@@ -20,7 +21,7 @@ Other properties about $k$-cells are also established in this file.
 * `cells_sc_eq_cells_tg`: The sets of $k$-cells defined via source and target are equal.
 -/
 
-universe u
+universe u v
 
 namespace HigherCategoryTheory
 
@@ -82,25 +83,39 @@ theorem cells_sc_eq_cells_tg (k : index) (obj : Type u) [SingleSortedCategory in
 /-! TODO: Comment. -/
 section Underlying
 
+variable {k m : index}
+
 /-- TODO: Comment. -/
-lemma underlying_source_is_cell {k m : index} (f : obj) (k_lt_m : k < m) : cell m (sc k f) := by
+lemma underlying_source_is_cell (f : obj) (k_lt_m : k < m) : cell m (sc k f) := by
   exact S.sck_scj_eq_scj f k_lt_m
 
 /-- TODO: Comment. -/
-lemma underlying_target_is_cell {k m : index} (f : obj) (k_lt_m : k < m) : cell m (tg k f) := by
+lemma underlying_target_is_cell (f : obj) (k_lt_m : k < m) : cell m (tg k f) := by
   have : tg m (tg k f) = tg k f := by
     exact S.tgk_tgj_eq_tgj f k_lt_m
   apply (cell_sc_iff_cell_tg m _).mpr
   exact this
 
 /-- TODO: Comment. -/
-lemma underlying_comp_is_cell {k m : index} {f g : cells m obj} (dom : (S.pcomp k g f).Dom)
-  (k_lt_m : k < m) : cell m (S.comp k g f (S.pcomp_dom.mp dom)) := by
+lemma underlying_comp_is_cell {f g : cells m obj} (dom : (S.pcomp k g f).Dom) (k_lt_m : k < m)
+    : cell m (S.comp k g f (S.pcomp_dom.mp dom)) := by
   simp
   calc
     _
     _ = _ := S.sck_compj_eq_compj_sck k_lt_m (S.pcomp_dom.mp dom)
     _ = _ := by apply congr_comp₁ f.property g.property
+
+variable {C : Type u} {D : Type v} [SC : SingleSortedCategory index C]
+  [SD : SingleSortedCategory index D]
+
+/-- TODO: Comment. -/
+lemma underlying_functor_is_cell {F : SingleSortedFunctor index C D} {f : cells m C}
+    : F f ∈ cells m D := by
+  simp
+  calc
+    sc m (F f)
+    _ = F (sc m f) := (F.map_sc_eq_sc_map m f).symm
+    _ = F f := by rw [f.property]
 
 end Underlying
 
