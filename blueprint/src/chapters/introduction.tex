@@ -1,0 +1,31 @@
+\chapter*{Introduction}
+\label{chp:introduction}
+
+\paragraph{What is a formalization project?} A \textbf{formalization project} is an effort to
+translate mathematical definitions, theorems, and proofs into a formal language that can be verified
+by a computer proof assistant. In this project, we use \textbf{Lean 4}, a theorem prover and
+programming language developed at Microsoft Research with Leonardo de Moura as the lead developer.
+Lean is particularly well-suited for formalizing modern mathematics.
+
+\paragraph{What is this docuemnt?} This document is a \textbf{blueprint} for a formalization project
+in Lean 4. A blueprint serves as a roadmap for mathematical formalization, providing a
+human-readable mathematical exposition alongside references to the corresponding formal code. It
+acts as a bridge between traditional mathematical writing and computer-verified proofs, allowing us
+to understand the mathematical content while tracking the progress of its formalization. Refer to
+the official \href{https://github.com/PatrickMassot/leanblueprint}{Lean Blueprint GitHub repository}
+for more information on blueprints.
+
+\paragraph{What is this project about?} This project formalizes the theory of \textbf{higher-order
+categories} and their different presentations. Specifically, we formalize:
+
+\begin{enumerate}
+  \item \textbf{Single-sorted categories}: Where objects, morphisms, 2-morphisms, and higher
+    morphisms all live in a single type.
+  \item \textbf{Many-sorted categories}: The traditional presentation where objects, morphisms, and
+    higher morphisms live in separate types.
+  \item \textbf{The equivalence between these presentations}: Proving that these two approaches of
+    higher-order categories are equivalent.
+\end{enumerate}
+
+This project is based on the work by Enric Cosme Llópez and Raul Ruiz Mora in
+\cite{vidal2024higher}.
