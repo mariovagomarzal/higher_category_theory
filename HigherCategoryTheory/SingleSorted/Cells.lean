@@ -93,6 +93,15 @@ lemma underlying_target_is_cell {k m : index} (f : obj) (k_lt_m : k < m) : cell 
   apply (cell_sc_iff_cell_tg m _).mpr
   exact this
 
+/-- TODO: Comment. -/
+lemma underlying_comp_is_cell {k m : index} {f g : cells m obj} (dom : (S.pcomp k g f).Dom)
+  (k_lt_m : k < m) : cell m (S.comp k g f (S.pcomp_dom.mp dom)) := by
+  simp
+  calc
+    _
+    _ = _ := S.sck_compj_eq_compj_sck k_lt_m (S.pcomp_dom.mp dom)
+    _ = _ := by apply congr_comp₁ f.property g.property
+
 end Underlying
 
 end HigherCategoryTheory

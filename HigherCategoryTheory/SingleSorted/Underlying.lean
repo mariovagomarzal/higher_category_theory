@@ -29,19 +29,10 @@ def SingleSortedNCategory.underlying (S : SingleSortedNCategory n obj) (m : Fin 
   sc k f := ⟨S.sc ⟨k, lt_trans k.isLt m.isLt⟩ f, by apply underlying_source_is_cell; exact k.isLt⟩
   tg k f := ⟨S.tg ⟨k, lt_trans k.isLt m.isLt⟩ f, by apply underlying_target_is_cell; exact k.isLt⟩
   pcomp k g f :=
-  let k_lt_n : k < n := Nat.lt_trans k.isLt m.isLt
-  let S_pcomp := S.pcomp ⟨k, Nat.lt_trans k.isLt m.isLt⟩ g f
-  {
-    Dom := S_pcomp.Dom
-    get dom :=
-      let comp_gf := S.comp ⟨k, k_lt_n⟩ g f (S.pcomp_dom.mp dom)
-      ⟨comp_gf, by
-        simp
-        calc
-          _
-          _ = _ := S.sck_compj_eq_compj_sck k.isLt (S.pcomp_dom.mp dom)
-          _ = comp_gf := by apply congr_comp₁ f.property g.property⟩
-  }
+    let k' : Fin n := ⟨k, lt_trans k.isLt m.isLt⟩
+    { S.pcomp k' g f with
+      get dom := ⟨S.comp k' g f (S.pcomp_dom.mp dom), by
+        apply underlying_comp_is_cell dom; exact k.isLt⟩ }
   pcomp_dom := by inherit_axiom S.pcomp_dom
   sck_sck_eq_sck := by inherit_axiom S.sck_sck_eq_sck
   tgk_sck_eq_sck := by inherit_axiom S.tgk_sck_eq_sck
@@ -68,18 +59,9 @@ def SingleSortedOmegaCategory.underlying (S : SingleSortedOmegaCategory obj) (m 
     SingleSortedNCategory m (cells m obj) where
   sc k f := ⟨S.sc k f, by apply underlying_source_is_cell; exact k.isLt⟩
   tg k f := ⟨S.tg k f, by apply underlying_target_is_cell; exact k.isLt⟩
-  pcomp k g f :=
-  {
-    Dom := (S.pcomp k g f).Dom
-    get dom :=
-      let comp_gf := S.comp k g f (S.pcomp_dom.mp dom)
-      ⟨comp_gf, by
-        simp
-        calc
-          _
-          _ = _ := S.sck_compj_eq_compj_sck k.isLt (S.pcomp_dom.mp dom)
-          _ = comp_gf := by apply congr_comp₁ f.property g.property⟩
-  }
+  pcomp k g f := { S.pcomp k g f with
+    get dom := ⟨S.comp k g f (S.pcomp_dom.mp dom), by
+      apply underlying_comp_is_cell dom; exact k.isLt⟩ }
   pcomp_dom := by inherit_axiom S.pcomp_dom
   sck_sck_eq_sck := by inherit_axiom S.sck_sck_eq_sck
   tgk_sck_eq_sck := by inherit_axiom S.tgk_sck_eq_sck

@@ -26,7 +26,7 @@ functor from $n\Cat$ (or $\omega\Cat$) to $m\Cat$.
 
 \begin{proof}
   \leanok
-  Applying one of the axioms of interchangeability of sources between dimensions, we have that
+  Applying one of the axioms of single-sorted categories, we have that
   \[
     \Sc^m (\Sc^k f) = \Sc^k (f).
   \]
@@ -44,14 +44,57 @@ functor from $n\Cat$ (or $\omega\Cat$) to $m\Cat$.
 
 \begin{proof}
   \leanok
-  Applying one of the axioms of interchangeability targets between dimensions, we
-  have that
+  Applying one of the axioms of single-sorted categories, we have that
   \[
     \Tg^m (\Tg^k f) = \Tg^k (f).
   \]
   That is, $\Tg^k (f)$ is a target-based $m$-cell in $\cat{C}$. However, we know that every
   target-based $m$-cell is also a $m$-cell.
 \end{proof}
+
+\begin{lemma}
+  \label{lem:underlying_comp_is_cell}
+  \uses{def:cell}
+  \lean{HigherCategoryTheory.underlying_comp_is_cell}
+  \leanok
+  Let $\cat{C}$ be a single-sorted $\Index$-category and $m \in \Index$. Then, for every $f, g \in
+  C_m$ (i.e., $f$ and $g$ are $m$-cells in $\cat{C}$) and every $k \in \Index$ such that $k < m$,
+  if the comoposition $g \Pcomp^k f$ is defined, then $g \Pcomp^k f$ is a $m$-cell in $\cat{C}$.
+\end{lemma}
+
+\begin{proof}
+  \leanok
+  Applying one of the axioms of single-sorted categories and the fact that $f$ and $g$ are
+  $m$-cells, we have that
+  \[
+    \Sc^m (g \Pcomp^k f) = \Sc^m (g) \Pcomp^k \Sc^m (f) = g \Pcomp^k f.
+  \]
+\end{proof}
+
+\begin{definition}[Underlying single-sorted category]
+  \label{def:SingleSortedCategory_underlying}
+  \uses{
+    lem:underlying_source_is_cell,
+    lem:underlying_target_is_cell,
+    lem:underlying_comp_is_cell,
+  }
+  \lean{
+    HigherCategoryTheory.SingleSortedNCategory.underlying,
+    HigherCategoryTheory.SingleSortedOmegaCategory.underlying,
+  }
+  \leanok
+  Let $\cat{C}$ be a single-sorted $n$-category (or $\omega$-category) and $m$ be a natural
+  number such that $m < n$\footnote{If $\cat{C}$ is an $\omega$-category, then $m$ can be any
+  natural number.}. We define the \emph{underlying single-sorted $m$-category} of $\cat{C}$ as
+  the single-sorted $m$-category $\cat{C}_m$ defined on the set of $m$-cells of $\cat{C}$, $C_m$,
+  with the corestriction of the source, target, identity, and composition operations of $\cat{C}$ to
+  $C_m$.
+
+  Note that, by Lemmas~\ref{lem:underlying_source_is_cell}, \ref{lem:underlying_target_is_cell}, and
+  \ref{lem:underlying_comp_is_cell}, these operations are well-defined. Also, the axioms of
+  single-sorted categories for $\cat{C}_m$ follow directly from the corresponding axioms for
+  $\cat{C}$.
+\end{definition}
 
 \section{Underlying single-sorted functors}
 
