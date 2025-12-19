@@ -80,23 +80,28 @@ theorem cells_sc_eq_cells_tg (k : index) (obj : Type u) [SingleSortedCategory in
   ext f
   exact cell_sc_iff_cell_tg k f
 
-/-! TODO: Comment. -/
+/-! ### Properties of underlying categories
+
+This section establishes lemmas showing that various operations preserve the property of being an
+$m$-cell when working with lower-dimensional structure (where $k < m$). These results are essential
+for defining underlying categories that restrict higher categories to specific dimensions.
+-/
 section Underlying
 
 variable {k m : index}
 
-/-- TODO: Comment. -/
+/-- The source of any morphism at dimension $k$ is an $m$-cell when $k < m$. -/
 lemma underlying_source_is_cell (f : obj) (k_lt_m : k < m) : cell m (sc k f) := by
   exact S.sck_scj_eq_scj f k_lt_m
 
-/-- TODO: Comment. -/
+/-- The target of any morphism at dimension $k$ is an $m$-cell when $k < m$. -/
 lemma underlying_target_is_cell (f : obj) (k_lt_m : k < m) : cell m (tg k f) := by
   have : tg m (tg k f) = tg k f := by
     exact S.tgk_tgj_eq_tgj f k_lt_m
   apply (cell_sc_iff_cell_tg m _).mpr
   exact this
 
-/-- TODO: Comment. -/
+/-- The composition of two $m$-cells at dimension $k$ (where $k < m$) is again an $m$-cell. -/
 lemma underlying_comp_is_cell {f g : cells m obj} (dom : (S.pcomp k g f).Dom) (k_lt_m : k < m)
     : cell m (S.comp k g f (S.pcomp_dom.mp dom)) := by
   simp
@@ -108,7 +113,8 @@ lemma underlying_comp_is_cell {f g : cells m obj} (dom : (S.pcomp k g f).Dom) (k
 variable {C : Type u} {D : Type v} [SC : SingleSortedCategory index C]
   [SD : SingleSortedCategory index D]
 
-/-- TODO: Comment. -/
+/-- Functors preserve the property of being an $m$-cell. If `f` is an $m$-cell in the source
+category, then `F f` is an $m$-cell in the target category. -/
 lemma underlying_functor_is_cell {F : SingleSortedFunctor index C D} {f : cells m C}
     : F f ∈ cells m D := by
   simp
