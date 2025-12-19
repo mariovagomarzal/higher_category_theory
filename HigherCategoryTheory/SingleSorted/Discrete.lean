@@ -7,7 +7,8 @@ import HigherCategoryTheory.SingleSorted.Category
 import HigherCategoryTheory.SingleSorted.Functor
 
 /-!
-TODO: Comment.
+**Important note:** This file is work in progress and exists only to save the work done previous to
+a codebase refactor.
 -/
 
 universe u v
@@ -157,8 +158,8 @@ def SingleSortedNCategory.discrete (S : SingleSortedNCategory m obj) (n : ℕ) :
     · simp [k_lt_m]
       by_cases j_lt_m : j < m <;> simp [j_lt_m]
 
-/-- TODO: Comment. -/
 -- TODO: Implement this following the same pattern as `SingleSortedNCategory.discrete`.
+/-- TODO: Comment. -/
 @[simp]
 def SingleSortedNCategory.discrete_omega (S : SingleSortedNCategory m obj) :
     SingleSortedOmegaCategory obj := by sorry
@@ -196,8 +197,8 @@ def SingleSortedNFunctor.discrete (F : SingleSortedNFunctor n C D) (m : ℕ) :
       · simp [k_lt_n]
   }
 
-/-- TODO: Comment. -/
 -- TODO: Implement this following the same pattern as `SingleSortedNFunctor.discrete`.
+/-- TODO: Comment. -/
 @[simp]
 def SingleSortedNFunctor.discrete_omega (F : SingleSortedNFunctor n C D) :
     letI := SC.discrete_omega
