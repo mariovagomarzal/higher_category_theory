@@ -31,7 +31,7 @@ def UnderlyingFunctor (n : ℕ) (m : Fin n) : SingleSortedNCat n ⥤ SingleSorte
   map {C D} F := F.underlying m
 
 /-- TODO: Comment. -/
-def UnderlyingCone : ℕᵒᵖ ⥤ Cat where
+def UnderlyingConeFunctor : ℕᵒᵖ ⥤ Cat where
   obj n := Cat.of (SingleSortedNCat n.unop)
   map {n m} f :=
     if h_mn : m.unop = n.unop then
