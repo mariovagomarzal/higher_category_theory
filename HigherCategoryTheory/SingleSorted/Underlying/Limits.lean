@@ -35,22 +35,19 @@ def UnderlyingConeFunctor : ℕᵒᵖ ⥤ Cat where
   obj n := Cat.of (SingleSortedNCat n.unop)
   map {n m} f :=
     if h_mn : m.unop = n.unop then
-      h_mn ▸ 𝟭 (SingleSortedNCat m.unop)
+      eqToHom (by rw [h_mn])
     else
       UnderlyingFunctor n.unop ⟨m.unop, Nat.lt_of_le_of_ne f.unop.le h_mn⟩
   map_comp := by
     intro n m k f g
-    by_cases h_mn : m.unop = n.unop
-    · by_cases h_km : k.unop = m.unop
-      · simp [h_mn, h_km]
-        -- Goal is `𝟙 k = (𝟙 m) ≫ (𝟙 k)
-        sorry
-      · -- We have to get `k < m` from `k != m` and `g`
-        sorry
-    · by_cases h_km : k.unop = m.unop
-      · -- We have to get `m < n` from `m != n` and `f`
-        sorry
-      · -- We have to get `k < m` and `m < n` from `k != m`, `m != n`, `f` and `g`
-        sorry
+    -- We proceed by case analysis, trying the `omega` tactic first to discharge the cases where a
+    -- contradiction arises from the inequalities between `n`, `m` and `k`.
+    split_ifs <;> (try omega)
+    -- TODO: Use `with` to name relevant hypotheses.
+    · simp
+    · sorry
+    · sorry
+    · sorry
+    · sorry
 
 end HigherCategoryTheory
