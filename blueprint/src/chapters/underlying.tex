@@ -136,3 +136,25 @@ functor from $n\Cat$ (or $\omega\Cat$) to $m\Cat$.
 \end{definition}
 
 \section{Functoriality of the underlying transformations}
+
+For any two naturals $n$ and $m$ with $m \leq n$, we first note that the underlying transformations
+defined in Definitions~\ref{def:SingleSortedCategory_underlying}
+and~\ref{def:SingleSortedFunctor_underlying} are in fact functorial transformations from $n\Cat$ to
+$m\Cat$.
+
+\begin{definition}[Underlying functor]
+  \label{def:UnderlyingFunctor}
+  \uses{
+    def:SingleSortedCategory_underlying,
+    def:SingleSortedFunctor_underlying,
+  }
+  \lean{HigherCategoryTheory.UnderlyingFunctor}
+  \leanok
+  Let $n$ and $m$ be naturals such that $m \le n$. We define the \emph{underlying functor}
+  $\Underlying^{(n, m)} \colon n\Cat \to m\Cat$ as the functor that maps every single-sorted
+  $n$-category $\cat{C}$ to its underlying single-sorted $m$-category $\cat{C}^{<m}$ (as defined in
+  Definition~\ref{def:SingleSortedCategory_underlying}) and every single-sorted $n$-functor $F
+  \colon \cat{C} \to \cat{D}$ to its underlying single-sorted $m$-functor $F^{<m} \colon
+  \cat{C}^{<m} \to \cat{D}^{<m}$ (as defined in
+  Definition~\ref{def:SingleSortedFunctor_underlying}).
+\end{definition}
