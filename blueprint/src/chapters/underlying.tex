@@ -83,12 +83,11 @@ functor from $n\Cat$ (or $\omega\Cat$) to $m\Cat$.
     HigherCategoryTheory.SingleSortedOmegaCategory.underlying,
   }
   \leanok
-  Let $\cat{C}$ be a single-sorted $n$-category (or $\omega$-category) and $m$ be a natural
-  number such that $m < n$\footnote{If $\cat{C}$ is an $\omega$-category, then $m$ can be any
-  natural number.}. We define the \emph{underlying single-sorted $m$-category} of $\cat{C}$ as
-  the single-sorted $m$-category $\cat{C}_m$ defined on the set of $m$-cells of $\cat{C}$, $C_m$,
-  with the corestriction of the source, target, identity, and composition operations of $\cat{C}$ to
-  $C_m$.
+  Let $\cat{C}$ be a single-sorted $n$-category (or $\omega$-category) and $m$ be a natural number
+  such that $m < n$\footnote{If $\cat{C}$ is an $\omega$-category, then $m$ can be any natural
+  number.}. We define the \emph{underlying single-sorted $m$-category} of $\cat{C}$ as the
+  single-sorted $m$-category $\cat{C}^{<m}$ defined on the set of $m$-cells of $\cat{C}$, $C_m$,
+  with the source, target, and composition operations of $\cat{C}$ restricted to $C_m$.
 
   Note that, by Lemmas~\ref{lem:underlying_source_is_cell}, \ref{lem:underlying_target_is_cell}, and
   \ref{lem:underlying_comp_is_cell}, these operations are well-defined. Also, the axioms of
@@ -125,14 +124,37 @@ functor from $n\Cat$ (or $\omega\Cat$) to $m\Cat$.
     HigherCategoryTheory.SingleSortedOmegaFunctor.underlying,
   }
   \leanok
-  Let $\cat{C}$ and $\cat{D}$ be single-sorted $\Index$-categories, $F \colon \cat{C} \to
-  \cat{D}$ be a single-sorted functor, and $m \in \Index$. We define the
-  \emph{underlying single-sorted $m$-functor} of $F$ as the single-sorted $m$-functor $F_m \colon
-  \cat{C}_m \to \cat{D}_m$ defined as the corestriction of $F$ to the sets of $m$-cells
-  $C_m$ and $D_m$.
+  Let $\cat{C}$ and $\cat{D}$ be single-sorted $n$-categories (or $\omega$-categories), $F \colon
+  \cat{C} \to \cat{D}$ be a single-sorted $n$-functor (or $\omega$-functor), and $m < n$\footnote{If
+  $F$ is an $\omega$-functor, then $m$ can be any natural number.}. We define the
+  \emph{underlying single-sorted $m$-functor} of $F$ as the single-sorted $m$-functor $F^{<m} \colon
+  \cat{C}^{<m} \to \cat{D}^{<m}$ defined as the restriction of $F$ to the sets of $m$-cells $C_m$
+  and $D_m$.
 
   Note that, by Lemma~\ref{lem:underlying_functor_is_cell}, this function is well-defined. Also, the
   axioms of single-sorted functors for $F_m$ follow directly from the corresponding axioms for $F$.
 \end{definition}
 
 \section{Functoriality of the underlying transformations}
+
+For any two naturals $n$ and $m$ with $m \leq n$, we first note that the underlying transformations
+defined in Definitions~\ref{def:SingleSortedCategory_underlying}
+and~\ref{def:SingleSortedFunctor_underlying} are in fact functorial transformations from $n\Cat$ to
+$m\Cat$.
+
+\begin{definition}[Underlying functor]
+  \label{def:UnderlyingFunctor}
+  \uses{
+    def:SingleSortedCategory_underlying,
+    def:SingleSortedFunctor_underlying,
+  }
+  \lean{HigherCategoryTheory.UnderlyingFunctor}
+  \leanok
+  Let $n$ and $m$ be naturals such that $m \le n$. We define the \emph{underlying functor}
+  $\Underlying^{(n, m)} \colon n\Cat \to m\Cat$ as the functor that maps every single-sorted
+  $n$-category $\cat{C}$ to its underlying single-sorted $m$-category $\cat{C}^{<m}$ (as defined in
+  Definition~\ref{def:SingleSortedCategory_underlying}) and every single-sorted $n$-functor $F
+  \colon \cat{C} \to \cat{D}$ to its underlying single-sorted $m$-functor $F^{<m} \colon
+  \cat{C}^{<m} \to \cat{D}^{<m}$ (as defined in
+  Definition~\ref{def:SingleSortedFunctor_underlying}).
+\end{definition}

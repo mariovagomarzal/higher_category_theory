@@ -105,9 +105,15 @@ instance SingleSortedCat.category {index : Type} [LinearOrder index] :
 /-- The category of single-sorted $n$-categories. -/
 abbrev SingleSortedNCat (n : ℕ) := StructureFamily.{u} (SingleSortedNCategory n)
 
-/- Since `SingleSortedNCategory n` is just a special case of `SingleSortedCategory index`, we can
-reuse the same instance. -/
-example {n : ℕ} : Category (SingleSortedNCat n) := by infer_instance
+/--
+Category instance for `SingleSortedNCat n`.
+
+Reuses the category structure from `SingleSortedCat` but specifying that morphisms are of type
+`SingleSortedNFunctor`.
+-/
+instance SingleSortedNCat.category {n : ℕ} : Category (SingleSortedNCat n) :=
+  { SingleSortedCat.category with
+    Hom C D := SingleSortedNFunctor n C D }
 
 /-- The category of single-sorted $\omega$-categories. -/
 abbrev SingleSortedOmegaCat := StructureFamily.{u} SingleSortedOmegaCategory

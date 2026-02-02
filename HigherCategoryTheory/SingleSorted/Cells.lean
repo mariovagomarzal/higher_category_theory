@@ -80,11 +80,21 @@ theorem cells_sc_eq_cells_tg (k : index) (obj : Type u) [SingleSortedCategory in
   ext f
   exact cell_sc_iff_cell_tg k f
 
-/-! ### Properties of underlying categories
+/-! ## Properties of underlying categories
 
 This section establishes lemmas showing that various operations preserve the property of being an
 $m$-cell when working with lower-dimensional structure (where $k < m$). These results are essential
 for defining underlying categories that restrict higher categories to specific dimensions.
+
+### Main results
+
+* `underlying_source_is_cell`: The source of any morphism at dimension $k$ is an $m$-cell when
+  $k < m$.
+* `underlying_target_is_cell`: The target of any morphism at dimension $k$ is an $m$-cell when
+  $k < m$.
+* `underlying_comp_is_cell`: The composition of two $m$-cells at dimension $k$ (where $k < m$) is
+  again an $m$-cell.
+* `underlying_functor_is_cell`: Functors preserve the property of being an $m$-cell.
 -/
 section Underlying
 
@@ -115,7 +125,7 @@ variable {C : Type u} {D : Type v} [SC : SingleSortedCategory index C]
 
 /-- Functors preserve the property of being an $m$-cell. If `f` is an $m$-cell in the source
 category, then `F f` is an $m$-cell in the target category. -/
-lemma underlying_functor_is_cell {F : SingleSortedFunctor index C D} {f : cells m C}
+lemma underlying_functor_is_cell (F : SingleSortedFunctor index C D) (f : cells m C)
     : F f ∈ cells m D := by
   simp
   calc
