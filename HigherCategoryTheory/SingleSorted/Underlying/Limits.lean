@@ -26,6 +26,7 @@ variable {n : ℕ} {obj : Type u} [S : SingleSortedNCategory n obj]
 instance {m : Fin n} : SingleSortedNCategory m (cells m obj) := S.underlying m
 
 /-- TODO: Comment. -/
+@[simp]
 def UnderlyingFunctor (n : ℕ) (m : Fin n) : SingleSortedNCat n ⥤ SingleSortedNCat m where
   obj C := StructureFamily.of (cells m C)
   map {C D} F := F.underlying m
@@ -40,14 +41,14 @@ def UnderlyingConeFunctor : ℕᵒᵖ ⥤ Cat where
       UnderlyingFunctor n.unop ⟨m.unop, Nat.lt_of_le_of_ne f.unop.le h_mn⟩
   map_comp := by
     intro n m k f g
+    have n_ge_m : n.unop ≥ m.unop := f.unop.le
+    have m_ge_k : m.unop ≥ k.unop := g.unop.le
     -- We proceed by case analysis, trying the `omega` tactic first to discharge the cases where a
     -- contradiction arises from the inequalities between `n`, `m` and `k`.
-    split_ifs <;> (try omega)
-    -- TODO: Use `with` to name relevant hypotheses.
+    split_ifs with h1 h2 h3 h4 h5 h6 h7 <;> (try omega)
     · simp
-    · sorry
-    · sorry
-    · sorry
-    · sorry
+    · sorry -- A rewrite and a simp should do it.
+    · sorry -- A rewrite and a simp should do it.
+    · sorry -- The main case, where $n > m > k$.
 
 end HigherCategoryTheory
