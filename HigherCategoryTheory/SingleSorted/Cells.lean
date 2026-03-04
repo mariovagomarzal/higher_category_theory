@@ -114,9 +114,8 @@ lemma underlying_target_is_cell (f : obj) (k_lt_m : k < m) : cell m (tg k f) := 
 /-- The composition of two $m$-cells at dimension $k$ (where $k < m$) is again an $m$-cell. -/
 lemma underlying_comp_is_cell {f g : cells m obj} (dom : (S.pcomp k g f).Dom) (k_lt_m : k < m)
     : cell m (S.comp k g f (S.pcomp_dom.mp dom)) := by
-  simp
   calc
-    _
+    sc m (S.comp k g f (S.pcomp_dom.mp dom))
     _ = _ := S.sck_compj_eq_compj_sck k_lt_m (S.pcomp_dom.mp dom)
     _ = _ := by apply congr_comp₁ f.property g.property
 
@@ -127,7 +126,6 @@ variable {C : Type u} {D : Type v} [SC : SingleSortedCategory index C]
 category, then `F f` is an $m$-cell in the target category. -/
 lemma underlying_functor_is_cell (F : SingleSortedFunctor index C D) (f : cells m C)
     : F f ∈ cells m D := by
-  simp
   calc
     sc m (F f)
     _ = F (sc m f) := (F.map_sc_eq_sc_map m f).symm
