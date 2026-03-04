@@ -58,7 +58,19 @@
         enable = true;
         name = "bibtool";
         description = "Format BibTeX files using bibtool";
-        package = pkgs.bibtool;
+        # Override bibtool to fix compilation with newer GCC versions (>= 14) that treat
+        # old-style (K&R) function definitions as errors by default.
+        package = pkgs.bibtool.overrideAttrs (prev: {
+          env =
+            (prev.env or {})
+            // {
+              # Use the gnu89 C standard to restore legacy behavior for old-style
+              # function definitions and implicit declarations.
+              NIX_CFLAGS_COMPILE =
+                (prev.env.NIX_CFLAGS_COMPILE or "")
+                + " -std=gnu89";
+            };
+        });
         entry = "./scripts/bibtool_format.py";
         files = "\\.bib$";
         pass_filenames = true;
