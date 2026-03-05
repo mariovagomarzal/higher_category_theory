@@ -27,7 +27,7 @@ def SingleSortedNCategory.discrete (S : SingleSortedNCategory m obj) (n : ℕ) :
   pcomp_dom := by
     intro k f g
     by_cases k_lt_m : k < m
-    · simp [k_lt_m]
+    · simp only [k_lt_m, ↓reduceDIte]
       apply S.pcomp_dom
     · simp [k_lt_m]
   sck_sck_eq_sck := by
@@ -45,7 +45,7 @@ def SingleSortedNCategory.discrete (S : SingleSortedNCategory m obj) (n : ℕ) :
   sck_compk_eq_sck := by
     intro k f g sc_tg_gf
     by_cases k_lt_m : k < m
-    · simp [k_lt_m]
+    · simp only [SingleSortedCategoryStruct.comp, k_lt_m, ↓reduceDIte]
       apply S.sck_compk_eq_sck
       simp [k_lt_m] at sc_tg_gf
       assumption
@@ -53,36 +53,37 @@ def SingleSortedNCategory.discrete (S : SingleSortedNCategory m obj) (n : ℕ) :
   tgk_compk_eq_tgk := by
     intro k f g sc_tg_gf
     by_cases k_lt_m : k < m
-    · simp [k_lt_m]
+    · simp only [SingleSortedCategoryStruct.comp, k_lt_m, ↓reduceDIte]
       apply S.tgk_compk_eq_tgk
       simp [k_lt_m] at sc_tg_gf
       assumption
-    · simp [k_lt_m]
+    · simp only [SingleSortedCategoryStruct.comp, k_lt_m, ↓reduceDIte]
       simp [k_lt_m] at sc_tg_gf
       exact sc_tg_gf.symm
   compk_sck_eq_id := by
     intro k f
     by_cases k_lt_m : k < m
-    · simp [k_lt_m]
+    · simp only [SingleSortedCategoryStruct.comp, k_lt_m, ↓reduceDIte]
       apply S.compk_sck_eq_id
     · simp [k_lt_m]
   compk_tgk_eq_id := by
     intro k f
     by_cases k_lt_m : k < m
-    · simp [k_lt_m]
+    · simp only [SingleSortedCategoryStruct.comp, k_lt_m, ↓reduceDIte]
       apply S.compk_tgk_eq_id
     · simp [k_lt_m]
   assoc := by
     intro k f g h sc_tg_hg sc_tg_gf
     by_cases k_lt_m : k < m
-    · simp [k_lt_m]
-      apply S.assoc <;> (simp [k_lt_m] at *; assumption)
+    · simp only [SingleSortedCategoryStruct.comp, SingleSortedCategoryStruct.comp.eq_1,
+        k_lt_m, ↓reduceDIte]
+      apply S.assoc <;> (simp only [sc_is_tg, k_lt_m, ↓reduceDIte] at *; assumption)
     · simp [k_lt_m]
   sck_scj_eq_scj := by
     intro k j f j_lt_k
     by_cases k_lt_m : k < m
     · have j_lt_m : j < m := lt_trans j_lt_k k_lt_m
-      simp [k_lt_m, j_lt_m]
+      simp only [k_lt_m, j_lt_m, ↓reduceDIte]
       apply S.sck_scj_eq_scj
       assumption
     · simp [k_lt_m]
@@ -90,7 +91,7 @@ def SingleSortedNCategory.discrete (S : SingleSortedNCategory m obj) (n : ℕ) :
     intro k j f j_lt_k
     by_cases k_lt_m : k < m
     · have j_lt_m : j < m := lt_trans j_lt_k k_lt_m
-      simp [k_lt_m, j_lt_m]
+      simp only [k_lt_m, j_lt_m, ↓reduceDIte]
       apply S.scj_tgk_eq_scj
       assumption
     · simp [k_lt_m]
@@ -98,7 +99,7 @@ def SingleSortedNCategory.discrete (S : SingleSortedNCategory m obj) (n : ℕ) :
     intro k j f j_lt_k
     by_cases k_lt_m : k < m
     · have j_lt_m : j < m := lt_trans j_lt_k k_lt_m
-      simp [k_lt_m, j_lt_m]
+      simp only [k_lt_m, j_lt_m, ↓reduceDIte]
       apply S.scj_sck_eq_scj
       assumption
     · simp [k_lt_m]
@@ -106,7 +107,7 @@ def SingleSortedNCategory.discrete (S : SingleSortedNCategory m obj) (n : ℕ) :
     intro k j f j_lt_k
     by_cases k_lt_m : k < m
     · have j_lt_m : j < m := lt_trans j_lt_k k_lt_m
-      simp [k_lt_m, j_lt_m]
+      simp only [k_lt_m, j_lt_m, ↓reduceDIte]
       apply S.tgk_tgj_eq_tgj
       assumption
     · simp [k_lt_m]
@@ -114,7 +115,7 @@ def SingleSortedNCategory.discrete (S : SingleSortedNCategory m obj) (n : ℕ) :
     intro k j f j_lt_k
     by_cases k_lt_m : k < m
     · have j_lt_m : j < m := lt_trans j_lt_k k_lt_m
-      simp [k_lt_m, j_lt_m]
+      simp only [k_lt_m, j_lt_m, ↓reduceDIte]
       apply S.tgj_sck_eq_tgj
       assumption
     · simp [k_lt_m]
@@ -122,7 +123,7 @@ def SingleSortedNCategory.discrete (S : SingleSortedNCategory m obj) (n : ℕ) :
     intro k j f j_lt_k
     by_cases k_lt_m : k < m
     · have j_lt_m : j < m := lt_trans j_lt_k k_lt_m
-      simp [k_lt_m, j_lt_m]
+      simp only [k_lt_m, j_lt_m, ↓reduceDIte]
       apply S.tgj_tgk_eq_tgj
       assumption
     · simp [k_lt_m]
@@ -130,10 +131,10 @@ def SingleSortedNCategory.discrete (S : SingleSortedNCategory m obj) (n : ℕ) :
     intro k j f g j_lt_k sc_tg_j_gf
     by_cases k_lt_m : k < m
     · have j_lt_m : j < m := lt_trans j_lt_k k_lt_m
-      simp [k_lt_m, j_lt_m]
+      simp only [SingleSortedCategoryStruct.comp, k_lt_m, j_lt_m, ↓reduceDIte]
       apply S.sck_compj_eq_compj_sck
       · assumption
-      · simp [j_lt_m] at *
+      · simp only [sc_is_tg, j_lt_m, ↓reduceDIte] at *
         assumption
     · simp [k_lt_m]
       by_cases j_lt_m : j < m <;> simp [j_lt_m]
@@ -141,10 +142,10 @@ def SingleSortedNCategory.discrete (S : SingleSortedNCategory m obj) (n : ℕ) :
     intro k j f g j_lt_k tg_k_j_gf
     by_cases k_lt_m : k < m
     · have j_lt_m : j < m := lt_trans j_lt_k k_lt_m
-      simp [k_lt_m, j_lt_m]
+      simp only [SingleSortedCategoryStruct.comp, k_lt_m, j_lt_m, ↓reduceDIte]
       apply S.tgk_compj_eq_compj_tgk
       · assumption
-      · simp [j_lt_m] at *
+      · simp only [sc_is_tg, j_lt_m, ↓reduceDIte] at *
         assumption
     · simp [k_lt_m]
       by_cases j_lt_m : j < m <;> simp [j_lt_m]
@@ -152,8 +153,10 @@ def SingleSortedNCategory.discrete (S : SingleSortedNCategory m obj) (n : ℕ) :
     intro k j f₁ f₂ g₁ g₂ j_lt_k sc_tg_g₂g₁ sc_tg_f₂f₁ tg_k_g₂f₂ tg_k_g₁f₁
     by_cases k_lt_m : k < m
     · have j_lt_m : j < m := lt_trans j_lt_k k_lt_m
-      simp [k_lt_m, j_lt_m]
-      simp [k_lt_m, j_lt_m] at sc_tg_g₂g₁ sc_tg_f₂f₁ tg_k_g₂f₂ tg_k_g₁f₁
+      simp only [SingleSortedCategoryStruct.comp, SingleSortedCategoryStruct.comp.eq_1,
+        k_lt_m, j_lt_m, ↓reduceDIte]
+      simp only [sc_is_tg, k_lt_m, j_lt_m, ↓reduceDIte]
+        at sc_tg_g₂g₁ sc_tg_f₂f₁ tg_k_g₂f₂ tg_k_g₁f₁
       apply S.exchange j_lt_k <;> assumption
     · simp [k_lt_m]
       by_cases j_lt_m : j < m <;> simp [j_lt_m]
@@ -190,7 +193,8 @@ def SingleSortedNFunctor.discrete (F : SingleSortedNFunctor n C D) (m : ℕ) :
     map_comp_eq_comp_map := by
       intro k f g sc_tg_gf
       by_cases k_lt_n : k < n
-      · simp [k_lt_n]
+      · simp only [SingleSortedCategoryStruct.comp, SingleSortedNCategory.discrete,
+          k_lt_n, ↓reduceDIte]
         apply F.map_comp_eq_comp_map
         simp [k_lt_n] at sc_tg_gf
         assumption

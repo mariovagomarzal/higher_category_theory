@@ -8,13 +8,9 @@
     GREET = "Lean 4 Development Environment";
   };
 
-  # Use 'elan' to (automatically) manage Lean toolchains. In the CI environment, we disable this
-  # and use 'lean-action' to set up Lean due an issue when building the documentation. Refer to the
-  # GitHub Actions workflow (`.github/workflows/build-and-deploy.yaml`) for more details.
+  # Use 'elan' to (automatically) manage Lean toolchains.
   languages.lean4 = {
-    # Make the enable option overridable, so in the CI environment we can disable it using a
-    # `devenv.local.nix` file.
-    enable = lib.mkDefault true;
+    enable = true;
     package = pkgs.elan;
   };
 
@@ -58,7 +54,19 @@
         enable = true;
         name = "bibtool";
         description = "Format BibTeX files using bibtool";
-        package = pkgs.bibtool;
+        # Override bibtool to fix compilation with newer GCC versions (>= 14) that treat
+        # old-style (K&R) function definitions as errors by default.
+        package = pkgs.bibtool.overrideAttrs (prev: {
+          env =
+            (prev.env or {})
+            // {
+              # Use the gnu89 C standard to restore legacy behavior for old-style
+              # function definitions and implicit declarations.
+              NIX_CFLAGS_COMPILE =
+                (prev.env.NIX_CFLAGS_COMPILE or "")
+                + " -std=gnu89";
+            };
+        });
         entry = "./scripts/bibtool_format.py";
         files = "\\.bib$";
         pass_filenames = true;

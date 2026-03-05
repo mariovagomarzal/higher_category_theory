@@ -38,7 +38,7 @@ def UnderlyingConeFunctor : ℕᵒᵖ ⥤ Cat where
     if h_mn : m.unop = n.unop then
       eqToHom (by rw [h_mn])
     else
-      UnderlyingFunctor n.unop ⟨m.unop, Nat.lt_of_le_of_ne f.unop.le h_mn⟩
+      Functor.toCatHom (UnderlyingFunctor n.unop ⟨m.unop, Nat.lt_of_le_of_ne f.unop.le h_mn⟩)
   map_comp := by
     intro n m k f g
     have n_ge_m : n.unop ≥ m.unop := f.unop.le
