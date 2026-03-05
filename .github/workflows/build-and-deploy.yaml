@@ -48,6 +48,12 @@ jobs:
           restore-keys: ${{ runner.os }}-lake-${{ runner.arch }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}
       - name: Build the Lean project within devenv
         run: devenv shell just -- build
+      - name: Clean UnicodeBasic build cache to work around linking bug
+        # Workaround for https://github.com/fgdorais/lean4-unicode-basic/issues/81
+        # When restoring a partial .lake cache, Lake may regenerate the UnicodeBasic
+        # dynlibs without correctly linking the UnicodeCLib C static library, causing
+        # "undefined symbol: unicode_case_lookup" errors.
+        run: rm -rf .lake/packages/UnicodeBasic/.lake/build
       - name: Build the Lean documentation within devenv
         run: devenv shell just -- docs
       - name: Build the Lean Blueprint PDF and web within devenv
