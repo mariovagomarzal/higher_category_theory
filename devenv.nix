@@ -29,7 +29,11 @@
   packages = with pkgs; [
     just
     git
-    leanblueprint
+    # Relax 'plastexshowmore' version check to work around a Nixpkgs issue with
+    # newer versions of 'leanblueprint'.
+    (leanblueprint.overridePythonAttrs (prev: {
+      pythonRelaxDeps = ["plastexshowmore"];
+    }))
   ];
 
   git-hooks = {
@@ -54,14 +58,12 @@
         enable = true;
         name = "bibtool";
         description = "Format BibTeX files using bibtool";
-        # Override bibtool to fix compilation with newer GCC versions (>= 14) that treat
-        # old-style (K&R) function definitions as errors by default.
+        # Override 'bibtool' to compile with gnu89, fixing K&R function
+        # definition errors on GCC >= 14.
         package = pkgs.bibtool.overrideAttrs (prev: {
           env =
             (prev.env or {})
             // {
-              # Use the gnu89 C standard to restore legacy behavior for old-style
-              # function definitions and implicit declarations.
               NIX_CFLAGS_COMPILE =
                 (prev.env.NIX_CFLAGS_COMPILE or "")
                 + " -std=gnu89";

@@ -48,6 +48,13 @@ jobs:
           restore-keys: ${{ runner.os }}-lake-${{ runner.arch }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}
       - name: Build the Lean project within devenv
         run: devenv shell just -- build
+      # TODO: The following step is a workaround to avoid an intermittent issue where the
+      # documentation build fails because Lake regenerates UnicodeBasic dynlibs from a partial
+      # cache without linking its C FFI library. Cleaning the build cache forces a correct rebuild.
+      # The following issue may be related:
+      #   https://github.com/fgdorais/lean4-unicode-basic/issues/81
+      - name: Clean UnicodeBasic build cache
+        run: rm -rf .lake/packages/UnicodeBasic/.lake/build
       - name: Build the Lean documentation within devenv
         run: devenv shell just -- docs
       - name: Build the Lean Blueprint PDF and web within devenv
