@@ -1,3 +1,4 @@
+import HigherCategoryTheory.Tactic
 import HigherCategoryTheory.SingleSorted.Category
 import HigherCategoryTheory.SingleSorted.Functor
 import HigherCategoryTheory.SingleSorted.Cells

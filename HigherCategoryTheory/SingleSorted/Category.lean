@@ -6,6 +6,7 @@ Authors: Enric Cosme Llópez, Raul Ruiz Mora, Mario Vago Marzal
 import Mathlib.Data.Part
 import Mathlib.Data.PFun
 import Mathlib.Order.Fin.Basic
+import HigherCategoryTheory.Tactic
 
 /-!
 # Single-sorted presentation of higher-order categories
@@ -48,10 +49,6 @@ The formalization uses partial functions (`PFun`) from Mathlib to represent comp
 functions that return a value of type `Part obj`.  The `pcomp_dom` axiom characterizes exactly when
 composition is defined.
 
-The `hcat_disch` tactic is provided as a proof automation tool that handles many routine goals in
-the development of higher category theory. It is used extensively as the default proof method for
-most of the definitions of the library.
-
 ## References
 
 * [vidal2024higher]
@@ -60,16 +57,6 @@ most of the definitions of the library.
 universe u
 
 namespace HigherCategoryTheory
-
-/--
-A tactic for discharging common goals in higher category theory proofs. This tactic first attempts
-reflexivity (for definitional equalities), then omega (for arithmetic goals on indices), and finally
-grind (for more complex goals involving equational reasoning).
-
-TODO: This tactic is incomplete and highly inefficient.
--/
-macro (name := hcat_disch) "hcat_disch" : tactic =>
-  `(tactic| first | (intros; rfl) | omega | grind)
 
 /--
 The basic structure of a single-sorted category, parametrized by an index type.
