@@ -1,0 +1,155 @@
+\chapter[Many-sorted presentation]{Many-sorted presentation of higher-order categories}
+\label{ch:many_sorted}
+
+In the many-sorted presentation of higher-order categories, morphisms at each dimension live in
+separate sets, connected by source, target, and identity maps between adjacent dimensions.
+Composition at each dimension is defined as a partial operation on morphisms of the same dimension,
+subject to appropriate source-target matching conditions. In this chapter, we present the basic
+definitions and axioms of many-sorted categories and many-sorted functors between them.
+
+\begin{notation}
+  As in Chapter~\ref{ch:single_sorted}, we will use $\Index$ to denote a set of indices equipped
+  with a linear order relation $<$.
+\end{notation}
+
+\section{Many-sorted categories}
+
+We start by defining the necessary data for defining a many-sorted category.
+
+\begin{definition}
+  \label{def:ManySortedCategoryStruct}
+  Let $(C_k)_{k \in \Index}$ be a family of sets whose elements will be called \emph{$k$-morphisms}.
+  The required data for defining a many-sorted $\Index$-category structure on $(C_k)_{k \in \Index}$
+  consists of, for each pair of indices $j, k \in \Index$:
+
+  \begin{itemize}
+    \item A map $\Sc^{(k,j)} \colon C_k \to C_j$, called the \emph{$(k,j)$-source}.
+    \item A map $\Tg^{(k,j)} \colon C_k \to C_j$, called the \emph{$(k,j)$-target}.
+    \item A map $\Idm^{(k,j)} \colon C_j \to C_k$, called the \emph{$(k,j)$-identity}.
+    \item A partial binary operation $\circ^{(k,j)} \colon C_k \times C_k \rightharpoonup C_k$,
+      called the \emph{$(k,j)$-composition}.
+  \end{itemize}
+
+  The composition $g \circ^{(k,j)} f$ is defined if and only if $\Sc^{(k,j)} (g) = \Tg^{(k,j)} (f)$,
+  in which case we say that $g$ and $f$ are \emph{$(k,j)$-composable}.
+
+  We will represent the above data as a tuple $\cat{C} = ((C_k)_{k \in \Index}, (\Sc^{(k,j)},
+  \Tg^{(k,j)}, \Idm^{(k,j)}, \circ^{(k,j)})_{j, k \in \Index})$.
+\end{definition}
+
+We split the axioms of many-sorted categories into two parts: first, those concerning only one pair
+of indices at a time, and then those concerning the interaction between different pairs. This
+division is made by first defining the notion of pre-many-sorted category:
+
+\begin{definition}
+  \label{def:PreManySortedCategory}
+  \uses{def:ManySortedCategoryStruct}
+  A \emph{pre-many-sorted $\Index$-category} is a tuple $\cat{C} = ((C_k)_{k \in \Index},
+  (\Sc^{(k,j)}, \Tg^{(k,j)}, \Idm^{(k,j)}, \circ^{(k,j)})_{j, k \in \Index, \, j < k})$ satisfying,
+  for each pair of indices $j, k \in \Index$ with $j < k$, the following axioms:
+
+  \begin{itemize}
+    \item For all $f, g \in C_k$, if $g$ and $f$ are $(k,j)$-composable, then
+      \begin{align*}
+        \Sc^{(k,j)} (g \circ^{(k,j)} f) = \Sc^{(k,j)} (f), \qquad &
+        \Tg^{(k,j)} (g \circ^{(k,j)} f) = \Tg^{(k,j)} (g).
+      \end{align*}
+    \item For all $f \in C_j$,
+      \[
+        \Sc^{(k,j)} (\Idm^{(k,j)} (f)) = f, \qquad \Tg^{(k,j)} (\Idm^{(k,j)} (f)) = f.
+      \]
+    \item For all $f \in C_k$, the morphisms $f$ and $\Idm^{(k,j)} (\Sc^{(k,j)} (f))$ are
+      $(k,j)$-composable and
+      \[
+        f \circ^{(k,j)} \Idm^{(k,j)} (\Sc^{(k,j)} (f)) = f.
+      \]
+      Similarly, $\Idm^{(k,j)} (\Tg^{(k,j)} (f))$ and $f$ are $(k,j)$-composable and
+      \[
+        \Idm^{(k,j)} (\Tg^{(k,j)} (f)) \circ^{(k,j)} f = f.
+      \]
+    \item For all $f, g, h \in C_k$, if $h$ and $g$ are $(k,j)$-composable, and $g$ and $f$ are
+      $(k,j)$-composable, then $h \circ^{(k,j)} g$ and $f$ and $h$ and $g \circ^{(k,j)} f$ are
+      $(k,j)$-composable, and
+      \[
+        (h \circ^{(k,j)} g) \circ^{(k,j)} f = h \circ^{(k,j)} (g \circ^{(k,j)} f).
+      \]
+  \end{itemize}
+
+  That is, for each pair of indices $j, k \in \Index$ with $j < k$, the data $(C_j, C_k,
+  \Sc^{(k,j)}, \Tg^{(k,j)}, \Idm^{(k,j)}, \circ^{(k,j)})$ forms a category with objects $C_j$ and
+  morphisms $C_k$.
+\end{definition}
+
+An immediate consequence of the source/target axioms for identities is that the identity map at
+each pair of dimensions is injective:
+
+\begin{proposition}
+  \label{prop:PreManySortedCategory.injetive_idm}
+  \uses{def:PreManySortedCategory}
+  Let $\cat{C}$ be a pre-many-sorted $\Index$-category and let $j < k$ in $\Index$. Then the
+  identity map $\Idm^{(k,j)} \colon C_j \to C_k$ is injective.
+\end{proposition}
+
+\begin{proof}
+  Let $f, g \in C_j$ with $\Idm^{(k,j)}(f) = \Idm^{(k,j)}(g)$. Then
+  \[
+    f = \Sc^{(k,j)}(\Idm^{(k,j)}(f)) = \Sc^{(k,j)}(\Idm^{(k,j)}(g)) = g,
+  \]
+  where both equalities use the axiom $\Sc^{(k,j)}(\Idm^{(k,j)}(f)) = f$.
+\end{proof}
+
+We now define a many-sorted category structure by extending the above definition with the axioms
+concerning the interaction between different pairs of indices:
+
+\begin{definition}[Many-sorted category]
+  \label{def:ManySortedCategory}
+  \uses{def:PreManySortedCategory}
+  A \emph{many-sorted $\Index$-category} is a pre-many-sorted $\Index$-category $\cat{C} = ((C_k)_{k
+  \in \Index}, (\Sc^{(k,j)}, \Tg^{(k,j)}, \Idm^{(k,j)}, \circ^{(k,j)})_{j, k \in \Index, \, j < k})$
+  satisfying, in addition to the axioms of pre-many-sorted categories, the following
+  cross-dimensional axioms:
+
+  \begin{itemize}
+    \item For all $f \in C_k$ and all indices $i, j, k \in \Index$ with $i < j < k$,
+      \begin{align*}
+        \Sc^{(j,i)} (\Sc^{(k,j)} (f)) = \Sc^{(k,i)} (f), \qquad &
+        \Sc^{(j,i)} (\Tg^{(k,j)} (f)) = \Sc^{(k,i)} (f), \\
+        \Tg^{(j,i)} (\Tg^{(k,j)} (f)) = \Tg^{(k,i)} (f), \qquad &
+        \Tg^{(j,i)} (\Sc^{(k,j)} (f)) = \Tg^{(k,i)} (f).
+      \end{align*}
+    \item For all $f, g \in C_k$ and all indices $i, j, k \in \Index$ with $i < j < k$, if $g$ and
+      $f$ are $(k,i)$-composable, then $\Sc^{(k,j)} (g)$ and $\Sc^{(k,j)} (f)$ and $\Tg^{(k,j)} (g)$
+      and $\Tg^{(k,j)} (f)$ are also $(j,i)$-composable, and
+      \begin{align*}
+        \Sc^{(k,j)} (g \circ^{(k,i)} f) = \Sc^{(k,j)} (g) \circ^{(j,i)} \Sc^{(k,j)} (f), \\
+        \Tg^{(k,j)} (g \circ^{(k,i)} f) = \Tg^{(k,j)} (g) \circ^{(j,i)} \Tg^{(k,j)} (f).
+      \end{align*}
+    \item For all $f \in C_i$ and all indices $i, j, k \in \Index$ with $i < j < k$,
+      \[
+        \Idm^{(k,j)} (\Idm^{(j,i)} (f)) = \Idm^{(k,i)} (f).
+      \]
+    \item For all $f, g \in C_j$ and all indices $i, j, k \in \Index$ with $i < j < k$, if $g$ and
+      $f$ are $(j,i)$-composable, then $\Idm^{(k,j)} (g)$ and $\Idm^{(k,j)} (f)$ are
+      $(k,i)$-composable, and
+      \[
+        \Idm^{(k,j)} (g \circ^{(j,i)} f) = \Idm^{(k,j)} (g) \circ^{(k,i)} \Idm^{(k,j)} (f).
+      \]
+    \item For all $f_1, f_2, g_1, g_2 \in C_k$ and all indices $i, j, k \in \Index$ with $i < j < k$,
+      suppose that:
+      \begin{itemize}
+        \item $g_2$ and $g_1$ are $(k,j)$-composable,
+        \item $f_2$ and $f_1$ are $(k,j)$-composable,
+        \item $g_2$ and $f_2$ are $(k,i)$-composable, and
+        \item $g_1$ and $f_1$ are $(k,i)$-composable.
+      \end{itemize}
+      Then, the morphisms $(g_2 \circ^{(k,i)} f_2)$ and $(g_1 \circ^{(k,i)} f_1)$ are $(k,j)$-composable,
+      and the morphisms $(g_2 \circ^{(k,j)} g_1)$ and $(f_2 \circ^{(k,j)} f_1)$ are $(k,i)$-composable,
+      and
+      \[
+        (g_2 \circ^{(k,i)} f_2) \circ^{(k,j)} (g_1 \circ^{(k,i)} f_1) =
+        (g_2 \circ^{(k,j)} g_1) \circ^{(k,i)} (f_2 \circ^{(k,j)} f_1).
+      \]
+      That is, composing first at dimension $j$ and then at dimension $i$ yields the same result as
+      composing first at dimension $i$ and then at dimension $j$.
+  \end{itemize}
+\end{definition}
