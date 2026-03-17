@@ -15,11 +15,11 @@ universe u
 
 namespace Unit
 
-open HigherCategoryTheory
+open HigherCategoryTheory.SingleSorted
 
 /-- The unit type with its unique element forms a single-sorted $1$-category, where composition is
 always defined and its value is the unique element of the unit type. -/
-instance instSingleSorted1Category : SingleSortedNCategory 1 Unit where
+instance instSingleSorted1Category : NCategory 1 Unit where
   sc _ _ := ()
   tg _ _ := ()
   pcomp _ _ _ := ⟨True, fun _ ↦ ()⟩

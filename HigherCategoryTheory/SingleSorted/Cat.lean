@@ -15,9 +15,9 @@ single-sorted functors.
 
 ## Main definitions
 
-* `SingleSortedCat`: The category of single-sorted categories with a given index type.
-* `SingleSortedNCat`: The category of single-sorted $n$-categories.
-* `SingleSortedOmegaCat`: The category of single-sorted $\omega$-categories.
+* `Cat`: The category of single-sorted categories with a given index type.
+* `NCat`: The category of single-sorted $n$-categories.
+* `OmegaCat`: The category of single-sorted $\omega$-categories.
 
 ## Implementation notes
 
@@ -34,7 +34,7 @@ namespace HigherCategoryTheory
 A generic bundled structure that pairs a type with a structure class instance.
 
 This structure is used to create categories of structured mathematical objects. Given a type class
-`bundled : Type u → Type u` (such as `SingleSortedCategory index`), a `StructureFamily bundled`
+`bundled : Type u → Type u` (such as `SingleSorted.Category index`), a `StructureFamily bundled`
 consists of a type `obj : Type u` together with an instance `str : bundled obj`.
 
 This construction enables treating structured objects as first-class citizens in category theory,
@@ -74,60 +74,63 @@ instance instBundled : bundled C := C.str
 
 end StructureFamily
 
-open CategoryTheory
+end HigherCategoryTheory
+
+namespace HigherCategoryTheory.SingleSorted
+
+open HigherCategoryTheory
 
 /--
 The category of single-sorted categories with a given index type.
 
-Objects of `SingleSortedCat index` are types equipped with a `SingleSortedCategory index` structure.
+Objects of `Cat index` are types equipped with a `Category index` structure.
 -/
-abbrev SingleSortedCat (index : Type) [LinearOrder index] :=
-  StructureFamily.{u} (SingleSortedCategory index)
+abbrev Cat (index : Type) [LinearOrder index] :=
+  StructureFamily.{u} (Category index)
 
-/- Since `SingleSortedCategory index` is just a type class on types, we can directly use the
+/- Since `Category index` is just a type class on types, we can directly use the
 `StructureFamily` instance to get the category structure. -/
-example {index : Type} [LinearOrder index] {C : Type u} [SingleSortedCategory index C] :
-    SingleSortedCat index :=
+example {index : Type} [LinearOrder index] {C : Type u} [Category index C] :
+    Cat index :=
   StructureFamily.of C
 
 /--
-Category instance for `SingleSortedCat index`.
+Category instance for `Cat index`.
 
-The morphisms between objects `C` and `D` are single-sorted functors `SingleSortedFunctor index C
-D`, the identity morphism is the identity functor `idₛ`, and composition is functor composition `⊚`.
+The morphisms between objects `C` and `D` are single-sorted functors `Functor index C D`, the
+identity morphism is the identity functor `idₛ`, and composition is functor composition `⊚`.
 -/
-instance SingleSortedCat.category {index : Type} [LinearOrder index] :
-    Category (SingleSortedCat index) where
-  Hom C D := SingleSortedFunctor index C D
+instance Cat.category {index : Type} [LinearOrder index] :
+    CategoryTheory.Category (Cat index) where
+  Hom C D := Functor index C D
   id C := idₛ C
   comp F G := G ⊚ F
 
 /-- The category of single-sorted $n$-categories. -/
-abbrev SingleSortedNCat (n : ℕ) := StructureFamily.{u} (SingleSortedNCategory n)
+abbrev NCat (n : ℕ) := StructureFamily.{u} (NCategory n)
 
 /--
-Category instance for `SingleSortedNCat n`.
+Category instance for `NCat n`.
 
-Reuses the category structure from `SingleSortedCat` but specifying that morphisms are of type
-`SingleSortedNFunctor`.
+Reuses the category structure from `Cat` but specifying that morphisms are of type `NFunctor`.
 -/
-instance SingleSortedNCat.category {n : ℕ} : Category (SingleSortedNCat n) :=
-  { SingleSortedCat.category with
-    Hom C D := SingleSortedNFunctor n C D }
+instance NCat.category {n : ℕ} : CategoryTheory.Category (NCat n) :=
+  { Cat.category with
+    Hom C D := NFunctor n C D }
 
 /-- The category of single-sorted $\omega$-categories. -/
-abbrev SingleSortedOmegaCat := StructureFamily.{u} SingleSortedOmegaCategory
+abbrev OmegaCat := StructureFamily.{u} OmegaCategory
 
 /--
-Category instance for `SingleSortedOmegaCat`.
+Category instance for `OmegaCat`.
 
 The morphisms between objects `C` and `D` are single-sorted $\omega$-functors
-`SingleSortedOmegaFunctor C D`, the identity morphism is the identity functor `idₛ`, and composition
+`OmegaFunctor C D`, the identity morphism is the identity functor `idₛ`, and composition
 is functor composition `⊚`.
 -/
-instance SingleSortedOmegaCat.category : Category SingleSortedOmegaCat where
-  Hom C D := SingleSortedOmegaFunctor C D
+instance OmegaCat.category : CategoryTheory.Category OmegaCat where
+  Hom C D := OmegaFunctor C D
   id C := idₛ C
   comp F G := G ⊚ F
 
-end HigherCategoryTheory
+end HigherCategoryTheory.SingleSorted

@@ -23,9 +23,9 @@ Other properties about $k$-cells are also established in this file.
 
 universe u v
 
-namespace HigherCategoryTheory
+namespace HigherCategoryTheory.SingleSorted
 
-variable {index : Type} [LinearOrder index] {obj : Type u} [S : SingleSortedCategory index obj]
+variable {index : Type} [LinearOrder index] {obj : Type u} [S : Category index obj]
 
 /-- A morphism `f` is a $k$-cell (via source) if `sc k f = f`. This is an abbreviation for `cell k
 f`, the original definition of $k$-cells found in `Category.lean`. -/
@@ -60,12 +60,12 @@ theorem cell_sc_iff_cell_tg (k : index) (f : obj) :
 
 /-- The set of all $k$-cells using the source-based definition. This is an abbreviation for `cells k
 obj`, the original definition of the set of $k$-cells found in `Category.lean`. -/
-abbrev cells_sc (k : index) (obj : Type u) [SingleSortedCategory index obj] := cells k obj
+abbrev cells_sc (k : index) (obj : Type u) [Category index obj] := cells k obj
 
 /-- The set of all $k$-cells using the target-based definition. This set contains all morphisms `f`
 satisfying `tg k f = f`. -/
 @[simp]
-def cells_tg (k : index) (obj : Type u) [SingleSortedCategory index obj] : Set obj :=
+def cells_tg (k : index) (obj : Type u) [Category index obj] : Set obj :=
   {f : obj | cell_tg k f}
 
 /--
@@ -75,7 +75,7 @@ This theorem establishes that `cells_sc k obj = cells_tg k obj`, showing that bo
 of $k$-cells yield the same set. The proof follows from the pointwise equivalence
 `cell_sc_iff_cell_tg`.
 -/
-theorem cells_sc_eq_cells_tg (k : index) (obj : Type u) [SingleSortedCategory index obj] :
+theorem cells_sc_eq_cells_tg (k : index) (obj : Type u) [Category index obj] :
     cells_sc k obj = cells_tg k obj := by
   ext f
   exact cell_sc_iff_cell_tg k f
@@ -119,12 +119,12 @@ lemma underlying_comp_is_cell {f g : cells m obj} (dom : (S.pcomp k g f).Dom) (k
     _ = _ := S.sck_compj_eq_compj_sck k_lt_m (S.pcomp_dom.mp dom)
     _ = _ := by apply congr_comp₁ f.property g.property
 
-variable {C : Type u} {D : Type v} [SC : SingleSortedCategory index C]
-  [SD : SingleSortedCategory index D]
+variable {C : Type u} {D : Type v} [SC : Category index C]
+  [SD : Category index D]
 
 /-- Functors preserve the property of being an $m$-cell. If `f` is an $m$-cell in the source
 category, then `F f` is an $m$-cell in the target category. -/
-lemma underlying_functor_is_cell (F : SingleSortedFunctor index C D) (f : cells m C)
+lemma underlying_functor_is_cell (F : Functor index C D) (f : cells m C)
     : F f ∈ cells m D := by
   calc
     sc m (F f)
@@ -133,4 +133,4 @@ lemma underlying_functor_is_cell (F : SingleSortedFunctor index C D) (f : cells 
 
 end Underlying
 
-end HigherCategoryTheory
+end HigherCategoryTheory.SingleSorted

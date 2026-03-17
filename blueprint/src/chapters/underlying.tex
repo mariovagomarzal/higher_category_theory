@@ -17,7 +17,7 @@ functor from $n\Cat$ (or $\omega\Cat$) to $m\Cat$.
 \begin{lemma}
   \label{lem:underlying_source_is_cell}
   \uses{def:cell}
-  \lean{HigherCategoryTheory.underlying_source_is_cell}
+  \lean{HigherCategoryTheory.SingleSorted.underlying_source_is_cell}
   \leanok
   Let $\cat{C}$ be a single-sorted $\Index$-category and $m \in \Index$. Then, for every $f \in
   \cat{C}$ and every $k \in \Index$ such that $k < m$, we have that $\Sc^k (f)$ is a $m$-cell in
@@ -35,7 +35,7 @@ functor from $n\Cat$ (or $\omega\Cat$) to $m\Cat$.
 \begin{lemma}
   \label{lem:underlying_target_is_cell}
   \uses{thm:cell_sc_iff_cell_tg}
-  \lean{HigherCategoryTheory.underlying_target_is_cell}
+  \lean{HigherCategoryTheory.SingleSorted.underlying_target_is_cell}
   \leanok
   Let $\cat{C}$ be a single-sorted $\Index$-category and $m \in \Index$. Then, for every $f \in
   \cat{C}$ and every $k \in \Index$ such that $k < m$, we have that $\Tg^k (f)$ is a $m$-cell in
@@ -55,7 +55,7 @@ functor from $n\Cat$ (or $\omega\Cat$) to $m\Cat$.
 \begin{lemma}
   \label{lem:underlying_comp_is_cell}
   \uses{def:cell}
-  \lean{HigherCategoryTheory.underlying_comp_is_cell}
+  \lean{HigherCategoryTheory.SingleSorted.underlying_comp_is_cell}
   \leanok
   Let $\cat{C}$ be a single-sorted $\Index$-category and $m \in \Index$. Then, for every $f, g \in
   C_m$ (i.e., $f$ and $g$ are $m$-cells in $\cat{C}$) and every $k \in \Index$ such that $k < m$,
@@ -79,8 +79,8 @@ functor from $n\Cat$ (or $\omega\Cat$) to $m\Cat$.
     lem:underlying_comp_is_cell,
   }
   \lean{
-    HigherCategoryTheory.SingleSortedNCategory.underlying,
-    HigherCategoryTheory.SingleSortedOmegaCategory.underlying,
+    HigherCategoryTheory.SingleSorted.NCategory.underlying,
+    HigherCategoryTheory.SingleSorted.OmegaCategory.underlying
   }
   \leanok
   Let $\cat{C}$ be a single-sorted $n$-category (or $\omega$-category) and $m$ be a natural number
@@ -100,7 +100,7 @@ functor from $n\Cat$ (or $\omega\Cat$) to $m\Cat$.
 \begin{lemma}
   \label{lem:underlying_functor_is_cell}
   \uses{def:cell, def:SingleSortedFunctor}
-  \lean{HigherCategoryTheory.underlying_functor_is_cell}
+  \lean{HigherCategoryTheory.SingleSorted.underlying_functor_is_cell}
   \leanok
   Let $\cat{C}$ and $\cat{D}$ be single-sorted $\Index$-categories, $F \colon \cat{C} \to
   \cat{D}$ be a single-sorted functor, and $m \in \Index$. Then, for every $f \in C_m$ we have that
@@ -120,8 +120,8 @@ functor from $n\Cat$ (or $\omega\Cat$) to $m\Cat$.
   \label{def:SingleSortedFunctor_underlying}
   \uses{lem:underlying_functor_is_cell}
   \lean{
-    HigherCategoryTheory.SingleSortedNFunctor.underlying,
-    HigherCategoryTheory.SingleSortedOmegaFunctor.underlying,
+    HigherCategoryTheory.SingleSorted.NFunctor.underlying,
+    HigherCategoryTheory.SingleSorted.OmegaFunctor.underlying
   }
   \leanok
   Let $\cat{C}$ and $\cat{D}$ be single-sorted $n$-categories (or $\omega$-categories), $F \colon
@@ -148,7 +148,7 @@ $m\Cat$.
     def:SingleSortedCategory_underlying,
     def:SingleSortedFunctor_underlying,
   }
-  \lean{HigherCategoryTheory.UnderlyingFunctor}
+  \lean{HigherCategoryTheory.SingleSorted.UnderlyingFunctor}
   \leanok
   Let $n$ and $m$ be naturals such that $m \le n$. We define the \emph{underlying functor}
   $\Underlying^{(n, m)} \colon n\Cat \to m\Cat$ as the functor that maps every single-sorted

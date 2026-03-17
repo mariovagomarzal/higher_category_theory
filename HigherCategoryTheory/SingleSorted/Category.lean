@@ -23,15 +23,15 @@ source-target matching conditions are satisfied.
 
 ## Main definitions
 
-* `SingleSortedCategoryStruct`: The basic structure with source, target, and partial composition
+* `CategoryStruct`: The basic structure with source, target, and partial composition
   operations, along with the composability condition.
-* `PreSingleSortedCategory`: A structure satisfying the single-sorted category axioms at each
+* `PreCategory`: A structure satisfying the single-sorted category axioms at each
   dimension.
-* `SingleSortedCategory`: A structure with additional axioms ensuring compatibility between
+* `Category`: A structure with additional axioms ensuring compatibility between
   different dimensions.
-* `SingleSortedNCategory`: A single-sorted $n$-category is a `SingleSortedCategory` with index type
+* `NCategory`: A single-sorted $n$-category is a `Category` with index type
   `Fin n`, representing categories with exactly `n` dimensions.
-* `SingleSortedOmegaCategory`: A single-sorted $\omega$-category is a `SingleSortedCategory` with
+* `OmegaCategory`: A single-sorted $\omega$-category is a `Category` with
   index type `ℕ`, together with an axiom ensuring every morphism is a $k$-cell for some finite `k`.
 
 ## Notation
@@ -56,15 +56,15 @@ composition is defined.
 
 universe u
 
-namespace HigherCategoryTheory
+namespace HigherCategoryTheory.SingleSorted
 
 /--
 The basic structure of a single-sorted category, parametrized by an index type.
 
 This structure contains only the data and the composability condition; the structure axioms are
-defined in `PreSingleSortedCategory` and `SingleSortedCategory`.
+defined in `PreCategory` and `Category`.
 -/
-class SingleSortedCategoryStruct (index : Type) (obj : Type u) where
+class CategoryStruct (index : Type) (obj : Type u) where
   /-- Source operation at dimension `k`. -/
   sc : index → obj → obj
   /-- Target operation at dimension `k`. -/
@@ -87,14 +87,14 @@ class SingleSortedCategoryStruct (index : Type) (obj : Type u) where
       try exact h
     }
 
-namespace SingleSortedCategoryStruct
+namespace CategoryStruct
 
-variable {index : Type} {obj : Type u} [SingleSortedCategoryStruct index obj]
+variable {index : Type} {obj : Type u} [CategoryStruct index obj]
 variable {k : index} {f g : obj}
 
 @[inherit_doc]
-scoped[HigherCategoryTheory] notation g " ♯.[" k "] " f:100 =>
-  SingleSortedCategoryStruct.pcomp k g f
+scoped[HigherCategoryTheory.SingleSorted] notation g " ♯.[" k "] " f:100 =>
+  CategoryStruct.pcomp k g f
 
 /-- A method to express the composability condition for morphisms `g` and `f` at dimension `k`, that
 is, that the source of `g` at dimension `k` equals the target of `f` at dimension `k`. -/
@@ -119,17 +119,17 @@ def comp (k : index) (g f : obj) (sc_tg_gf : sc_is_tg k g f) : obj :=
   (g ♯.[k] f).get (dom_of_sc_is_tg sc_tg_gf)
 
 @[inherit_doc]
-scoped[HigherCategoryTheory] notation g " ♯[" k "] " f " ← " sc_tg_gf:100 =>
-  SingleSortedCategoryStruct.comp k g f sc_tg_gf
+scoped[HigherCategoryTheory.SingleSorted] notation g " ♯[" k "] " f " ← " sc_tg_gf:100 =>
+  CategoryStruct.comp k g f sc_tg_gf
 
-end SingleSortedCategoryStruct
+end CategoryStruct
 
--- Export the main components of `SingleSortedCategoryStruct` for easier access.
-export SingleSortedCategoryStruct (sc tg sc_is_tg)
+-- Export the main components of `CategoryStruct` for easier access.
+export CategoryStruct (sc tg sc_is_tg)
 
 section Congruence
 
-variable {index : Type} {obj : Type u} [SingleSortedCategoryStruct index obj]
+variable {index : Type} {obj : Type u} [CategoryStruct index obj]
 variable {k : index} {f₁ f₂ g₁ g₂ : obj}
 
 /-- Congruence lemma for the domain of partial composition: if `f₁ = f₂` and `g₁ = g₂`, and the
@@ -176,11 +176,11 @@ This structure captures the axioms that govern behavior within a single dimensio
 * **Identity laws**: Composing with sources and targets yields identities.
 * **Associativity**: Composition is associative at each dimension.
 
-This serves as an intermediate step in the construction of `SingleSortedCategory`, allowing us to
+This serves as an intermediate step in the construction of `Category`, allowing us to
 establish dimension-specific properties before enforcing cross-dimensional compatibility.
 -/
-class PreSingleSortedCategory (index : Type) [LinearOrder index] (obj : Type u)
-    extends SingleSortedCategoryStruct index obj where
+class PreCategory (index : Type) [LinearOrder index] (obj : Type u)
+    extends CategoryStruct index obj where
   /-- Applying source twice at dimension `k` is idempotent. -/
   sck_sck_eq_sck : ∀ (k : index) (f : obj), sc k (sc k f) = sc k f := by hcat_disch
   /-- The target of a source is itself. -/
@@ -228,24 +228,24 @@ class PreSingleSortedCategory (index : Type) [LinearOrder index] (obj : Type u)
       (h ♯[k] (g ♯[k] f ← sc_tg_gf) ← (compr_assoc sc_tg_gf sc_tg_hg)) := by
     hcat_disch
 
--- Use axioms of `PreSingleSortedCategory` as simp lemmas.
-open PreSingleSortedCategory in
+-- Use axioms of `PreCategory` as simp lemmas.
+open PreCategory in
 attribute [simp] sck_sck_eq_sck tgk_sck_eq_sck sck_tgk_eq_tgk tgk_tgk_eq_tgk sck_compk_eq_sck
   tgk_compk_eq_tgk compk_sck_eq_id compk_tgk_eq_id assoc
 
 /--
-A **single-sorted category** is a `PreSingleSortedCategory` with additional axioms ensuring
+A **single-sorted category** is a `PreCategory` with additional axioms ensuring
 compatibility between different dimensions.
 
-This structure extends `PreSingleSortedCategory` by adding cross-dimensional axioms that govern how
+This structure extends `PreCategory` by adding cross-dimensional axioms that govern how
 operations at different dimensions interact:
 * **Source/target interaction**: How source and target operations at different dimensions commute.
 * **Distributivity**: Source and target operations distribute over composition at lower dimensions.
 * **Exchange law**: Stating that composing first horizontally then vertically yields the same result
   as composing first vertically then horizontally
 -/
-class SingleSortedCategory (index : Type) [LinearOrder index] (obj : Type u)
-    extends PreSingleSortedCategory index obj where
+class Category (index : Type) [LinearOrder index] (obj : Type u)
+    extends PreCategory index obj where
   /-- Applying source at dimension `k` to a source at a lower dimension `j < k` yields the source
   at dimension `j`. -/
   sck_scj_eq_scj : ∀ {k j : index} (f : obj), j < k → sc k (sc j f) = sc j f := by hcat_disch
@@ -342,18 +342,18 @@ class SingleSortedCategory (index : Type) [LinearOrder index] (obj : Type u)
         (sc_tg_j_exchange j_lt_k sc_tg_k_g₂g₁ sc_tg_k_f₂f₁ sc_tg_k_g₂f₂ sc_tg_k_g₁f₁) := by
     hcat_disch
 
--- Use axioms of `SingleSortedCategory` as simp lemmas.
-open SingleSortedCategory in
+-- Use axioms of `Category` as simp lemmas.
+open Category in
 attribute [simp] sck_scj_eq_scj scj_sck_eq_scj scj_tgk_eq_scj tgk_tgj_eq_tgj tgj_tgk_eq_tgj
   tgj_sck_eq_tgj sck_compj_eq_compj_sck tgk_compj_eq_compj_tgk exchange
 
-/-- A **single-sorted $n$-category** is a `SingleSortedCategory` with index type `Fin n`,
+/-- A **single-sorted $n$-category** is a `Category` with index type `Fin n`,
 representing a category with exactly `n` dimensions. -/
-abbrev SingleSortedNCategory (n : ℕ) (obj : Type u) := SingleSortedCategory (Fin n) obj
+abbrev NCategory (n : ℕ) (obj : Type u) := Category (Fin n) obj
 
 section Cells
 
-variable {index : Type} [LinearOrder index] {obj : Type u} [SingleSortedCategory index obj]
+variable {index : Type} [LinearOrder index] {obj : Type u} [Category index obj]
 
 /-- A morphism `f` is a **$k$-cell** if `sc k f = f`. -/
 @[simp]
@@ -362,20 +362,20 @@ def cell (k : index) (f : obj) : Prop :=
 
 /-- The set of all **$k$-cells** in a single-sorted category. -/
 @[simp]
-def cells (k : index) (obj : Type u) [SingleSortedCategory index obj] : Set obj :=
+def cells (k : index) (obj : Type u) [Category index obj] : Set obj :=
   {f : obj | cell k f}
 
 end Cells
 
-open SingleSortedCategory in
-/-- A **single-sorted $\omega$-category** is a `SingleSortedCategory` with index type `ℕ`,
+open Category in
+/-- A **single-sorted $\omega$-category** is a `Category` with index type `ℕ`,
 representing a category with infinitely (countably) many dimensions and an additional axiom ensuring
 that every morphism is a $k$-cell for some finite `k`. -/
-class SingleSortedOmegaCategory (obj : Type u) extends SingleSortedCategory ℕ obj where
+class OmegaCategory (obj : Type u) extends Category ℕ obj where
   /-- Every morphism is a $k$-cell for some `k : ℕ`. -/
   is_cell : ∀ f : obj, ∃ k : ℕ, cell k f
 
--- Use axioms of `SingleSortedOmegaCategory` as simp lemmas.
-attribute [simp] SingleSortedOmegaCategory.is_cell
+-- Use axioms of `OmegaCategory` as simp lemmas.
+attribute [simp] OmegaCategory.is_cell
 
-end HigherCategoryTheory
+end HigherCategoryTheory.SingleSorted

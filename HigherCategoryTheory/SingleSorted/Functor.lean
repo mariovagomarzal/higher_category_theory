@@ -18,10 +18,10 @@ simply a function on the underlying type that preserves the structure.
 
 ## Main definitions
 
-* `SingleSortedFunctor`: A structure-preserving map between single-sorted categories, consisting of
+* `Functor`: A structure-preserving map between single-sorted categories, consisting of
   a function that preserves sources, targets, and composition at each dimension.
-* `SingleSortedNFunctor`: Functors between single-sorted $n$-categories.
-* `SingleSortedOmegaFunctor`: Functors between single-sorted $\omega$-categories.
+* `NFunctor`: Functors between single-sorted $n$-categories.
+* `OmegaFunctor`: Functors between single-sorted $\omega$-categories.
 
 ## Notation
 
@@ -32,18 +32,18 @@ simply a function on the underlying type that preserves the structure.
 
 universe u₁ u₂ u₃
 
-namespace HigherCategoryTheory
+namespace HigherCategoryTheory.SingleSorted
 
 /--
 A functor between single-sorted categories.
 
-A `SingleSortedFunctor index C D` is a structure-preserving map from a single-sorted category `C` to
+A `Functor index C D` is a structure-preserving map from a single-sorted category `C` to
 a single-sorted category `D`. It consists of:
 * A function `map : C → D` on morphisms.
 * Proofs that `map` preserves sources, targets, and composition at each dimension.
 -/
-structure SingleSortedFunctor (index : Type) [LinearOrder index] (C : Type u₁) (D : Type u₂)
-    [SingleSortedCategory index C] [SingleSortedCategory index D] where
+structure Functor (index : Type) [LinearOrder index] (C : Type u₁) (D : Type u₂)
+    [Category index C] [Category index D] where
   /-- The underlying function on morphisms. -/
   map : C → D
   /-- The map preserves sources. -/
@@ -63,27 +63,27 @@ structure SingleSortedFunctor (index : Type) [LinearOrder index] (C : Type u₁)
       map (g ♯[k] f ← sc_tg_gf) = (map g) ♯[k] (map f) ← (comp_map sc_tg_gf) := by
     hcat_disch
 
--- Use `SingleSortedFunctor` axioms as simp lemmas.
-open SingleSortedFunctor in
+-- Use `Functor` axioms as simp lemmas.
+open Functor in
 attribute [simp] map_sc_eq_sc_map map_tg_eq_tg_map map_comp_eq_comp_map
 
-namespace SingleSortedFunctor
+namespace Functor
 
 variable {index : Type} [LinearOrder index]
-  {C : Type u₁} [SingleSortedCategory index C]
-  {D : Type u₂} [SingleSortedCategory index D]
-  {E : Type u₃} [SingleSortedCategory index E]
+  {C : Type u₁} [Category index C]
+  {D : Type u₂} [Category index D]
+  {E : Type u₃} [Category index E]
 
 /-- Coercion allowing us to write `F f` instead of `F.map f` for the action of a functor `F` on a
 morphism `f`. -/
-instance instCoeFun : CoeFun (SingleSortedFunctor index C D) fun _ ↦ C → D := ⟨fun F ↦ F.map⟩
+instance instCoeFun : CoeFun (Functor index C D) fun _ ↦ C → D := ⟨fun F ↦ F.map⟩
 
 /-- Composition of functors. Given functors `F : C → D` and `G : D → E`, their composite `G ⊚ F : C
 → E` is defined by `(G ⊚ F) f = G (F f)`. This operation preserves all the required functor
 properties. -/
 @[simp]
-def comp (G : SingleSortedFunctor index D E) (F : SingleSortedFunctor index C D) :
-    SingleSortedFunctor index C E where
+def comp (G : Functor index D E) (F : Functor index C D) :
+    Functor index C E where
   map f := G (F f)
   map_sc_eq_sc_map := by
     intro k f
@@ -105,28 +105,28 @@ def comp (G : SingleSortedFunctor index D E) (F : SingleSortedFunctor index C D)
       _ = (G (F g)) ♯[k] (G (F f)) ← G.comp_map (F.comp_map sc_tg_gf) :=
         G.map_comp_eq_comp_map (F.comp_map sc_tg_gf)
 
-@[inherit_doc] scoped[HigherCategoryTheory] infixr:100 " ⊚ " => SingleSortedFunctor.comp
+@[inherit_doc] scoped[HigherCategoryTheory.SingleSorted] infixr:100 " ⊚ " => Functor.comp
 
 /-- The identity functor on a single-sorted category `C`. It maps each morphism to itself and
 trivially preserves all structure. -/
 @[simp]
-def id (C : Type u₁) [SingleSortedCategory index C] : SingleSortedFunctor index C C where
+def id (C : Type u₁) [Category index C] : Functor index C C where
   map f := f
 
-@[inherit_doc] scoped[HigherCategoryTheory] notation "idₛ" => SingleSortedFunctor.id
+@[inherit_doc] scoped[HigherCategoryTheory.SingleSorted] notation "idₛ" => Functor.id
 
-end SingleSortedFunctor
+end Functor
 
 /-- A functor between single-sorted $n$-categories. -/
-abbrev SingleSortedNFunctor (n : ℕ)
-    (C : Type u₁) [SingleSortedNCategory n C]
-    (D : Type u₂) [SingleSortedNCategory n D] :=
-  SingleSortedFunctor (Fin n) C D
+abbrev NFunctor (n : ℕ)
+    (C : Type u₁) [NCategory n C]
+    (D : Type u₂) [NCategory n D] :=
+  Functor (Fin n) C D
 
 /-- A functor between single-sorted $\omega$-categories. -/
-abbrev SingleSortedOmegaFunctor
-    (C : Type u₁) [SingleSortedOmegaCategory C]
-    (D : Type u₂) [SingleSortedOmegaCategory D] :=
-  SingleSortedFunctor ℕ C D
+abbrev OmegaFunctor
+    (C : Type u₁) [OmegaCategory C]
+    (D : Type u₂) [OmegaCategory D] :=
+  Functor ℕ C D
 
-end HigherCategoryTheory
+end HigherCategoryTheory.SingleSorted
