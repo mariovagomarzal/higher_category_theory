@@ -248,22 +248,22 @@ class Category (index : Type) [LinearOrder index] (obj : Type u)
     extends PreCategory index obj where
   /-- Applying source at dimension `k` to a source at a lower dimension `j < k` yields the source
   at dimension `j`. -/
-  sck_scj_eq_scj : ∀ {k j : index} (f : obj), j < k → sc k (sc j f) = sc j f := by hcat_disch
+  sck_scj_eq_scj : ∀ {k j : index} (f : obj) (_ : j < k), sc k (sc j f) = sc j f := by hcat_disch
   /-- Applying source at dimension `j` to a source at a higher dimension `k > j` yields the source
   at dimension `j`. -/
-  scj_sck_eq_scj : ∀ {k j : index} (f : obj), j < k → sc j (sc k f) = sc j f := by hcat_disch
+  scj_sck_eq_scj : ∀ {k j : index} (f : obj) (_ : j < k), sc j (sc k f) = sc j f := by hcat_disch
   /-- Applying source at dimension `j` to a target at a higher dimension `k > j` yields the source
   at dimension `j`. -/
-  scj_tgk_eq_scj : ∀ {k j : index} (f : obj), j < k → sc j (tg k f) = sc j f := by hcat_disch
+  scj_tgk_eq_scj : ∀ {k j : index} (f : obj) (_ : j < k), sc j (tg k f) = sc j f := by hcat_disch
   /-- Applying target at dimension `k` to a target at a lower dimension `j < k` yields the target
   at dimension `j`. -/
-  tgk_tgj_eq_tgj : ∀ {k j : index} (f : obj), j < k → tg k (tg j f) = tg j f := by hcat_disch
+  tgk_tgj_eq_tgj : ∀ {k j : index} (f : obj) (_ : j < k), tg k (tg j f) = tg j f := by hcat_disch
   /-- Applying target at dimension `j` to a target at a higher dimension `k > j` yields the target
   at dimension `j`. -/
-  tgj_tgk_eq_tgj : ∀ {k j : index} (f : obj), j < k → tg j (tg k f) = tg j f := by hcat_disch
+  tgj_tgk_eq_tgj : ∀ {k j : index} (f : obj) (_ : j < k), tg j (tg k f) = tg j f := by hcat_disch
   /-- Applying target at dimension `j` to a source at a higher dimension `k > j` yields the target
   at dimension `j`. -/
-  tgj_sck_eq_tgj : ∀ {k j : index} (f : obj), j < k → tg j (sc k f) = tg j f := by hcat_disch
+  tgj_sck_eq_tgj : ∀ {k j : index} (f : obj) (_ : j < k), tg j (sc k f) = tg j f := by hcat_disch
   /-- If `g` and `f` are composable at dimension `j < k`, then `sc k g` and `sc k f` are composable
   at dimension `j`. This is an auxiliary method for the distributivity axioms. -/
   protected sc_tg_j_sc {k j : index} {f g : obj} (j_lt_k : j < k) (sc_tg_j_gf : sc_is_tg j g f) :
