@@ -295,8 +295,8 @@ class Category (index : Type) [LinearOrder index] (obj : Type u)
   /-- Given morphisms `f₁, f₂, g₁, g₂` where `g₂` is composable with `f₂` at dimension `j`, `g₁` is
   composable with `f₁` at dimension `j`, `g₂` is composable with `g₁` at dimension `k`, and `f₂` is
   composable with `f₁` at dimension `k` (with `j < k`), then `g₂ ♯[j] f₂` is composable with
-  `g₁ ♯[j] f₁` at dimension `k`. This is an auxiliary method for the `exchange` axiom. -/
-  protected sc_tg_k_exchange {k j : index} {f₁ f₂ g₁ g₂ : obj} (j_lt_k : j < k)
+  `g₁ ♯[j] f₁` at dimension `k`. This is an auxiliary method for the `interchange` axiom. -/
+  protected sc_tg_k_interchange {k j : index} {f₁ f₂ g₁ g₂ : obj} (j_lt_k : j < k)
       (sc_tg_k_g₂g₁ : sc_is_tg k g₂ g₁) (sc_tg_k_f₂f₁ : sc_is_tg k f₂ f₁)
       (sc_tg_k_g₂f₂ : sc_is_tg j g₂ f₂) (sc_tg_k_g₁f₁ : sc_is_tg j g₁ f₁) :
       sc_is_tg k (g₂ ♯[j] f₂ ← sc_tg_k_g₂f₂) (g₁ ♯[j] f₁ ← sc_tg_k_g₁f₁) := calc
@@ -309,8 +309,8 @@ class Category (index : Type) [LinearOrder index] (obj : Type u)
   /-- Given morphisms `f₁, f₂, g₁, g₂` where `g₂` is composable with `f₂` at dimension `j`, `g₁` is
   composable with `f₁` at dimension `j`, `g₂` is composable with `g₁` at dimension `k`, and `f₂` is
   composable with `f₁` at dimension `k` (with `j < k`), then `g₂ ♯[k] g₁` is composable with
-  `f₂ ♯[k] f₁` at dimension `j`. This is an auxiliary method for the `exchange` axiom. -/
-  protected sc_tg_j_exchange {k j : index} {f₁ f₂ g₁ g₂ : obj} (j_lt_k : j < k)
+  `f₂ ♯[k] f₁` at dimension `j`. This is an auxiliary method for the `interchange` axiom. -/
+  protected sc_tg_j_interchange {k j : index} {f₁ f₂ g₁ g₂ : obj} (j_lt_k : j < k)
       (sc_tg_k_g₂g₁ : sc_is_tg k g₂ g₁) (sc_tg_k_f₂f₁ : sc_is_tg k f₂ f₁)
       (sc_tg_k_g₂f₂ : sc_is_tg j g₂ f₂) (sc_tg_k_g₁f₁ : sc_is_tg j g₁ f₁) :
       sc_is_tg j (g₂ ♯[k] g₁ ← sc_tg_k_g₂g₁) (f₂ ♯[k] f₁ ← sc_tg_k_f₂f₁) := calc
@@ -323,7 +323,7 @@ class Category (index : Type) [LinearOrder index] (obj : Type u)
     _ = tg j (sc k (f₂ ♯[k] f₁ ← sc_tg_k_f₂f₁)) := by rw [sck_compk_eq_sck sc_tg_k_f₂f₁]
     _ = tg j (f₂ ♯[k] f₁ ← sc_tg_k_f₂f₁) := tgj_sck_eq_tgj _ j_lt_k
   /--
-  The **exchange law**: Given morphisms `f₁, f₂, g₁, g₂` and indices `j < k` such that:
+  The **interchange law**: Given morphisms `f₁, f₂, g₁, g₂` and indices `j < k` such that:
   - `g₂` is composable with `f₂` at dimension `j`,
   - `g₁` is composable with `f₁` at dimension `j`,
   - `g₂` is composable with `g₁` at dimension `k`, and
@@ -333,19 +333,19 @@ class Category (index : Type) [LinearOrder index] (obj : Type u)
   equal. That is, composing first at dimension `j` and then at dimension `k` yields the same result
   as composing first at dimension `k` and then at dimension `j`.
   -/
-  exchange : ∀ {k j : index} {f₁ f₂ g₁ g₂ : obj} (j_lt_k : j < k)
+  interchange : ∀ {k j : index} {f₁ f₂ g₁ g₂ : obj} (j_lt_k : j < k)
       (sc_tg_k_g₂g₁ : sc_is_tg k g₂ g₁) (sc_tg_k_f₂f₁ : sc_is_tg k f₂ f₁)
       (sc_tg_k_g₂f₂ : sc_is_tg j g₂ f₂) (sc_tg_k_g₁f₁ : sc_is_tg j g₁ f₁),
       (g₂ ♯[j] f₂ ← sc_tg_k_g₂f₂) ♯[k] (g₁ ♯[j] f₁ ← sc_tg_k_g₁f₁) ←
-        (sc_tg_k_exchange j_lt_k sc_tg_k_g₂g₁ sc_tg_k_f₂f₁ sc_tg_k_g₂f₂ sc_tg_k_g₁f₁) =
+        (sc_tg_k_interchange j_lt_k sc_tg_k_g₂g₁ sc_tg_k_f₂f₁ sc_tg_k_g₂f₂ sc_tg_k_g₁f₁) =
       (g₂ ♯[k] g₁ ← sc_tg_k_g₂g₁) ♯[j] (f₂ ♯[k] f₁ ← sc_tg_k_f₂f₁) ←
-        (sc_tg_j_exchange j_lt_k sc_tg_k_g₂g₁ sc_tg_k_f₂f₁ sc_tg_k_g₂f₂ sc_tg_k_g₁f₁) := by
+        (sc_tg_j_interchange j_lt_k sc_tg_k_g₂g₁ sc_tg_k_f₂f₁ sc_tg_k_g₂f₂ sc_tg_k_g₁f₁) := by
     hcat_disch
 
 -- Use axioms of `Category` as simp lemmas.
 open Category in
 attribute [simp] sck_scj_eq_scj scj_sck_eq_scj scj_tgk_eq_scj tgk_tgj_eq_tgj tgj_tgk_eq_tgj
-  tgj_sck_eq_tgj sck_compj_eq_compj_sck tgk_compj_eq_compj_tgk exchange
+  tgj_sck_eq_tgj sck_compj_eq_compj_sck tgk_compj_eq_compj_tgk interchange
 
 /-- A **single-sorted $n$-category** is a `Category` with index type `Fin n`,
 representing a category with exactly `n` dimensions. -/

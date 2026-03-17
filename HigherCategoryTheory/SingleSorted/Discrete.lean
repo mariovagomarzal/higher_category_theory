@@ -149,7 +149,7 @@ def NCategory.discrete (S : NCategory m obj) (n : ℕ) :
         assumption
     · simp [k_lt_m]
       by_cases j_lt_m : j < m <;> simp [j_lt_m]
-  exchange := by
+  interchange := by
     intro k j f₁ f₂ g₁ g₂ j_lt_k sc_tg_g₂g₁ sc_tg_f₂f₁ tg_k_g₂f₂ tg_k_g₁f₁
     by_cases k_lt_m : k < m
     · have j_lt_m : j < m := lt_trans j_lt_k k_lt_m
@@ -157,7 +157,7 @@ def NCategory.discrete (S : NCategory m obj) (n : ℕ) :
         k_lt_m, j_lt_m, ↓reduceDIte]
       simp only [sc_is_tg, k_lt_m, j_lt_m, ↓reduceDIte]
         at sc_tg_g₂g₁ sc_tg_f₂f₁ tg_k_g₂f₂ tg_k_g₁f₁
-      apply S.exchange j_lt_k <;> assumption
+      apply S.interchange j_lt_k <;> assumption
     · simp [k_lt_m]
       by_cases j_lt_m : j < m <;> simp [j_lt_m]
 

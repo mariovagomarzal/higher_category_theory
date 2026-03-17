@@ -85,7 +85,7 @@ def NCategory.underlying (S : NCategory n obj) (m : Fin n) :
   tgj_sck_eq_tgj := by inherit_axiom S.tgj_sck_eq_tgj
   sck_compj_eq_compj_sck := by inherit_axiom S.sck_compj_eq_compj_sck
   tgk_compj_eq_compj_tgk := by inherit_axiom S.tgk_compj_eq_compj_tgk
-  exchange := by inherit_axiom S.exchange
+  interchange := by inherit_axiom S.interchange
 
 /--
 Constructs the underlying $m$-category of an $\omega$-category by restricting to $m$-cells.
@@ -119,7 +119,7 @@ def OmegaCategory.underlying (S : OmegaCategory obj) (m : ℕ) :
   tgj_sck_eq_tgj := by inherit_axiom S.tgj_sck_eq_tgj
   sck_compj_eq_compj_sck := by inherit_axiom S.sck_compj_eq_compj_sck
   tgk_compj_eq_compj_tgk := by inherit_axiom S.tgk_compj_eq_compj_tgk
-  exchange := by inherit_axiom S.exchange
+  interchange := by inherit_axiom S.interchange
 
 variable {C : Type u} {D : Type v} [SC : NCategory n C] [SD : NCategory n D]
   [ωSC : OmegaCategory C] [ωSD : OmegaCategory D]
