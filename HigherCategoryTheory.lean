@@ -10,3 +10,4 @@ import HigherCategoryTheory.SingleSorted.Types.Prod
 import HigherCategoryTheory.SingleSorted.Types.Unit
 import HigherCategoryTheory.SingleSorted.Order
 import HigherCategoryTheory.SingleSorted.Monoid
+import HigherCategoryTheory.ManySorted.Category

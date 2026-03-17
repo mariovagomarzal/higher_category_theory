@@ -18,6 +18,8 @@ We start by defining the necessary data for defining a many-sorted category.
 
 \begin{definition}
   \label{def:ManySortedCategoryStruct}
+  \lean{HigherCategoryTheory.ManySorted.CategoryStruct}
+  \leanok
   Let $(C_k)_{k \in \Index}$ be a family of sets whose elements will be called \emph{$k$-morphisms}.
   The required data for defining a many-sorted $\Index$-category structure on $(C_k)_{k \in \Index}$
   consists of, for each pair of indices $j, k \in \Index$:
@@ -43,6 +45,8 @@ division is made by first defining the notion of pre-many-sorted category:
 
 \begin{definition}
   \label{def:PreManySortedCategory}
+  \lean{HigherCategoryTheory.ManySorted.PreCategory}
+  \leanok
   \uses{def:ManySortedCategoryStruct}
   A \emph{pre-many-sorted $\Index$-category} is a tuple $\cat{C} = ((C_k)_{k \in \Index},
   (\Sc^{(k,j)}, \Tg^{(k,j)}, \Idm^{(k,j)}, \circ^{(k,j)})_{j, k \in \Index, \, j < k})$ satisfying,
@@ -85,12 +89,15 @@ each pair of dimensions is injective:
 
 \begin{proposition}
   \label{prop:PreManySortedCategory.injetive_idm}
+  \lean{HigherCategoryTheory.ManySorted.PreCategory.injetive_idm}
+  \leanok
   \uses{def:PreManySortedCategory}
   Let $\cat{C}$ be a pre-many-sorted $\Index$-category and let $j < k$ in $\Index$. Then the
   identity map $\Idm^{(k,j)} \colon C_j \to C_k$ is injective.
 \end{proposition}
 
 \begin{proof}
+  \leanok
   Let $f, g \in C_j$ with $\Idm^{(k,j)}(f) = \Idm^{(k,j)}(g)$. Then
   \[
     f = \Sc^{(k,j)}(\Idm^{(k,j)}(f)) = \Sc^{(k,j)}(\Idm^{(k,j)}(g)) = g,
@@ -103,6 +110,8 @@ concerning the interaction between different pairs of indices:
 
 \begin{definition}[Many-sorted category]
   \label{def:ManySortedCategory}
+  \lean{HigherCategoryTheory.ManySorted.Category}
+  \leanok
   \uses{def:PreManySortedCategory}
   A \emph{many-sorted $\Index$-category} is a pre-many-sorted $\Index$-category $\cat{C} = ((C_k)_{k
   \in \Index}, (\Sc^{(k,j)}, \Tg^{(k,j)}, \Idm^{(k,j)}, \circ^{(k,j)})_{j, k \in \Index, \, j < k})$
