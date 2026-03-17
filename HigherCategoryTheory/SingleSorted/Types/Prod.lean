@@ -22,7 +22,7 @@ open HigherCategoryTheory.SingleSorted
 the first component of the first pair equals the second component of the second pair and its value
 is given by the pair formed by the second component of the first pair and the first component of the
 second pair. -/
-instance instSingleSorted1Category {α : Type u} : NCategory 1 (α × α) where
+instance inst1Category {α : Type u} : NCategory 1 (α × α) where
   sc := fun _ (y₁, _) ↦ (y₁, y₁)
   tg := fun _ (_, x₂) ↦ (x₂, x₂)
   pcomp := fun _ (y₁, y₂) (x₁, x₂) ↦ ⟨y₁ = x₂, fun _ ↦ (x₁, y₂)⟩

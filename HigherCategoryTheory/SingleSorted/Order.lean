@@ -19,7 +19,7 @@ open HigherCategoryTheory.SingleSorted
 
 /-- The set of comparable pairs $\{(x, y) \mid x \leq y\}$ in a preorder forms a single-sorted
 category, where composition corresponds to transitivity of the order relation. -/
-instance instSingleSorted1CategoryOfProduct (α : Type u) [Preorder α] :
+instance inst1CategoryOfProduct (α : Type u) [Preorder α] :
     NCategory 1 ({(x, y) : α × α | x ≤ y}) where
   sc := fun _ ⟨(y₁, _), h⟩ ↦ ⟨(y₁, y₁), le_refl y₁⟩
   tg := fun _ ⟨(_, x₂), h⟩ ↦ ⟨(x₂, x₂), le_refl x₂⟩
