@@ -405,4 +405,12 @@ attribute [simp] scji_sckj_eq_scki scji_tgkj_eq_scki tgji_tgkj_eq_tgki tgji_sckj
   sckj_compki_eq_compji_sckj tgkj_compki_eq_compji_tgkj idmkj_idmji_eq_idmki
   idmkj_compji_eq_compki_idmkj interchange
 
+/-- A **many-sorted $n$-category** is a `Category` with index type `Fin n`,
+representing a category with exactly `n` dimensions. -/
+abbrev NCategory (n : ℕ) (C : Fin n → Type u) := Category (Fin n) C
+
+/-- A **many-sorted $\omega$-category** is a `Category` with index type `ℕ`,
+representing a category with infinitely (countably) many dimensions. -/
+abbrev OmegaCategory (C : ℕ → Type u) := Category ℕ C
+
 end HigherCategoryTheory.ManySorted
