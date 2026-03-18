@@ -405,9 +405,13 @@ attribute [simp] scji_sckj_eq_scki scji_tgkj_eq_scki tgji_tgkj_eq_tgki tgji_sckj
   sckj_compki_eq_compji_sckj tgkj_compki_eq_compji_tgkj idmkj_idmji_eq_idmki
   idmkj_compji_eq_compki_idmkj interchange
 
+/-- `FinSucc n` is an abbreviation for `Fin (n + 1)`, the type of natural numbers strictly less than
+`n + 1`. This is the index type used for many-sorted $n$-categories. -/
+abbrev FinSucc (n : ℕ) := Fin (n + 1)
+
 /-- A **many-sorted $n$-category** is a `Category` with index type `Fin n`,
 representing a category with exactly `n` dimensions. -/
-abbrev NCategory (n : ℕ) (C : Fin n → Type u) := Category (Fin n) C
+abbrev NCategory (n : ℕ) (C : FinSucc n → Type u) := Category (FinSucc n) C
 
 /-- A **many-sorted $\omega$-category** is a `Category` with index type `ℕ`,
 representing a category with infinitely (countably) many dimensions. -/
