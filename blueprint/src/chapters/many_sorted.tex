@@ -180,3 +180,135 @@ concerning the interaction between different pairs of indices:
     numbers $\NN$.
   \end{definition}
 \end{definition}
+
+\section{Many-sorted functors}
+
+In the many-sorted setting, a functor is a family of maps, one for each dimension, that collectively
+preserve sources, targets, identities, and composition at each pair of dimensions.
+
+\begin{definition}[Many-sorted functor]
+  \label{def:ManySortedFunctor}
+  \uses{def:ManySortedCategory}
+  \lean{HigherCategoryTheory.ManySorted.Functor}
+  \leanok
+  Let $\cat{C} = ((C_k)_{k \in \Index}, (\Sc^{(k,j)}, \Tg^{(k,j)}, \Idm^{(k,j)},
+  \circ^{(k,j)})_{j, k \in \Index, \, j < k})$ and $\cat{D} = ((D_k)_{k \in \Index}, (\Sc^{(k,j)},
+  \Tg^{(k,j)}, \Idm^{(k,j)}, \circ^{(k,j)})_{j, k \in \Index, \, j < k})$ be many-sorted
+  $\Index$-categories. A \emph{many-sorted $\Index$-functor} from $\cat{C}$ to $\cat{D}$ is a family
+  of maps $(F_k \colon C_k \to D_k)_{k \in \Index}$ satisfying, for each pair of indices $j, k \in
+  \Index$ with $j < k$, the following preservation properties:
+
+  \begin{itemize}
+    \item For all $f \in C_k$,
+      \[
+        F_j (\Sc^{(k,j)} (f)) = \Sc^{(k,j)} (F_k (f)), \qquad
+        F_j (\Tg^{(k,j)} (f)) = \Tg^{(k,j)} (F_k (f)).
+      \]
+    \item For all $f \in C_j$,
+      \[
+        F_k (\Idm^{(k,j)} (f)) = \Idm^{(k,j)} (F_j (f)).
+      \]
+    \item For all $f, g \in C_k$, if $g$ and $f$ are $(k,j)$-composable, then $F_k (g)$ and $F_k (f)$
+      are also $(k,j)$-composable, and
+      \[
+        F_k (g \circ^{(k,j)} f) = F_k (g) \circ^{(k,j)} F_k (f).
+      \]
+  \end{itemize}
+\end{definition}
+
+We can define composition of many-sorted functors componentwise, and the identity many-sorted
+functor as the family of identity functions. The following results assert that these constructions
+yield valid many-sorted functors.
+
+\begin{theorem}[Composition of many-sorted functors]
+  \label{thm:ManySortedFunctor_comp}
+  \uses{def:ManySortedFunctor}
+  \lean{HigherCategoryTheory.ManySorted.Functor.comp}
+  \leanok
+  Let $\cat{C}, \cat{D}, \cat{E}$ be many-sorted $\Index$-categories, and let $(F_k)_{k \in \Index}
+  \colon \cat{C} \to \cat{D}$ and $(G_k)_{k \in \Index} \colon \cat{D} \to \cat{E}$ be many-sorted
+  $\Index$-functors. Then, the family $(G_k \circ F_k)_{k \in \Index} \colon \cat{C} \to \cat{E}$ is
+  also a many-sorted $\Index$-functor.
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  Let $j, k \in \Index$ with $j < k$. For all $f \in C_k$, since $F$ and $G$ are many-sorted
+  functors, we have that
+  \[
+    \begin{split}
+      (G_j \circ F_j) (\Sc^{(k,j)} (f))
+      & = G_j (F_j (\Sc^{(k,j)} (f))) \\
+      & = G_j (\Sc^{(k,j)} (F_k (f))) \\
+      & = \Sc^{(k,j)} (G_k (F_k (f))) \\
+      & = \Sc^{(k,j)} ((G_k \circ F_k) (f)),
+    \end{split}
+  \]
+  and similarly,
+  \[
+    \begin{split}
+      (G_j \circ F_j) (\Tg^{(k,j)} (f))
+      & = G_j (F_j (\Tg^{(k,j)} (f))) \\
+      & = G_j (\Tg^{(k,j)} (F_k (f))) \\
+      & = \Tg^{(k,j)} (G_k (F_k (f))) \\
+      & = \Tg^{(k,j)} ((G_k \circ F_k) (f)),
+    \end{split}
+  \]
+  that is, $G \circ F$ preserves sources and targets at pair $(k,j)$.
+
+  For all $f \in C_j$, we have that
+  \[
+    \begin{split}
+      (G_k \circ F_k) (\Idm^{(k,j)} (f))
+      & = G_k (F_k (\Idm^{(k,j)} (f))) \\
+      & = G_k (\Idm^{(k,j)} (F_j (f))) \\
+      & = \Idm^{(k,j)} (G_j (F_j (f))) \\
+      & = \Idm^{(k,j)} ((G_j \circ F_j) (f)),
+    \end{split}
+  \]
+  so $G \circ F$ preserves identities at pair $(k,j)$.
+
+  Now, let $f, g \in C_k$ be $(k,j)$-composable. We have that
+  \[
+    \begin{split}
+      (G_k \circ F_k) (g \circ^{(k,j)} f)
+      & = G_k (F_k (g \circ^{(k,j)} f)) \\
+      & = G_k (F_k (g) \circ^{(k,j)} F_k (f)) \\
+      & = G_k (F_k (g)) \circ^{(k,j)} G_k (F_k (f)) \\
+      & = (G_k \circ F_k) (g) \circ^{(k,j)} (G_k \circ F_k) (f),
+    \end{split}
+  \]
+  so $G \circ F$ preserves composition at pair $(k,j)$.
+\end{proof}
+
+\begin{theorem}[Identity many-sorted functor]
+  \label{thm:ManySortedFunctor_id}
+  \uses{def:ManySortedFunctor}
+  \lean{HigherCategoryTheory.ManySorted.Functor.id}
+  \leanok
+  Let $\cat{C}$ be a many-sorted $\Index$-category. Then, the family of identity functions
+  $(\id_{C_k})_{k \in \Index}$ is a many-sorted $\Index$-functor from $\cat{C}$ to itself.
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  It trivially follows from reflexivity.
+\end{proof}
+
+\begin{definition}[Many-sorted finite functor]
+  \label{def:ManySortedNFunctor}
+  \uses{def:ManySortedNCategory, def:ManySortedFunctor}
+  \lean{HigherCategoryTheory.ManySorted.NFunctor}
+  \leanok
+  Given a natural number $n \in \NN$, a \emph{many-sorted $n$-functor} is a many-sorted functor
+  between many-sorted $n$-categories.
+\end{definition}
+
+\begin{definition}[Many-sorted omega functor]
+  \label{def:ManySortedOmegaFunctor}
+  \uses{def:ManySortedOmegaCategory, def:ManySortedFunctor}
+  \lean{HigherCategoryTheory.ManySorted.OmegaFunctor}
+  \leanok
+  A \emph{many-sorted $\omega$-functor} is a many-sorted functor between many-sorted
+  $\omega$-categories.
+\end{definition}
