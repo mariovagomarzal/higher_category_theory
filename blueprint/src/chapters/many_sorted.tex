@@ -312,3 +312,65 @@ yield valid many-sorted functors.
   A \emph{many-sorted $\omega$-functor} is a many-sorted functor between many-sorted
   $\omega$-categories.
 \end{definition}
+
+\section{The category of many-sorted categories}
+
+Lastly, we define the category whose objects are many-sorted categories and whose morphisms are
+many-sorted functors.
+
+\begin{definition}[Category of many-sorted categories]
+  \label{def:ManySortedCategory_category}
+  \lean{HigherCategoryTheory.ManySorted.Cat.category}
+  \leanok
+  \uses{
+    def:ManySortedCategory,
+    def:ManySortedFunctor,
+    thm:ManySortedFunctor_comp,
+    thm:ManySortedFunctor_id,
+  }
+  The \emph{category of many-sorted $\Index$-categories}, denoted by $\Index\CatMS$, is
+  defined as follows:
+
+  \begin{itemize}
+    \item Its objects are many-sorted $\Index$-categories.
+    \item Its morphisms are many-sorted $\Index$-functors between many-sorted $\Index$-categories.
+    \item Composition of morphisms is given by composition of many-sorted functors, which is well
+      defined by Theorem~\ref{thm:ManySortedFunctor_comp}.
+    \item The identity morphism for each object is given by the identity many-sorted functor, which
+      is well defined by Theorem~\ref{thm:ManySortedFunctor_id}.
+  \end{itemize}
+\end{definition}
+
+\begin{proof}
+  \leanok
+  The required category laws trivially follow from the corresponding properties of function
+  composition.
+\end{proof}
+
+\begin{notation}
+  Since many-sorted $n$-categories are just many-sorted $\Index$-categories where $\Index$ is the
+  finite set $n + 1 = \set{0, 1, \ldots, n}$, it follows that we can define the category of
+  many-sorted $n$-categories and many-sorted $n$-functors between them, denoted by
+  $n\CatMS$.
+\end{notation}
+
+\begin{definition}[Category of many-sorted omega categories]
+  \label{def:ManySortedOmegaCategory_category}
+  \lean{HigherCategoryTheory.ManySorted.OmegaCat.category}
+  \leanok
+  \uses{
+    def:ManySortedOmegaCategory,
+    def:ManySortedOmegaFunctor,
+    thm:ManySortedFunctor_comp,
+    thm:ManySortedFunctor_id,
+  }
+  The \emph{category of many-sorted $\omega$-categories}, denoted by $\omega\CatMS$, is
+  defined analogously to Definition~\ref{def:ManySortedCategory_category}, but using many-sorted
+  $\omega$-categories and many-sorted $\omega$-functors instead.
+\end{definition}
+
+\begin{proof}
+  \leanok
+  As in Definition~\ref{def:ManySortedCategory_category}, the required category laws trivially
+  follow from the corresponding properties of function composition.
+\end{proof}

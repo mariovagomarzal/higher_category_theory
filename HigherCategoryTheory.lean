@@ -12,3 +12,4 @@ import HigherCategoryTheory.SingleSorted.Order
 import HigherCategoryTheory.SingleSorted.Monoid
 import HigherCategoryTheory.ManySorted.Category
 import HigherCategoryTheory.ManySorted.Functor
+import HigherCategoryTheory.ManySorted.Cat
