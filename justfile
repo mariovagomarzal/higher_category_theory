@@ -72,6 +72,15 @@ docs:
   cp ../{{references}} docs/
 
   MATHLIB_NO_CACHE_ON_UPDATE=1 lake update {{lean_project}}
+
+  # Workaround for https://github.com/fgdorais/lean4-unicode-basic/issues/81
+  # On non-Windows platforms, Lake's `moreLinkObjs` doesn't correctly link the
+  # UnicodeCLib C static library into UnicodeBasic's dynlibs. The upstream fix
+  # (extern_lib) is Windows-only. We patch the lakefile to make it unconditional.
+  sed -i.bak '/^meta if System.Platform.isWindows then$/d' \
+    ../.lake/packages/UnicodeBasic/lakefile.lean
+  rm -f ../.lake/packages/UnicodeBasic/lakefile.lean.bak
+
   lake build {{lean_project}}:docs
 
   cd ..
