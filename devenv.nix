@@ -41,6 +41,7 @@
       gitlint = {
         enable = true;
         description = "Run gitlint to check commit messages";
+        stages = ["commit-msg"];
       };
 
       markdownlint = {
