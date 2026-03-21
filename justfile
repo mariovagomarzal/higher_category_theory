@@ -43,49 +43,8 @@ build TARGETS=lean_project:
 [group("docs")]
 [doc("Build the documentation for the Lean project.")]
 docs:
-  #!/usr/bin/env bash
-  set -euxo pipefail
-
-  rm -rf {{docs_build_dir}}
-
-  mkdir -p {{docs_build_dir}}
-  cd {{docs_build_dir}}
-
-  cp ../lean-toolchain .
-  cat << EOF > lakefile.toml
-  name = "docbuild"
-  reservoir = false
-  version = "0.1.0"
-  packagesDir = "../.lake/packages"
-
-  [[require]]
-  name = "{{lean_project}}"
-  path = "../"
-
-  [[require]]
-  name = "doc-gen4"
-  scope = "leanprover"
-  rev = "{{get_lean_version}}"
-  EOF
-
-  mkdir -p docs/
-  cp ../{{references}} docs/
-
-  MATHLIB_NO_CACHE_ON_UPDATE=1 lake update {{lean_project}}
-
-  # Workaround for https://github.com/fgdorais/lean4-unicode-basic/issues/81
-  # On non-Windows platforms, Lake's `moreLinkObjs` doesn't correctly link the
-  # UnicodeCLib C static library into UnicodeBasic's dynlibs. The upstream fix
-  # (extern_lib) is Windows-only. We patch the lakefile to make it unconditional.
-  sed -i.bak '/^meta if System.Platform.isWindows then$/d' \
-    ../.lake/packages/UnicodeBasic/lakefile.lean
-  rm -f ../.lake/packages/UnicodeBasic/lakefile.lean.bak
-
-  lake build {{lean_project}}:docs
-
-  cd ..
-  rm -rf {{docs_target}}
-  cp -r {{docs_dir}} {{docs_target}}
+  @./scripts/build_docs.sh {{lean_project}} {{get_lean_version}} \
+    {{references}} {{docs_build_dir}} {{docs_dir}} {{docs_target}}
 
 [private]
 [group("docs")]

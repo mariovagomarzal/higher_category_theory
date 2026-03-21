@@ -16,13 +16,13 @@ underlying $m$-categories induced by a functor between $n$-categories (or $\omeg
 
 ## Main definitions
 
-* `SingleSortedNCategory.underlying`: Given an $n$-category and $m < n$, constructs the underlying
+* `NCategory.underlying`: Given an $n$-category and $m < n$, constructs the underlying
   $m$-category whose objects are the $m$-cells of the original category.
-* `SingleSortedOmegaCategory.underlying`: Given an $\omega$-category and $m \in \mathbb{N}$,
+* `OmegaCategory.underlying`: Given an $\omega$-category and $m \in \mathbb{N}$,
   constructs the underlying $m$-category.
-* `SingleSortedNFunctor.underlying`: Restriction of a functor between $n$-categories to their
+* `NFunctor.underlying`: Restriction of a functor between $n$-categories to their
   underlying $m$-categories.
-* `SingleSortedOmegaFunctor.underlying`: Restriction of a functor between $\omega$-categories to
+* `OmegaFunctor.underlying`: Restriction of a functor between $\omega$-categories to
   their underlying $m$-categories.
 
 ## Implementation notes
@@ -34,7 +34,7 @@ of unwrapping subtypes and applying the parent category's axioms.
 
 universe u v
 
-namespace HigherCategoryTheory
+namespace HigherCategoryTheory.SingleSorted
 
 -- TODO: Review this tactic for possible improvements.
 /--
@@ -58,8 +58,8 @@ the $m$-cells of `S`. The source, target, and composition operations are inherit
 dimensions reindexed to `Fin m`. All category axioms are inherited using the `inherit_axiom` tactic.
 -/
 @[simp]
-def SingleSortedNCategory.underlying (S : SingleSortedNCategory n obj) (m : Fin n) :
-    SingleSortedNCategory m (cells m obj) where
+def NCategory.underlying (S : NCategory n obj) (m : Fin n) :
+    NCategory m (cells m obj) where
   sc k f := ⟨S.sc ⟨k, lt_trans k.isLt m.isLt⟩ f, by apply underlying_source_is_cell; exact k.isLt⟩
   tg k f := ⟨S.tg ⟨k, lt_trans k.isLt m.isLt⟩ f, by apply underlying_target_is_cell; exact k.isLt⟩
   pcomp k g f :=
@@ -85,17 +85,17 @@ def SingleSortedNCategory.underlying (S : SingleSortedNCategory n obj) (m : Fin 
   tgj_sck_eq_tgj := by inherit_axiom S.tgj_sck_eq_tgj
   sck_compj_eq_compj_sck := by inherit_axiom S.sck_compj_eq_compj_sck
   tgk_compj_eq_compj_tgk := by inherit_axiom S.tgk_compj_eq_compj_tgk
-  exchange := by inherit_axiom S.exchange
+  interchange := by inherit_axiom S.interchange
 
 /--
 Constructs the underlying $m$-category of an $\omega$-category by restricting to $m$-cells.
 
-This definition is analogous to `SingleSortedNCategory.underlying`, but applies to
-`SingleSortedOmegaCategory` objects.
+This definition is analogous to `NCategory.underlying`, but applies to
+`OmegaCategory` objects.
 -/
 @[simp]
-def SingleSortedOmegaCategory.underlying (S : SingleSortedOmegaCategory obj) (m : ℕ) :
-    SingleSortedNCategory m (cells m obj) where
+def OmegaCategory.underlying (S : OmegaCategory obj) (m : ℕ) :
+    NCategory m (cells m obj) where
   sc k f := ⟨S.sc k f, by apply underlying_source_is_cell; exact k.isLt⟩
   tg k f := ⟨S.tg k f, by apply underlying_target_is_cell; exact k.isLt⟩
   pcomp k g f := { S.pcomp k g f with
@@ -119,10 +119,10 @@ def SingleSortedOmegaCategory.underlying (S : SingleSortedOmegaCategory obj) (m 
   tgj_sck_eq_tgj := by inherit_axiom S.tgj_sck_eq_tgj
   sck_compj_eq_compj_sck := by inherit_axiom S.sck_compj_eq_compj_sck
   tgk_compj_eq_compj_tgk := by inherit_axiom S.tgk_compj_eq_compj_tgk
-  exchange := by inherit_axiom S.exchange
+  interchange := by inherit_axiom S.interchange
 
-variable {C : Type u} {D : Type v} [SC : SingleSortedNCategory n C] [SD : SingleSortedNCategory n D]
-  [ωSC : SingleSortedOmegaCategory C] [ωSD : SingleSortedOmegaCategory D]
+variable {C : Type u} {D : Type v} [SC : NCategory n C] [SD : NCategory n D]
+  [ωSC : OmegaCategory C] [ωSD : OmegaCategory D]
 
 /--
 Restricts a functor between $n$-categories to a functor between their underlying $m$-categories.
@@ -133,10 +133,10 @@ underlying $m$-categories `cells m C → cells m D`. The mapping and functoriali
 inherited from `F` using the `inherit_axiom` tactic.
 -/
 @[simp]
-def SingleSortedNFunctor.underlying (F : SingleSortedNFunctor n C D) (m : Fin n) :
+def NFunctor.underlying (F : NFunctor n C D) (m : Fin n) :
     letI := SC.underlying m
     letI := SD.underlying m
-    SingleSortedNFunctor m (cells m C) (cells m D) :=
+    NFunctor m (cells m C) (cells m D) :=
   let uSC := SC.underlying m
   let uSD := SD.underlying m
   {
@@ -149,14 +149,14 @@ def SingleSortedNFunctor.underlying (F : SingleSortedNFunctor n C D) (m : Fin n)
 /-- Restricts a functor between $\omega$-categories to a functor between their underlying
 $m$-categories. This is called the underlying $\omega$-functor.
 
-This definition is analogous to `SingleSortedNFunctor.underlying`, but applies to
-`SingleSortedOmegaFunctor` objects.
+This definition is analogous to `NFunctor.underlying`, but applies to
+`OmegaFunctor` objects.
 -/
 @[simp]
-def SingleSortedOmegaFunctor.underlying (F : SingleSortedOmegaFunctor C D) (m : ℕ) :
+def OmegaFunctor.underlying (F : OmegaFunctor C D) (m : ℕ) :
     letI := ωSC.underlying m
     letI := ωSD.underlying m
-    SingleSortedNFunctor m (cells m C) (cells m D) :=
+    NFunctor m (cells m C) (cells m D) :=
   let uSC := ωSC.underlying m
   let uSD := ωSD.underlying m
   {
@@ -166,4 +166,4 @@ def SingleSortedOmegaFunctor.underlying (F : SingleSortedOmegaFunctor C D) (m : 
     map_comp_eq_comp_map := by inherit_axiom F.map_comp_eq_comp_map
   }
 
-end HigherCategoryTheory
+end HigherCategoryTheory.SingleSorted

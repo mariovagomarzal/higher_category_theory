@@ -66,7 +66,7 @@ def bibtool_format_file(file: Path) -> ProcessResult:
 
 
 def bibtool_format(files: list[Path]) -> int:
-    print(f"Checking style in {len(files)} files with bibtool.")
+    print(f"==> Checking style in {len(files)} files with bibtool.")
 
     formatted_files: list[Path] = []
     failed_files: list[Path] = []

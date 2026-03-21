@@ -52,10 +52,6 @@ To enter the development shell, run:
 devenv shell
 ```
 
-> [!TIP]
-> If using [direnv][direnv], you can automatically load the development
-> environment by running `direnv allow` once in the root of the repository.
-
 Once inside the shell, all tools will be available. Run `devenv info` to see
 what's included.
 
@@ -75,12 +71,15 @@ For building documentation, you'll also need:
 - **leanblueprint**: Tool for generating Lean blueprints.
 - **Python**: For serving the documentation website locally.
 
-After installing Lean, cache the upstream dependencies to avoid long
-compilation times:
+After installing the required tools, set up the environment by running:
 
 ```bash
-just cache
+just env
 ```
+
+This runs both `just cache` (caches Lean upstream dependencies to avoid long
+compilation times) and `just bundler` (installs Ruby dependencies for the
+Jekyll website).
 
 ## Conventions
 
@@ -128,7 +127,6 @@ This project is licensed under the Apache License 2.0. See the
 [nix]: https://nixos.org/
 [devenv]: https://devenv.sh/
 [vscode]: https://code.visualstudio.com/
-[direnv]: https://direnv.net/
 [elan]: https://github.com/leanprover/elan
 [just]: https://just.systems/
 [conventional-commits]: https://www.conventionalcommits.org/en/v1.0.0/

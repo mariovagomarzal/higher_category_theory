@@ -16,15 +16,15 @@ universe u
 
 namespace Monoid
 
-open HigherCategoryTheory
+open HigherCategoryTheory.SingleSorted
 
 /--
-An instance from `Monoid M` to `SingleSortedNCategory 1 M`.
+An instance from `Monoid M` to `NCategory 1 M`.
 
 Every monoid is a single-sorted $1$-category where all morphisms have the same source and target,
 the unit, and composition is always defined via monoid multiplication.
 -/
-instance instSingleSorted1Category (M : Type u) [Monoid M] : SingleSortedNCategory 1 M where
+instance inst1Category (M : Type u) [Monoid M] : NCategory 1 M where
   sc _ _ := 1
   tg _ _ := 1
   pcomp _ b a := ⟨True, fun _ ↦ b * a⟩

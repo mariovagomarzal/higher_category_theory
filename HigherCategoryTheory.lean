@@ -1,3 +1,4 @@
+import HigherCategoryTheory.Tactic
 import HigherCategoryTheory.SingleSorted.Category
 import HigherCategoryTheory.SingleSorted.Functor
 import HigherCategoryTheory.SingleSorted.Cells
@@ -9,3 +10,6 @@ import HigherCategoryTheory.SingleSorted.Types.Prod
 import HigherCategoryTheory.SingleSorted.Types.Unit
 import HigherCategoryTheory.SingleSorted.Order
 import HigherCategoryTheory.SingleSorted.Monoid
+import HigherCategoryTheory.ManySorted.Category
+import HigherCategoryTheory.ManySorted.Functor
+import HigherCategoryTheory.ManySorted.Cat

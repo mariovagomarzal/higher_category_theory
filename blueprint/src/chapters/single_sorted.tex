@@ -19,7 +19,7 @@ We start by defining the necessary data for defining a single-sorted category.
 
 \begin{definition}
   \label{def:SingleSortedCategoryStruct}
-  \lean{HigherCategoryTheory.SingleSortedCategoryStruct}
+  \lean{HigherCategoryTheory.SingleSorted.CategoryStruct}
   \leanok
   Let $C$ be a set whose elements will be called \emph{morphisms}. The required data for defining a
   single-sorted $\Index$-category structure on $C$ consists of:
@@ -47,7 +47,7 @@ division is made by first defining the notion of pre-single-sorted category:
 \begin{definition}
   \label{def:PreSingleSortedCategory}
   \uses{def:SingleSortedCategoryStruct}
-  \lean{HigherCategoryTheory.PreSingleSortedCategory}
+  \lean{HigherCategoryTheory.SingleSorted.PreCategory}
   \leanok
   A \emph{pre-single-sorted $\Index$-category} is a tuple $\cat{C} = (C, (\Sc^i, \Tg^i, \Pcomp^i)_{i
   \in \Index})$ satisfying, for each index $i \in \Index$, the following axioms:
@@ -84,7 +84,7 @@ axioms concerning the interaction between different dimensions:
 \begin{definition}[Single-sorted category]
   \label{def:SingleSortedCategory}
   \uses{def:PreSingleSortedCategory}
-  \lean{HigherCategoryTheory.SingleSortedCategory}
+  \lean{HigherCategoryTheory.SingleSorted.Category}
   \leanok
   A \emph{single-sorted $\Index$-category} is a pre-single-sorted $\Index$-category $\cat{C} = (C,
   (\Sc^i, \Tg^i, \Pcomp^i)_{i \in \Index})$ satisfying, in addition to the axioms of
@@ -128,7 +128,7 @@ axioms concerning the interaction between different dimensions:
 \begin{definition}[Single-sorted finite category]
   \label{def:SingleSortedNCategory}
   \uses{def:SingleSortedCategory}
-  \lean{HigherCategoryTheory.SingleSortedNCategory}
+  \lean{HigherCategoryTheory.SingleSorted.NCategory}
   \leanok
   Given a natural number $n \in \NN$, a \emph{single-sorted $n$-category} is a single-sorted
   category indexed by the finite set $n = \set{0, 1, \ldots, n-1}$.
@@ -140,8 +140,8 @@ category.
 \begin{definition}[Cell]
   \label{def:cell}
   \uses{def:SingleSortedCategory}
-  \lean{ HigherCategoryTheory.cell, HigherCategoryTheory.cell_sc, HigherCategoryTheory.cells,
-    HigherCategoryTheory.cells_sc, }
+  \lean{ HigherCategoryTheory.SingleSorted.cell, HigherCategoryTheory.SingleSorted.cell_sc, HigherCategoryTheory.SingleSorted.cells,
+    HigherCategoryTheory.SingleSorted.cells_sc }
   \leanok
   Let $\cat{C}$ be a single-sorted $\Index$-category and $k \in \Index$. We say that a morphism $f
   \in C$ is a \emph{$k$-cell} or \emph{identity morphism at dimension $k$} if and only if
@@ -159,7 +159,7 @@ prove that both definitions are equivalent.
 \begin{definition}[Target-based cell]
   \label{def:cell_tg}
   \uses{def:SingleSortedCategory}
-  \lean{HigherCategoryTheory.cell_tg, HigherCategoryTheory.cells_tg}
+  \lean{HigherCategoryTheory.SingleSorted.cell_tg, HigherCategoryTheory.SingleSorted.cells_tg}
   \leanok
   Let $\cat{C}$ be a single-sorted $\Index$-category and $k \in \Index$. A morphism $f \in C$ is a
   \emph{target-based $k$-cell} if and only if
@@ -171,7 +171,7 @@ prove that both definitions are equivalent.
 \begin{theorem}[Equivalence of cell definitions]
   \label{thm:cell_sc_iff_cell_tg}
   \uses{def:cell, def:cell_tg}
-  \lean{HigherCategoryTheory.cell_sc_iff_cell_tg, HigherCategoryTheory.cells_sc_eq_cells_tg}
+  \lean{HigherCategoryTheory.SingleSorted.cell_sc_iff_cell_tg, HigherCategoryTheory.SingleSorted.cells_sc_eq_cells_tg}
   \leanok
   Let $\cat{C}$ be a single-sorted $\Index$-category and $k \in \Index$. A morphism $f \in C$ is a
   $k$-cell if and only if it is a target-based $k$-cell.
@@ -199,7 +199,7 @@ prove that both definitions are equivalent.
 \begin{definition}[Single-sorted omega category]
   \label{def:SingleSortedOmegaCategory}
   \uses{def:cell}
-  \lean{HigherCategoryTheory.SingleSortedOmegaCategory}
+  \lean{HigherCategoryTheory.SingleSorted.OmegaCategory}
   \leanok
   A \emph{single-sorted $\omega$-category} is a single-sorted category indexed by the set of natural
   numbers $\NN$, satisfying and additional axiom: for all $f \in C$, there exists a dimension $k \in
@@ -215,7 +215,7 @@ and composition at each dimension.
 \begin{definition}[Single-sorted functor]
   \label{def:SingleSortedFunctor}
   \uses{def:SingleSortedCategory}
-  \lean{HigherCategoryTheory.SingleSortedFunctor}
+  \lean{HigherCategoryTheory.SingleSorted.Functor}
   \leanok
   Let $\cat{C} = (C, (\Sc^i, \Tg^i, \Pcomp^i)_{i \in \Index})$ and $\cat{D} = (D, (\Sc^i, \Tg^i,
   \Pcomp^i)_{i \in \Index})$ be single-sorted $\Index$-categories. A \emph{single-sorted
@@ -242,7 +242,7 @@ results assert that these constructions yield valid single-sorted functors.
 \begin{theorem}[Composition of single-sorted functors]
   \label{thm:SingleSortedFunctor_comp}
   \uses{def:SingleSortedFunctor}
-  \lean{HigherCategoryTheory.SingleSortedFunctor.comp}
+  \lean{HigherCategoryTheory.SingleSorted.Functor.comp}
   \leanok
   Let $\cat{C}, \cat{D}, \cat{E}$ be single-sorted $\Index$-categories, and let $F \colon \cat{C}
   \to \cat{D}$ and $G \colon \cat{D} \to \cat{E}$ be single-sorted $\Index$-functors. Then, the
@@ -279,7 +279,7 @@ results assert that these constructions yield valid single-sorted functors.
 \begin{theorem}[Identity single-sorted functor]
   \label{thm:SingleSortedFunctor_id}
   \uses{def:SingleSortedFunctor}
-  \lean{HigherCategoryTheory.SingleSortedFunctor.id}
+  \lean{HigherCategoryTheory.SingleSorted.Functor.id}
   \leanok
   Let $\cat{C}$ be a single-sorted $\Index$-category. Then, the identity function $\id_C \colon C
   \to C$ is a single-sorted $\Index$-functor from $\cat{C}$ to itself.
@@ -293,7 +293,7 @@ results assert that these constructions yield valid single-sorted functors.
 \begin{definition}[Single-sorted finite functor]
   \label{def:SingleSortedNFunctor}
   \uses{def:SingleSortedNCategory, def:SingleSortedFunctor}
-  \lean{HigherCategoryTheory.SingleSortedNFunctor}
+  \lean{HigherCategoryTheory.SingleSorted.NFunctor}
   \leanok
   Given a natural number $n \in \NN$, a \emph{single-sorted $n$-functor} is a single-sorted
   functor between single-sorted $n$-categories.
@@ -302,7 +302,7 @@ results assert that these constructions yield valid single-sorted functors.
 \begin{definition}[Single-sorted omega functor]
   \label{def:SingleSortedOmegaFunctor}
   \uses{def:SingleSortedOmegaCategory, def:SingleSortedFunctor}
-  \lean{HigherCategoryTheory.SingleSortedOmegaFunctor}
+  \lean{HigherCategoryTheory.SingleSorted.OmegaFunctor}
   \leanok
   A \emph{single-sorted $\omega$-functor} is a single-sorted functor between single-sorted
   $\omega$-categories.
@@ -321,7 +321,7 @@ single-sorted functors.
     thm:SingleSortedFunctor_comp,
     thm:SingleSortedFunctor_id,
   }
-  \lean{HigherCategoryTheory.SingleSortedCat.category}
+  \lean{HigherCategoryTheory.SingleSorted.Cat.category}
   \leanok
   The \emph{category of single-sorted $\Index$-categories}, denoted by $\Index\Cat$, is defined as
   follows:
@@ -357,7 +357,7 @@ single-sorted functors.
     thm:SingleSortedFunctor_comp,
     thm:SingleSortedFunctor_id,
   }
-  \lean{HigherCategoryTheory.SingleSortedOmegaCat.category}
+  \lean{HigherCategoryTheory.SingleSorted.OmegaCat.category}
   \leanok
   The \emph{category of single-sorted $\omega$-categories}, denoted by $\omega\Cat$, is defined
   analogously to Definition~\ref{def:SingleSortedCategory_category}, but using single-sorted

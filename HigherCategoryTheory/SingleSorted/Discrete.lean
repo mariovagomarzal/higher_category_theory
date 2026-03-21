@@ -13,14 +13,14 @@ a codebase refactor.
 
 universe u v
 
-namespace HigherCategoryTheory
+namespace HigherCategoryTheory.SingleSorted
 
 variable {m : ℕ} {obj : Type u}
 
 /-- TODO: Comment. -/
 @[simp]
-def SingleSortedNCategory.discrete (S : SingleSortedNCategory m obj) (n : ℕ) :
-    SingleSortedNCategory n obj where
+def NCategory.discrete (S : NCategory m obj) (n : ℕ) :
+    NCategory n obj where
   sc k f := if h : k < m then S.sc ⟨k, h⟩ f else f
   tg k f := if h : k < m then S.tg ⟨k, h⟩ f else f
   pcomp k g f := if h : k < m then S.pcomp ⟨k, h⟩ g f else ⟨g = f, fun _ ↦ f⟩
@@ -45,7 +45,7 @@ def SingleSortedNCategory.discrete (S : SingleSortedNCategory m obj) (n : ℕ) :
   sck_compk_eq_sck := by
     intro k f g sc_tg_gf
     by_cases k_lt_m : k < m
-    · simp only [SingleSortedCategoryStruct.comp, k_lt_m, ↓reduceDIte]
+    · simp only [CategoryStruct.comp, k_lt_m, ↓reduceDIte]
       apply S.sck_compk_eq_sck
       simp [k_lt_m] at sc_tg_gf
       assumption
@@ -53,29 +53,29 @@ def SingleSortedNCategory.discrete (S : SingleSortedNCategory m obj) (n : ℕ) :
   tgk_compk_eq_tgk := by
     intro k f g sc_tg_gf
     by_cases k_lt_m : k < m
-    · simp only [SingleSortedCategoryStruct.comp, k_lt_m, ↓reduceDIte]
+    · simp only [CategoryStruct.comp, k_lt_m, ↓reduceDIte]
       apply S.tgk_compk_eq_tgk
       simp [k_lt_m] at sc_tg_gf
       assumption
-    · simp only [SingleSortedCategoryStruct.comp, k_lt_m, ↓reduceDIte]
+    · simp only [CategoryStruct.comp, k_lt_m, ↓reduceDIte]
       simp [k_lt_m] at sc_tg_gf
       exact sc_tg_gf.symm
   compk_sck_eq_id := by
     intro k f
     by_cases k_lt_m : k < m
-    · simp only [SingleSortedCategoryStruct.comp, k_lt_m, ↓reduceDIte]
+    · simp only [CategoryStruct.comp, k_lt_m, ↓reduceDIte]
       apply S.compk_sck_eq_id
     · simp [k_lt_m]
   compk_tgk_eq_id := by
     intro k f
     by_cases k_lt_m : k < m
-    · simp only [SingleSortedCategoryStruct.comp, k_lt_m, ↓reduceDIte]
+    · simp only [CategoryStruct.comp, k_lt_m, ↓reduceDIte]
       apply S.compk_tgk_eq_id
     · simp [k_lt_m]
   assoc := by
     intro k f g h sc_tg_hg sc_tg_gf
     by_cases k_lt_m : k < m
-    · simp only [SingleSortedCategoryStruct.comp, SingleSortedCategoryStruct.comp.eq_1,
+    · simp only [CategoryStruct.comp, CategoryStruct.comp.eq_1,
         k_lt_m, ↓reduceDIte]
       apply S.assoc <;> (simp only [sc_is_tg, k_lt_m, ↓reduceDIte] at *; assumption)
     · simp [k_lt_m]
@@ -131,7 +131,7 @@ def SingleSortedNCategory.discrete (S : SingleSortedNCategory m obj) (n : ℕ) :
     intro k j f g j_lt_k sc_tg_j_gf
     by_cases k_lt_m : k < m
     · have j_lt_m : j < m := lt_trans j_lt_k k_lt_m
-      simp only [SingleSortedCategoryStruct.comp, k_lt_m, j_lt_m, ↓reduceDIte]
+      simp only [CategoryStruct.comp, k_lt_m, j_lt_m, ↓reduceDIte]
       apply S.sck_compj_eq_compj_sck
       · assumption
       · simp only [sc_is_tg, j_lt_m, ↓reduceDIte] at *
@@ -142,40 +142,40 @@ def SingleSortedNCategory.discrete (S : SingleSortedNCategory m obj) (n : ℕ) :
     intro k j f g j_lt_k tg_k_j_gf
     by_cases k_lt_m : k < m
     · have j_lt_m : j < m := lt_trans j_lt_k k_lt_m
-      simp only [SingleSortedCategoryStruct.comp, k_lt_m, j_lt_m, ↓reduceDIte]
+      simp only [CategoryStruct.comp, k_lt_m, j_lt_m, ↓reduceDIte]
       apply S.tgk_compj_eq_compj_tgk
       · assumption
       · simp only [sc_is_tg, j_lt_m, ↓reduceDIte] at *
         assumption
     · simp [k_lt_m]
       by_cases j_lt_m : j < m <;> simp [j_lt_m]
-  exchange := by
+  interchange := by
     intro k j f₁ f₂ g₁ g₂ j_lt_k sc_tg_g₂g₁ sc_tg_f₂f₁ tg_k_g₂f₂ tg_k_g₁f₁
     by_cases k_lt_m : k < m
     · have j_lt_m : j < m := lt_trans j_lt_k k_lt_m
-      simp only [SingleSortedCategoryStruct.comp, SingleSortedCategoryStruct.comp.eq_1,
+      simp only [CategoryStruct.comp, CategoryStruct.comp.eq_1,
         k_lt_m, j_lt_m, ↓reduceDIte]
       simp only [sc_is_tg, k_lt_m, j_lt_m, ↓reduceDIte]
         at sc_tg_g₂g₁ sc_tg_f₂f₁ tg_k_g₂f₂ tg_k_g₁f₁
-      apply S.exchange j_lt_k <;> assumption
+      apply S.interchange j_lt_k <;> assumption
     · simp [k_lt_m]
       by_cases j_lt_m : j < m <;> simp [j_lt_m]
 
--- TODO: Implement this following the same pattern as `SingleSortedNCategory.discrete`.
+-- TODO: Implement this following the same pattern as `NCategory.discrete`.
 /-- TODO: Comment. -/
 @[simp]
-def SingleSortedNCategory.discrete_omega (S : SingleSortedNCategory m obj) :
-    SingleSortedOmegaCategory obj := by sorry
+def NCategory.discrete_omega (S : NCategory m obj) :
+    OmegaCategory obj := by sorry
 
 variable {n : ℕ} {C : Type u} {D : Type v}
-  [SC : SingleSortedNCategory n C] [SD : SingleSortedNCategory n D]
+  [SC : NCategory n C] [SD : NCategory n D]
 
 /-- TODO: Comment. -/
 @[simp]
-def SingleSortedNFunctor.discrete (F : SingleSortedNFunctor n C D) (m : ℕ) :
+def NFunctor.discrete (F : NFunctor n C D) (m : ℕ) :
     letI := SC.discrete m
     letI := SD.discrete m
-    SingleSortedNFunctor m C D :=
+    NFunctor m C D :=
   let dSC := SC.discrete m
   let dSD := SD.discrete m
   {
@@ -193,7 +193,7 @@ def SingleSortedNFunctor.discrete (F : SingleSortedNFunctor n C D) (m : ℕ) :
     map_comp_eq_comp_map := by
       intro k f g sc_tg_gf
       by_cases k_lt_n : k < n
-      · simp only [SingleSortedCategoryStruct.comp, SingleSortedNCategory.discrete,
+      · simp only [CategoryStruct.comp, NCategory.discrete,
           k_lt_n, ↓reduceDIte]
         apply F.map_comp_eq_comp_map
         simp [k_lt_n] at sc_tg_gf
@@ -201,12 +201,12 @@ def SingleSortedNFunctor.discrete (F : SingleSortedNFunctor n C D) (m : ℕ) :
       · simp [k_lt_n]
   }
 
--- TODO: Implement this following the same pattern as `SingleSortedNFunctor.discrete`.
+-- TODO: Implement this following the same pattern as `NFunctor.discrete`.
 /-- TODO: Comment. -/
 @[simp]
-def SingleSortedNFunctor.discrete_omega (F : SingleSortedNFunctor n C D) :
+def NFunctor.discrete_omega (F : NFunctor n C D) :
     letI := SC.discrete_omega
     letI := SD.discrete_omega
-    SingleSortedOmegaFunctor C D := by sorry
+    OmegaFunctor C D := by sorry
 
-end HigherCategoryTheory
+end HigherCategoryTheory.SingleSorted
