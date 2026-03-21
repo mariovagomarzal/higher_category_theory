@@ -71,12 +71,15 @@ For building documentation, you'll also need:
 - **leanblueprint**: Tool for generating Lean blueprints.
 - **Python**: For serving the documentation website locally.
 
-After installing Lean, cache the upstream dependencies to avoid long
-compilation times:
+After installing the required tools, set up the environment by running:
 
 ```bash
-just cache
+just env
 ```
+
+This runs both `just cache` (caches Lean upstream dependencies to avoid long
+compilation times) and `just bundler` (installs Ruby dependencies for the
+Jekyll website).
 
 ## Conventions
 
