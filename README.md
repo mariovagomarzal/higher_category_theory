@@ -52,10 +52,6 @@ To enter the development shell, run:
 devenv shell
 ```
 
-> [!TIP]
-> If using [direnv][direnv], you can automatically load the development
-> environment by running `direnv allow` once in the root of the repository.
-
 Once inside the shell, all tools will be available. Run `devenv info` to see
 what's included.
 
@@ -128,7 +124,6 @@ This project is licensed under the Apache License 2.0. See the
 [nix]: https://nixos.org/
 [devenv]: https://devenv.sh/
 [vscode]: https://code.visualstudio.com/
-[direnv]: https://direnv.net/
 [elan]: https://github.com/leanprover/elan
 [just]: https://just.systems/
 [conventional-commits]: https://www.conventionalcommits.org/en/v1.0.0/
