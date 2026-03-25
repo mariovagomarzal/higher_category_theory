@@ -21,7 +21,7 @@ many-sorted functors.
 
 ## Implementation notes
 
-The `Cat` structure bundles a type family `index → Type u` with a many-sorted `Category` instance,
+The `Cat` structure bundles a type family `Index → Type u` with a many-sorted `Category` instance,
 enabling the construction of categories of many-sorted structured objects. This is analogous to
 `StructureFamily` from the single-sorted setting, but adapted for type families.
 -/
@@ -33,38 +33,38 @@ namespace HigherCategoryTheory.ManySorted
 /--
 A bundled many-sorted category: a family of types equipped with a `Category` instance.
 
-Objects of `Cat index` are families of types `(C k)_{k ∈ index}` together with a many-sorted
-`Category index C` structure.
+Objects of `Cat Index` are families of types `(C k)_{k ∈ Index}` together with a many-sorted
+`Category Index C` structure.
 -/
-structure Cat (index : Type) [LinearOrder index] : Type (u + 1) where
-  /-- The underlying family of types indexed by `index`. -/
-  obj : index → Type u
+structure Cat (Index : Type) [Preorder Index] : Type (u + 1) where
+  /-- The underlying family of types indexed by `Index`. -/
+  obj : Index → Type u
   /-- The many-sorted category structure on the family. -/
-  str : Category index obj := by infer_instance
+  str : Category Index obj := by infer_instance
 
 namespace Cat
 
 attribute [instance] Cat.str
 
-variable {index : Type} [LinearOrder index]
+variable {Index : Type} [Preorder Index]
 
 set_option checkBinderAnnotations false in
 /--
 Convenience constructor for `Cat` that automatically infers the category instance.
 
-Given a family of types `obj` with an instance of `Category index obj`, this constructs a
-`Cat index`.
+Given a family of types `obj` with an instance of `Category Index obj`, this constructs a
+`Cat Index`.
 -/
-def of (obj : index → Type u) [str : Category index obj] : Cat index := ⟨obj, str⟩
+def of (obj : Index → Type u) [str : Category Index obj] : Cat Index := ⟨obj, str⟩
 
 /--
-Category instance for `Cat index`.
+Category instance for `Cat Index`.
 
-The morphisms between objects `C` and `D` are many-sorted functors `Functor index C D`, the
+The morphisms between objects `C` and `D` are many-sorted functors `Functor Index C D`, the
 identity morphism is the identity functor `idₘ`, and composition is functor composition `⊚`.
 -/
-instance category : CategoryTheory.Category (Cat.{u} index) where
-  Hom C D := Functor index C.obj D.obj
+instance category : CategoryTheory.Category (Cat.{u} Index) where
+  Hom C D := Functor Index C.obj D.obj
   id C := idₘ C.obj
   comp F G := G ⊚ F
 

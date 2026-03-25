@@ -1,3 +1,4 @@
+import HigherCategoryTheory.IndexTypes
 import HigherCategoryTheory.Tactic
 import HigherCategoryTheory.SingleSorted.Category
 import HigherCategoryTheory.SingleSorted.Functor
