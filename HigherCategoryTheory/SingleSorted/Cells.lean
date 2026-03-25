@@ -25,15 +25,15 @@ universe u v
 
 namespace HigherCategoryTheory.SingleSorted
 
-variable {index : Type} [LinearOrder index] {obj : Type u} [S : Category index obj]
+variable {Index : Type} [Preorder Index] {obj : Type u} [S : Category Index obj]
 
 /-- A morphism `f` is a $k$-cell (via source) if `sc k f = f`. This is an abbreviation for `cell k
 f`, the original definition of $k$-cells found in `Category.lean`. -/
-abbrev cell_sc (k : index) (f : obj) := cell k f
+abbrev cell_sc (k : Index) (f : obj) := cell k f
 
 /-- A morphism `f` is a $k$-cell (via target) if `tg k f = f`. -/
 @[simp]
-def cell_tg (k : index) (f : obj) : Prop :=
+def cell_tg (k : Index) (f : obj) : Prop :=
   tg k f = f
 
 /--
@@ -42,7 +42,7 @@ The source-based and target-based definitions of $k$-cells are equivalent.
 A morphism `f` satisfies `sc k f = f` if and only if it satisfies `tg k f = f`. This equivalence
 relies on the idempotency axioms `tgk_sck_eq_sck` and `sck_tgk_eq_tgk`.
 -/
-theorem cell_sc_iff_cell_tg (k : index) (f : obj) :
+theorem cell_sc_iff_cell_tg (k : Index) (f : obj) :
     cell_sc k f ↔ cell_tg k f := by
   apply Iff.intro
   · intro sc_eq
@@ -60,12 +60,12 @@ theorem cell_sc_iff_cell_tg (k : index) (f : obj) :
 
 /-- The set of all $k$-cells using the source-based definition. This is an abbreviation for `cells k
 obj`, the original definition of the set of $k$-cells found in `Category.lean`. -/
-abbrev cells_sc (k : index) (obj : Type u) [Category index obj] := cells k obj
+abbrev cells_sc (k : Index) (obj : Type u) [Category Index obj] := cells k obj
 
 /-- The set of all $k$-cells using the target-based definition. This set contains all morphisms `f`
 satisfying `tg k f = f`. -/
 @[simp]
-def cells_tg (k : index) (obj : Type u) [Category index obj] : Set obj :=
+def cells_tg (k : Index) (obj : Type u) [Category Index obj] : Set obj :=
   {f : obj | cell_tg k f}
 
 /--
@@ -75,7 +75,7 @@ This theorem establishes that `cells_sc k obj = cells_tg k obj`, showing that bo
 of $k$-cells yield the same set. The proof follows from the pointwise equivalence
 `cell_sc_iff_cell_tg`.
 -/
-theorem cells_sc_eq_cells_tg (k : index) (obj : Type u) [Category index obj] :
+theorem cells_sc_eq_cells_tg (k : Index) (obj : Type u) [Category Index obj] :
     cells_sc k obj = cells_tg k obj := by
   ext f
   exact cell_sc_iff_cell_tg k f
@@ -98,7 +98,7 @@ for defining underlying categories that restrict higher categories to specific d
 -/
 section Underlying
 
-variable {k m : index}
+variable {k m : Index}
 
 /-- The source of any morphism at dimension $k$ is an $m$-cell when $k < m$. -/
 lemma underlying_source_is_cell (f : obj) (k_lt_m : k < m) : cell m (sc k f) := by
@@ -119,12 +119,12 @@ lemma underlying_comp_is_cell {f g : cells m obj} (dom : (S.pcomp k g f).Dom) (k
     _ = _ := S.sck_compj_eq_compj_sck k_lt_m (S.pcomp_dom.mp dom)
     _ = _ := by apply congr_comp₁ f.property g.property
 
-variable {C : Type u} {D : Type v} [SC : Category index C]
-  [SD : Category index D]
+variable {C : Type u} {D : Type v} [SC : Category Index C]
+  [SD : Category Index D]
 
 /-- Functors preserve the property of being an $m$-cell. If `f` is an $m$-cell in the source
 category, then `F f` is an $m$-cell in the target category. -/
-lemma underlying_functor_is_cell (F : Functor index C D) (f : cells m C)
+lemma underlying_functor_is_cell (F : Functor Index C D) (f : cells m C)
     : F f ∈ cells m D := by
   calc
     sc m (F f)

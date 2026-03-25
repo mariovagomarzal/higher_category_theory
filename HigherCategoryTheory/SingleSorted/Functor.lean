@@ -37,29 +37,29 @@ namespace HigherCategoryTheory.SingleSorted
 /--
 A functor between single-sorted categories.
 
-A `Functor index C D` is a structure-preserving map from a single-sorted category `C` to
+A `Functor Index C D` is a structure-preserving map from a single-sorted category `C` to
 a single-sorted category `D`. It consists of:
 * A function `map : C → D` on morphisms.
 * Proofs that `map` preserves sources, targets, and composition at each dimension.
 -/
-structure Functor (index : Type) [LinearOrder index] (C : Type u₁) (D : Type u₂)
-    [Category index C] [Category index D] where
+structure Functor (Index : Type) [Preorder Index] (C : Type u₁) (D : Type u₂)
+    [Category Index C] [Category Index D] where
   /-- The underlying function on morphisms. -/
   map : C → D
   /-- The map preserves sources. -/
-  map_sc_eq_sc_map : ∀ (k : index) (f : C), map (sc k f) = sc k (map f) := by hcat_disch
+  map_sc_eq_sc_map : ∀ (k : Index) (f : C), map (sc k f) = sc k (map f) := by hcat_disch
   /-- The map preserves targets. -/
-  map_tg_eq_tg_map : ∀ (k : index) (f : C), map (tg k f) = tg k (map f) := by hcat_disch
+  map_tg_eq_tg_map : ∀ (k : Index) (f : C), map (tg k f) = tg k (map f) := by hcat_disch
   /-- If `g` and `f` are composable in `C`, then `F g` and `F f` are composable in `D`. This is an
   auxiliary method for defining `map_comp_eq_comp_map`. -/
-  protected comp_map {k : index} {f g : C} (sc_tg_gf : sc_is_tg k g f) :
+  protected comp_map {k : Index} {f g : C} (sc_tg_gf : sc_is_tg k g f) :
       sc_is_tg k (map g) (map f) := calc
     sc k (map g)
     _ = map (sc k g) := (map_sc_eq_sc_map k g).symm
     _ = map (tg k f) := by rw [sc_tg_gf]
     _ = tg k (map f) := map_tg_eq_tg_map k f
   /-- The map preserves composition. -/
-  map_comp_eq_comp_map : ∀ {k : index} {f g : C} (sc_tg_gf : sc_is_tg k g f),
+  map_comp_eq_comp_map : ∀ {k : Index} {f g : C} (sc_tg_gf : sc_is_tg k g f),
       map (g ♯[k] f ← sc_tg_gf) = (map g) ♯[k] (map f) ← (comp_map sc_tg_gf) := by
     hcat_disch
 
@@ -69,21 +69,21 @@ attribute [simp] map_sc_eq_sc_map map_tg_eq_tg_map map_comp_eq_comp_map
 
 namespace Functor
 
-variable {index : Type} [LinearOrder index]
-  {C : Type u₁} [Category index C]
-  {D : Type u₂} [Category index D]
-  {E : Type u₃} [Category index E]
+variable {Index : Type} [Preorder Index]
+  {C : Type u₁} [Category Index C]
+  {D : Type u₂} [Category Index D]
+  {E : Type u₃} [Category Index E]
 
 /-- Coercion allowing us to write `F f` instead of `F.map f` for the action of a functor `F` on a
 morphism `f`. -/
-instance instCoeFun : CoeFun (Functor index C D) fun _ ↦ C → D := ⟨fun F ↦ F.map⟩
+instance instCoeFun : CoeFun (Functor Index C D) fun _ ↦ C → D := ⟨fun F ↦ F.map⟩
 
 /-- Composition of functors. Given functors `F : C → D` and `G : D → E`, their composite `G ⊚ F : C
 → E` is defined by `(G ⊚ F) f = G (F f)`. This operation preserves all the required functor
 properties. -/
 @[simp]
-def comp (G : Functor index D E) (F : Functor index C D) :
-    Functor index C E where
+def comp (G : Functor Index D E) (F : Functor Index C D) :
+    Functor Index C E where
   map f := G (F f)
   map_sc_eq_sc_map := by
     intro k f
@@ -110,7 +110,7 @@ def comp (G : Functor index D E) (F : Functor index C D) :
 /-- The identity functor on a single-sorted category `C`. It maps each morphism to itself and
 trivially preserves all structure. -/
 @[simp]
-def id (C : Type u₁) [Category index C] : Functor index C C where
+def id (C : Type u₁) [Category Index C] : Functor Index C C where
   map f := f
 
 @[inherit_doc] scoped[HigherCategoryTheory.SingleSorted] notation "idₛ" => Functor.id

@@ -34,7 +34,7 @@ namespace HigherCategoryTheory
 A generic bundled structure that pairs a type with a structure class instance.
 
 This structure is used to create categories of structured mathematical objects. Given a type class
-`bundled : Type u → Type u` (such as `SingleSorted.Category index`), a `StructureFamily bundled`
+`bundled : Type u → Type u` (such as `SingleSorted.Category Index`), a `StructureFamily bundled`
 consists of a type `obj : Type u` together with an instance `str : bundled obj`.
 
 This construction enables treating structured objects as first-class citizens in category theory,
@@ -83,26 +83,26 @@ open HigherCategoryTheory
 /--
 The category of single-sorted categories with a given index type.
 
-Objects of `Cat index` are types equipped with a `Category index` structure.
+Objects of `Cat Index` are types equipped with a `Category Index` structure.
 -/
-abbrev Cat (index : Type) [LinearOrder index] :=
-  StructureFamily.{u} (Category index)
+abbrev Cat (Index : Type) [Preorder Index] :=
+  StructureFamily.{u} (Category Index)
 
-/- Since `Category index` is just a type class on types, we can directly use the
+/- Since `Category Index` is just a type class on types, we can directly use the
 `StructureFamily` instance to get the category structure. -/
-example {index : Type} [LinearOrder index] {C : Type u} [Category index C] :
-    Cat index :=
+example {Index : Type} [Preorder Index] {C : Type u} [Category Index C] :
+    Cat Index :=
   StructureFamily.of C
 
 /--
-Category instance for `Cat index`.
+Category instance for `Cat Index`.
 
-The morphisms between objects `C` and `D` are single-sorted functors `Functor index C D`, the
+The morphisms between objects `C` and `D` are single-sorted functors `Functor Index C D`, the
 identity morphism is the identity functor `idₛ`, and composition is functor composition `⊚`.
 -/
-instance Cat.category {index : Type} [LinearOrder index] :
-    CategoryTheory.Category (Cat index) where
-  Hom C D := Functor index C D
+instance Cat.category {Index : Type} [Preorder Index] :
+    CategoryTheory.Category (Cat Index) where
+  Hom C D := Functor Index C D
   id C := idₛ C
   comp F G := G ⊚ F
 
