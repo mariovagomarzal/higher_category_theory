@@ -19,13 +19,14 @@ We start by defining the necessary data for defining a many-sorted category.
   The required data for defining a many-sorted $\Index$-category structure on $(C_k)_{k \in \Index}$
   consists of, for each pair of indices $j, k \in \Index$:
 
-  \begin{itemize}
-    \item A map $\Sc^{(k,j)} \colon C_k \to C_j$, called the \emph{$(k,j)$-source}.
-    \item A map $\Tg^{(k,j)} \colon C_k \to C_j$, called the \emph{$(k,j)$-target}.
-    \item A map $\Idm^{(k,j)} \colon C_j \to C_k$, called the \emph{$(k,j)$-identity}.
-    \item A partial binary operation $\circ^{(k,j)} \colon C_k \times C_k \rightharpoonup C_k$,
-      called the \emph{$(k,j)$-composition}.
-  \end{itemize}
+  \begin{enumerate}
+    \item \label{ax:ms_sc} A map $\Sc^{(k,j)} \colon C_k \to C_j$, called the \emph{$(k,j)$-source}.
+    \item \label{ax:ms_tg} A map $\Tg^{(k,j)} \colon C_k \to C_j$, called the \emph{$(k,j)$-target}.
+    \item \label{ax:ms_idm} A map $\Idm^{(k,j)} \colon C_j \to C_k$, called the
+      \emph{$(k,j)$-identity}.
+    \item \label{ax:ms_comp} A partial binary operation $\circ^{(k,j)} \colon C_k \times C_k
+      \rightharpoonup C_k$, called the \emph{$(k,j)$-composition}.
+  \end{enumerate}
 
   The composition $g \circ^{(k,j)} f$ is defined if and only if $\Sc^{(k,j)} (g) = \Tg^{(k,j)} (f)$,
   in which case we say that $g$ and $f$ are \emph{$(k,j)$-composable}.
@@ -40,25 +41,26 @@ division is made by first defining the notion of pre-many-sorted category:
 
 \begin{definition}
   \label{def:PreManySortedCategory}
+  \uses{def:ManySortedCategoryStruct}
   \lean{HigherCategoryTheory.ManySorted.PreCategory}
   \leanok
-  \uses{def:ManySortedCategoryStruct}
   A \emph{pre-many-sorted $\Index$-category} is a tuple $\cat{C} = ((C_k)_{k \in \Index},
   (\Sc^{(k,j)}, \Tg^{(k,j)}, \Idm^{(k,j)}, \circ^{(k,j)})_{j, k \in \Index, \, j < k})$ satisfying,
   for each pair of indices $j, k \in \Index$ with $j < k$, the following axioms:
 
-  \begin{itemize}
-    \item For all $f, g \in C_k$, if $g$ and $f$ are $(k,j)$-composable, then
+  \begin{enumerate}
+    \item \label{ax:ms_sc_tg_comp} For all $f, g \in C_k$, if $g$ and $f$ are $(k,j)$-composable,
+      then
       \begin{align*}
         \Sc^{(k,j)} (g \circ^{(k,j)} f) = \Sc^{(k,j)} (f), \qquad &
         \Tg^{(k,j)} (g \circ^{(k,j)} f) = \Tg^{(k,j)} (g).
       \end{align*}
-    \item For all $f \in C_j$,
+    \item \label{ax:ms_sc_tg_idm} For all $f \in C_j$,
       \[
         \Sc^{(k,j)} (\Idm^{(k,j)} (f)) = f, \qquad \Tg^{(k,j)} (\Idm^{(k,j)} (f)) = f.
       \]
-    \item For all $f \in C_k$, the morphisms $f$ and $\Idm^{(k,j)} (\Sc^{(k,j)} (f))$ are
-      $(k,j)$-composable and
+    \item \label{ax:ms_id_laws} For all $f \in C_k$, the morphisms $f$ and $\Idm^{(k,j)}
+      (\Sc^{(k,j)} (f))$ are $(k,j)$-composable and
       \[
         f \circ^{(k,j)} \Idm^{(k,j)} (\Sc^{(k,j)} (f)) = f.
       \]
@@ -66,27 +68,27 @@ division is made by first defining the notion of pre-many-sorted category:
       \[
         \Idm^{(k,j)} (\Tg^{(k,j)} (f)) \circ^{(k,j)} f = f.
       \]
-    \item For all $f, g, h \in C_k$, if $h$ and $g$ are $(k,j)$-composable, and $g$ and $f$ are
-      $(k,j)$-composable, then $h \circ^{(k,j)} g$ and $f$ and $h$ and $g \circ^{(k,j)} f$ are
-      $(k,j)$-composable, and
+    \item \label{ax:ms_assoc} For all $f, g, h \in C_k$, if $h$ and $g$ are $(k,j)$-composable, and
+      $g$ and $f$ are $(k,j)$-composable, then $h \circ^{(k,j)} g$ and $f$ and $h$ and $g
+      \circ^{(k,j)} f$ are $(k,j)$-composable, and
       \[
         (h \circ^{(k,j)} g) \circ^{(k,j)} f = h \circ^{(k,j)} (g \circ^{(k,j)} f).
       \]
-  \end{itemize}
+  \end{enumerate}
 
   That is, for each pair of indices $j, k \in \Index$ with $j < k$, the data $(C_j, C_k,
   \Sc^{(k,j)}, \Tg^{(k,j)}, \Idm^{(k,j)}, \circ^{(k,j)})$ forms a category with objects $C_j$ and
   morphisms $C_k$.
 \end{definition}
 
-An immediate consequence of the source/target axioms for identities is that the identity map at
-each pair of dimensions is injective:
+An immediate consequence of the source/target axioms for identities is that the identity map at each
+pair of dimensions is injective:
 
 \begin{proposition}
   \label{prop:PreManySortedCategory.injetive_idm}
+  \uses{def:PreManySortedCategory}
   \lean{HigherCategoryTheory.ManySorted.PreCategory.injetive_idm}
   \leanok
-  \uses{def:PreManySortedCategory}
   Let $\cat{C}$ be a pre-many-sorted $\Index$-category and let $j < k$ in $\Index$. Then the
   identity map $\Idm^{(k,j)} \colon C_j \to C_k$ is injective.
 \end{proposition}
@@ -97,7 +99,7 @@ each pair of dimensions is injective:
   \[
     f = \Sc^{(k,j)}(\Idm^{(k,j)}(f)) = \Sc^{(k,j)}(\Idm^{(k,j)}(g)) = g,
   \]
-  where both equalities use the axiom $\Sc^{(k,j)}(\Idm^{(k,j)}(f)) = f$.
+  where both equalities use axiom~\refaxiom{def:PreManySortedCategory}{ax:ms_sc_tg_idm}.
 \end{proof}
 
 We now define a many-sorted category structure by extending the above definition with the axioms
@@ -105,72 +107,74 @@ concerning the interaction between different pairs of indices:
 
 \begin{definition}[Many-sorted category]
   \label{def:ManySortedCategory}
+  \uses{def:PreManySortedCategory}
   \lean{HigherCategoryTheory.ManySorted.Category}
   \leanok
-  \uses{def:PreManySortedCategory}
   A \emph{many-sorted $\Index$-category} is a pre-many-sorted $\Index$-category $\cat{C} = ((C_k)_{k
   \in \Index}, (\Sc^{(k,j)}, \Tg^{(k,j)}, \Idm^{(k,j)}, \circ^{(k,j)})_{j, k \in \Index, \, j < k})$
   satisfying, in addition to the axioms of pre-many-sorted categories, the following
   cross-dimensional axioms:
 
-  \begin{itemize}
-    \item For all $f \in C_k$ and all indices $i, j, k \in \Index$ with $i < j < k$,
+  \begin{enumerate}
+    \item \label{ax:ms_cross_glob} For all $f \in C_k$ and all indices $i, j, k \in \Index$ with $i
+      < j < k$,
       \begin{align*}
         \Sc^{(j,i)} (\Sc^{(k,j)} (f)) = \Sc^{(k,i)} (f), \qquad &
         \Sc^{(j,i)} (\Tg^{(k,j)} (f)) = \Sc^{(k,i)} (f), \\
         \Tg^{(j,i)} (\Tg^{(k,j)} (f)) = \Tg^{(k,i)} (f), \qquad &
         \Tg^{(j,i)} (\Sc^{(k,j)} (f)) = \Tg^{(k,i)} (f).
       \end{align*}
-    \item For all $f, g \in C_k$ and all indices $i, j, k \in \Index$ with $i < j < k$, if $g$ and
-      $f$ are $(k,i)$-composable, then $\Sc^{(k,j)} (g)$ and $\Sc^{(k,j)} (f)$ and $\Tg^{(k,j)} (g)$
-      and $\Tg^{(k,j)} (f)$ are also $(j,i)$-composable, and
+    \item \label{ax:ms_cross_sc_tg_comp} For all $f, g \in C_k$ and all indices $i, j, k \in \Index$
+      with $i < j < k$, if $g$ and $f$ are $(k,i)$-composable, then $\Sc^{(k,j)} (g)$ and
+      $\Sc^{(k,j)} (f)$ and $\Tg^{(k,j)} (g)$ and $\Tg^{(k,j)} (f)$ are also $(j,i)$-composable, and
       \begin{align*}
         \Sc^{(k,j)} (g \circ^{(k,i)} f) = \Sc^{(k,j)} (g) \circ^{(j,i)} \Sc^{(k,j)} (f), \\
         \Tg^{(k,j)} (g \circ^{(k,i)} f) = \Tg^{(k,j)} (g) \circ^{(j,i)} \Tg^{(k,j)} (f).
       \end{align*}
-    \item For all $f \in C_i$ and all indices $i, j, k \in \Index$ with $i < j < k$,
+    \item \label{ax:ms_idm_idm} For all $f \in C_i$ and all indices $i, j, k \in \Index$ with $i < j
+      < k$,
       \[
         \Idm^{(k,j)} (\Idm^{(j,i)} (f)) = \Idm^{(k,i)} (f).
       \]
-    \item For all $f, g \in C_j$ and all indices $i, j, k \in \Index$ with $i < j < k$, if $g$ and
-      $f$ are $(j,i)$-composable, then $\Idm^{(k,j)} (g)$ and $\Idm^{(k,j)} (f)$ are
-      $(k,i)$-composable, and
+    \item \label{ax:ms_idm_comp} For all $f, g \in C_j$ and all indices $i, j, k \in \Index$ with $i
+      < j < k$, if $g$ and $f$ are $(j,i)$-composable, then $\Idm^{(k,j)} (g)$ and $\Idm^{(k,j)}
+      (f)$ are $(k,i)$-composable, and
       \[
         \Idm^{(k,j)} (g \circ^{(j,i)} f) = \Idm^{(k,j)} (g) \circ^{(k,i)} \Idm^{(k,j)} (f).
       \]
-    \item For all $f_1, f_2, g_1, g_2 \in C_k$ and all indices $i, j, k \in \Index$ with $i < j < k$,
-      suppose that:
+    \item \label{ax:ms_interchange} For all $f_1, f_2, g_1, g_2 \in C_k$ and all indices $i, j, k
+      \in \Index$ with $i < j < k$, suppose that:
       \begin{itemize}
         \item $g_2$ and $g_1$ are $(k,j)$-composable,
         \item $f_2$ and $f_1$ are $(k,j)$-composable,
         \item $g_2$ and $f_2$ are $(k,i)$-composable, and
         \item $g_1$ and $f_1$ are $(k,i)$-composable.
       \end{itemize}
-      Then, the morphisms $(g_2 \circ^{(k,i)} f_2)$ and $(g_1 \circ^{(k,i)} f_1)$ are $(k,j)$-composable,
-      and the morphisms $(g_2 \circ^{(k,j)} g_1)$ and $(f_2 \circ^{(k,j)} f_1)$ are $(k,i)$-composable,
-      and
+      Then, the morphisms $(g_2 \circ^{(k,i)} f_2)$ and $(g_1 \circ^{(k,i)} f_1)$ are
+      $(k,j)$-composable, and the morphisms $(g_2 \circ^{(k,j)} g_1)$ and $(f_2 \circ^{(k,j)} f_1)$
+      are $(k,i)$-composable, and
       \[
         (g_2 \circ^{(k,i)} f_2) \circ^{(k,j)} (g_1 \circ^{(k,i)} f_1) =
         (g_2 \circ^{(k,j)} g_1) \circ^{(k,i)} (f_2 \circ^{(k,j)} f_1).
       \]
       That is, composing first at dimension $j$ and then at dimension $i$ yields the same result as
       composing first at dimension $i$ and then at dimension $j$.
-  \end{itemize}
+  \end{enumerate}
 
   \begin{definition}[Many-sorted finite category]
     \label{def:ManySortedNCategory}
+    \uses{def:ManySortedCategory}
     \lean{HigherCategoryTheory.ManySorted.NCategory}
     \leanok
-    \uses{def:ManySortedCategory}
     Given a natural number $n \in \NN$, a \emph{many-sorted $n$-category} is a many-sorted category
     indexed by the finite set $n + 1 = \set{0, 1, \ldots, n}$.
   \end{definition}
 
   \begin{definition}[Many-sorted omega category]
     \label{def:ManySortedOmegaCategory}
+    \uses{def:ManySortedCategory}
     \lean{HigherCategoryTheory.ManySorted.OmegaCategory}
     \leanok
-    \uses{def:ManySortedCategory}
     A \emph{many-sorted $\omega$-category} is a many-sorted category indexed by the set of natural
     numbers $\NN$.
   \end{definition}
@@ -186,29 +190,29 @@ preserve sources, targets, identities, and composition at each pair of dimension
   \uses{def:ManySortedCategory}
   \lean{HigherCategoryTheory.ManySorted.Functor}
   \leanok
-  Let $\cat{C} = ((C_k)_{k \in \Index}, (\Sc^{(k,j)}, \Tg^{(k,j)}, \Idm^{(k,j)},
-  \circ^{(k,j)})_{j, k \in \Index, \, j < k})$ and $\cat{D} = ((D_k)_{k \in \Index}, (\Sc^{(k,j)},
-  \Tg^{(k,j)}, \Idm^{(k,j)}, \circ^{(k,j)})_{j, k \in \Index, \, j < k})$ be many-sorted
-  $\Index$-categories. A \emph{many-sorted $\Index$-functor} from $\cat{C}$ to $\cat{D}$ is a family
-  of maps $(F_k \colon C_k \to D_k)_{k \in \Index}$ satisfying, for each pair of indices $j, k \in
-  \Index$ with $j < k$, the following preservation properties:
+  Let $\cat{C} = ((C_k)_{k \in \Index}, (\Sc^{(k,j)}, \Tg^{(k,j)}, \Idm^{(k,j)}, \circ^{(k,j)})_{j,
+  k \in \Index, \, j < k})$ and $\cat{D} = ((D_k)_{k \in \Index}, (\Sc^{(k,j)}, \Tg^{(k,j)},
+  \Idm^{(k,j)}, \circ^{(k,j)})_{j, k \in \Index, \, j < k})$ be many-sorted $\Index$-categories. A
+  \emph{many-sorted $\Index$-functor} from $\cat{C}$ to $\cat{D}$ is a family of maps $(F_k \colon
+  C_k \to D_k)_{k \in \Index}$ satisfying, for each pair of indices $j, k \in \Index$ with $j < k$,
+  the following preservation properties:
 
-  \begin{itemize}
-    \item For all $f \in C_k$,
+  \begin{enumerate}
+    \item \label{ax:ms_fun_sc_tg} For all $f \in C_k$,
       \[
         F_j (\Sc^{(k,j)} (f)) = \Sc^{(k,j)} (F_k (f)), \qquad
         F_j (\Tg^{(k,j)} (f)) = \Tg^{(k,j)} (F_k (f)).
       \]
-    \item For all $f \in C_j$,
+    \item \label{ax:ms_fun_idm} For all $f \in C_j$,
       \[
         F_k (\Idm^{(k,j)} (f)) = \Idm^{(k,j)} (F_j (f)).
       \]
-    \item For all $f, g \in C_k$, if $g$ and $f$ are $(k,j)$-composable, then $F_k (g)$ and $F_k (f)$
-      are also $(k,j)$-composable, and
+    \item \label{ax:ms_fun_comp} For all $f, g \in C_k$, if $g$ and $f$ are
+      $(k,j)$-composable, then $F_k (g)$ and $F_k (f)$ are also $(k,j)$-composable, and
       \[
         F_k (g \circ^{(k,j)} f) = F_k (g) \circ^{(k,j)} F_k (f).
       \]
-  \end{itemize}
+  \end{enumerate}
 \end{definition}
 
 We can define composition of many-sorted functors componentwise, and the identity many-sorted
@@ -315,25 +319,26 @@ many-sorted functors.
 
 \begin{definition}[Category of many-sorted categories]
   \label{def:ManySortedCategory_category}
-  \lean{HigherCategoryTheory.ManySorted.Cat.category}
-  \leanok
   \uses{
     def:ManySortedCategory,
     def:ManySortedFunctor,
     thm:ManySortedFunctor_comp,
     thm:ManySortedFunctor_id
   }
-  The \emph{category of many-sorted $\Index$-categories}, denoted by $\Index\CatMS$, is
-  defined as follows:
+  \lean{HigherCategoryTheory.ManySorted.Cat.category}
+  \leanok
+  The \emph{category of many-sorted $\Index$-categories}, denoted by $\Index\CatMS$, is defined as
+  follows:
 
-  \begin{itemize}
-    \item Its objects are many-sorted $\Index$-categories.
-    \item Its morphisms are many-sorted $\Index$-functors between many-sorted $\Index$-categories.
-    \item Composition of morphisms is given by composition of many-sorted functors, which is well
-      defined by Theorem~\ref{thm:ManySortedFunctor_comp}.
-    \item The identity morphism for each object is given by the identity many-sorted functor, which
-      is well defined by Theorem~\ref{thm:ManySortedFunctor_id}.
-  \end{itemize}
+  \begin{enumerate}
+    \item \label{ax:ms_cat_obj} Its objects are many-sorted $\Index$-categories.
+    \item \label{ax:ms_cat_mor} Its morphisms are many-sorted $\Index$-functors between many-sorted
+      $\Index$-categories.
+    \item \label{ax:ms_cat_comp} Composition of morphisms is given by composition of many-sorted
+      functors, which is well defined by Theorem~\ref{thm:ManySortedFunctor_comp}.
+    \item \label{ax:ms_cat_id} The identity morphism for each object is given by the identity
+      many-sorted functor, which is well defined by Theorem~\ref{thm:ManySortedFunctor_id}.
+  \end{enumerate}
 \end{definition}
 
 \begin{proof}
@@ -345,22 +350,21 @@ many-sorted functors.
 \begin{notation}
   Since many-sorted $n$-categories are just many-sorted $\Index$-categories where $\Index$ is the
   finite set $n + 1 = \set{0, 1, \ldots, n}$, it follows that we can define the category of
-  many-sorted $n$-categories and many-sorted $n$-functors between them, denoted by
-  $n\CatMS$.
+  many-sorted $n$-categories and many-sorted $n$-functors between them, denoted by $n\CatMS$.
 \end{notation}
 
 \begin{definition}[Category of many-sorted omega categories]
   \label{def:ManySortedOmegaCategory_category}
-  \lean{HigherCategoryTheory.ManySorted.OmegaCat.category}
-  \leanok
   \uses{
     def:ManySortedOmegaCategory,
     def:ManySortedOmegaFunctor,
     thm:ManySortedFunctor_comp,
     thm:ManySortedFunctor_id
   }
-  The \emph{category of many-sorted $\omega$-categories}, denoted by $\omega\CatMS$, is
-  defined analogously to Definition~\ref{def:ManySortedCategory_category}, but using many-sorted
+  \lean{HigherCategoryTheory.ManySorted.OmegaCat.category}
+  \leanok
+  The \emph{category of many-sorted $\omega$-categories}, denoted by $\omega\CatMS$, is defined
+  analogously to Definition~\ref{def:ManySortedCategory_category}, but using many-sorted
   $\omega$-categories and many-sorted $\omega$-functors instead.
 \end{definition}
 

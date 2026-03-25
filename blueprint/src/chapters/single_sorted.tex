@@ -30,14 +30,14 @@ We start by defining the necessary data for defining a single-sorted category.
   Let $C$ be a set whose elements will be called \emph{morphisms}. The required data for defining a
   single-sorted $\Index$-category structure on $C$ consists of:
 
-  \begin{itemize}
-    \item A unary operation $\Sc^i \colon C \to C$ for each index $i \in \Index$, called the
-      \emph{source} at dimension $i$.
-    \item A unary operation $\Tg^i \colon C \to C$ for each index $i \in \Index$, called the
-      \emph{target} at dimension $i$.
-    \item A partial binary operation $\Pcomp^i \colon C \times C \rightharpoonup C$ for each index
-      $i \in \Index$, called the \emph{composition} at dimension $i$.
-  \end{itemize}
+  \begin{enumerate}
+    \item \label{ax:ss_sc} A unary operation $\Sc^i \colon C \to C$ for each index $i \in \Index$,
+      called the \emph{source} at dimension $i$.
+    \item \label{ax:ss_tg} A unary operation $\Tg^i \colon C \to C$ for each index $i \in \Index$,
+      called the \emph{target} at dimension $i$.
+    \item \label{ax:ss_comp} A partial binary operation $\Pcomp^i \colon C \times C \rightharpoonup
+      C$ for each index $i \in \Index$, called the \emph{composition} at dimension $i$.
+  \end{enumerate}
 
   The composition $g \Pcomp^i f$ is defined if and only if $\Sc^i (g) = \Tg^i (f)$, in which case we
   say that $g$ and $f$ are \emph{composable} at dimension $i$.
@@ -58,30 +58,32 @@ division is made by first defining the notion of pre-single-sorted category:
   A \emph{pre-single-sorted $\Index$-category} is a tuple $\cat{C} = (C, (\Sc^i, \Tg^i, \Pcomp^i)_{i
   \in \Index})$ satisfying, for each index $i \in \Index$, the following axioms:
 
-  \begin{itemize}
-    \item For all $f \in C$,
+  \begin{enumerate}
+    \item \label{ax:ss_glob} For all $f \in C$,
       \begin{align*}
         \Sc^i (\Sc^i (f)) = \Sc^i (f), \qquad & \Tg^i (\Sc^i (f)) = \Sc^i (f), \\
         \Sc^i (\Tg^i (f)) = \Tg^i (f), \qquad & \Tg^i (\Tg^i (f)) = \Tg^i (f).
       \end{align*}
-    \item For all $f, g \in C$, if $g$ and $f$ are composable, then
+    \item \label{ax:ss_sc_tg_comp} For all $f, g \in C$, if $g$ and $f$ are composable, then
       \begin{align*}
         \Sc^i (g \Pcomp^i f) = \Sc^i (f), \qquad & \Tg^i (g \Pcomp^i f) = \Tg^i (g).
       \end{align*}
-    \item For all $f \in C$, the morphisms $f$ and $\Sc^i (f)$ are composable and
+    \item \label{ax:ss_right_id} For all $f \in C$, the morphisms $f$ and $\Sc^i (f)$ are composable
+      and
       \[
         f \Pcomp^i \Sc^i (f) = f.
       \]
-    \item For all $f \in C$, the morphisms $\Tg^i (f)$ and $f$ are composable and
+    \item \label{ax:ss_left_id} For all $f \in C$, the morphisms $\Tg^i (f)$ and $f$ are composable
+      and
       \[
         \Tg^i (f) \Pcomp^i f = f.
       \]
-    \item For all $f, g, h \in C$, if $h$ and $g$ are composable, and $g$ and $f$ are composable,
-      then $h \Pcomp^i g$ and $f$ and $h$ and $g \Pcomp^i f$ are composable, and
+    \item \label{ax:ss_assoc} For all $f, g, h \in C$, if $h$ and $g$ are composable, and $g$ and
+      $f$ are composable, then $h \Pcomp^i g$ and $f$ and $h$ and $g \Pcomp^i f$ are composable, and
       \[
         (h \Pcomp^i g) \Pcomp^i f = h \Pcomp^i (g \Pcomp^i f).
       \]
-  \end{itemize}
+  \end{enumerate}
 \end{definition}
 
 We finally define a single-sorted category structure by extending the above definition with the
@@ -96,39 +98,38 @@ axioms concerning the interaction between different dimensions:
   (\Sc^i, \Tg^i, \Pcomp^i)_{i \in \Index})$ satisfying, in addition to the axioms of
   pre-single-sorted categories, the following cross-dimensional axioms:
 
-  \begin{itemize}
-    \item For all $f \in C$ and all indices $j, k \in \Index$ with $j < k$,
+  \begin{enumerate}
+    \item \label{ax:ss_cross_glob} For all $f \in C$ and all indices $j, k \in \Index$ with $j < k$,
       \begin{align*}
         \Sc^k (\Sc^j (f)) = \Sc^j (f), \qquad & \Sc^j (\Sc^k (f)) = \Sc^j (f), \\
         \Sc^j (\Tg^k (f)) = \Sc^j (f), \qquad & \Tg^k (\Tg^j (f)) = \Tg^j (f), \\
         \Tg^j (\Tg^k (f)) = \Tg^j (f), \qquad & \Tg^j (\Sc^k (f)) = \Tg^j (f).
       \end{align*}
-    \item For all $f, g \in C$ and all indices $j, k \in \Index$ with $j < k$, if $g$ and $f$ are
-      composable at dimension $j$, then $\Sc^k (g)$ and $\Sc^k (f)$ and $\Tg^k (g)$ and $\Tg^k (f)$
-      are also composable at dimension $j$, and
+    \item \label{ax:ss_cross_sc_tg_comp} For all $f, g \in C$ and all indices $j, k \in \Index$ with
+      $j < k$, if $g$ and $f$ are composable at dimension $j$, then $\Sc^k (g)$ and $\Sc^k (f)$ and
+      $\Tg^k (g)$ and $\Tg^k (f)$ are also composable at dimension $j$, and
       \begin{align*}
         \Sc^k (g \Pcomp^j f) = \Sc^k (g) \Pcomp^j \Sc^k (f), \\
         \Tg^k (g \Pcomp^j f) = \Tg^k (g) \Pcomp^j \Tg^k (f).
       \end{align*}
-    \item For all $f_1, f_2, g_1, g_2 \in C$ and all indices $j, k \in \Index$ with $j < k$,
-      suppose that:
+    \item \label{ax:ss_interchange} For all $f_1, f_2, g_1, g_2 \in C$ and all indices $j, k \in
+      \Index$ with $j < k$, suppose that:
       \begin{itemize}
         \item $g_2$ and $f_2$ are composable at dimension $j$,
         \item $g_1$ and $f_1$ are composable at dimension $j$,
         \item $g_2$ and $g_1$ are composable at dimension $k$, and
         \item $f_2$ and $f_1$ are composable at dimension $k$.
       \end{itemize}
-      Then, the morphisms $(g_2 \Pcomp^j f_2)$ and $(g_1 \Pcomp^j f_1)$ are composable at
-      dimension $k$, and the morphisms $(g_2 \Pcomp^k g_1)$ and $(f_2 \Pcomp^k f_1)$ are composable
-      at dimension $j$, and
+      Then, the morphisms $(g_2 \Pcomp^j f_2)$ and $(g_1 \Pcomp^j f_1)$ are composable at dimension
+      $k$, and the morphisms $(g_2 \Pcomp^k g_1)$ and $(f_2 \Pcomp^k f_1)$ are composable at
+      dimension $j$, and
       \[
-        (g_2 \Pcomp^j f_2) \Pcomp^k (g_1 \Pcomp^j f_1) = (g_2 \Pcomp^k g_1) \Pcomp^j (f_2 \Pcomp^k
-        f_1).
+        (g_2 \Pcomp^j f_2) \Pcomp^k (g_1 \Pcomp^j f_1) = (g_2 \Pcomp^k g_1) \Pcomp^j (f_2
+        \Pcomp^k f_1).
       \]
       That is, composing first at dimension $j$ and then at dimension $k$ yields the same result as
       composing first at dimension $k$ and then at dimension $j$.
-
-    \end{itemize}
+  \end{enumerate}
 \end{definition}
 
 \begin{definition}[Single-sorted finite category]
@@ -146,8 +147,12 @@ category.
 \begin{definition}[Cell]
   \label{def:cell}
   \uses{def:SingleSortedCategory}
-  \lean{ HigherCategoryTheory.SingleSorted.cell, HigherCategoryTheory.SingleSorted.cell_sc, HigherCategoryTheory.SingleSorted.cells,
-    HigherCategoryTheory.SingleSorted.cells_sc }
+  \lean{
+    HigherCategoryTheory.SingleSorted.cell,
+    HigherCategoryTheory.SingleSorted.cell_sc,
+    HigherCategoryTheory.SingleSorted.cells,
+    HigherCategoryTheory.SingleSorted.cells_sc
+  }
   \leanok
   Let $\cat{C}$ be a single-sorted $\Index$-category and $k \in \Index$. We say that a morphism $f
   \in C$ is a \emph{$k$-cell} or \emph{identity morphism at dimension $k$} if and only if
@@ -177,7 +182,10 @@ prove that both definitions are equivalent.
 \begin{theorem}[Equivalence of cell definitions]
   \label{thm:cell_sc_iff_cell_tg}
   \uses{def:cell, def:cell_tg}
-  \lean{HigherCategoryTheory.SingleSorted.cell_sc_iff_cell_tg, HigherCategoryTheory.SingleSorted.cells_sc_eq_cells_tg}
+  \lean{
+    HigherCategoryTheory.SingleSorted.cell_sc_iff_cell_tg,
+    HigherCategoryTheory.SingleSorted.cells_sc_eq_cells_tg
+  }
   \leanok
   Let $\cat{C}$ be a single-sorted $\Index$-category and $k \in \Index$. A morphism $f \in C$ is a
   $k$-cell if and only if it is a target-based $k$-cell.
@@ -187,15 +195,15 @@ prove that both definitions are equivalent.
 
 \begin{proof}
   \leanok
-  Let $f \in C$. Suppose first that $f$ is a $k$-cell, i.e., $\Sc^k (f) = f$. By the axioms of
-  single-sorted categories, we have that
+  Let $f \in C$. Suppose first that $f$ is a $k$-cell, i.e., $\Sc^k (f) = f$. By
+  axiom~\refaxiom{def:PreSingleSortedCategory}{ax:ss_glob}, we have that
   \[
     \Tg^k (f) = \Tg^k (\Sc^k (f)) = \Sc^k (f) = f,
   \]
   so $f$ is a target-based $k$-cell.
 
-  Conversely, suppose that $f$ is a target-based $k$-cell, i.e., $\Tg^k (f) = f$. By the axioms of
-  single-sorted categories, we have that
+  Conversely, suppose that $f$ is a target-based $k$-cell, i.e., $\Tg^k (f) = f$. By
+  axiom~\refaxiom{def:PreSingleSortedCategory}{ax:ss_glob}, we have that
   \[
     \Sc^k (f) = \Sc^k (\Tg^k (f)) = \Tg^k (f) = f,
   \]
@@ -228,17 +236,17 @@ and composition at each dimension.
   $\Index$-functor} from $\cat{C}$ to $\cat{D}$ is a map $F \colon C \to D$ satisfying, for each
   index $k \in \Index$, the following preservation properties:
 
-  \begin{itemize}
-    \item For all $f \in C$,
+  \begin{enumerate}
+    \item \label{ax:ss_fun_sc_tg} For all $f \in C$,
       \[
         F (\Sc^k (f)) = \Sc^k (F (f)), \qquad F (\Tg^k (f)) = \Tg^k (F (f)).
       \]
-    \item For all $f, g \in C$, if $g$ and $f$ are composable at dimension $k$, then $F (g)$ and
-      $F (f)$ are also composable at dimension $k$, and
+    \item \label{ax:ss_fun_comp} For all $f, g \in C$, if $g$ and $f$ are composable at dimension
+      $k$, then $F (g)$ and $F (f)$ are also composable at dimension $k$, and
       \[
         F (g \Pcomp^k f) = F (g) \Pcomp^k F (f).
       \]
-  \end{itemize}
+  \end{enumerate}
 \end{definition}
 
 We can define composition of single-sorted functors as the usual composition of functions, and the
@@ -332,15 +340,15 @@ single-sorted functors.
   The \emph{category of single-sorted $\Index$-categories}, denoted by $\Index\Cat$, is defined as
   follows:
 
-  \begin{itemize}
-    \item Its objects are single-sorted $\Index$-categories.
-    \item Its morphisms are single-sorted $\Index$-functors between single-sorted
-      $\Index$-categories.
-    \item Composition of morphisms is given by composition of single-sorted functors, which is
-      well defined by Theorem~\ref{thm:SingleSortedFunctor_comp}.
-    \item The identity morphism for each object is given by the identity single-sorted functor,
-      which is well defined by Theorem~\ref{thm:SingleSortedFunctor_id}.
-  \end{itemize}
+  \begin{enumerate}
+    \item \label{ax:ss_cat_obj} Its objects are single-sorted $\Index$-categories.
+    \item \label{ax:ss_cat_mor} Its morphisms are single-sorted $\Index$-functors between
+      single-sorted $\Index$-categories.
+    \item \label{ax:ss_cat_comp} Composition of morphisms is given by composition of single-sorted
+      functors, which is well defined by Theorem~\ref{thm:SingleSortedFunctor_comp}.
+    \item \label{ax:ss_cat_id} The identity morphism for each object is given by the identity
+      single-sorted functor, which is well defined by Theorem~\ref{thm:SingleSortedFunctor_id}.
+  \end{enumerate}
 \end{definition}
 
 \begin{proof}
@@ -351,8 +359,8 @@ single-sorted functors.
 
 \begin{notation}
   Since single-sorted $n$-categories are just single-sorted $\Index$-categories where $\Index$ is
-  the finite set $n$, it follows that we can define the category of single-sorted $n$-categories
-  and single-sorted $n$-functors between them, denoted by $n\Cat$.
+  the finite set $n$, it follows that we can define the category of single-sorted $n$-categories and
+  single-sorted $n$-functors between them, denoted by $n\Cat$.
 \end{notation}
 
 \begin{definition}[Category of single-sorted omega categories]
