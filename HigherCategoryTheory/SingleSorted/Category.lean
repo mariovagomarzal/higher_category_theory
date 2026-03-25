@@ -351,6 +351,15 @@ attribute [simp] sck_scj_eq_scj scj_sck_eq_scj scj_tgk_eq_scj tgk_tgj_eq_tgj tgj
 representing a category with exactly `n` dimensions. -/
 abbrev NCategory (n : ℕ) (obj : Type u) := Category (Fin n) obj
 
+/--
+Any `PreCategory (Fin 1) obj` lifts to a full `NCategory 1 obj`.
+
+Since `Fin 1` has exactly one element, there are no pairs of distinct indices `j < k`, making all
+cross-dimensional axioms of `Category` vacuously satisfied. Thus, a pre-single-sorted 1-category is
+essentially a single-sorted 1-category.
+-/
+def PreCategory.lift {obj : Type u} [S : PreCategory (Fin 1) obj] : NCategory 1 obj := {S with}
+
 section Cells
 
 variable {Index : Type} [Preorder Index] {obj : Type u} [Category Index obj]

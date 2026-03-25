@@ -141,6 +141,16 @@ axioms concerning the interaction between different dimensions:
   category indexed by the finite set $n = \set{0, 1, \ldots, n-1}$.
 \end{definition}
 
+\begin{remark}
+  \label{thm:PreCategoryLift}
+  \uses{def:SingleSortedNCategory}
+  \lean{HigherCategoryTheory.SingleSorted.PreCategory.lift}
+  \leanok
+  Any pre-single-sorted $1$-category is, in fact, a single-sorted $1$-category. Since the index
+  set $1 = \set{0}$ has exactly one element, there are no pairs of distinct indices $j < k$, so all
+  cross-dimensional axioms are vacuously satisfied.
+\end{remark}
+
 We now define the notion of cell or identity morphism at a given dimension in a single-sorted
 category.
 
