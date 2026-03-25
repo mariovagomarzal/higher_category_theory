@@ -25,6 +25,9 @@
 \newtheorem{example}[theorem]{Example}
 
 %== Macros. ==%
+% Reference an axiom as "X.Y" with the dot styled as a hyperlink.
+\newcommand{\refaxiom}[2]{\hyperref[#2]{\ref*{#1}.\ref*{#2}}}
+
 % Set-related.
 \newcommand{\set}[1]{\left\{ #1 \right\}}
 \newcommand{\Index}{\mathcal{I}}
