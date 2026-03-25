@@ -2,15 +2,21 @@
 \label{ch:single_sorted}
 
 In the single-sorted presentation of higher-order categories, objects, morphisms, 2-morphisms, and
-all higher morphisms live in a single set, distinguished by source and target operations at each
-dimension. Also, composition at each dimension is defined as a partial operation that is only
-defined when appropriate source-target matching conditions are satisfied. In this chapter, we
-present the very basic definitions and axioms of single-sorted categories and single-sorted functors
-between them.
+all higher morphisms live in a single set\footnote{%
+  Throughout this text, following the convention of~\cite{vidal2024higher}, we use the word
+  \emph{set} in the classical mathematical sense. However, the reader should be aware that, in
+  general, the accompanying Lean~4 formalization works with types rather than the Lean concept of
+  sets.%
+}, distinguished by source and target operations at each dimension. Also, composition at each
+dimension is defined as a partial operation that is only defined when appropriate source-target
+matching conditions are satisfied. In this chapter, we present the very basic definitions and axioms
+of single-sorted categories and single-sorted functors between them.
 
 \begin{notation}
   Throughout the text, if not otherwise specified, we will use $\Index$ to denote a set of indices
-  equipped with a linear order relation $<$.
+  equipped with a preorder relation $<$. This general setting is used to define the core structures.
+  In practice, the main definitions specialize $\Index$ to either a finite set $n = \set{0, 1,
+  \ldots, n - 1}$ or the set $\omega$ of natural numbers.
 \end{notation}
 
 \section{Single-sorted categories}
