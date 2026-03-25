@@ -21,7 +21,10 @@
 
   languages.texlive = {
     enable = true;
-    base = pkgs.texliveMedium;
+    base = pkgs.texliveSmall.withPackages (ps:
+      with ps; [
+        tocbibind
+      ]);
   };
 
   languages.python.enable = true;
