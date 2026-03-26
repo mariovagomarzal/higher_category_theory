@@ -23,7 +23,7 @@ of single-sorted categories and single-sorted functors between them.
 
 We start by defining the necessary data for defining a single-sorted category.
 
-\begin{definition}
+\begin{definition}[Single-sorted category structure]
   \label{def:SingleSortedCategoryStruct}
   \lean{HigherCategoryTheory.SingleSorted.CategoryStruct}
   \leanok
@@ -31,18 +31,18 @@ We start by defining the necessary data for defining a single-sorted category.
   single-sorted $\Index$-category structure on $C$ consists of:
 
   \begin{enumerate}
-    \item \label{ax:ss_sc} A unary operation $\Sc^i \colon C \to C$ for each index $i \in \Index$,
-      called the \emph{source} at dimension $i$.
-    \item \label{ax:ss_tg} A unary operation $\Tg^i \colon C \to C$ for each index $i \in \Index$,
-      called the \emph{target} at dimension $i$.
-    \item \label{ax:ss_comp} A partial binary operation $\Pcomp^i \colon C \times C \rightharpoonup
-      C$ for each index $i \in \Index$, called the \emph{composition} at dimension $i$.
+    \item \label{ax:ss_sc} A unary operation $\Sc^k \colon C \to C$ for each index $k \in \Index$,
+      called the \emph{source} at dimension $k$.
+    \item \label{ax:ss_tg} A unary operation $\Tg^k \colon C \to C$ for each index $k \in \Index$,
+      called the \emph{target} at dimension $k$.
+    \item \label{ax:ss_comp} A partial binary operation $\Pcomp^k \colon C \times C \rightharpoonup
+      C$ for each index $k \in \Index$, called the \emph{composition} at dimension $k$.
   \end{enumerate}
 
-  The composition $g \Pcomp^i f$ is defined if and only if $\Sc^i (g) = \Tg^i (f)$, in which case we
-  say that $g$ and $f$ are \emph{composable} at dimension $i$.
+  The composition $g \Pcomp^k f$ is defined if and only if $\Sc^k (g) = \Tg^k (f)$, in which case we
+  say that $g$ and $f$ are \emph{composable} at dimension $k$.
 
-  We will represent the above data as a tuple $\cat{C} = (C, (\Sc^i, \Tg^i, \Pcomp^i)_{i \in
+  We will represent the above data as a tuple $\cat{C} = (C, (\Sc^k, \Tg^k, \Pcomp^k)_{k \in
   \Index})$.
 \end{definition}
 
@@ -50,38 +50,41 @@ We split the axioms of single-sorted categories into two parts: first, those con
 dimension at a time, and then those concerning the interaction between different dimensions. This
 division is made by first defining the notion of pre-single-sorted category:
 
-\begin{definition}
+\begin{definition}[Pre-single-sorted category]
   \label{def:PreSingleSortedCategory}
   \uses{def:SingleSortedCategoryStruct}
   \lean{HigherCategoryTheory.SingleSorted.PreCategory}
   \leanok
-  A \emph{pre-single-sorted $\Index$-category} is a tuple $\cat{C} = (C, (\Sc^i, \Tg^i, \Pcomp^i)_{i
-  \in \Index})$ satisfying, for each index $i \in \Index$, the following axioms:
+  A \emph{pre-single-sorted $\Index$-category} is a tuple
+  \[
+    \cat{C} = (C, (\Sc^k, \Tg^k, \Pcomp^k)_{k \in \Index}),
+  \]
+  satisfying, for each index $k \in \Index$, the following axioms:
 
   \begin{enumerate}
     \item \label{ax:ss_glob} For all $f \in C$,
       \begin{align*}
-        \Sc^i (\Sc^i (f)) = \Sc^i (f), \qquad & \Tg^i (\Sc^i (f)) = \Sc^i (f), \\
-        \Sc^i (\Tg^i (f)) = \Tg^i (f), \qquad & \Tg^i (\Tg^i (f)) = \Tg^i (f).
+        \Sc^k (\Sc^k (f)) = \Sc^k (f), \qquad & \Tg^k (\Sc^k (f)) = \Sc^k (f), \\
+        \Sc^k (\Tg^k (f)) = \Tg^k (f), \qquad & \Tg^k (\Tg^k (f)) = \Tg^k (f).
       \end{align*}
     \item \label{ax:ss_sc_tg_comp} For all $f, g \in C$, if $g$ and $f$ are composable, then
       \begin{align*}
-        \Sc^i (g \Pcomp^i f) = \Sc^i (f), \qquad & \Tg^i (g \Pcomp^i f) = \Tg^i (g).
+        \Sc^k (g \Pcomp^k f) = \Sc^k (f), \qquad & \Tg^k (g \Pcomp^k f) = \Tg^k (g).
       \end{align*}
-    \item \label{ax:ss_right_id} For all $f \in C$, the morphisms $f$ and $\Sc^i (f)$ are composable
+    \item \label{ax:ss_right_id} For all $f \in C$, the morphisms $f$ and $\Sc^k (f)$ are composable
       and
       \[
-        f \Pcomp^i \Sc^i (f) = f.
+        f \Pcomp^k \Sc^k (f) = f.
       \]
-    \item \label{ax:ss_left_id} For all $f \in C$, the morphisms $\Tg^i (f)$ and $f$ are composable
+    \item \label{ax:ss_left_id} For all $f \in C$, the morphisms $\Tg^k (f)$ and $f$ are composable
       and
       \[
-        \Tg^i (f) \Pcomp^i f = f.
+        \Tg^k (f) \Pcomp^k f = f.
       \]
     \item \label{ax:ss_assoc} For all $f, g, h \in C$, if $h$ and $g$ are composable, and $g$ and
-      $f$ are composable, then $h \Pcomp^i g$ and $f$ and $h$ and $g \Pcomp^i f$ are composable, and
+      $f$ are composable, then $h \Pcomp^k g$ and $f$ and $h$ and $g \Pcomp^k f$ are composable, and
       \[
-        (h \Pcomp^i g) \Pcomp^i f = h \Pcomp^i (g \Pcomp^i f).
+        (h \Pcomp^k g) \Pcomp^k f = h \Pcomp^k (g \Pcomp^k f).
       \]
   \end{enumerate}
 \end{definition}
@@ -95,25 +98,25 @@ axioms concerning the interaction between different dimensions:
   \lean{HigherCategoryTheory.SingleSorted.Category}
   \leanok
   A \emph{single-sorted $\Index$-category} is a pre-single-sorted $\Index$-category $\cat{C} = (C,
-  (\Sc^i, \Tg^i, \Pcomp^i)_{i \in \Index})$ satisfying, in addition to the axioms of
-  pre-single-sorted categories, the following cross-dimensional axioms:
+  (\Sc^k, \Tg^k, \Pcomp^k)_{k \in \Index})$ satisfying, in addition to the axioms of
+  pre-single-sorted categories, the following cross-dimensional axioms, for all indices $k, j \in
+  \Index$ with $j < k$:
 
   \begin{enumerate}
-    \item \label{ax:ss_cross_glob} For all $f \in C$ and all indices $j, k \in \Index$ with $j < k$,
+    \item \label{ax:ss_cross_glob} For all $f \in C$,
       \begin{align*}
         \Sc^k (\Sc^j (f)) = \Sc^j (f), \qquad & \Sc^j (\Sc^k (f)) = \Sc^j (f), \\
         \Sc^j (\Tg^k (f)) = \Sc^j (f), \qquad & \Tg^k (\Tg^j (f)) = \Tg^j (f), \\
         \Tg^j (\Tg^k (f)) = \Tg^j (f), \qquad & \Tg^j (\Sc^k (f)) = \Tg^j (f).
       \end{align*}
-    \item \label{ax:ss_cross_sc_tg_comp} For all $f, g \in C$ and all indices $j, k \in \Index$ with
-      $j < k$, if $g$ and $f$ are composable at dimension $j$, then $\Sc^k (g)$ and $\Sc^k (f)$ and
-      $\Tg^k (g)$ and $\Tg^k (f)$ are also composable at dimension $j$, and
+    \item \label{ax:ss_cross_sc_tg_comp} For all $f, g \in C$, if $g$ and $f$ are composable at
+      dimension $j$, then $\Sc^k (g)$ and $\Sc^k (f)$ and $\Tg^k (g)$ and $\Tg^k (f)$ are also
+      composable at dimension $j$, and
       \begin{align*}
         \Sc^k (g \Pcomp^j f) = \Sc^k (g) \Pcomp^j \Sc^k (f), \\
         \Tg^k (g \Pcomp^j f) = \Tg^k (g) \Pcomp^j \Tg^k (f).
       \end{align*}
-    \item \label{ax:ss_interchange} For all $f_1, f_2, g_1, g_2 \in C$ and all indices $j, k \in
-      \Index$ with $j < k$, suppose that:
+    \item \label{ax:ss_interchange} For all $f_1, f_2, g_1, g_2 \in C$, suppose that:
       \begin{itemize}
         \item $g_2$ and $f_2$ are composable at dimension $j$,
         \item $g_1$ and $f_1$ are composable at dimension $j$,
@@ -241,8 +244,8 @@ and composition at each dimension.
   \uses{def:SingleSortedCategory}
   \lean{HigherCategoryTheory.SingleSorted.Functor}
   \leanok
-  Let $\cat{C} = (C, (\Sc^i, \Tg^i, \Pcomp^i)_{i \in \Index})$ and $\cat{D} = (D, (\Sc^i, \Tg^i,
-  \Pcomp^i)_{i \in \Index})$ be single-sorted $\Index$-categories. A \emph{single-sorted
+  Let $\cat{C} = (C, (\Sc^k, \Tg^k, \Pcomp^k)_{k \in \Index})$ and $\cat{D} = (D, (\Sc^k, \Tg^k,
+  \Pcomp^k)_{k \in \Index})$ be single-sorted $\Index$-categories. A \emph{single-sorted
   $\Index$-functor} from $\cat{C}$ to $\cat{D}$ is a map $F \colon C \to D$ satisfying, for each
   index $k \in \Index$, the following preservation properties:
 
