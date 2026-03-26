@@ -409,6 +409,20 @@ abbrev FinSucc (n : ℕ) := Fin (n + 1)
 representing a category with exactly `n` dimensions. -/
 abbrev NCategory (n : ℕ) (C : FinSucc n → Type u) := Category (FinSucc n) C
 
+/--
+Any `PreCategory (FinSucc 1) C` lifts to a full `NCategory 1 C`.
+
+Since `FinSucc 1 = Fin 2` has exactly two elements, there are no triples of distinct indices
+`i < j < k`, making all cross-dimensional axioms of `Category` vacuously satisfied. Thus, a
+pre-many-sorted 1-category is essentially a many-sorted 1-category.
+-/
+-- TODO: All cross-dimensional axioms are vacuously satisfied since `FinSucc 1 = Fin 2` has no
+-- triples `i < j < k`. The proof should be `{S with}`, but the default `hcat_disch` tactic
+-- cannot synthesize the vacuous proofs because `omega` does not pick up the inequalities from
+-- `IndexBelow` subtypes automatically.
+def PreCategory.lift {C : FinSucc 1 → Type u} [S : PreCategory (FinSucc 1) C] : NCategory 1 C :=
+  by sorry
+
 /-- A **many-sorted $\omega$-category** is a `Category` with index type `ℕ`,
 representing a category with infinitely (countably) many dimensions. -/
 abbrev OmegaCategory (C : ℕ → Type u) := Category ℕ C

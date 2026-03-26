@@ -2,10 +2,11 @@
 \label{ch:many_sorted}
 
 In the many-sorted presentation of higher-order categories, morphisms at each dimension live in
-separate sets, connected by source, target, and identity maps between adjacent dimensions.
-Composition at each dimension is defined as a partial operation on morphisms of the same dimension,
-subject to appropriate source-target matching conditions. In this chapter, we present the basic
-definitions and axioms of many-sorted categories and many-sorted functors between them.
+separate sets, related by source, target, and identity maps across different dimensions. Composition
+at each pair of indices is defined as a partial operation on morphisms of the higher dimension, only
+when appropriate source-target matching conditions are satisfied. In this chapter, we present the
+basic definitions and axioms of many-sorted categories and many-sorted functors between them,
+concluding with the definition of the category of many-sorted categories itself.
 
 \section{Many-sorted categories}
 
@@ -17,7 +18,7 @@ We start by defining the necessary data for defining a many-sorted category.
   \leanok
   Let $(C_k)_{k \in \Index}$ be a family of sets whose elements will be called \emph{$k$-morphisms}.
   The required data for defining a many-sorted $\Index$-category structure on $(C_k)_{k \in \Index}$
-  consists of, for each pair of indices $k, j \in \Index$:
+  consists of, for each pair of indices $k, j \in \Index$ with $j < k$:
 
   \begin{enumerate}
     \item \label{ax:ms_sc} A map $\Sc^{(k,j)} \colon C_k \to C_j$, called the \emph{$(k,j)$-source}.
@@ -32,7 +33,7 @@ We start by defining the necessary data for defining a many-sorted category.
   in which case we say that $g$ and $f$ are \emph{$(k,j)$-composable}.
 
   We will represent the above data as a tuple $\cat{C} = ((C_k)_{k \in \Index}, (\Sc^{(k,j)},
-  \Tg^{(k,j)}, \Idm^{(k,j)}, \circ^{(k,j)})_{k, j \in \Index})$.
+  \Tg^{(k,j)}, \Idm^{(k,j)}, \circ^{(k,j)})_{k, j \in \Index, \, j < k})$.
 \end{definition}
 
 We split the axioms of many-sorted categories into two parts: first, those concerning only one pair
@@ -79,9 +80,6 @@ division is made by first defining the notion of pre-many-sorted category:
       \]
   \end{enumerate}
 
-  That is, for each pair of indices $k, j \in \Index$ with $j < k$, the data $(C_j, C_k,
-  \Sc^{(k,j)}, \Tg^{(k,j)}, \Idm^{(k,j)}, \circ^{(k,j)})$ forms a category with objects $C_j$ and
-  morphisms $C_k$.
 \end{definition}
 
 An immediate consequence of the source/target axioms for identities is that the identity map at each
@@ -168,6 +166,15 @@ concerning the interaction between different pairs of indices:
     Given a natural number $n \in \NN$, a \emph{many-sorted $n$-category} is a many-sorted category
     indexed by the finite set $n + 1 = \set{0, 1, \ldots, n}$.
   \end{definition}
+
+  \begin{remark}
+    \label{rem:PreManySortedCategoryLift}
+    \uses{def:ManySortedNCategory}
+    \lean{HigherCategoryTheory.ManySorted.PreCategory.lift}
+    Any pre-many-sorted $1$-category is, in fact, a many-sorted $1$-category. Since the index
+    set $1 + 1 = \set{0, 1}$ has exactly two elements, there are no triples of distinct indices $i <
+    j < k$, so all cross-dimensional axioms are vacuously satisfied.
+  \end{remark}
 
   \begin{definition}[Many-sorted omega category]
     \label{def:ManySortedOmegaCategory}

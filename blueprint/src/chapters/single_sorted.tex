@@ -10,7 +10,8 @@ all higher morphisms live in a single set\footnote{%
 }, distinguished by source and target operations at each dimension. Also, composition at each
 dimension is defined as a partial operation that is only defined when appropriate source-target
 matching conditions are satisfied. In this chapter, we present the very basic definitions and axioms
-of single-sorted categories and single-sorted functors between them.
+of single-sorted categories and single-sorted functors between them, concluding with the definition
+of the category of single-sorted categories itself.
 
 \begin{notation}
   Throughout the text, if not otherwise specified, we will use $\Index$ to denote a set of indices
@@ -247,8 +248,9 @@ composition at each dimension.
   \leanok
   Let $\cat{C} = (C, (\Sc^k, \Tg^k, \Pcomp^k)_{k \in \Index})$ and $\cat{D} = (D, (\Sc^k, \Tg^k,
   \Pcomp^k)_{k \in \Index})$ be single-sorted $\Index$-categories. A \emph{single-sorted
-  $\Index$-functor} from $\cat{C}$ to $\cat{D}$ is a map $F \colon C \to D$, written $F \colon \cat{C} \to \cat{D}$, satisfying, for each
-  index $k \in \Index$, the following preservation properties:
+  $\Index$-functor} from $\cat{C}$ to $\cat{D}$ is a map $F \colon C \to D$, written $F \colon
+  \cat{C} \to \cat{D}$, satisfying, for each index $k \in \Index$, the following preservation
+  properties:
 
   \begin{enumerate}
     \item \label{ax:ss_fun_sc_tg} For all $f \in C$,
