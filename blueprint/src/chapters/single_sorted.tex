@@ -145,7 +145,7 @@ axioms concerning the interaction between different dimensions:
 \end{definition}
 
 \begin{remark}
-  \label{thm:PreCategoryLift}
+  \label{rem:PreCategoryLift}
   \uses{def:SingleSortedNCategory}
   \lean{HigherCategoryTheory.SingleSorted.PreCategory.lift}
   \leanok
@@ -177,7 +177,7 @@ category.
 \end{definition}
 
 The above definition defines $k$-cells using the source operation, however, it is also possible to
-define them using the targer operation and, using the axioms of single-sorted categories, one can
+define them using the target operation and, using the axioms of single-sorted categories, one can
 prove that both definitions are equivalent.
 
 \begin{definition}[Target-based cell]
@@ -235,9 +235,10 @@ prove that both definitions are equivalent.
 
 \section{Single-sorted functors}
 
-Unlike traditional category theory where functors act separately on objects and morphisms, here a
-single-sorted functor is simply a function on the set of morphisms that preserves sources, targets,
-and composition at each dimension.
+Unlike in the many-sorted presentation, where a functor consists of a family of maps --- one for
+each set of morphisms --- a single-sorted functor is simply a single map on the set of all
+morphisms, since all morphisms live in a single set. Such a map must preserve sources, targets, and
+composition at each dimension.
 
 \begin{definition}[Single-sorted functor]
   \label{def:SingleSortedFunctor}
@@ -246,7 +247,7 @@ and composition at each dimension.
   \leanok
   Let $\cat{C} = (C, (\Sc^k, \Tg^k, \Pcomp^k)_{k \in \Index})$ and $\cat{D} = (D, (\Sc^k, \Tg^k,
   \Pcomp^k)_{k \in \Index})$ be single-sorted $\Index$-categories. A \emph{single-sorted
-  $\Index$-functor} from $\cat{C}$ to $\cat{D}$ is a map $F \colon C \to D$ satisfying, for each
+  $\Index$-functor} from $\cat{C}$ to $\cat{D}$ is a map $F \colon C \to D$, written $F \colon \cat{C} \to \cat{D}$, satisfying, for each
   index $k \in \Index$, the following preservation properties:
 
   \begin{enumerate}
@@ -280,13 +281,23 @@ results assert that these constructions yield valid single-sorted functors.
   \leanok
   Let $k \in \Index$. For all $f \in C$, since $F$ and $G$ are single-sorted functors, we have that
   \[
-    (G \circ F) (\Sc^k (f)) = G (F (\Sc^k (f))) = G (\Sc^k (F (f)))
-    = \Sc^k (G (F (f))) = \Sc^k ((G \circ F) (f)),
+    \begin{split}
+      (G \circ F) (\Sc^k (f))
+      & = G (F (\Sc^k (f))) \\
+      & = G (\Sc^k (F (f))) \\
+      & = \Sc^k (G (F (f))) \\
+      & = \Sc^k ((G \circ F) (f)),
+    \end{split}
   \]
   and similarly,
   \[
-    (G \circ F) (\Tg^k (f)) = G (F (\Tg^k (f))) = G (\Tg^k (F (f)))
-    = \Tg^k (G (F (f))) = \Tg^k ((G \circ F) (f)),
+    \begin{split}
+      (G \circ F) (\Tg^k (f))
+      & = G (F (\Tg^k (f))) \\
+      & = G (\Tg^k (F (f))) \\
+      & = \Tg^k (G (F (f))) \\
+      & = \Tg^k ((G \circ F) (f)),
+    \end{split}
   \]
   that is, $G \circ F$ preserves sources and targets at dimension $k$.
 
