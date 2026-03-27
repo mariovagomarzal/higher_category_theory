@@ -19,11 +19,11 @@ namespace HigherCategoryTheory.SingleSorted
 
 open CategoryTheory
 
-variable {n : ℕ} {obj : Type u} [S : NCategory n obj]
+variable {n : ℕ} {C : Type u} [S : NCategory n C]
 
 -- TODO: Maybe move this to the 'Basic' module of 'Underlying'.
 /-- TODO: Comment. -/
-instance {m : Fin n} : NCategory m (cells m obj) := S.underlying m
+instance {m : Fin n} : NCategory m (cells m C) := S.underlying m
 
 /-- TODO: Comment. -/
 @[simp]

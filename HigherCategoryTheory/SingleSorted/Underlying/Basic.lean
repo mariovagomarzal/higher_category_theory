@@ -48,7 +48,9 @@ simplification.
 macro (name := inherit_axiom) "inherit_axiom" axiom_name:ident : tactic =>
   `(tactic| (intros; rw [Subtype.mk.injEq]; try (apply $axiom_name <;> (simp at *; assumption))))
 
-variable {n : ℕ} {obj : Type u}
+section Underlying
+
+variable {n : ℕ} {C : Type u}
 
 /--
 Constructs the underlying $m$-category of an $n$-category by restricting to $m$-cells.
@@ -58,8 +60,8 @@ the $m$-cells of `S`. The source, target, and composition operations are inherit
 dimensions reindexed to `Fin m`. All category axioms are inherited using the `inherit_axiom` tactic.
 -/
 @[simp]
-def NCategory.underlying (S : NCategory n obj) (m : Fin n) :
-    NCategory m (cells m obj) where
+def NCategory.underlying (S : NCategory n C) (m : Fin n) :
+    NCategory m (cells m C) where
   sc k f := ⟨S.sc ⟨k, lt_trans k.isLt m.isLt⟩ f, by apply underlying_source_is_cell; exact k.isLt⟩
   tg k f := ⟨S.tg ⟨k, lt_trans k.isLt m.isLt⟩ f, by apply underlying_target_is_cell; exact k.isLt⟩
   pcomp k g f :=
@@ -94,8 +96,8 @@ This definition is analogous to `NCategory.underlying`, but applies to
 `OmegaCategory` objects.
 -/
 @[simp]
-def OmegaCategory.underlying (S : OmegaCategory obj) (m : ℕ) :
-    NCategory m (cells m obj) where
+def OmegaCategory.underlying (S : OmegaCategory C) (m : ℕ) :
+    NCategory m (cells m C) where
   sc k f := ⟨S.sc k f, by apply underlying_source_is_cell; exact k.isLt⟩
   tg k f := ⟨S.tg k f, by apply underlying_target_is_cell; exact k.isLt⟩
   pcomp k g f := { S.pcomp k g f with
@@ -121,7 +123,11 @@ def OmegaCategory.underlying (S : OmegaCategory obj) (m : ℕ) :
   tgk_compj_eq_compj_tgk := by inherit_axiom S.tgk_compj_eq_compj_tgk
   interchange := by inherit_axiom S.interchange
 
-variable {C : Type u} {D : Type v} [SC : NCategory n C] [SD : NCategory n D]
+end Underlying
+
+section Functor
+
+variable {n : ℕ} {C : Type u} {D : Type v} [SC : NCategory n C] [SD : NCategory n D]
   [ωSC : OmegaCategory C] [ωSD : OmegaCategory D]
 
 /--
@@ -165,5 +171,7 @@ def OmegaFunctor.underlying (F : OmegaFunctor C D) (m : ℕ) :
     map_tg_eq_tg_map := by inherit_axiom F.map_tg_eq_tg_map
     map_comp_eq_comp_map := by inherit_axiom F.map_comp_eq_comp_map
   }
+
+end Functor
 
 end HigherCategoryTheory.SingleSorted

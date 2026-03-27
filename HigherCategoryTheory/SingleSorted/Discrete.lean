@@ -15,12 +15,12 @@ universe u v
 
 namespace HigherCategoryTheory.SingleSorted
 
-variable {m : ℕ} {obj : Type u}
+variable {m : ℕ} {C : Type u}
 
 /-- TODO: Comment. -/
 @[simp]
-def NCategory.discrete (S : NCategory m obj) (n : ℕ) :
-    NCategory n obj where
+def NCategory.discrete (S : NCategory m C) (n : ℕ) :
+    NCategory n C where
   sc k f := if h : k < m then S.sc ⟨k, h⟩ f else f
   tg k f := if h : k < m then S.tg ⟨k, h⟩ f else f
   pcomp k g f := if h : k < m then S.pcomp ⟨k, h⟩ g f else ⟨g = f, fun _ ↦ f⟩
@@ -164,8 +164,8 @@ def NCategory.discrete (S : NCategory m obj) (n : ℕ) :
 -- TODO: Implement this following the same pattern as `NCategory.discrete`.
 /-- TODO: Comment. -/
 @[simp]
-def NCategory.discrete_omega (S : NCategory m obj) :
-    OmegaCategory obj := by sorry
+def NCategory.discrete_omega (S : NCategory m C) :
+    OmegaCategory C := by sorry
 
 variable {n : ℕ} {C : Type u} {D : Type v}
   [SC : NCategory n C] [SD : NCategory n D]
