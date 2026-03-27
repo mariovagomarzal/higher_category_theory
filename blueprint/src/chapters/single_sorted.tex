@@ -145,15 +145,15 @@ axioms concerning the interaction between different dimensions:
   category indexed by the finite set $n = \set{0, 1, \ldots, n-1}$.
 \end{definition}
 
-\begin{remark}
-  \label{rem:PreCategoryLift}
+\begin{definition}[Pre-single-sorted one-categories lifting]
+  \label{def:PreSingleSortedCategoryLift}
   \uses{def:SingleSortedNCategory}
   \lean{HigherCategoryTheory.SingleSorted.PreCategory.lift}
   \leanok
   Any pre-single-sorted $1$-category is, in fact, a single-sorted $1$-category. Since the index
   set $1 = \set{0}$ has exactly one element, there are no pairs of distinct indices $j < k$, so all
   cross-dimensional axioms are vacuously satisfied.
-\end{remark}
+\end{definition}
 
 We now define the notion of cell or identity morphism at a given dimension in a single-sorted
 category.
@@ -268,7 +268,7 @@ composition at each dimension.
 We can define composition of single-sorted functors as the usual composition of functions, and the
 identity single-sorted functor as the identity function on the set of morphisms.
 
-\begin{definition}[Composition of single-sorted functors]
+\begin{construction}[Composition of single-sorted functors]
   \label{def:SingleSortedFunctor_comp}
   \uses{def:SingleSortedFunctor}
   \lean{HigherCategoryTheory.SingleSorted.Functor.comp}
@@ -276,7 +276,7 @@ identity single-sorted functor as the identity function on the set of morphisms.
   Let $\cat{C}, \cat{D}, \cat{E}$ be single-sorted $\Index$-categories, and let $F \colon \cat{C}
   \to \cat{D}$ and $G \colon \cat{D} \to \cat{E}$ be single-sorted $\Index$-functors. Then, the
   composition $G \circ F \colon \cat{C} \to \cat{E}$ is also a single-sorted $\Index$-functor.
-\end{definition}
+\end{construction}
 
 \begin{proof}
   \leanok
@@ -315,7 +315,7 @@ identity single-sorted functor as the identity function on the set of morphisms.
   so $G \circ F$ preserves composition at dimension $k$.
 \end{proof}
 
-\begin{definition}[Identity single-sorted functor]
+\begin{construction}[Identity single-sorted functor]
   \label{def:SingleSortedFunctor_id}
   \uses{def:SingleSortedFunctor}
   \lean{HigherCategoryTheory.SingleSorted.Functor.id}
@@ -323,7 +323,7 @@ identity single-sorted functor as the identity function on the set of morphisms.
   Let $\cat{C}$ be a single-sorted $\Index$-category. Then, the identity function $\id_C \colon C
   \to C$, written $\id_{\cat{C}} \colon \cat{C} \to \cat{C}$, is a single-sorted $\Index$-functor
   from $\cat{C}$ to itself.
-\end{definition}
+\end{construction}
 
 \begin{proof}
   \leanok
@@ -353,7 +353,7 @@ identity single-sorted functor as the identity function on the set of morphisms.
 Lastly, we define the category whose objects are single-sorted categories and whose morphisms are
 single-sorted functors.
 
-\begin{definition}[Category of single-sorted categories]
+\begin{construction}[Category of single-sorted categories]
   \label{def:SingleSortedCategory_category}
   \uses{
     def:SingleSortedCategory,
@@ -375,7 +375,7 @@ single-sorted functors.
     \item \label{ax:ss_cat_id} The identity morphism for each object is given by the identity
       single-sorted functor.
   \end{enumerate}
-\end{definition}
+\end{construction}
 
 \begin{proof}
   \leanok
@@ -385,7 +385,7 @@ single-sorted functors.
   composition.
 \end{proof}
 
-\begin{definition}[Category of single-sorted finite categories]
+\begin{construction}[Category of single-sorted finite categories]
   \label{def:SingleSortedNCategory_category}
   \uses{
     def:SingleSortedNCategory,
@@ -399,9 +399,15 @@ single-sorted functors.
   by $n\Cat$, is the particular case of Definition~\ref{def:SingleSortedCategory_category} where
   $\Index$ is the finite set $n$. Its objects are single-sorted $n$-categories and its morphisms are
   single-sorted $n$-functors.
-\end{definition}
+\end{construction}
 
-\begin{definition}[Category of single-sorted omega categories]
+\begin{proof}
+  \leanok
+  This is a particular case of Definition~\ref{def:SingleSortedCategory_category}, so the result
+  follows immediately.
+\end{proof}
+
+\begin{construction}[Category of single-sorted omega categories]
   \label{def:SingleSortedOmegaCategory_category}
   \uses{
     def:SingleSortedOmegaCategory,
@@ -415,4 +421,10 @@ single-sorted functors.
   particular case of Definition~\ref{def:SingleSortedCategory_category} where $\Index$ is the set of
   natural numbers $\NN$. Its objects are single-sorted $\omega$-categories and its morphisms are
   single-sorted $\omega$-functors.
-\end{definition}
+\end{construction}
+
+\begin{proof}
+  \leanok
+  This is a particular case of Definition~\ref{def:SingleSortedCategory_category}, so the result
+  follows immediately.
+\end{proof}

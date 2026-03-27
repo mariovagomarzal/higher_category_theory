@@ -167,14 +167,15 @@ concerning the interaction between different pairs of indices:
     indexed by the finite set $n + 1 = \set{0, 1, \ldots, n}$.
   \end{definition}
 
-  \begin{remark}
-    \label{rem:PreManySortedCategoryLift}
+  \begin{definition}[Pre-many-sorted one-categories lifting]
+    \label{def:PreManySortedCategoryLift}
     \uses{def:ManySortedNCategory}
     \lean{HigherCategoryTheory.ManySorted.PreCategory.lift}
+    \leanok
     Any pre-many-sorted $1$-category is, in fact, a many-sorted $1$-category. Since the index
     set $1 + 1 = \set{0, 1}$ has exactly two elements, there are no triples of distinct indices $i <
     j < k$, so all cross-dimensional axioms are vacuously satisfied.
-  \end{remark}
+  \end{definition}
 
   \begin{definition}[Many-sorted omega category]
     \label{def:ManySortedOmegaCategory}
@@ -224,7 +225,7 @@ preserve sources, targets, identities, and composition at each pair of dimension
 We can define composition of many-sorted functors componentwise, and the identity many-sorted
 functor as the family of identity functions.
 
-\begin{definition}[Composition of many-sorted functors]
+\begin{construction}[Composition of many-sorted functors]
   \label{def:ManySortedFunctor_comp}
   \uses{def:ManySortedFunctor}
   \lean{HigherCategoryTheory.ManySorted.Functor.comp}
@@ -233,7 +234,7 @@ functor as the family of identity functions.
   \Index} \colon \cat{C} \to \cat{D}$ and $G = (G_k)_{k \in \Index} \colon \cat{D} \to \cat{E}$ be
   many-sorted $\Index$-functors. Then, the family $G \circ F = (G_k \circ F_k)_{k \in \Index} \colon
   \cat{C} \to \cat{E}$ is also a many-sorted $\Index$-functor.
-\end{definition}
+\end{construction}
 
 \begin{proof}
   \leanok
@@ -285,7 +286,7 @@ functor as the family of identity functions.
   so $G \circ F$ preserves composition at pair $(k,j)$.
 \end{proof}
 
-\begin{definition}[Identity many-sorted functor]
+\begin{construction}[Identity many-sorted functor]
   \label{def:ManySortedFunctor_id}
   \uses{def:ManySortedFunctor}
   \lean{HigherCategoryTheory.ManySorted.Functor.id}
@@ -293,7 +294,7 @@ functor as the family of identity functions.
   Let $\cat{C}$ be a many-sorted $\Index$-category. Then, the family of identity functions
   $\id_{\cat{C}} = (\id_{C_k})_{k \in \Index}$, written $\id_{\cat{C}} \colon \cat{C} \to \cat{C}$,
   is a many-sorted $\Index$-functor from $\cat{C}$ to itself.
-\end{definition}
+\end{construction}
 
 \begin{proof}
   \leanok
@@ -323,7 +324,7 @@ functor as the family of identity functions.
 Lastly, we define the category whose objects are many-sorted categories and whose morphisms are
 many-sorted functors.
 
-\begin{definition}[Category of many-sorted categories]
+\begin{construction}[Category of many-sorted categories]
   \label{def:ManySortedCategory_category}
   \uses{
     def:ManySortedCategory,
@@ -345,7 +346,7 @@ many-sorted functors.
     \item \label{ax:ms_cat_id} The identity morphism for each object is given by the identity
       many-sorted functor.
   \end{enumerate}
-\end{definition}
+\end{construction}
 
 \begin{proof}
   \leanok
@@ -354,7 +355,7 @@ many-sorted functors.
   required category laws trivially follow from the corresponding properties of function composition.
 \end{proof}
 
-\begin{definition}[Category of many-sorted finite categories]
+\begin{construction}[Category of many-sorted finite categories]
   \label{def:ManySortedNCategory_category}
   \uses{
     def:ManySortedNCategory,
@@ -368,9 +369,15 @@ many-sorted functors.
   $n\CatMS$, is the particular case of Definition~\ref{def:ManySortedCategory_category} where
   $\Index$ is the finite set $n + 1 = \set{0, 1, \ldots, n}$. Its objects are many-sorted
   $n$-categories and its morphisms are many-sorted $n$-functors.
-\end{definition}
+\end{construction}
 
-\begin{definition}[Category of many-sorted omega categories]
+\begin{proof}
+  \leanok
+  This is a particular case of Definition~\ref{def:ManySortedCategory_category}, so the result
+  follows immediately.
+\end{proof}
+
+\begin{construction}[Category of many-sorted omega categories]
   \label{def:ManySortedOmegaCategory_category}
   \uses{
     def:ManySortedOmegaCategory,
@@ -384,4 +391,10 @@ many-sorted functors.
   particular case of Definition~\ref{def:ManySortedCategory_category} where $\Index$ is the set of
   natural numbers $\NN$. Its objects are many-sorted $\omega$-categories and its morphisms are
   many-sorted $\omega$-functors.
-\end{definition}
+\end{construction}
+
+\begin{proof}
+  \leanok
+  This is a particular case of Definition~\ref{def:ManySortedCategory_category}, so the result
+  follows immediately.
+\end{proof}
