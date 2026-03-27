@@ -14,17 +14,13 @@ This file defines monoid-related instances of single-sorted categories.
 
 universe u
 
-namespace Monoid
+namespace Monoid.SingleSorted
 
 open HigherCategoryTheory.SingleSorted
 
-/--
-An instance from `Monoid M` to `NCategory 1 M`.
-
-Every monoid is a single-sorted $1$-category where all morphisms have the same source and target,
-the unit, and composition is always defined via monoid multiplication.
--/
-instance inst1Category (M : Type u) [Monoid M] : NCategory 1 M where
+/-- Every monoid is a single-sorted pre-category where all morphisms have the same source and
+target, the unit, and composition is always defined via monoid multiplication. -/
+instance instPreCategory (Index : Type) (M : Type u) [Monoid M] : PreCategory Index M where
   sc _ _ := 1
   tg _ _ := 1
   pcomp _ b a := ⟨True, fun _ ↦ b * a⟩
@@ -32,4 +28,8 @@ instance inst1Category (M : Type u) [Monoid M] : NCategory 1 M where
   compk_tgk_eq_id := by intros; apply one_mul
   assoc := by intros; apply mul_assoc
 
-end Monoid
+/-- Specialization of the monoid pre-category instance to `NCategory 1`. -/
+instance (priority := 1100) inst1Category (M : Type u) [Monoid M] : NCategory 1 M :=
+  PreCategory.lift
+
+end Monoid.SingleSorted
