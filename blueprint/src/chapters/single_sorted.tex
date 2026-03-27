@@ -372,14 +372,16 @@ single-sorted functors.
     \item \label{ax:ss_cat_mor} Its morphisms are single-sorted $\Index$-functors between
       single-sorted $\Index$-categories.
     \item \label{ax:ss_cat_comp} Composition of morphisms is given by composition of single-sorted
-      functors, which is well defined by Theorem~\ref{thm:SingleSortedFunctor_comp}.
+      functors.
     \item \label{ax:ss_cat_id} The identity morphism for each object is given by the identity
-      single-sorted functor, which is well defined by Theorem~\ref{thm:SingleSortedFunctor_id}.
+      single-sorted functor.
   \end{enumerate}
 \end{definition}
 
 \begin{proof}
   \leanok
+  Composition and the identity functor are well defined by
+  Theorems~\ref{thm:SingleSortedFunctor_comp} and~\ref{thm:SingleSortedFunctor_id}, respectively.
   The required category laws trivially follow from the corresponding properties of function
   composition.
 \end{proof}
