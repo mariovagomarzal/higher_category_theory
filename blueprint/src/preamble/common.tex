@@ -24,16 +24,9 @@
 \newtheorem{notation}[theorem]{Notation}
 \newtheorem{example}[theorem]{Example}
 
-%== Smart cross-references. ==%
-\usepackage{cleveref}
-\crefname{notation}{Notation}{Notations}
-\Crefname{notation}{Notation}{Notations}
-
 %== Macros. ==%
 % Reference an axiom as "X.Y" with the dot styled as a hyperlink.
-\newcommand{\refaxiomnum}[2]{\hyperref[#2]{\ref*{#1}.\ref*{#2}}}
-\newcommand{\refaxiom}[2]{axiom~\refaxiomnum{#1}{#2}}
-\newcommand{\Refaxiom}[2]{Axiom~\refaxiomnum{#1}{#2}}
+\newcommand{\refaxiom}[2]{\hyperref[#2]{\ref*{#1}.\ref*{#2}}}
 
 % Set-related.
 \newcommand{\set}[1]{\left\{ #1 \right\}}
