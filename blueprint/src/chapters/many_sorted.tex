@@ -100,7 +100,7 @@ pair of dimensions is injective:
   \[
     f = \Sc^{(k,j)}(\Idm^{(k,j)}(f)) = \Sc^{(k,j)}(\Idm^{(k,j)}(g)) = g,
   \]
-  where both equalities use axiom~\refaxiom{def:PreManySortedCategory}{ax:ms_sc_tg_idm}.
+  where both equalities use \refaxiom{def:PreManySortedCategory}{ax:ms_sc_tg_idm}.
 \end{proof}
 
 We now define a many-sorted category structure by extending the above definition with the axioms
@@ -222,11 +222,10 @@ preserve sources, targets, identities, and composition at each pair of dimension
 \end{definition}
 
 We can define composition of many-sorted functors componentwise, and the identity many-sorted
-functor as the family of identity functions. The following results assert that these constructions
-yield valid many-sorted functors.
+functor as the family of identity functions.
 
-\begin{theorem}[Composition of many-sorted functors]
-  \label{thm:ManySortedFunctor_comp}
+\begin{definition}[Composition of many-sorted functors]
+  \label{def:ManySortedFunctor_comp}
   \uses{def:ManySortedFunctor}
   \lean{HigherCategoryTheory.ManySorted.Functor.comp}
   \leanok
@@ -234,7 +233,7 @@ yield valid many-sorted functors.
   \Index} \colon \cat{C} \to \cat{D}$ and $G = (G_k)_{k \in \Index} \colon \cat{D} \to \cat{E}$ be
   many-sorted $\Index$-functors. Then, the family $G \circ F = (G_k \circ F_k)_{k \in \Index} \colon
   \cat{C} \to \cat{E}$ is also a many-sorted $\Index$-functor.
-\end{theorem}
+\end{definition}
 
 \begin{proof}
   \leanok
@@ -286,15 +285,15 @@ yield valid many-sorted functors.
   so $G \circ F$ preserves composition at pair $(k,j)$.
 \end{proof}
 
-\begin{theorem}[Identity many-sorted functor]
-  \label{thm:ManySortedFunctor_id}
+\begin{definition}[Identity many-sorted functor]
+  \label{def:ManySortedFunctor_id}
   \uses{def:ManySortedFunctor}
   \lean{HigherCategoryTheory.ManySorted.Functor.id}
   \leanok
   Let $\cat{C}$ be a many-sorted $\Index$-category. Then, the family of identity functions
   $\id_{\cat{C}} = (\id_{C_k})_{k \in \Index}$, written $\id_{\cat{C}} \colon \cat{C} \to \cat{C}$,
   is a many-sorted $\Index$-functor from $\cat{C}$ to itself.
-\end{theorem}
+\end{definition}
 
 \begin{proof}
   \leanok
@@ -329,8 +328,8 @@ many-sorted functors.
   \uses{
     def:ManySortedCategory,
     def:ManySortedFunctor,
-    thm:ManySortedFunctor_comp,
-    thm:ManySortedFunctor_id
+    def:ManySortedFunctor_comp,
+    def:ManySortedFunctor_id
   }
   \lean{HigherCategoryTheory.ManySorted.Cat.category}
   \leanok
@@ -350,9 +349,9 @@ many-sorted functors.
 
 \begin{proof}
   \leanok
-  Composition and the identity functor are well defined by Theorems~\ref{thm:ManySortedFunctor_comp}
-  and~\ref{thm:ManySortedFunctor_id}, respectively. The required category laws trivially follow from
-  the corresponding properties of function composition.
+  Composition and the identity functor are well defined by
+  \cref{def:ManySortedFunctor_comp,def:ManySortedFunctor_id}, respectively. The required category
+  laws trivially follow from the corresponding properties of function composition.
 \end{proof}
 
 \begin{notation}
@@ -366,18 +365,18 @@ many-sorted functors.
   \uses{
     def:ManySortedOmegaCategory,
     def:ManySortedOmegaFunctor,
-    thm:ManySortedFunctor_comp,
-    thm:ManySortedFunctor_id
+    def:ManySortedFunctor_comp,
+    def:ManySortedFunctor_id
   }
   \lean{HigherCategoryTheory.ManySorted.OmegaCat.category}
   \leanok
   The \emph{category of many-sorted $\omega$-categories}, denoted by $\omega\CatMS$, is defined
-  analogously to Definition~\ref{def:ManySortedCategory_category}, but using many-sorted
-  $\omega$-categories and many-sorted $\omega$-functors instead.
+  analogously to \cref{def:ManySortedCategory_category}, but using many-sorted $\omega$-categories
+  and many-sorted $\omega$-functors instead.
 \end{definition}
 
 \begin{proof}
   \leanok
-  As in Definition~\ref{def:ManySortedCategory_category}, the required category laws trivially
-  follow from the corresponding properties of function composition.
+  As in \cref{def:ManySortedCategory_category}, the required category laws trivially follow from the
+  corresponding properties of function composition.
 \end{proof}

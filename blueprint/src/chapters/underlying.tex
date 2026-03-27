@@ -89,10 +89,10 @@ functor from $n\Cat$ (or $\omega\Cat$) to $m\Cat$.
   single-sorted $m$-category $\cat{C}^{<m}$ defined on the set of $m$-cells of $\cat{C}$, $C_m$,
   with the source, target, and composition operations of $\cat{C}$ restricted to $C_m$.
 
-  Note that, by Lemmas~\ref{lem:underlying_source_is_cell}, \ref{lem:underlying_target_is_cell}, and
-  \ref{lem:underlying_comp_is_cell}, these operations are well-defined. Also, the axioms of
-  single-sorted categories for $\cat{C}_m$ follow directly from the corresponding axioms for
-  $\cat{C}$.
+  Note that, by
+  \cref{lem:underlying_source_is_cell,lem:underlying_target_is_cell,lem:underlying_comp_is_cell},
+  these operations are well-defined. Also, the axioms of single-sorted categories for $\cat{C}_m$
+  follow directly from the corresponding axioms for $\cat{C}$.
 \end{definition}
 
 \section{Underlying single-sorted functors}
@@ -131,16 +131,15 @@ functor from $n\Cat$ (or $\omega\Cat$) to $m\Cat$.
   \cat{C}^{<m} \to \cat{D}^{<m}$ defined as the restriction of $F$ to the sets of $m$-cells $C_m$
   and $D_m$.
 
-  Note that, by Lemma~\ref{lem:underlying_functor_is_cell}, this function is well-defined. Also, the
+  Note that, by \cref{lem:underlying_functor_is_cell}, this function is well-defined. Also, the
   axioms of single-sorted functors for $F_m$ follow directly from the corresponding axioms for $F$.
 \end{definition}
 
 \section{Functoriality of the underlying transformations}
 
 For any two naturals $n$ and $m$ with $m \leq n$, we first note that the underlying transformations
-defined in Definitions~\ref{def:SingleSortedCategory_underlying}
-and~\ref{def:SingleSortedFunctor_underlying} are in fact functorial transformations from $n\Cat$ to
-$m\Cat$.
+defined in \cref{def:SingleSortedCategory_underlying,def:SingleSortedFunctor_underlying} are in fact
+functorial transformations from $n\Cat$ to $m\Cat$.
 
 \begin{definition}[Underlying functor]
   \label{def:UnderlyingFunctor}
@@ -153,8 +152,7 @@ $m\Cat$.
   Let $n$ and $m$ be naturals such that $m \le n$. We define the \emph{underlying functor}
   $\Underlying^{(n, m)} \colon n\Cat \to m\Cat$ as the functor that maps every single-sorted
   $n$-category $\cat{C}$ to its underlying single-sorted $m$-category $\cat{C}^{<m}$ (as defined in
-  Definition~\ref{def:SingleSortedCategory_underlying}) and every single-sorted $n$-functor $F
-  \colon \cat{C} \to \cat{D}$ to its underlying single-sorted $m$-functor $F^{<m} \colon
-  \cat{C}^{<m} \to \cat{D}^{<m}$ (as defined in
-  Definition~\ref{def:SingleSortedFunctor_underlying}).
+  \cref{def:SingleSortedCategory_underlying}) and every single-sorted $n$-functor $F \colon \cat{C}
+  \to \cat{D}$ to its underlying single-sorted $m$-functor $F^{<m} \colon \cat{C}^{<m} \to
+  \cat{D}^{<m}$ (as defined in \cref{def:SingleSortedFunctor_underlying}).
 \end{definition}

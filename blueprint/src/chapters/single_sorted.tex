@@ -210,14 +210,14 @@ prove that both definitions are equivalent.
 \begin{proof}
   \leanok
   Let $f \in C$. Suppose first that $f$ is a $k$-cell, i.e., $\Sc^k (f) = f$. By
-  axiom~\refaxiom{def:PreSingleSortedCategory}{ax:ss_glob}, we have that
+  \refaxiom{def:PreSingleSortedCategory}{ax:ss_glob}, we have that
   \[
     \Tg^k (f) = \Tg^k (\Sc^k (f)) = \Sc^k (f) = f,
   \]
   so $f$ is a target-based $k$-cell.
 
   Conversely, suppose that $f$ is a target-based $k$-cell, i.e., $\Tg^k (f) = f$. By
-  axiom~\refaxiom{def:PreSingleSortedCategory}{ax:ss_glob}, we have that
+  \refaxiom{def:PreSingleSortedCategory}{ax:ss_glob}, we have that
   \[
     \Sc^k (f) = \Sc^k (\Tg^k (f)) = \Tg^k (f) = f,
   \]
@@ -266,18 +266,17 @@ composition at each dimension.
 \end{definition}
 
 We can define composition of single-sorted functors as the usual composition of functions, and the
-identity single-sorted functor as the identity function on the set of morphisms. The following
-results assert that these constructions yield valid single-sorted functors.
+identity single-sorted functor as the identity function on the set of morphisms.
 
-\begin{theorem}[Composition of single-sorted functors]
-  \label{thm:SingleSortedFunctor_comp}
+\begin{definition}[Composition of single-sorted functors]
+  \label{def:SingleSortedFunctor_comp}
   \uses{def:SingleSortedFunctor}
   \lean{HigherCategoryTheory.SingleSorted.Functor.comp}
   \leanok
   Let $\cat{C}, \cat{D}, \cat{E}$ be single-sorted $\Index$-categories, and let $F \colon \cat{C}
   \to \cat{D}$ and $G \colon \cat{D} \to \cat{E}$ be single-sorted $\Index$-functors. Then, the
   composition $G \circ F \colon \cat{C} \to \cat{E}$ is also a single-sorted $\Index$-functor.
-\end{theorem}
+\end{definition}
 
 \begin{proof}
   \leanok
@@ -316,15 +315,15 @@ results assert that these constructions yield valid single-sorted functors.
   so $G \circ F$ preserves composition at dimension $k$.
 \end{proof}
 
-\begin{theorem}[Identity single-sorted functor]
-  \label{thm:SingleSortedFunctor_id}
+\begin{definition}[Identity single-sorted functor]
+  \label{def:SingleSortedFunctor_id}
   \uses{def:SingleSortedFunctor}
   \lean{HigherCategoryTheory.SingleSorted.Functor.id}
   \leanok
   Let $\cat{C}$ be a single-sorted $\Index$-category. Then, the identity function $\id_C \colon C
   \to C$, written $\id_{\cat{C}} \colon \cat{C} \to \cat{C}$, is a single-sorted $\Index$-functor
   from $\cat{C}$ to itself.
-\end{theorem}
+\end{definition}
 
 \begin{proof}
   \leanok
@@ -359,8 +358,8 @@ single-sorted functors.
   \uses{
     def:SingleSortedCategory,
     def:SingleSortedFunctor,
-    thm:SingleSortedFunctor_comp,
-    thm:SingleSortedFunctor_id
+    def:SingleSortedFunctor_comp,
+    def:SingleSortedFunctor_id
   }
   \lean{HigherCategoryTheory.SingleSorted.Cat.category}
   \leanok
@@ -381,9 +380,8 @@ single-sorted functors.
 \begin{proof}
   \leanok
   Composition and the identity functor are well defined by
-  Theorems~\ref{thm:SingleSortedFunctor_comp} and~\ref{thm:SingleSortedFunctor_id}, respectively.
-  The required category laws trivially follow from the corresponding properties of function
-  composition.
+  \cref{def:SingleSortedFunctor_comp,def:SingleSortedFunctor_id}, respectively. The required
+  category laws trivially follow from the corresponding properties of function composition.
 \end{proof}
 
 \begin{notation}
@@ -397,18 +395,18 @@ single-sorted functors.
   \uses{
     def:SingleSortedOmegaCategory,
     def:SingleSortedOmegaFunctor,
-    thm:SingleSortedFunctor_comp,
-    thm:SingleSortedFunctor_id
+    def:SingleSortedFunctor_comp,
+    def:SingleSortedFunctor_id
   }
   \lean{HigherCategoryTheory.SingleSorted.OmegaCat.category}
   \leanok
   The \emph{category of single-sorted $\omega$-categories}, denoted by $\omega\Cat$, is defined
-  analogously to Definition~\ref{def:SingleSortedCategory_category}, but using single-sorted
+  analogously to \cref{def:SingleSortedCategory_category}, but using single-sorted
   $\omega$-categories and single-sorted $\omega$-functors instead.
 \end{definition}
 
 \begin{proof}
   \leanok
-  As in Definition~\ref{def:SingleSortedCategory_category}, the required category laws trivially
-  follow from the corresponding properties of function composition.
+  As in \cref{def:SingleSortedCategory_category}, the required category laws trivially follow from
+  the corresponding properties of function composition.
 \end{proof}
