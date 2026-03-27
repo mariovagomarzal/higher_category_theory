@@ -418,9 +418,14 @@ single-sorted functors.
   \lean{HigherCategoryTheory.SingleSorted.OmegaCat.category}
   \leanok
   The \emph{category of single-sorted $\omega$-categories}, denoted by $\omega\Cat$, is the
-  particular case of Definition~\ref{def:SingleSortedCategory_category} where $\Index$ is the set of
-  natural numbers $\NN$. Its objects are single-sorted $\omega$-categories and its morphisms are
-  single-sorted $\omega$-functors.
+  particular case\footnote{Strictly speaking, $\omega\Cat$ is not exactly a particular case of
+  Definition~\ref{def:SingleSortedCategory_category} with $\Index = \NN$: a single-sorted
+  $\omega$-category is not merely a single-sorted $\NN$-category, but one satisfying the additional
+  axiom that every morphism is a $k$-cell for some $k \in \NN$. Thus, the objects of $\omega\Cat$
+  form a subclass of those of $\NN\Cat$. The categorical structure (composition, identity, and laws),
+  however, is inherited directly.} of Definition~\ref{def:SingleSortedCategory_category} where
+  $\Index$ is the set of natural numbers $\NN$. Its objects are single-sorted $\omega$-categories and
+  its morphisms are single-sorted $\omega$-functors.
 \end{construction}
 
 \begin{proof}
