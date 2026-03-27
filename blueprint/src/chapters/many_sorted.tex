@@ -196,12 +196,12 @@ preserve sources, targets, identities, and composition at each pair of dimension
   \uses{def:ManySortedCategory}
   \lean{HigherCategoryTheory.ManySorted.Functor}
   \leanok
-  Let $\cat{C} = ((C_k)_{k \in \Index}, (\Sc^{(k,j)}, \Tg^{(k,j)}, \Idm^{(k,j)}, \circ^{(k,j)})_{j,
-  k \in \Index, \, j < k})$ and $\cat{D} = ((D_k)_{k \in \Index}, (\Sc^{(k,j)}, \Tg^{(k,j)},
+  Let $\cat{C} = ((C_k)_{k \in \Index}, (\Sc^{(k,j)}, \Tg^{(k,j)}, \Idm^{(k,j)}, \circ^{(k,j)})_{k,
+  j \in \Index, \, j < k})$ and $\cat{D} = ((D_k)_{k \in \Index}, (\Sc^{(k,j)}, \Tg^{(k,j)},
   \Idm^{(k,j)}, \circ^{(k,j)})_{k, j \in \Index, \, j < k})$ be many-sorted $\Index$-categories. A
-  \emph{many-sorted $\Index$-functor} from $\cat{C}$ to $\cat{D}$ is a family of maps $(F_k \colon
-  C_k \to D_k)_{k \in \Index}$ satisfying, for each pair of indices $k, j \in \Index$ with $j < k$,
-  the following preservation properties:
+  \emph{many-sorted $\Index$-functor} from $\cat{C}$ to $\cat{D}$ is a family of maps $F = (F_k
+  \colon C_k \to D_k)_{k \in \Index}$, written $F \colon \cat{C} \to \cat{D}$, satisfying, for each
+  pair of indices $k, j \in \Index$ with $j < k$, the following preservation properties:
 
   \begin{enumerate}
     \item \label{ax:ms_fun_sc_tg} For all $f \in C_k$,
@@ -230,10 +230,10 @@ yield valid many-sorted functors.
   \uses{def:ManySortedFunctor}
   \lean{HigherCategoryTheory.ManySorted.Functor.comp}
   \leanok
-  Let $\cat{C}, \cat{D}, \cat{E}$ be many-sorted $\Index$-categories, and let $(F_k)_{k \in \Index}
-  \colon \cat{C} \to \cat{D}$ and $(G_k)_{k \in \Index} \colon \cat{D} \to \cat{E}$ be many-sorted
-  $\Index$-functors. Then, the family $(G_k \circ F_k)_{k \in \Index} \colon \cat{C} \to \cat{E}$ is
-  also a many-sorted $\Index$-functor.
+  Let $\cat{C}, \cat{D}, \cat{E}$ be many-sorted $\Index$-categories, and let $F = (F_k)_{k \in
+  \Index} \colon \cat{C} \to \cat{D}$ and $G = (G_k)_{k \in \Index} \colon \cat{D} \to \cat{E}$ be
+  many-sorted $\Index$-functors. Then, the family $G \circ F = (G_k \circ F_k)_{k \in \Index} \colon
+  \cat{C} \to \cat{E}$ is also a many-sorted $\Index$-functor.
 \end{theorem}
 
 \begin{proof}
@@ -292,7 +292,8 @@ yield valid many-sorted functors.
   \lean{HigherCategoryTheory.ManySorted.Functor.id}
   \leanok
   Let $\cat{C}$ be a many-sorted $\Index$-category. Then, the family of identity functions
-  $(\id_{C_k})_{k \in \Index}$ is a many-sorted $\Index$-functor from $\cat{C}$ to itself.
+  $\id_{\cat{C}} = (\id_{C_k})_{k \in \Index}$, written $\id_{\cat{C}} \colon \cat{C} \to \cat{C}$,
+  is a many-sorted $\Index$-functor from $\cat{C}$ to itself.
 \end{theorem}
 
 \begin{proof}
