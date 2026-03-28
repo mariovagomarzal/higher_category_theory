@@ -143,8 +143,8 @@ def NFunctor.underlying (F : NFunctor n C D) (m : Fin n) :
     letI := SC.underlying m
     letI := SD.underlying m
     NFunctor m (cells m C) (cells m D) :=
-  let uSC := SC.underlying m
-  let uSD := SD.underlying m
+  letI := SC.underlying m
+  letI := SD.underlying m
   {
     map f := ⟨F f, by apply underlying_functor_is_cell⟩
     map_sc_eq_sc_map := by inherit_axiom F.map_sc_eq_sc_map
@@ -163,8 +163,8 @@ def OmegaFunctor.underlying (F : OmegaFunctor C D) (m : ℕ) :
     letI := ωSC.underlying m
     letI := ωSD.underlying m
     NFunctor m (cells m C) (cells m D) :=
-  let uSC := ωSC.underlying m
-  let uSD := ωSD.underlying m
+  letI := ωSC.underlying m
+  letI := ωSD.underlying m
   {
     map f := ⟨F f, by apply underlying_functor_is_cell⟩
     map_sc_eq_sc_map := by inherit_axiom F.map_sc_eq_sc_map
