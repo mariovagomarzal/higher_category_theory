@@ -82,7 +82,7 @@ variable {Index : Type} [Preorder Index]
 
 /-- Coercion allowing us to write `F k f` instead of `F.map k f` for the action of a functor `F` on
 a `k`-morphism `f`. -/
-instance instCoeFun : CoeFun (Functor Index C D) fun _ ↦ (k : Index) → C k → D k := ⟨fun F ↦ F.map⟩
+instance : CoeFun (Functor Index C D) fun _ ↦ (k : Index) → C k → D k := ⟨fun F ↦ F.map⟩
 
 attribute [coe] Functor.map
 

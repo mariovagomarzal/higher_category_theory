@@ -17,8 +17,8 @@ is strictly less than `k`, enforcing this constraint at the type level.
 
 * `IndexBelow k` — the subtype `{ j : Index // j < k }`.
 * `IndexBelow.isLt` — extracts the proof that `j < k`.
-* `IndexBelow.instCoe` — coercion from `IndexBelow j` to `IndexBelow j.val` when `j : IndexBelow k`,
-  enabling nested dimension chains `i < j < k`.
+* `IndexBelow.coeIndexBelowVal` — coercion from `IndexBelow j` to `IndexBelow j.val` when
+  `j : IndexBelow k`, enabling nested dimension chains `i < j < k`.
 -/
 
 namespace HigherCategoryTheory
@@ -40,7 +40,7 @@ def isLt (j : IndexBelow k) : j < k := j.property
 enables working with nested dimension chains: given `i : IndexBelow j` where `j : IndexBelow k`, we
 can coerce `i` to `IndexBelow j.val` to use it in operations parameterized by the underlying index
 value. -/
-instance instCoe : Coe (IndexBelow j) (IndexBelow j.val) where
+instance coeIndexBelowVal : Coe (IndexBelow j) (IndexBelow j.val) where
   coe i := ⟨i, i.isLt⟩
 
 end IndexBelow
