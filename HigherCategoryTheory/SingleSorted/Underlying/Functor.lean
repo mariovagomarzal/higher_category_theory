@@ -3,9 +3,11 @@ Copyright (c) 2025 Mario Vago Marzal. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Enric Cosme Llópez, Raul Ruiz Mora, Mario Vago Marzal
 -/
+import Mathlib.CategoryTheory.Category.Cat
 import HigherCategoryTheory.SingleSorted.Category
 import HigherCategoryTheory.SingleSorted.Functor
 import HigherCategoryTheory.SingleSorted.Cells
+import HigherCategoryTheory.SingleSorted.Cat
 
 /-!
 # Underlying categories
@@ -48,7 +50,7 @@ simplification.
 macro (name := inherit_axiom) "inherit_axiom" axiom_name:ident : tactic =>
   `(tactic| (intros; rw [Subtype.mk.injEq]; try (apply $axiom_name <;> (simp at *; assumption))))
 
-section Underlying
+section Category
 
 variable {n : ℕ} {C : Type u}
 
@@ -123,7 +125,7 @@ def OmegaCategory.underlying (S : OmegaCategory C) (m : ℕ) :
   tgk_compj_eq_compj_tgk := by inherit_axiom S.tgk_compj_eq_compj_tgk
   interchange := by inherit_axiom S.interchange
 
-end Underlying
+end Category
 
 section Functor
 
@@ -173,5 +175,21 @@ def OmegaFunctor.underlying (F : OmegaFunctor C D) (m : ℕ) :
   }
 
 end Functor
+
+section UnderlyingFunctor
+
+variable {n : ℕ} {C : Type u} [S : NCategory n C]
+
+/-- TODO: Comment. -/
+instance {m : Fin n} : NCategory m (cells m C) := S.underlying m
+
+open CategoryTheory in
+/-- TODO: Comment. -/
+@[simp]
+def UnderlyingFunctor (n : ℕ) (m : Fin n) : NCat n ⥤ NCat m where
+  obj C := Cat.of (cells m C)
+  map {C D} F := F.underlying m
+
+end UnderlyingFunctor
 
 end HigherCategoryTheory.SingleSorted

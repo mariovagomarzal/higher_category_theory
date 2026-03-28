@@ -4,11 +4,6 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Enric Cosme Llópez, Raul Ruiz Mora, Mario Vago Marzal
 -/
 import Mathlib.Order.Category.NonemptyFinLinOrd
-import Mathlib.CategoryTheory.Category.Cat
-import Mathlib.CategoryTheory.Limits.Cones
-import HigherCategoryTheory.SingleSorted.Category
-import HigherCategoryTheory.SingleSorted.Functor
-import HigherCategoryTheory.SingleSorted.Cat
 import HigherCategoryTheory.SingleSorted.Underlying.Functor
 
 /-! TODO: Comment. -/
@@ -17,20 +12,7 @@ universe u v
 
 namespace HigherCategoryTheory.SingleSorted
 
-open CategoryTheory
-
-variable {n : ℕ} {C : Type u} [S : NCategory n C]
-
--- TODO: Maybe move this to the 'Basic' module of 'Underlying'.
-/-- TODO: Comment. -/
-instance {m : Fin n} : NCategory m (cells m C) := S.underlying m
-
-/-- TODO: Comment. -/
-@[simp]
-def UnderlyingFunctor (n : ℕ) (m : Fin n) : NCat n ⥤ NCat m where
-  obj C := Cat.of (cells m C)
-  map {C D} F := F.underlying m
-
+open CategoryTheory in
 /-- TODO: Comment. -/
 def UnderlyingConeFunctor : ℕᵒᵖ ⥤ CategoryTheory.Cat where
   obj n := CategoryTheory.Cat.of (NCat n.unop)
