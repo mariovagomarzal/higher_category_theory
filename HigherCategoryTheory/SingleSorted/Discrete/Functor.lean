@@ -3,210 +3,167 @@ Copyright (c) 2025 Mario Vago Marzal. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Enric Cosme Llópez, Raul Ruiz Mora, Mario Vago Marzal
 -/
+import Mathlib.CategoryTheory.Category.Cat
 import HigherCategoryTheory.SingleSorted.Category
 import HigherCategoryTheory.SingleSorted.Functor
+import HigherCategoryTheory.SingleSorted.Cat
 
 /-!
-**Important note:** This file is work in progress and exists only to save the work done previous to
-a codebase refactor.
+**Important note:** This file is work in progress and proofs should be highly improved.
 -/
 
 universe u v
 
 namespace HigherCategoryTheory.SingleSorted
 
-variable {m : ℕ} {C : Type u}
+variable {n : ℕ} {C : Type u}
 
-/-- TODO: Comment. -/
-@[simp]
-def NCategory.discrete (S : NCategory m C) (n : ℕ) :
-    NCategory n C where
-  sc k f := if h : k < m then S.sc ⟨k, h⟩ f else f
-  tg k f := if h : k < m then S.tg ⟨k, h⟩ f else f
-  pcomp k g f := if h : k < m then S.pcomp ⟨k, h⟩ g f else ⟨g = f, fun _ ↦ f⟩
+/-- TODO: Document. -/
+-- TODO: The remaining `sorry`s follow the same proof pattern as the completed axioms. They will be
+-- filled in once the proof strategy is refined.
+def NCategory.discrete (S : NCategory n C) (m : ℕ) (_n_lt_m : n < m) : NCategory m C where
+  sc k f := if k_lt_n : k < n then S.sc ⟨k, k_lt_n⟩ f else f
+  tg k f := if k_lt_n : k < n then S.tg ⟨k, k_lt_n⟩ f else f
+  pcomp k g f := if k_lt_n : k < n then S.pcomp ⟨k, k_lt_n⟩ g f else ⟨g = f, fun _ ↦ f⟩
   pcomp_dom := by
     intro k f g
-    by_cases k_lt_m : k < m
-    · simp only [k_lt_m, ↓reduceDIte]
-      apply S.pcomp_dom
-    · simp [k_lt_m]
-  sck_sck_eq_sck := by
-    intro k f
-    by_cases k_lt_m : k < m <;> simp [k_lt_m]
-  tgk_sck_eq_sck := by
-    intro k f
-    by_cases k_lt_m : k < m <;> simp [k_lt_m]
-  sck_tgk_eq_tgk := by
-    intro k f
-    by_cases k_lt_m : k < m <;> simp [k_lt_m]
-  tgk_tgk_eq_tgk := by
-    intro k f
-    by_cases k_lt_m : k < m <;> simp [k_lt_m]
+    split_ifs
+    · apply S.pcomp_dom
+    · trivial
+  sck_sck_eq_sck := by sorry
+  tgk_sck_eq_sck := by sorry
+  sck_tgk_eq_tgk := by sorry
+  tgk_tgk_eq_tgk := by sorry
   sck_compk_eq_sck := by
     intro k f g sc_tg_gf
-    by_cases k_lt_m : k < m
-    · simp only [CategoryStruct.comp, k_lt_m, ↓reduceDIte]
+    split_ifs with h
+    · simp only [CategoryStruct.comp, h]
       apply S.sck_compk_eq_sck
-      simp [k_lt_m] at sc_tg_gf
+      simp [h] at sc_tg_gf
       assumption
-    · simp [k_lt_m]
-  tgk_compk_eq_tgk := by
-    intro k f g sc_tg_gf
-    by_cases k_lt_m : k < m
-    · simp only [CategoryStruct.comp, k_lt_m, ↓reduceDIte]
-      apply S.tgk_compk_eq_tgk
-      simp [k_lt_m] at sc_tg_gf
-      assumption
-    · simp only [CategoryStruct.comp, k_lt_m, ↓reduceDIte]
-      simp [k_lt_m] at sc_tg_gf
-      exact sc_tg_gf.symm
+    · simp [h]
+  tgk_compk_eq_tgk := by sorry
   compk_sck_eq_id := by
     intro k f
-    by_cases k_lt_m : k < m
-    · simp only [CategoryStruct.comp, k_lt_m, ↓reduceDIte]
+    split_ifs with h
+    · simp only [CategoryStruct.comp, h]
       apply S.compk_sck_eq_id
-    · simp [k_lt_m]
-  compk_tgk_eq_id := by
-    intro k f
-    by_cases k_lt_m : k < m
-    · simp only [CategoryStruct.comp, k_lt_m, ↓reduceDIte]
-      apply S.compk_tgk_eq_id
-    · simp [k_lt_m]
+    · simp [h]
+  compk_tgk_eq_id := by sorry
   assoc := by
-    intro k f g h sc_tg_hg sc_tg_gf
-    by_cases k_lt_m : k < m
-    · simp only [CategoryStruct.comp, CategoryStruct.comp.eq_1,
-        k_lt_m, ↓reduceDIte]
-      apply S.assoc <;> (simp only [sc_is_tg, k_lt_m, ↓reduceDIte] at *; assumption)
-    · simp [k_lt_m]
+    intro k f g h sc_tg_gf sc_tg_hg
+    split_ifs with h
+    · simp only [CategoryStruct.comp, h]
+      apply S.assoc
+      · simp [h] at sc_tg_gf
+        assumption
+      · simp [h] at sc_tg_hg
+        assumption
+    · simp [h]
   sck_scj_eq_scj := by
     intro k j f j_lt_k
-    by_cases k_lt_m : k < m
-    · have j_lt_m : j < m := lt_trans j_lt_k k_lt_m
-      simp only [k_lt_m, j_lt_m, ↓reduceDIte]
-      apply S.sck_scj_eq_scj
+    split_ifs
+    · apply S.sck_scj_eq_scj
       assumption
-    · simp [k_lt_m]
-  scj_tgk_eq_scj := by
-    intro k j f j_lt_k
-    by_cases k_lt_m : k < m
-    · have j_lt_m : j < m := lt_trans j_lt_k k_lt_m
-      simp only [k_lt_m, j_lt_m, ↓reduceDIte]
-      apply S.scj_tgk_eq_scj
-      assumption
-    · simp [k_lt_m]
-  scj_sck_eq_scj := by
-    intro k j f j_lt_k
-    by_cases k_lt_m : k < m
-    · have j_lt_m : j < m := lt_trans j_lt_k k_lt_m
-      simp only [k_lt_m, j_lt_m, ↓reduceDIte]
-      apply S.scj_sck_eq_scj
-      assumption
-    · simp [k_lt_m]
-  tgk_tgj_eq_tgj := by
-    intro k j f j_lt_k
-    by_cases k_lt_m : k < m
-    · have j_lt_m : j < m := lt_trans j_lt_k k_lt_m
-      simp only [k_lt_m, j_lt_m, ↓reduceDIte]
-      apply S.tgk_tgj_eq_tgj
-      assumption
-    · simp [k_lt_m]
-  tgj_sck_eq_tgj := by
-    intro k j f j_lt_k
-    by_cases k_lt_m : k < m
-    · have j_lt_m : j < m := lt_trans j_lt_k k_lt_m
-      simp only [k_lt_m, j_lt_m, ↓reduceDIte]
-      apply S.tgj_sck_eq_tgj
-      assumption
-    · simp [k_lt_m]
-  tgj_tgk_eq_tgj := by
-    intro k j f j_lt_k
-    by_cases k_lt_m : k < m
-    · have j_lt_m : j < m := lt_trans j_lt_k k_lt_m
-      simp only [k_lt_m, j_lt_m, ↓reduceDIte]
-      apply S.tgj_tgk_eq_tgj
-      assumption
-    · simp [k_lt_m]
+    · omega
+    · trivial
+    · trivial
+  scj_sck_eq_scj := by sorry
+  scj_tgk_eq_scj := by sorry
+  tgk_tgj_eq_tgj := by sorry
+  tgj_tgk_eq_tgj := by sorry
+  tgj_sck_eq_tgj := by sorry
   sck_compj_eq_compj_sck := by
     intro k j f g j_lt_k sc_tg_j_gf
-    by_cases k_lt_m : k < m
-    · have j_lt_m : j < m := lt_trans j_lt_k k_lt_m
-      simp only [CategoryStruct.comp, k_lt_m, j_lt_m, ↓reduceDIte]
-      apply S.sck_compj_eq_compj_sck
+    simp only [CategoryStruct.comp]
+    split_ifs with h₁ h₂
+    · apply S.sck_compj_eq_compj_sck
       · assumption
-      · simp only [sc_is_tg, j_lt_m, ↓reduceDIte] at *
+      · simp [h₂] at sc_tg_j_gf
         assumption
-    · simp [k_lt_m]
-      by_cases j_lt_m : j < m <;> simp [j_lt_m]
-  tgk_compj_eq_compj_tgk := by
-    intro k j f g j_lt_k tg_k_j_gf
-    by_cases k_lt_m : k < m
-    · have j_lt_m : j < m := lt_trans j_lt_k k_lt_m
-      simp only [CategoryStruct.comp, k_lt_m, j_lt_m, ↓reduceDIte]
-      apply S.tgk_compj_eq_compj_tgk
-      · assumption
-      · simp only [sc_is_tg, j_lt_m, ↓reduceDIte] at *
-        assumption
-    · simp [k_lt_m]
-      by_cases j_lt_m : j < m <;> simp [j_lt_m]
+    · trivial
+    · trivial
+    · trivial
+  tgk_compj_eq_compj_tgk := by sorry
   interchange := by
-    intro k j f₁ f₂ g₁ g₂ j_lt_k sc_tg_g₂g₁ sc_tg_f₂f₁ tg_k_g₂f₂ tg_k_g₁f₁
-    by_cases k_lt_m : k < m
-    · have j_lt_m : j < m := lt_trans j_lt_k k_lt_m
-      simp only [CategoryStruct.comp, CategoryStruct.comp.eq_1,
-        k_lt_m, j_lt_m, ↓reduceDIte]
-      simp only [sc_is_tg, k_lt_m, j_lt_m, ↓reduceDIte]
-        at sc_tg_g₂g₁ sc_tg_f₂f₁ tg_k_g₂f₂ tg_k_g₁f₁
-      apply S.interchange j_lt_k <;> assumption
-    · simp [k_lt_m]
-      by_cases j_lt_m : j < m <;> simp [j_lt_m]
-
--- TODO: Implement this following the same pattern as `NCategory.discrete`.
-/-- TODO: Comment. -/
-@[simp]
-def NCategory.discrete_omega (S : NCategory m C) :
-    OmegaCategory C := by sorry
-
-variable {n : ℕ} {C : Type u} {D : Type v}
-  [SC : NCategory n C] [SD : NCategory n D]
-
-/-- TODO: Comment. -/
-@[simp]
-def NFunctor.discrete (F : NFunctor n C D) (m : ℕ) :
-    letI := SC.discrete m
-    letI := SD.discrete m
-    NFunctor m C D :=
-  let dSC := SC.discrete m
-  let dSD := SD.discrete m
-  {
-    map := F
-    map_sc_eq_sc_map := by
-      intro k f
-      by_cases k_lt_n : k < n
-      · simp [k_lt_n]
-      · simp [k_lt_n]
-    map_tg_eq_tg_map := by
-      intro k f
-      by_cases k_lt_n : k < n
-      · simp [k_lt_n]
-      · simp [k_lt_n]
-    map_comp_eq_comp_map := by
-      intro k f g sc_tg_gf
-      by_cases k_lt_n : k < n
-      · simp only [CategoryStruct.comp, NCategory.discrete,
-          k_lt_n, ↓reduceDIte]
-        apply F.map_comp_eq_comp_map
-        simp [k_lt_n] at sc_tg_gf
+    intro k j f₁ f₂ g₁ g₂ j_lt_k sc_tg_k_g₂g₁ sc_tg_k_f₂f₁ sc_tg_j_g₂f₂ sc_tg_j_g₁f₁
+    simp only [CategoryStruct.comp]
+    split_ifs with h₁ h₂
+    · apply S.interchange
+      · assumption
+      · simp [h₁] at sc_tg_k_g₂g₁
         assumption
-      · simp [k_lt_n]
+      · simp [h₁] at sc_tg_k_f₂f₁
+        assumption
+      · simp [h₂] at sc_tg_j_g₂f₂
+        assumption
+      · simp [h₂] at sc_tg_j_g₁f₁
+        assumption
+    · trivial
+    · trivial
+    · trivial
+
+/-- TODO: Document. -/
+-- TODO: The proofs follow the same structure as those in `Category.discrete`.
+def NCategory.discreteOmega (S : NCategory n C) : OmegaCategory C where
+  sc k f := if k_lt_n : k < n then S.sc ⟨k, k_lt_n⟩ f else f
+  tg k f := if k_lt_n : k < n then S.tg ⟨k, k_lt_n⟩ f else f
+  pcomp k g f := if k_lt_n : k < n then S.pcomp ⟨k, k_lt_n⟩ g f else ⟨g = f, fun _ ↦ f⟩
+  pcomp_dom := by sorry
+  sck_sck_eq_sck := by sorry
+  tgk_sck_eq_sck := by sorry
+  sck_tgk_eq_tgk := by sorry
+  tgk_tgk_eq_tgk := by sorry
+  sck_compk_eq_sck := by sorry
+  tgk_compk_eq_tgk := by sorry
+  compk_sck_eq_id := by sorry
+  compk_tgk_eq_id := by sorry
+  assoc := by sorry
+  sck_scj_eq_scj := by sorry
+  scj_sck_eq_scj := by sorry
+  scj_tgk_eq_scj := by sorry
+  tgk_tgj_eq_tgj := by sorry
+  tgj_tgk_eq_tgj := by sorry
+  tgj_sck_eq_tgj := by sorry
+  sck_compj_eq_compj_sck := by sorry
+  tgk_compj_eq_compj_tgk := by sorry
+  interchange := by sorry
+  is_cell := by sorry
+
+section Functor
+
+variable {n : ℕ} {C : Type u} {D : Type v} [SC : NCategory n C] [SD : NCategory n D]
+
+/-- TODO: Document. -/
+-- TODO: The proofs follow the same structure as those in `Category.discrete`.
+def NFunctor.discrete (F : NFunctor n C D) (m : ℕ) (n_lt_m : n < m) :
+    letI := SC.discrete m n_lt_m
+    letI := SD.discrete m n_lt_m
+    NFunctor m C D :=
+  letI := SC.discrete m n_lt_m
+  letI := SD.discrete m n_lt_m
+  {
+    map := F.map
+    map_sc_eq_sc_map := by sorry
+    map_tg_eq_tg_map := by sorry
+    map_comp_eq_comp_map := by sorry
   }
 
--- TODO: Implement this following the same pattern as `NFunctor.discrete`.
-/-- TODO: Comment. -/
-@[simp]
-def NFunctor.discrete_omega (F : NFunctor n C D) :
-    letI := SC.discrete_omega
-    letI := SD.discrete_omega
-    OmegaFunctor C D := by sorry
+/-- TODO: Document. -/
+-- TODO: The proofs follow the same structure as those in `Category.discrete`.
+def NFunctor.discreteOmega (F : NFunctor n C D) :
+    letI := SC.discreteOmega
+    letI := SD.discreteOmega
+    OmegaFunctor C D :=
+  letI := SC.discreteOmega
+  letI := SD.discreteOmega
+  {
+    map := F.map
+    map_sc_eq_sc_map := by sorry
+    map_tg_eq_tg_map := by sorry
+    map_comp_eq_comp_map := by sorry
+  }
+
+end Functor
 
 end HigherCategoryTheory.SingleSorted
