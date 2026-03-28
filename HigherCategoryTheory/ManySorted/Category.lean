@@ -23,13 +23,13 @@ parameterized by pairs of indices `(k, j)` with `j < k`.
 
 ## Main definitions
 
-* `CategoryStruct`: The basic structure with source, target, identity, and partial
-  composition operations, along with the composability condition.
-* `PreCategory`: A structure satisfying the many-sorted category axioms at each pair of
-  dimensions, ensuring that each pair `(k, j)` with `j < k` independently forms a classical
-  category with objects `C j` and morphisms `C k`.
-* `Category`: A structure with additional cross-dimensional axioms ensuring compatibility
-  between different pairs of dimensions.
+* `CategoryStruct`: The basic structure with source, target, identity, and partial composition
+  operations, along with the composability condition.
+* `PreCategory`: A structure satisfying the many-sorted category axioms at each pair of dimensions,
+  ensuring that each pair `(k, j)` with `j < k` independently forms a classical category with
+  objects `C j` and morphisms `C k`.
+* `Category`: A structure with additional cross-dimensional axioms ensuring compatibility between
+  different pairs of dimensions.
 
 ## Notation
 
@@ -90,20 +90,20 @@ variable {k : Index} {j : IndexBelow k} {f g : C k}
 scoped[HigherCategoryTheory.ManySorted] notation g " ♯.[" k "," j "] " f:100 =>
   CategoryStruct.pcomp k j g f
 
-/-- A method to express the composability condition for morphisms `g` and `f` at dimensions
-`(k, j)`, that is, that the source of `g` at `(k, j)` equals the target of `f` at `(k, j)`. -/
+/-- A method to express the composability condition for morphisms `g` and `f` at dimensions `(k,
+j)`, that is, that the source of `g` at `(k, j)` equals the target of `f` at `(k, j)`. -/
 @[simp high]
 def sc_is_tg (k : Index) (j : IndexBelow k) (g f : C k) : Prop := sc k j g = tg k j f
 
 /-- If `g` and `f` satisfy the composability condition `sc_is_tg k j g f`, then the partial
-composition `g ♯.[k,j] f` is defined. This lemma represents the forward direction of the
-`pcomp_dom` axiom. -/
+composition `g ♯.[k,j] f` is defined. This lemma represents the forward direction of the `pcomp_dom`
+axiom. -/
 lemma dom_of_sc_is_tg (sc_tg_gf : sc_is_tg k j g f) : (g ♯.[k,j] f).Dom :=
   pcomp_dom.mpr sc_tg_gf
 
-/-- If the partial composition `g ♯.[k,j] f` is defined, then `g` and `f` satisfy the
-composability condition `sc_is_tg k j g f`. This is the backward direction of the `pcomp_dom`
-axiom, that is, the converse of `dom_of_sc_is_tg`. -/
+/-- If the partial composition `g ♯.[k,j] f` is defined, then `g` and `f` satisfy the composability
+condition `sc_is_tg k j g f`. This is the backward direction of the `pcomp_dom` axiom, that is, the
+converse of `dom_of_sc_is_tg`. -/
 lemma sc_is_tg_of_dom (dom_gf : (g ♯.[k,j] f).Dom) : sc_is_tg k j g f := pcomp_dom.mp dom_gf
 
 /-- The (total) composition operation at dimensions `(k, j)`, defined for composable morphisms.
@@ -133,8 +133,8 @@ lemma congr_dom (eq_f : f₁ = f₂) (eq_g : g₁ = g₂) (dom_g₁f₁ : (g₁ 
     (g₂ ♯.[k,j] f₂).Dom := by
   grind
 
-/-- Congruence lemma for composability: if `f₁ = f₂` and `g₁ = g₂`, and `g₁` is composable with
-`f₁` at dimensions `(k, j)`, then `g₂` is composable with `f₂` at dimensions `(k, j)`. -/
+/-- Congruence lemma for composability: if `f₁ = f₂` and `g₁ = g₂`, and `g₁` is composable with `f₁`
+at dimensions `(k, j)`, then `g₂` is composable with `f₂` at dimensions `(k, j)`. -/
 lemma congr_sc_is_tg (eq_f : f₁ = f₂) (eq_g : g₁ = g₂) (sc_tg_g₁f₁ : sc_is_tg k j g₁ f₁) :
     sc_is_tg k j g₂ f₂ := by
   grind
@@ -146,16 +146,16 @@ lemma congr_pcomp (eq_f : f₁ = f₂) (eq_g : g₁ = g₂) :
   grind
 
 /-- Congruence lemma for total composition (first-pair version): if `f₁ = f₂` and `g₁ = g₂`, then
-the compositions `g₁ ♯[k,j] f₁` and `g₂ ♯[k,j] f₂` are equal, using the composability proof from
-the first pair. -/
+the compositions `g₁ ♯[k,j] f₁` and `g₂ ♯[k,j] f₂` are equal, using the composability proof from the
+first pair. -/
 lemma congr_comp₁ (eq_f : f₁ = f₂) (eq_g : g₁ = g₂)
     (sc_tg_g₁f₁ : sc_is_tg k j g₁ f₁) :
     g₁ ♯[k,j] f₁ ← sc_tg_g₁f₁ = g₂ ♯[k,j] f₂ ← congr_sc_is_tg eq_f eq_g sc_tg_g₁f₁ := by
   grind
 
 /-- Congruence lemma for total composition (second-pair version): if `f₁ = f₂` and `g₁ = g₂`, then
-the compositions `g₁ ♯[k,j] f₁` and `g₂ ♯[k,j] f₂` are equal, using the composability proof from
-the second pair. -/
+the compositions `g₁ ♯[k,j] f₁` and `g₂ ♯[k,j] f₂` are equal, using the composability proof from the
+second pair. -/
 lemma congr_comp₂ (eq_f : f₁ = f₂) (eq_g : g₁ = g₂)
     (sc_tg_g₂f₂ : sc_is_tg k j g₂ f₂) :
     g₁ ♯[k,j] f₁ ← congr_sc_is_tg eq_f.symm eq_g.symm sc_tg_g₂f₂ =
@@ -182,8 +182,8 @@ with `j < k`, including:
 That is, for each pair `(k, j)` with `j < k`, the data `(C j, C k, sc, tg, idm, comp)` forms a
 classical category with objects `C j` and morphisms `C k`.
 
-This serves as an intermediate step in the construction of `Category`, allowing us to
-establish per-pair properties before enforcing cross-dimensional compatibility.
+This serves as an intermediate step in the construction of `Category`, allowing us to establish
+per-pair properties before enforcing cross-dimensional compatibility.
 -/
 class PreCategory (Index : Type) [Preorder Index] (C : Index → Type u)
     extends CategoryStruct Index C where
@@ -217,8 +217,8 @@ class PreCategory (Index : Type) [Preorder Index] (C : Index → Type u)
     _
     _ = sc k j g := sckj_compkj_eq_sckj sc_tg_hg
     _ = tg k j f := sc_tg_gf
-  /-- If `g` and `f` compose and `h` and `g` compose at dimensions `(k, j)`, then `h` and
-  `g ♯[k,j] f` compose. This is an auxiliary method for the associativity axiom. -/
+  /-- If `g` and `f` compose and `h` and `g` compose at dimensions `(k, j)`, then `h` and `g ♯[k,j]
+  f` compose. This is an auxiliary method for the associativity axiom. -/
   protected compr_assoc {k : Index} {j : IndexBelow k} {f g h : C k}
       (sc_tg_gf : sc_is_tg k j g f) (sc_tg_hg : sc_is_tg k j h g) :
       sc_is_tg k j h (g ♯[k,j] f ← sc_tg_gf) := calc
@@ -238,8 +238,8 @@ open PreCategory in
 attribute [simp] sckj_compkj_eq_sckj tgkj_compkj_eq_tgkj sckj_idmkj tgkj_idmkj
   compkj_idmkj_sckj_eq_id compkj_tgkj_idmkj_eq_id assoc
 
-/-- In a `PreCategory`, the identity map at `(k, j)` is injective as a function from `C j`
-to `C k`. -/
+/-- In a `PreCategory`, the identity map at `(k, j)` is injective as a function from `C j` to `C k`.
+-/
 theorem PreCategory.injetive_idm {Index : Type} [Preorder Index] {C : Index → Type u}
     [PreCategory Index C] {k : Index} {j : IndexBelow k} :
     Function.Injective (idm k j : C j → C k) := by
@@ -251,8 +251,8 @@ theorem PreCategory.injetive_idm {Index : Type} [Preorder Index] {C : Index → 
     _ = g := sckj_idmkj g
 
 /--
-A **many-sorted category** is a `PreCategory` with additional axioms ensuring
-compatibility between different pairs of dimensions.
+A **many-sorted category** is a `PreCategory` with additional axioms ensuring compatibility between
+different pairs of dimensions.
 
 This structure extends `PreCategory` by adding cross-dimensional axioms that govern how
 operations at different dimensions interact:
@@ -313,8 +313,8 @@ class Category (Index : Type) [Preorder Index] (C : Index → Type u)
   idmkj_idmji_eq_idmki : ∀ {k : Index} {j : IndexBelow k} {i : IndexBelow j} (f : C i),
       idm k j (idm j i f) = idm k i f := by
     hcat_disch
-  /-- If `g` and `f` are `(j, i)`-composable, then `idm k j g` and `idm k j f` are
-  `(k, i)`-composable. This is an auxiliary method for the identity composition axiom. -/
+  /-- If `g` and `f` are `(j, i)`-composable, then `idm k j g` and `idm k j f` are `(k,
+  i)`-composable. This is an auxiliary method for the identity composition axiom. -/
   protected sc_tg_ki_idmkj {k : Index} {j : IndexBelow k} {i : IndexBelow j} {f g : C j}
       (sc_tg_ji_gf : sc_is_tg j.val i g f) : sc_is_tg k i (idm k j g) (idm k j f) := calc
     sc k i (idm k j g)
@@ -329,10 +329,10 @@ class Category (Index : Type) [Preorder Index] (C : Index → Type u)
       idm k j (g ♯[j.val,i] f ← sc_tg_ji_gf) =
       (idm k j g) ♯[k,i] (idm k j f) ← (sc_tg_ki_idmkj sc_tg_ji_gf) := by
     hcat_disch
-  /-- Given morphisms `f₁, f₂, g₁, g₂` with `g₂` and `g₁` `(k, j)`-composable, `f₂` and `f₁`
-  `(k, j)`-composable, `g₂` and `f₂` `(k, i)`-composable, and `g₁` and `f₁` `(k, i)`-composable
-  (with `i < j < k`), then `g₂ ♯[k,i] f₂` and `g₁ ♯[k,i] f₁` are `(k, j)`-composable.
-  This is an auxiliary method for the `interchange` axiom. -/
+  /-- Given morphisms `f₁, f₂, g₁, g₂` with `g₂` and `g₁` `(k, j)`-composable, `f₂` and `f₁` `(k,
+  j)`-composable, `g₂` and `f₂` `(k, i)`-composable, and `g₁` and `f₁` `(k, i)`-composable (with `i
+  < j < k`), then `g₂ ♯[k,i] f₂` and `g₁ ♯[k,i] f₁` are `(k, j)`-composable. This is an auxiliary
+  method for the `interchange` axiom. -/
   protected sc_tg_kj_interchange {k : Index} {j : IndexBelow k} {i : IndexBelow j}
       {f₁ f₂ g₁ g₂ : C k}
       (sc_tg_kj_g₂g₁ : sc_is_tg k j g₂ g₁)
@@ -346,15 +346,16 @@ class Category (Index : Type) [Preorder Index] (C : Index → Type u)
     _ = (tg k j g₁) ♯[j.val,i] (tg k j f₁) ← (sc_tg_ji_tg sc_tg_ki_g₁f₁) :=
       congr_comp₁ sc_tg_kj_f₂f₁ sc_tg_kj_g₂g₁ (sc_tg_ji_sc sc_tg_ki_g₂f₂)
     _ = _ := (tgkj_compki_eq_compji_tgkj sc_tg_ki_g₁f₁).symm
-  /-- Given morphisms `f₁, f₂, g₁, g₂` with `g₂` and `g₁` `(k, j)`-composable, `f₂` and `f₁`
-  `(k, j)`-composable, and `g₂` and `f₂` `(k, i)`-composable (with `i < j < k`), then
-  `g₂ ♯[k,j] g₁` and `f₂ ♯[k,j] f₁` are `(k, i)`-composable.
-  This is an auxiliary method for the `interchange` axiom.
+  /--
+  Given morphisms `f₁, f₂, g₁, g₂` with `g₂` and `g₁` `(k, j)`-composable, `f₂` and `f₁` `(k,
+  j)`-composable, and `g₂` and `f₂` `(k, i)`-composable (with `i < j < k`), then `g₂ ♯[k,j] g₁` and
+  `f₂ ♯[k,j] f₁` are `(k, i)`-composable. This is an auxiliary method for the `interchange` axiom.
 
-  Note: an equivalent formulation replaces the hypothesis `sc_is_tg k i g₂ f₂` with
-  `sc_is_tg k i g₁ f₁`. Both are interderivable from the remaining hypotheses and the
-  cross-dimensional axioms, so either one suffices. We choose `sc_is_tg k i g₂ f₂` because it
-  aligns directly with the target side of the goal, yielding a shorter proof. -/
+  Note: an equivalent formulation replaces the hypothesis `sc_is_tg k i g₂ f₂` with `sc_is_tg k i g₁
+  f₁`. Both are interderivable from the remaining hypotheses and the cross-dimensional axioms, so
+  either one suffices. We choose `sc_is_tg k i g₂ f₂` because it aligns directly with the target
+  side of the goal, yielding a shorter proof.
+  -/
   protected sc_tg_ki_interchange {k : Index} {j : IndexBelow k} {i : IndexBelow j}
       {f₁ f₂ g₁ g₂ : C k}
       (sc_tg_kj_g₂g₁ : sc_is_tg k j g₂ g₁)
@@ -378,9 +379,9 @@ class Category (Index : Type) [Preorder Index] (C : Index → Type u)
   - `g₂` is composable with `f₂` at dimensions `(k, i)`, and
   - `g₁` is composable with `f₁` at dimensions `(k, i)`,
 
-  then both `(g₂ ♯[k,i] f₂) ♯[k,j] (g₁ ♯[k,i] f₁)` and `(g₂ ♯[k,j] g₁) ♯[k,i] (f₂ ♯[k,j] f₁)`
-  are defined and equal. That is, composing first at dimension `i` and then at dimension `j` yields
-  the same result as composing first at dimension `j` and then at dimension `i`.
+  then both `(g₂ ♯[k,i] f₂) ♯[k,j] (g₁ ♯[k,i] f₁)` and `(g₂ ♯[k,j] g₁) ♯[k,i] (f₂ ♯[k,j] f₁)` are
+  defined and equal. That is, composing first at dimension `i` and then at dimension `j` yields the
+  same result as composing first at dimension `j` and then at dimension `i`.
   -/
   interchange : ∀ {k : Index} {j : IndexBelow k} {i : IndexBelow j} {f₁ f₂ g₁ g₂ : C k}
       (sc_tg_kj_g₂g₁ : sc_is_tg k j g₂ g₁)
@@ -412,9 +413,9 @@ abbrev NCategory (n : ℕ) (C : FinSucc n → Type u) := Category (FinSucc n) C
 /--
 Any `PreCategory (FinSucc 1) C` lifts to a full `NCategory 1 C`.
 
-Since `FinSucc 1 = Fin 2` has exactly two elements, there are no triples of distinct indices
-`i < j < k`, making all cross-dimensional axioms of `Category` vacuously satisfied. Thus, a
-pre-many-sorted 1-category is essentially a many-sorted 1-category.
+Since `FinSucc 1 = Fin 2` has exactly two elements, there are no triples of distinct indices `i < j
+< k`, making all cross-dimensional axioms of `Category` vacuously satisfied. Thus, a pre-many-sorted
+1-category is essentially a many-sorted 1-category.
 -/
 -- TODO: All cross-dimensional axioms are vacuously satisfied since `FinSucc 1 = Fin 2` has no
 -- triples `i < j < k`. The proof should be `{S with}`, but the default `hcat_disch` tactic
@@ -423,8 +424,8 @@ pre-many-sorted 1-category is essentially a many-sorted 1-category.
 def PreCategory.lift {C : FinSucc 1 → Type u} [S : PreCategory (FinSucc 1) C] : NCategory 1 C :=
   by sorry
 
-/-- A **many-sorted $\omega$-category** is a `Category` with index type `ℕ`,
-representing a category with infinitely (countably) many dimensions. -/
+/-- A **many-sorted $\omega$-category** is a `Category` with index type `ℕ`, representing a category
+with infinitely (countably) many dimensions. -/
 abbrev OmegaCategory (C : ℕ → Type u) := Category ℕ C
 
 end HigherCategoryTheory.ManySorted

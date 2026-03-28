@@ -23,16 +23,15 @@ source-target matching conditions are satisfied.
 
 ## Main definitions
 
-* `CategoryStruct`: The basic structure with source, target, and partial composition
-  operations, along with the composability condition.
-* `PreCategory`: A structure satisfying the single-sorted category axioms at each
-  dimension.
-* `Category`: A structure with additional axioms ensuring compatibility between
-  different dimensions.
-* `NCategory`: A single-sorted $n$-category is a `Category` with index type
-  `Fin n`, representing categories with exactly `n` dimensions.
-* `OmegaCategory`: A single-sorted $\omega$-category is a `Category` with
-  index type `ℕ`, together with an axiom ensuring every morphism is a $k$-cell for some finite `k`.
+* `CategoryStruct`: The basic structure with source, target, and partial composition operations,
+  along with the composability condition.
+* `PreCategory`: A structure satisfying the single-sorted category axioms at each dimension.
+* `Category`: A structure with additional axioms ensuring compatibility between different
+  dimensions.
+* `NCategory`: A single-sorted $n$-category is a `Category` with index type `Fin n`, representing
+  categories with exactly `n` dimensions.
+* `OmegaCategory`: A single-sorted $\omega$-category is a `Category` with index type `ℕ`, together
+  with an axiom ensuring every morphism is a $k$-cell for some finite `k`.
 
 ## Notation
 
@@ -102,8 +101,8 @@ is, that the source of `g` at dimension `k` equals the target of `f` at dimensio
 def sc_is_tg (k : Index) (g f : C) : Prop := sc k g = tg k f
 
 /-- If `g` and `f` satisfy the composability condition `sc_is_tg k g f`, then the partial
-composition `g ♯.[k] f` is defined. This lemma represents the forward direction of the
-`pcomp_dom` axiom. -/
+composition `g ♯.[k] f` is defined. This lemma represents the forward direction of the `pcomp_dom`
+axiom. -/
 lemma dom_of_sc_is_tg (sc_tg_gf : sc_is_tg k g f) : (g ♯.[k] f).Dom := pcomp_dom.mpr sc_tg_gf
 
 /-- If the partial composition `g ♯.[k] f` is defined, then `g` and `f` satisfy the composability
@@ -111,9 +110,8 @@ condition `sc_is_tg k g f`. This is the backward direction of the `pcomp_dom` ax
 converse of `dom_of_sc_is_tg`. -/
 lemma sc_is_tg_of_dom (dom_gf : (g ♯.[k] f).Dom) : sc_is_tg k g f := pcomp_dom.mp dom_gf
 
-/-- The (total) composition operation at dimension `k`, defined for composable morphisms.
-Given morphisms `f` and `g` with a proof of `sc_is_tg k g f`, this returns their composite
-`g ♯[k] f`. -/
+/-- The (total) composition operation at dimension `k`, defined for composable morphisms. Given
+morphisms `f` and `g` with a proof of `sc_is_tg k g f`, this returns their composite `g ♯[k] f`. -/
 @[simp high]
 def comp (k : Index) (g f : C) (sc_tg_gf : sc_is_tg k g f) : C :=
   (g ♯.[k] f).get (dom_of_sc_is_tg sc_tg_gf)
@@ -138,8 +136,8 @@ lemma congr_dom (eq_f : f₁ = f₂) (eq_g : g₁ = g₂) (dom_g₁f₁ : (g₁ 
     (g₂ ♯.[k] f₂).Dom := by
   grind
 
-/-- Congruence lemma for composability: if `f₁ = f₂` and `g₁ = g₂`, and `g₁` is composable with
-`f₁` at dimension `k`, then `g₂` is composable with `f₂` at dimension `k`. -/
+/-- Congruence lemma for composability: if `f₁ = f₂` and `g₁ = g₂`, and `g₁` is composable with `f₁`
+at dimension `k`, then `g₂` is composable with `f₂` at dimension `k`. -/
 lemma congr_sc_is_tg (eq_f : f₁ = f₂) (eq_g : g₁ = g₂) (sc_tg_g₁f₁ : sc_is_tg k g₁ f₁) :
     sc_is_tg k g₂ f₂ := by
   grind
@@ -176,8 +174,8 @@ This structure captures the axioms that govern behavior within a single dimensio
 * **Identity laws**: Composing with sources and targets yields identities.
 * **Associativity**: Composition is associative at each dimension.
 
-This serves as an intermediate step in the construction of `Category`, allowing us to
-establish dimension-specific properties before enforcing cross-dimensional compatibility.
+This serves as an intermediate step in the construction of `Category`, allowing us to establish
+dimension-specific properties before enforcing cross-dimensional compatibility.
 -/
 class PreCategory (Index : Type) (C : Type u)
     extends CategoryStruct Index C where
@@ -234,8 +232,8 @@ attribute [simp] sck_sck_eq_sck tgk_sck_eq_sck sck_tgk_eq_tgk tgk_tgk_eq_tgk sck
   tgk_compk_eq_tgk compk_sck_eq_id compk_tgk_eq_id assoc
 
 /--
-A **single-sorted category** is a `PreCategory` with additional axioms ensuring
-compatibility between different dimensions.
+A **single-sorted category** is a `PreCategory` with additional axioms ensuring compatibility
+between different dimensions.
 
 This structure extends `PreCategory` by adding cross-dimensional axioms that govern how
 operations at different dimensions interact:
@@ -290,8 +288,8 @@ class Category (Index : Type) [Preorder Index] (C : Type u)
     hcat_disch
   /-- Given morphisms `f₁, f₂, g₁, g₂` where `g₂` is composable with `f₂` at dimension `j`, `g₁` is
   composable with `f₁` at dimension `j`, `g₂` is composable with `g₁` at dimension `k`, and `f₂` is
-  composable with `f₁` at dimension `k` (with `j < k`), then `g₂ ♯[j] f₂` is composable with
-  `g₁ ♯[j] f₁` at dimension `k`. This is an auxiliary method for the `interchange` axiom. -/
+  composable with `f₁` at dimension `k` (with `j < k`), then `g₂ ♯[j] f₂` is composable with `g₁
+  ♯[j] f₁` at dimension `k`. This is an auxiliary method for the `interchange` axiom. -/
   protected sc_tg_k_interchange {k j : Index} {f₁ f₂ g₁ g₂ : C} (j_lt_k : j < k)
       (sc_tg_k_g₂g₁ : sc_is_tg k g₂ g₁) (sc_tg_k_f₂f₁ : sc_is_tg k f₂ f₁)
       (sc_tg_j_g₂f₂ : sc_is_tg j g₂ f₂) (sc_tg_j_g₁f₁ : sc_is_tg j g₁ f₁) :
@@ -379,9 +377,9 @@ def cells (k : Index) (C : Type u) [Category Index C] : Set C :=
 end Cells
 
 open Category in
-/-- A **single-sorted $\omega$-category** is a `Category` with index type `ℕ`,
-representing a category with infinitely (countably) many dimensions and an additional axiom ensuring
-that every morphism is a $k$-cell for some finite `k`. -/
+/-- A **single-sorted $\omega$-category** is a `Category` with index type `ℕ`, representing a
+category with infinitely (countably) many dimensions and an additional axiom ensuring that every
+morphism is a $k$-cell for some finite `k`. -/
 class OmegaCategory (C : Type u) extends Category ℕ C where
   /-- Every morphism is a $k$-cell for some `k : ℕ`. -/
   is_cell : ∀ f : C, ∃ k : ℕ, cell k f
