@@ -21,78 +21,44 @@ single-sorted functors.
 
 ## Implementation notes
 
-The `StructureFamily` structure pairs a type with a structure class instance, enabling the
-construction of categories of structured objects. Coercion and instance mechanisms are provided to
-seamlessly access the underlying type and its structure.
+Each bundled category (`Cat`, `OmegaCat`) is defined as a structure pairing a carrier type with the
+corresponding category instance. Coercion to the carrier type is provided so that the underlying
+type can be used directly.
+
+The specialization `NCat` is an abbreviation for `Cat (Fin n)`, while `OmegaCat` is defined as its
+own structure rather than as `Cat ℕ` because `OmegaCategory` extends `Category ℕ` with an additional
+axiom (`is_cell`). Both have separate `Category` instances that narrow the morphisms to `NFunctor`
+and `OmegaFunctor` respectively. The `lift` function embeds an `OmegaCat` into `Cat ℕ` by forgetting
+`is_cell`.
 -/
 
 universe u
 
-namespace HigherCategoryTheory
-
-/--
-A generic bundled structure that pairs a type with a structure class instance.
-
-This structure is used to create categories of structured mathematical objects. Given a type class
-`bundled : Type u → Type u` (such as `SingleSorted.Category Index`), a `StructureFamily bundled`
-consists of a type `obj : Type u` together with an instance `str : bundled obj`.
-
-This construction enables treating structured objects as first-class citizens in category theory,
-allowing us to define categories whose objects are themselves structured types.
--/
-structure StructureFamily (bundled : Type u → Type u) : Type (u + 1) where
-  obj : Type u
-  str : bundled obj := by infer_instance
-
-namespace StructureFamily
-
-variable {bundled : Type u → Type u} {C : StructureFamily bundled}
-
-set_option checkBinderAnnotations false in
-/--
-Convenience constructor for `StructureFamily` that automatically infers the structure instance.
-
-Given a type `obj` with an instance of `bundled obj`, this constructs a `StructureFamily bundled`.
--/
-def of (obj : Type u) [str : bundled obj] : StructureFamily bundled := ⟨obj, str⟩
-
-/--
-Coercion instance allowing a `StructureFamily` to be used as its underlying type.
-
-This enables writing `C` instead of `C.obj` when referring to the underlying type of a
-`StructureFamily bundled` value.
--/
-instance instCoeSort : CoeSort (StructureFamily bundled) (Type u) := ⟨StructureFamily.obj⟩
-
-/--
-Provides the bundled structure instance for a `StructureFamily`.
-
-This instance allows accessing the structure on the underlying type of a `StructureFamily` value,
-enabling seamless use of the bundled structure's operations and properties.
--/
-instance instBundled : bundled C := C.str
-
-end StructureFamily
-
-end HigherCategoryTheory
-
 namespace HigherCategoryTheory.SingleSorted
-
-open HigherCategoryTheory
 
 /--
 The category of single-sorted categories with a given index type.
 
-Objects of `Cat Index` are types equipped with a `Category Index` structure.
+Bundles a carrier type `C` with a `Category Index C` instance.
 -/
-abbrev Cat (Index : Type) [Preorder Index] :=
-  StructureFamily.{u} (Category Index)
+structure Cat (Index : Type) [Preorder Index] where
+  /-- Build a `Cat` from a carrier type with a `Category` instance. -/
+  of ::
+  /-- The underlying carrier type. -/
+  carrier : Type u
+  /-- The single-sorted category structure on the carrier. -/
+  [str : Category Index carrier]
 
-/- Since `Category Index` is just a type class on types, we can directly use the
-`StructureFamily` instance to get the category structure. -/
-example {Index : Type} [Preorder Index] {C : Type u} [Category Index C] :
-    Cat Index :=
-  StructureFamily.of C
+attribute [instance] Cat.str
+
+namespace Cat
+
+variable {Index : Type} [Preorder Index]
+
+/-- Coercion allowing a `Cat` to be used as its underlying carrier type. -/
+instance : CoeSort (Cat Index) (Type u) := ⟨Cat.carrier⟩
+
+attribute [coe] Cat.carrier
 
 /--
 Category instance for `Cat Index`.
@@ -100,37 +66,70 @@ Category instance for `Cat Index`.
 The morphisms between objects `C` and `D` are single-sorted functors `Functor Index C D`, the
 identity morphism is the identity functor `idₛ`, and composition is functor composition `⊚`.
 -/
-instance Cat.category {Index : Type} [Preorder Index] :
-    CategoryTheory.Category (Cat Index) where
+instance category : CategoryTheory.LargeCategory.{u} (Cat Index) where
   Hom C D := Functor Index C D
-  id C := idₛ C
   comp F G := G ⊚ F
+  id C := idₛ C
+
+end Cat
 
 /-- The category of single-sorted $n$-categories. -/
-abbrev NCat (n : ℕ) := StructureFamily.{u} (NCategory n)
+abbrev NCat (n : ℕ) := Cat (Fin n)
+
+namespace NCat
+
+variable {n : ℕ}
 
 /--
 Category instance for `NCat n`.
 
-Reuses the category structure from `Cat` but specifying that morphisms are of type `NFunctor`.
+The morphisms between objects `C` and `D` are `NFunctor n C D`, the identity morphism is the
+identity functor `idₛ`, and composition is functor composition `⊚`.
 -/
-instance NCat.category {n : ℕ} : CategoryTheory.Category (NCat n) :=
-  { Cat.category with
-    Hom C D := NFunctor n C D }
+instance category : CategoryTheory.LargeCategory.{u} (NCat n) where
+  Hom C D := NFunctor n C D
+  comp F G := G ⊚ F
+  id C := idₛ C
 
-/-- The category of single-sorted $\omega$-categories. -/
-abbrev OmegaCat := StructureFamily.{u} OmegaCategory
+end NCat
+
+/--
+The category of single-sorted $\omega$-categories.
+
+Bundles a carrier type `C` with an `OmegaCategory C` instance. Defined as its own structure rather
+than as `Cat ℕ` because `OmegaCategory` extends `Category ℕ` with the `is_cell` axiom.
+-/
+structure OmegaCat where
+  /-- Build an `OmegaCat` from a carrier type with an `OmegaCategory` instance. -/
+  of ::
+  /-- The underlying carrier type. -/
+  carrier : Type u
+  /-- The single-sorted $\omega$-category structure on the carrier. -/
+  [str : OmegaCategory carrier]
+
+attribute [instance] OmegaCat.str
+
+namespace OmegaCat
+
+/-- Coercion allowing an `OmegaCat` to be used as its underlying carrier type. -/
+instance : CoeSort OmegaCat (Type u) := ⟨OmegaCat.carrier⟩
+
+attribute [coe] OmegaCat.carrier
 
 /--
 Category instance for `OmegaCat`.
 
-The morphisms between objects `C` and `D` are single-sorted $\omega$-functors
-`OmegaFunctor C D`, the identity morphism is the identity functor `idₛ`, and composition
-is functor composition `⊚`.
+The morphisms between objects `C` and `D` are single-sorted $\omega$-functors `OmegaFunctor C D`,
+the identity morphism is the identity functor `idₛ`, and composition is functor composition `⊚`.
 -/
-instance OmegaCat.category : CategoryTheory.Category OmegaCat where
+instance category : CategoryTheory.LargeCategory.{u} OmegaCat where
   Hom C D := OmegaFunctor C D
-  id C := idₛ C
   comp F G := G ⊚ F
+  id C := idₛ C
+
+/-- Embed an `OmegaCat` into `Cat ℕ` by forgetting the `is_cell` axiom. -/
+def lift {C : OmegaCat} : Cat ℕ where carrier := C.carrier
+
+end OmegaCat
 
 end HigherCategoryTheory.SingleSorted

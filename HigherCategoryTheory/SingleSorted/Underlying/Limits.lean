@@ -28,7 +28,7 @@ instance {m : Fin n} : NCategory m (cells m C) := S.underlying m
 /-- TODO: Comment. -/
 @[simp]
 def UnderlyingFunctor (n : ℕ) (m : Fin n) : NCat n ⥤ NCat m where
-  obj C := StructureFamily.of (cells m C)
+  obj C := Cat.of (cells m C)
   map {C D} F := F.underlying m
 
 /-- TODO: Comment. -/
