@@ -78,6 +78,8 @@ variable {Index : Type} [Preorder Index]
 morphism `f`. -/
 instance instCoeFun : CoeFun (Functor Index C D) fun _ ↦ C → D := ⟨fun F ↦ F.map⟩
 
+attribute [coe] Functor.map
+
 /-- Composition of functors. Given functors `F : C → D` and `G : D → E`, their composite `G ⊚ F : C
 → E` is defined by `(G ⊚ F) f = G (F f)`. This operation preserves all the required functor
 properties. -/

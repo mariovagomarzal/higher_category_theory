@@ -22,7 +22,7 @@ collectively preserve sources, targets, identities, and composition at each pair
 
 ## Notation
 
-* `F.map k f`: Application of functor `F` to a `k`-morphism `f`.
+* `F k f`: Application of functor `F` to a `k`-morphism `f` (via `CoeFun`).
 * `G ⊚ F`: Composition of functors `G` and `F`.
 * `idₘ C`: The identity functor on a many-sorted category `C`.
 -/
@@ -80,37 +80,43 @@ variable {Index : Type} [Preorder Index]
   {D : Index → Type u₂} [Category Index D]
   {E : Index → Type u₃} [Category Index E]
 
+/-- Coercion allowing us to write `F k f` instead of `F.map k f` for the action of a functor `F` on
+a `k`-morphism `f`. -/
+instance instCoeFun : CoeFun (Functor Index C D) fun _ ↦ (k : Index) → C k → D k := ⟨fun F ↦ F.map⟩
+
+attribute [coe] Functor.map
+
 /-- Composition of many-sorted functors. Given functors `F : C → D` and `G : D → E`, their
 composite `G ⊚ F : C → E` is defined componentwise by `(G ⊚ F) k f = G k (F k f)`. -/
 @[simp]
 def comp (G : Functor Index D E) (F : Functor Index C D) :
     Functor Index C E where
-  map k f := G.map k (F.map k f)
+  map k f := G k (F k f)
   map_sc_eq_sc_map := by
     intro k j f
     calc
-      G.map j (F.map j (sc k j f))
-      _ = G.map j (sc k j (F.map k f)) := by rw [F.map_sc_eq_sc_map f]
-      _ = sc k j (G.map k (F.map k f)) := G.map_sc_eq_sc_map (F.map k f)
+      G j (F j (sc k j f))
+      _ = G j (sc k j (F k f)) := by rw [F.map_sc_eq_sc_map f]
+      _ = sc k j (G k (F k f)) := G.map_sc_eq_sc_map (F k f)
   map_tg_eq_tg_map := by
     intro k j f
     calc
-      G.map j (F.map j (tg k j f))
-      _ = G.map j (tg k j (F.map k f)) := by rw [F.map_tg_eq_tg_map f]
-      _ = tg k j (G.map k (F.map k f)) := G.map_tg_eq_tg_map (F.map k f)
+      G j (F j (tg k j f))
+      _ = G j (tg k j (F k f)) := by rw [F.map_tg_eq_tg_map f]
+      _ = tg k j (G k (F k f)) := G.map_tg_eq_tg_map (F k f)
   map_idm_eq_idm_map := by
     intro k j f
     calc
-      G.map k (F.map k (idm k j f))
-      _ = G.map k (idm k j (F.map j f)) := by rw [F.map_idm_eq_idm_map f]
-      _ = idm k j (G.map j (F.map j f)) := G.map_idm_eq_idm_map (F.map j f)
+      G k (F k (idm k j f))
+      _ = G k (idm k j (F j f)) := by rw [F.map_idm_eq_idm_map f]
+      _ = idm k j (G j (F j f)) := G.map_idm_eq_idm_map (F j f)
   map_comp_eq_comp_map := by
     intro k j f g sc_tg_gf
     calc
-      G.map k (F.map k (g ♯[k,j] f ← sc_tg_gf))
-      _ = G.map k ((F.map k g) ♯[k,j] (F.map k f) ← F.comp_map sc_tg_gf) := by
+      G k (F k (g ♯[k,j] f ← sc_tg_gf))
+      _ = G k ((F k g) ♯[k,j] (F k f) ← F.comp_map sc_tg_gf) := by
         rw [F.map_comp_eq_comp_map sc_tg_gf]
-      _ = (G.map k (F.map k g)) ♯[k,j] (G.map k (F.map k f)) ←
+      _ = (G k (F k g)) ♯[k,j] (G k (F k f)) ←
         G.comp_map (F.comp_map sc_tg_gf) :=
         G.map_comp_eq_comp_map (F.comp_map sc_tg_gf)
 
