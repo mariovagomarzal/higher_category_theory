@@ -9,7 +9,7 @@ import Mathlib.CategoryTheory.Limits.Cones
 import HigherCategoryTheory.SingleSorted.Category
 import HigherCategoryTheory.SingleSorted.Functor
 import HigherCategoryTheory.SingleSorted.Cat
-import HigherCategoryTheory.SingleSorted.Underlying.Basic
+import HigherCategoryTheory.SingleSorted.Underlying.Functor
 
 /-! TODO: Comment. -/
 

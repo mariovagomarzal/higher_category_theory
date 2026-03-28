@@ -4,9 +4,9 @@ import HigherCategoryTheory.SingleSorted.Category
 import HigherCategoryTheory.SingleSorted.Functor
 import HigherCategoryTheory.SingleSorted.Cells
 import HigherCategoryTheory.SingleSorted.Cat
-import HigherCategoryTheory.SingleSorted.Underlying.Basic
+import HigherCategoryTheory.SingleSorted.Underlying.Functor
 import HigherCategoryTheory.SingleSorted.Underlying.Limits
-import HigherCategoryTheory.SingleSorted.Discrete
+import HigherCategoryTheory.SingleSorted.Discrete.Functor
 import HigherCategoryTheory.SingleSorted.Types.Prod
 import HigherCategoryTheory.SingleSorted.Types.Unit
 import HigherCategoryTheory.SingleSorted.Order
