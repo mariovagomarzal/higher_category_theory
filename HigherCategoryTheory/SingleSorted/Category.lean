@@ -302,22 +302,28 @@ class Category (Index : Type) [Preorder Index] (C : Type u)
     _ = (tg k g₁) ♯[j] (tg k f₁) ← (sc_tg_j_tg j_lt_k sc_tg_j_g₁f₁) :=
       congr_comp₁ sc_tg_k_f₂f₁ sc_tg_k_g₂g₁ (sc_tg_j_sc j_lt_k sc_tg_j_g₂f₂)
     _ = _ := (tgk_compj_eq_compj_tgk j_lt_k sc_tg_j_g₁f₁).symm
-  /-- Given morphisms `f₁, f₂, g₁, g₂` where `g₂` is composable with `f₂` at dimension `j`, `g₁` is
-  composable with `f₁` at dimension `j`, `g₂` is composable with `g₁` at dimension `k`, and `f₂` is
-  composable with `f₁` at dimension `k` (with `j < k`), then `g₂ ♯[k] g₁` is composable with
-  `f₂ ♯[k] f₁` at dimension `j`. This is an auxiliary method for the `interchange` axiom. -/
+  /--
+  Given morphisms `f₁, f₂, g₁, g₂` where `g₂` is composable with `f₂` at dimension `j`, `g₂` is
+  composable with `g₁` at dimension `k`, and `f₂` is composable with `f₁` at dimension `k` (with `j
+  < k`), then `g₂ ♯[k] g₁` is composable with `f₂ ♯[k] f₁` at dimension `j`. This is an auxiliary
+  method for the `interchange` axiom.
+
+  Note: an equivalent formulation replaces the hypothesis `sc_is_tg j g₂ f₂` with `sc_is_tg j g₁
+  f₁`. Both are interderivable from the remaining hypotheses and the cross-dimensional axioms, so
+  either one suffices.
+  -/
   protected sc_tg_j_interchange {k j : Index} {f₁ f₂ g₁ g₂ : C} (j_lt_k : j < k)
       (sc_tg_k_g₂g₁ : sc_is_tg k g₂ g₁) (sc_tg_k_f₂f₁ : sc_is_tg k f₂ f₁)
-      (sc_tg_j_g₂f₂ : sc_is_tg j g₂ f₂) (sc_tg_j_g₁f₁ : sc_is_tg j g₁ f₁) :
+      (sc_tg_j_g₂f₂ : sc_is_tg j g₂ f₂) :
       sc_is_tg j (g₂ ♯[k] g₁ ← sc_tg_k_g₂g₁) (f₂ ♯[k] f₁ ← sc_tg_k_f₂f₁) := calc
     _
-    _ = sc j (sc k (g₂ ♯[k] g₁ ← sc_tg_k_g₂g₁)) := (scj_sck_eq_scj _ j_lt_k).symm
-    _ = sc j (sc k g₁) := by rw [sck_compk_eq_sck sc_tg_k_g₂g₁]
-    _ = sc j g₁ := scj_sck_eq_scj g₁ j_lt_k
-    _ = tg j f₁ := sc_tg_j_g₁f₁
-    _ = tg j (sc k f₁) := (tgj_sck_eq_tgj f₁ j_lt_k).symm
-    _ = tg j (sc k (f₂ ♯[k] f₁ ← sc_tg_k_f₂f₁)) := by rw [sck_compk_eq_sck sc_tg_k_f₂f₁]
-    _ = tg j (f₂ ♯[k] f₁ ← sc_tg_k_f₂f₁) := tgj_sck_eq_tgj _ j_lt_k
+    _ = sc j (tg k (g₂ ♯[k] g₁ ← sc_tg_k_g₂g₁)) := (scj_tgk_eq_scj _ j_lt_k).symm
+    _ = sc j (tg k g₂) := by rw [tgk_compk_eq_tgk sc_tg_k_g₂g₁]
+    _ = sc j g₂ := scj_tgk_eq_scj g₂ j_lt_k
+    _ = tg j f₂ := sc_tg_j_g₂f₂
+    _ = tg j (tg k f₂) := (tgj_tgk_eq_tgj f₂ j_lt_k).symm
+    _ = tg j (tg k (f₂ ♯[k] f₁ ← sc_tg_k_f₂f₁)) := by rw [tgk_compk_eq_tgk sc_tg_k_f₂f₁]
+    _ = tg j (f₂ ♯[k] f₁ ← sc_tg_k_f₂f₁) := tgj_tgk_eq_tgj _ j_lt_k
   /--
   The **interchange law**: Given morphisms `f₁, f₂, g₁, g₂` and indices `j < k` such that:
   - `g₂` is composable with `f₂` at dimension `j`,
@@ -335,7 +341,7 @@ class Category (Index : Type) [Preorder Index] (C : Type u)
       (g₂ ♯[j] f₂ ← sc_tg_j_g₂f₂) ♯[k] (g₁ ♯[j] f₁ ← sc_tg_j_g₁f₁) ←
         (sc_tg_k_interchange j_lt_k sc_tg_k_g₂g₁ sc_tg_k_f₂f₁ sc_tg_j_g₂f₂ sc_tg_j_g₁f₁) =
       (g₂ ♯[k] g₁ ← sc_tg_k_g₂g₁) ♯[j] (f₂ ♯[k] f₁ ← sc_tg_k_f₂f₁) ←
-        (sc_tg_j_interchange j_lt_k sc_tg_k_g₂g₁ sc_tg_k_f₂f₁ sc_tg_j_g₂f₂ sc_tg_j_g₁f₁) := by
+        (sc_tg_j_interchange j_lt_k sc_tg_k_g₂g₁ sc_tg_k_f₂f₁ sc_tg_j_g₂f₂) := by
     hcat_disch
 
 -- Use axioms of `Category` as simp lemmas.
