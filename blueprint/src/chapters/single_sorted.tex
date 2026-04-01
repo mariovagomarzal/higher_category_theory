@@ -13,13 +13,6 @@ matching conditions are satisfied. In this chapter, we present the very basic de
 of single-sorted categories and single-sorted functors between them, concluding with the definition
 of the category of single-sorted categories itself.
 
-\begin{notation}
-  Throughout the text, if not otherwise specified, we will use $\Index$ to denote a set of indices
-  equipped with a preorder relation $<$. This general setting is used to define the core structures.
-  In practice, the main definitions specialize $\Index$ to either a finite set $n = \set{0, 1,
-  \ldots, n - 1}$ or the set $\omega$ of natural numbers.
-\end{notation}
-
 \section{Single-sorted categories}
 
 We start by defining the necessary data for defining a single-sorted category.
@@ -422,10 +415,10 @@ single-sorted functors.
   Definition~\ref{def:SingleSortedCategory_category} with $\Index = \NN$: a single-sorted
   $\omega$-category is not merely a single-sorted $\NN$-category, but one satisfying the additional
   axiom that every morphism is a $k$-cell for some $k \in \NN$. Thus, the objects of $\omega\Cat$
-  form a subclass of those of $\NN\Cat$. The categorical structure (composition, identity, and laws),
-  however, is inherited directly.} of Definition~\ref{def:SingleSortedCategory_category} where
-  $\Index$ is the set of natural numbers $\NN$. Its objects are single-sorted $\omega$-categories and
-  its morphisms are single-sorted $\omega$-functors.
+  form a subclass of those of $\NN\Cat$. The categorical structure (composition, identity, and
+  laws), however, is inherited directly.} of Definition~\ref{def:SingleSortedCategory_category}
+  where $\Index$ is the set of natural numbers $\NN$. Its objects are single-sorted
+  $\omega$-categories and its morphisms are single-sorted $\omega$-functors.
 \end{construction}
 
 \begin{proof}
@@ -433,3 +426,13 @@ single-sorted functors.
   This is a particular case of Definition~\ref{def:SingleSortedCategory_category}, so the result
   follows immediately.
 \end{proof}
+
+\begin{notation}
+  We extend the notation $n\Cat$ to all $n \in \ENat$, understanding that,
+  \begin{itemize}
+    \item if $n \in \NN$, this is the category $n\Cat$ of
+      Definition~\ref{def:SingleSortedNCategory_category}, and
+    \item if $n = \omega$, this denotes $\omega\Cat$ of
+      Definition~\ref{def:SingleSortedOmegaCategory_category}.
+  \end{itemize}
+\end{notation}

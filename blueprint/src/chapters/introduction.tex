@@ -66,3 +66,41 @@ presentations for finite-dimensional $n$-categories.
 It is then shown that, since the underlying transformations form a projective system with the
 category of $\omega$-categories as its limit, this equivalence extends to $\omega$-categories as
 well.
+
+\section{Notation and terminology}
+
+Throughout this text, the terms \emph{category} and \emph{functor}, when used outside the
+single-sorted or many-sorted framework defined in this work, refer to the standard notions of
+category theory. In the accompanying Lean~4 formalization, these correspond to the definitions
+provided by Mathlib.
+
+\begin{notation}[Standard categorical notation]
+  \label{not:standard_category_theory}
+  We adopt the following standard categorical notation:
+  \begin{itemize}
+    \item $\Cat$ denotes the category whose objects are classical categories and whose morphisms
+      are classical functors between them.
+    \item For a category $\cat{C}$, we write $\cat{C}^{\mathrm{op}}$ for its opposite category.
+    \item When a preordered set $(S, \leq)$ appears in a categorical context, it is understood as
+      the category whose objects are the elements of $S$ and where there is a unique morphism from
+      $a$ to $b$ if and only if $a \leq b$.
+  \end{itemize}
+\end{notation}
+
+The core definitions in this work are parametrized by a general index set, which is then
+specialized to obtain finite-dimensional and infinite-dimensional categories. We introduce the
+following notation for this purpose.
+
+\begin{notation}[Index set]
+  \label{not:index_set}
+  If not otherwise specified, we use $\Index$ to denote a set of indices equipped with a preorder
+  relation $<$. This general setting is used to define the core structures. In practice, the main
+  definitions specialize $\Index$ to either a finite set $n = \set{0, 1, \ldots, n - 1}$ or the set
+  $\NN$ of natural numbers.
+\end{notation}
+
+\begin{notation}[Extended natural numbers]
+  \label{not:extended_naturals}
+  We write $\ENat = \NN \cup \set{\omega}$ for the extended natural numbers, where the top element
+  of the inherited order is the symbol $\omega$, that is, $n < \omega$ for every $n \in \NN$.
+\end{notation}

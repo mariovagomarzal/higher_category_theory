@@ -85,13 +85,6 @@ with one another.
 
 \section{Single-sorted discretization functors}
 
-\begin{notation}
-  We write $\NInf = \NN \cup \set{\omega}$ for the extended natural numbers, ordered so that $n \leq
-  \omega$ for all $n \in \NN$. For each $n \in \NInf$, we write $n\Cat$ for the category of
-  single-sorted $n$-categories and $n$-functors, where $\omega\Cat$ denotes the category of
-  single-sorted $\omega$-categories and $\omega$-functors.
-\end{notation}
-
 The discrete constructions of the previous sections are in fact functorial, as the following
 definition makes precise.
 
@@ -103,7 +96,7 @@ definition makes precise.
     def:NFunctor_discrete,
     def:NFunctor_discreteOmega
   }
-  Let $n, m \in \NInf$ with $n \leq m$. The \emph{discretization functor} $\Discrete^{(n, m)} \colon
+  Let $n, m \in \ENat$ with $n \leq m$. The \emph{discretization functor} $\Discrete^{(n, m)} \colon
   n\Cat \to m\Cat$ is the functor that maps every single-sorted $n$-category $\cat{C}$ to its
   discrete $m$-category $\cat{C}^{>m}$ and every single-sorted $n$-functor $F \colon \cat{C} \to
   \cat{D}$ to its discrete $m$-functor $F^{>m} \colon \cat{C}^{>m} \to \cat{D}^{>m}$. If $n = m$,
@@ -122,8 +115,8 @@ Moreover, discretization transformations at different dimensions are compatible 
   \label{thm:DiscretizationFunctor_compatibility}
   \uses{def:DiscretizationFunctor}
   \notready
-  The assignment $(n, m) \mapsto \Discrete^{(n, m)}$ defines a functor from $(\NInf, \leq)$ to
-  $\cat{Cat}$. That is, for all $k \leq n \leq m$ in $\NInf$,
+  The assignment $(n, m) \mapsto \Discrete^{(n, m)}$ defines a functor from $(\ENat, \leq)$ to
+  $\cat{Cat}$. That is, for all $k \leq n \leq m$ in $\ENat$,
   \[
     \Discrete^{(m, n)} \circ \Discrete^{(n, k)} = \Discrete^{(m, k)}.
   \]

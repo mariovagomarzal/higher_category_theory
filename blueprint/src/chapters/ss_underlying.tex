@@ -229,7 +229,7 @@ definition makes precise.
   }
   \lean{HigherCategoryTheory.SingleSorted.UnderlyingFunctor}
   \notready
-  Let $n, m \in \NInf$ with $m \leq n$. The \emph{underlying functor} $\Underlying^{(n, m)} \colon
+  Let $n, m \in \ENat$ with $m \leq n$. The \emph{underlying functor} $\Underlying^{(n, m)} \colon
   n\Cat \to m\Cat$ is the functor that maps every single-sorted $n$-category $\cat{C}$ to its
   underlying $m$-category $\cat{C}^{<m}$ and every single-sorted $n$-functor $F \colon \cat{C} \to
   \cat{D}$ to its underlying $m$-functor $F^{<m} \colon \cat{C}^{<m} \to \cat{D}^{<m}$. If $n = m$,
@@ -248,8 +248,8 @@ Moreover, underlying transformations at different dimensions are compatible with
   \label{thm:UnderlyingFunctor_compatibility}
   \uses{def:UnderlyingFunctor}
   \notready
-  The assignment $(n, m) \mapsto \Underlying^{(n, m)}$ defines a functor from $(\NInf, \leq)^{op}$
-  to $\cat{Cat}$. That is, for all $k \leq m \leq n$ in $\NInf$,
+  The assignment $(n, m) \mapsto \Underlying^{(n, m)}$ defines a functor from $(\ENat, \leq)^{op}$
+  to $\cat{Cat}$. That is, for all $k \leq m \leq n$ in $\ENat$,
   \[
     \Underlying^{(m, k)} \circ \Underlying^{(n, m)} = \Underlying^{(n, k)}.
   \]
