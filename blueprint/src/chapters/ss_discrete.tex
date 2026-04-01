@@ -17,11 +17,10 @@ with one another.
   \uses{def:SingleSortedNCategory}
   \lean{HigherCategoryTheory.SingleSorted.NCategory.discrete}
   \leanok
-  Let $\cat{C} = (C, (\Sc^k, \Tg^k, \Pcomp^k)_{k < n})$ be a single-sorted $n$-category, and let $m
-  \in \NN$ with $n < m$. The \emph{discrete $m$-category} of $\cat{C}$ is the single-sorted
-  $m$-category $\cat{C}^{>m}$ defined on the same underlying set $C$, where\footnote{Since no
-  ambiguity arises, we denote the source, target, and composition operations of $\cat{C}^{>m}$ by
-  the same symbols as those of $\cat{C}$.}:
+  Let $\cat{C}$ be a single-sorted $n$-category, and let $m \in \NN$ with $n < m$. The
+  \emph{discrete $m$-category} of $\cat{C}$ is the single-sorted $m$-category $\cat{C}^{>m}$ defined
+  on the same underlying set $C$, where\footnote{Since no ambiguity arises, we denote the source,
+  target, and composition operations of $\cat{C}^{>m}$ by the same symbols as those of $\cat{C}$.}:
 
   \begin{itemize}
     \item For $k < n$, the source, target, and composition at dimension $k$ are those of $\cat{C}$.
@@ -41,10 +40,9 @@ with one another.
   \uses{def:SingleSortedNCategory, def:SingleSortedOmegaCategory}
   \lean{HigherCategoryTheory.SingleSorted.NCategory.discreteOmega}
   \leanok
-  Let $\cat{C} = (C, (\Sc^k, \Tg^k, \Pcomp^k)_{k < n})$ be a single-sorted $n$-category. The
-  \emph{discrete $\omega$-category} of $\cat{C}$ is the single-sorted $\omega$-category
-  $\cat{C}^{>\omega}$ defined by the same case distinction as in
-  Definition~\ref{def:NCategory_discrete}, now with $k$ ranging over all of $\NN$.
+  Let $\cat{C}$ be a single-sorted $n$-category. The \emph{discrete $\omega$-category} of $\cat{C}$
+  is the single-sorted $\omega$-category $\cat{C}^{>\omega}$ defined by the same case distinction as
+  in Definition~\ref{def:NCategory_discrete}, now with $k$ ranging over all of $\NN$.
 \end{construction}
 
 \begin{proof}
