@@ -1,5 +1,6 @@
-import HigherCategoryTheory.IndexTypes
+import HigherCategoryTheory.Init
 import HigherCategoryTheory.Tactic
+import HigherCategoryTheory.IndexTypes
 import HigherCategoryTheory.SingleSorted.Category
 import HigherCategoryTheory.SingleSorted.Functor
 import HigherCategoryTheory.SingleSorted.Cells

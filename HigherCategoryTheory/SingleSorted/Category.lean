@@ -72,19 +72,9 @@ class CategoryStruct (Index : Type) (C : Type u) where
   pcomp : Index → C → C →. C
   /-- The composition of `g` and `f` at dimension `k` is defined if and only if the source of `g` at
   dimension `k` equals the target of `f` at dimension `k`. -/
-  pcomp_dom : ∀ {k : Index} {f g : C}, (pcomp k g f).Dom ↔ sc k g = tg k f := by
-    /- In most cases, when defining the partial composition `pcomp`, the domain condition trivially
-    coincides with the condition `sc k g = tg k f`. Thus, in these cases, proving both directions of
-    the implication simply consists of simplifying the hypothesis and the goal, and providing
-    the hypothesis as the conclusion. -/
-    intros
-    apply Iff.intro <;> {
-      intro h
-      simp at *
-      -- We use `try` because, in some trivial cases, `simp at *` already closes the goal, making
-      -- `exact h` unnecessary.
-      try exact h
-    }
+  pcomp_dom : ∀ {k : Index} {f g : C}, (pcomp k g f).Dom ↔ sc k g = tg k f := by hcat_disch
+
+attribute [simp] CategoryStruct.pcomp_dom
 
 namespace CategoryStruct
 
@@ -134,19 +124,21 @@ variable {k : Index} {f₁ f₂ g₁ g₂ : C}
 partial composition `g₁ ♯.[k] f₁` is defined, then `g₂ ♯.[k] f₂` is also defined. -/
 lemma congr_dom (eq_f : f₁ = f₂) (eq_g : g₁ = g₂) (dom_g₁f₁ : (g₁ ♯.[k] f₁).Dom) :
     (g₂ ♯.[k] f₂).Dom := by
-  grind
+  rw [eq_f, eq_g] at dom_g₁f₁
+  exact dom_g₁f₁
 
 /-- Congruence lemma for composability: if `f₁ = f₂` and `g₁ = g₂`, and `g₁` is composable with `f₁`
 at dimension `k`, then `g₂` is composable with `f₂` at dimension `k`. -/
 lemma congr_sc_is_tg (eq_f : f₁ = f₂) (eq_g : g₁ = g₂) (sc_tg_g₁f₁ : sc_is_tg k g₁ f₁) :
     sc_is_tg k g₂ f₂ := by
-  grind
+  rw [eq_f, eq_g] at sc_tg_g₁f₁
+  exact sc_tg_g₁f₁
 
 /-- Congruence lemma for partial composition: if `f₁ = f₂` and `g₁ = g₂`, then the partial
 compositions `g₁ ♯.[k] f₁` and `g₂ ♯.[k] f₂` are equal as partial functions. -/
 lemma congr_pcomp (k : Index) (eq_f : f₁ = f₂) (eq_g : g₁ = g₂) :
     g₁ ♯.[k] f₁ = g₂ ♯.[k] f₂  := by
-  grind
+  rw [eq_f, eq_g]
 
 /-- Congruence lemma for total composition (first-pair version): if `f₁ = f₂` and `g₁ = g₂`, then
 the compositions `g₁ ♯[k] f₁` and `g₂ ♯[k] f₂` are equal, using the composability proof from the
@@ -154,7 +146,8 @@ first pair. -/
 lemma congr_comp₁ (eq_f : f₁ = f₂) (eq_g : g₁ = g₂)
     (sc_tg_g₁f₁ : sc_is_tg k g₁ f₁) :
     g₁ ♯[k] f₁ ← sc_tg_g₁f₁ = g₂ ♯[k] f₂ ← congr_sc_is_tg eq_f eq_g sc_tg_g₁f₁ := by
-  grind
+  subst eq_f eq_g
+  simp only [CategoryStruct.comp]
 
 /-- Congruence lemma for total composition (second-pair verion): if `f₁ = f₂` and `g₁ = g₂`, then
 the compositions `g₁ ♯[k] f₁` and `g₂ ♯[k] f₂` are equal, using the composability proof from the
@@ -162,7 +155,8 @@ second pair. -/
 lemma congr_comp₂ (eq_f : f₁ = f₂) (eq_g : g₁ = g₂)
     (sc_tg_g₂f₂ : sc_is_tg k g₂ f₂) :
     g₁ ♯[k] f₁ ← congr_sc_is_tg eq_f.symm eq_g.symm sc_tg_g₂f₂ = g₂ ♯[k] f₂ ← sc_tg_g₂f₂ := by
-  grind
+  subst eq_f eq_g
+  simp only [CategoryStruct.comp]
 
 end Congruence
 
