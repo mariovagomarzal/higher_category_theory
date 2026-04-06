@@ -40,8 +40,8 @@ a many-sorted category `D`. It consists of:
 * Proofs that the family preserves sources, targets, identities, and composition at each pair
   of dimensions.
 -/
-structure Functor (Index : Type) [Preorder Index] (C : Index → Type u₁) (D : Index → Type u₂)
-    [Category Index C] [Category Index D] where
+structure Functor (Index : Type) [Preorder Index] (C : Index → Type u₁) [Category Index C]
+    (D : Index → Type u₂) [Category Index D] where
   /-- The underlying family of functions on morphisms. -/
   map : (k : Index) → C k → D k
   /-- The map preserves sources at dimensions `(k, j)`. -/

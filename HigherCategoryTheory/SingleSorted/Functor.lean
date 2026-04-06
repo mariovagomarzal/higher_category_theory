@@ -42,8 +42,8 @@ a single-sorted category `D`. It consists of:
 * A function `map : C → D` on morphisms.
 * Proofs that `map` preserves sources, targets, and composition at each dimension.
 -/
-structure Functor (Index : Type) [Preorder Index] (C : Type u₁) (D : Type u₂)
-    [Category Index C] [Category Index D] where
+structure Functor (Index : Type) [Preorder Index] (C : Type u₁) [Category Index C]
+    (D : Type u₂) [Category Index D] where
   /-- The underlying function on morphisms. -/
   map : C → D
   /-- The map preserves sources. -/
