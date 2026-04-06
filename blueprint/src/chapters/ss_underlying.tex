@@ -38,11 +38,14 @@ at dimension $k$ of a single-sorted category can be birestricted to the set of $
 \begin{corollary}
   \label{cor:underlying_source_birestriction}
   \uses{lem:underlying_source_is_cell}
+  \lean{HigherCategoryTheory.SingleSorted.Category.sc_birestriction}
+  \leanok
   Let $\cat{C}$ be a single-sorted $\Index$-category and $m \in \Index$. Then, for every $k \in
   \Index$ such that $k < m$, the source operation $\Sc^k$ birestricts to the set of $m$-cells $C_m$.
 \end{corollary}
 
 \begin{proof}
+  \leanok
   Follows directly from Lemma~\ref{lem:underlying_source_is_cell}.
 \end{proof}
 
@@ -69,11 +72,14 @@ at dimension $k$ of a single-sorted category can be birestricted to the set of $
 \begin{corollary}
   \label{cor:underlying_target_birestriction}
   \uses{lem:underlying_target_is_cell}
+  \lean{HigherCategoryTheory.SingleSorted.Category.tg_birestriction}
+  \leanok
   Let $\cat{C}$ be a single-sorted $\Index$-category and $m \in \Index$. Then, for every $k \in
   \Index$ such that $k < m$, the target operation $\Tg^k$ birestricts to the set of $m$-cells $C_m$.
 \end{corollary}
 
 \begin{proof}
+  \leanok
   Follows directly from Lemma~\ref{lem:underlying_target_is_cell}.
 \end{proof}
 
@@ -99,12 +105,15 @@ at dimension $k$ of a single-sorted category can be birestricted to the set of $
 \begin{corollary}
   \label{cor:underlying_comp_birestriction}
   \uses{lem:underlying_comp_is_cell}
+  \lean{HigherCategoryTheory.SingleSorted.Category.pcomp_birestriction}
+  \leanok
   Let $\cat{C}$ be a single-sorted $\Index$-category and $m \in \Index$. Then, for every $k \in
   \Index$ such that $k < m$, the composition operation $\Pcomp^k$ birestricts to the set of
   $m$-cells $C_m$.
 \end{corollary}
 
 \begin{proof}
+  \leanok
   Follows directly from Lemma~\ref{lem:underlying_comp_is_cell}.
 \end{proof}
 
@@ -174,12 +183,15 @@ at dimension $k$ of a single-sorted category can be birestricted to the set of $
 \begin{corollary}
   \label{cor:underlying_functor_birestriction}
   \uses{lem:underlying_functor_is_cell}
+  \lean{HigherCategoryTheory.SingleSorted.Functor.map_birestriction}
+  \leanok
   Let $\cat{C}$ and $\cat{D}$ be single-sorted $\Index$-categories, $F \colon \cat{C} \to \cat{D}$
   be a single-sorted functor, and $m \in \Index$. Then $F$ birestricts to a function from $C_m$ to
   $D_m$.
 \end{corollary}
 
 \begin{proof}
+  \leanok
   Follows directly from Lemma~\ref{lem:underlying_functor_is_cell}.
 \end{proof}
 
