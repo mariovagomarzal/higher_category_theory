@@ -125,7 +125,7 @@ at dimension $k$ of a single-sorted category can be birestricted to the set of $
     cor:underlying_comp_birestriction
   }
   \lean{HigherCategoryTheory.SingleSorted.NCategory.underlying}
-  \notready
+  \leanok
   Let $\cat{C}$ be a single-sorted $n$-category, and let $m \in \NN$ with $m < n$. The
   \emph{underlying $m$-category} of $\cat{C}$ is the single-sorted $m$-category $\cat{C}^{<m}$
   defined on the set of $m$-cells $C_m$, with the source, target, and composition operations given
@@ -133,6 +133,7 @@ at dimension $k$ of a single-sorted category can be birestricted to the set of $
 \end{construction}
 
 \begin{proof}
+  \leanok
   The birestrictions are well-defined by Corollaries~\ref{cor:underlying_source_birestriction},
   \ref{cor:underlying_target_birestriction}, and~\ref{cor:underlying_comp_birestriction}. Each axiom
   of single-sorted categories for $\cat{C}^{<m}$ follows directly from the corresponding axiom for
@@ -148,13 +149,14 @@ at dimension $k$ of a single-sorted category can be birestricted to the set of $
     cor:underlying_comp_birestriction
   }
   \lean{HigherCategoryTheory.SingleSorted.OmegaCategory.underlying}
-  \notready
+  \leanok
   Let $\cat{C}$ be a single-sorted $\omega$-category, and let $m \in \NN$. The \emph{underlying
   $m$-category} of $\cat{C}$ is the single-sorted $m$-category $\cat{C}^{<m}$ defined by the same
   construction as in Definition~\ref{def:NCategory_underlying}.
 \end{construction}
 
 \begin{proof}
+  \leanok
   The single-sorted category axioms follow by the same argument as in
   Definition~\ref{def:NCategory_underlying}.
 \end{proof}
@@ -199,7 +201,7 @@ at dimension $k$ of a single-sorted category can be birestricted to the set of $
   \label{def:NFunctor_underlying}
   \uses{def:NCategory_underlying, cor:underlying_functor_birestriction}
   \lean{HigherCategoryTheory.SingleSorted.NFunctor.underlying}
-  \notready
+  \leanok
   Let $\cat{C}$ and $\cat{D}$ be single-sorted $n$-categories, and let $F \colon \cat{C} \to
   \cat{D}$ be a single-sorted $n$-functor. For any $m \in \NN$ with $m < n$, the birestriction of
   $F$ to the sets of $m$-cells defines a single-sorted $m$-functor $F^{<m} \colon \cat{C}^{<m} \to
@@ -207,6 +209,7 @@ at dimension $k$ of a single-sorted category can be birestricted to the set of $
 \end{construction}
 
 \begin{proof}
+  \leanok
   The birestriction is well-defined by Corollary~\ref{cor:underlying_functor_birestriction}. Each
   preservation axiom for $F^{<m}$ follows directly from the corresponding axiom for $F$.
 \end{proof}
@@ -215,7 +218,7 @@ at dimension $k$ of a single-sorted category can be birestricted to the set of $
   \label{def:OmegaFunctor_underlying}
   \uses{def:OmegaCategory_underlying, cor:underlying_functor_birestriction}
   \lean{HigherCategoryTheory.SingleSorted.OmegaFunctor.underlying}
-  \notready
+  \leanok
   Let $\cat{C}$ and $\cat{D}$ be single-sorted $\omega$-categories, and let $F \colon \cat{C} \to
   \cat{D}$ be a single-sorted $\omega$-functor. For any $m \in \NN$, the birestriction of $F$ to the
   sets of $m$-cells defines a single-sorted $m$-functor $F^{<m} \colon \cat{C}^{<m} \to
@@ -223,6 +226,7 @@ at dimension $k$ of a single-sorted category can be birestricted to the set of $
 \end{construction}
 
 \begin{proof}
+  \leanok
   The argument is identical to that of Definition~\ref{def:NFunctor_underlying}.
 \end{proof}
 
@@ -240,7 +244,6 @@ definition makes precise.
     def:OmegaFunctor_underlying
   }
   \lean{HigherCategoryTheory.SingleSorted.UnderlyingFunctor}
-  \notready
   Let $n, m \in \ENat$ with $m \leq n$. The \emph{underlying functor} $\Underlying^{(n, m)} \colon
   n\Cat \to m\Cat$ is the functor that maps every single-sorted $n$-category $\cat{C}$ to its
   underlying $m$-category $\cat{C}^{<m}$ and every single-sorted $n$-functor $F \colon \cat{C} \to
