@@ -4,24 +4,34 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Enric Cosme Llópez, Raul Ruiz Mora, Mario Vago Marzal
 -/
 import Mathlib.Order.Basic
+import Mathlib.Data.ENat.Defs
+import Mathlib.Data.Nat.Basic
 
 /-!
-# Index types for the many-sorted formalization
+# Indices: types, operations, and notation
 
-This file defines `IndexBelow`, a subtype of indices strictly below a given bound in a preorder.
-In the many-sorted presentation of higher categories, each operation is parameterized by a pair of
-dimensions `(k, j)` with `j < k`. `IndexBelow k` packages an index together with a proof that it
-is strictly less than `k`, enforcing this constraint at the type level.
+This file provides the foundational support for working with indices throughout the formalization.
+Indices appear in both the single-sorted and many-sorted presentations of higher categories, where
+they typically represent dimensions.
 
 ## Main definitions
 
-* `IndexBelow k` — the subtype `{ j : Index // j < k }`.
-* `IndexBelow.isLt` — extracts the proof that `j < k`.
-* `IndexBelow.coeIndexBelowVal` — coercion from `IndexBelow j` to `IndexBelow j.val` when
-  `j : IndexBelow k`, enabling nested dimension chains `i < j < k`.
+* `IndexBelow k` — the subtype `{ j : Index // j < k }` of indices strictly below `k`.
 -/
 
 namespace HigherCategoryTheory
+
+section ENat
+
+/- In some contexts, we use `ℕ∞` for indexing the category structure dimension, i.e., we use the top
+element of `ℕ∞` to represent $\omega$-categories and the finite elements to represent
+$n$-categories. The following notation provides concise syntax for these two cases. -/
+@[inherit_doc] notation "ω" => Top.top
+@[inherit_doc] notation "fin" => WithTop.some
+
+end ENat
+
+section IndexBelow
 
 variable {Index : Type} [Preorder Index]
 
@@ -42,6 +52,8 @@ can coerce `i` to `IndexBelow j.val` to use it in operations parameterized by th
 value. -/
 instance coeIndexBelowVal : Coe (IndexBelow j) (IndexBelow j.val) where
   coe i := ⟨i, i.isLt⟩
+
+end IndexBelow
 
 end IndexBelow
 

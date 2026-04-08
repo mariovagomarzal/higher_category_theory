@@ -6,7 +6,7 @@ Authors: Enric Cosme Llópez, Raul Ruiz Mora, Mario Vago Marzal
 import Mathlib.Data.Part
 import Mathlib.Data.PFun
 import Mathlib.Order.Fin.Basic
-import HigherCategoryTheory.IndexTypes
+import HigherCategoryTheory.Indices
 import HigherCategoryTheory.Tactic
 
 /-!
