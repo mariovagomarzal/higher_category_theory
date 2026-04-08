@@ -118,14 +118,14 @@ The category of many-sorted categories of a given dimension in `ℕ∞`.
 Returns `NCat n` when the dimension is finite and `OmegaCat` when the dimension is $\omega$.
 -/
 abbrev ICat (dimension : ℕ∞) : Type (u + 1) := match dimension with
-  | ω => OmegaCat
   | fin n => NCat n
+  | ω => OmegaCat
 
 /-- Category instance for `ICat dimension`, where the category instance for each case of `dimension`
 is inferred from the corresponding category instance of `NCat n` or `OmegaCat`. -/
 instance ICat.category {dimension : ℕ∞} : CategoryTheory.LargeCategory.{u} (ICat dimension) :=
   match dimension with
-  | ω => OmegaCat.category
   | fin _ => NCat.category
+  | ω => OmegaCat.category
 
 end HigherCategoryTheory.ManySorted
