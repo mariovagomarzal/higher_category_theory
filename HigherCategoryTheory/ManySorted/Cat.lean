@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Enric Cosme Llópez, Raul Ruiz Mora, Mario Vago Marzal
 -/
 import Mathlib.CategoryTheory.Category.Basic
+import HigherCategoryTheory.Indices
 import HigherCategoryTheory.ManySorted.Category
 import HigherCategoryTheory.ManySorted.Functor
 
@@ -110,5 +111,14 @@ instance category : CategoryTheory.LargeCategory.{u} OmegaCat where
   id C := idₘ C
 
 end OmegaCat
+
+/--
+The category of many-sorted categories of a given dimension in `ℕ∞`.
+
+Returns `NCat n` when the dimension is finite and `OmegaCat` when the dimension is $\omega$.
+-/
+abbrev ICat (dimension : ℕ∞) : Type (u + 1) := match dimension with
+  | ω => OmegaCat
+  | fin n => NCat n
 
 end HigherCategoryTheory.ManySorted
