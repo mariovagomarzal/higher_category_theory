@@ -409,4 +409,13 @@ def NFunctor.discreteOmega (F : NFunctor n C D) :
 
 end Functor
 
+section DiscretizationFunctor
+
+open CategoryTheory in
+/-- TODO: Document. -/
+@[simp]
+def DiscretizationFunctor (n m : ℕ∞) (n_lt_m : n < m) : ICat.{u} n ⥤ ICat.{u} m := by sorry
+
+end DiscretizationFunctor
+
 end HigherCategoryTheory.SingleSorted
