@@ -395,6 +395,7 @@ Given a functor `F : C → D` between $n$-categories and $n < m$, this produces 
 the discrete $m$-categories using the same underlying map. Preservation axioms follow from `F` at
 dimensions below $n$, and are trivial at dimensions $k \geq n$.
 -/
+@[simp]
 def NFunctor.discrete (F : NFunctor n C D) (m : ℕ) (n_lt_m : n < m) :
     letI := SC.discrete m n_lt_m
     letI := SD.discrete m n_lt_m
@@ -430,6 +431,7 @@ Lifts a functor between $n$-categories to a functor between their discrete $\ome
 
 This definition is analogous to `NFunctor.discrete`, but applies to `OmegaFunctor` objects.
 -/
+@[simp]
 def NFunctor.discreteOmega (F : NFunctor n C D) :
     letI := SC.discreteOmega
     letI := SD.discreteOmega
