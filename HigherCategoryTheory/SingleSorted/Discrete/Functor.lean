@@ -469,7 +469,11 @@ section DiscretizationFunctor
 open CategoryTheory in
 /-- TODO: Document. -/
 @[simp]
-def DiscretizationFunctor (n m : ℕ∞) (n_lt_m : n < m) : ICat.{u} n ⥤ ICat.{u} m := by sorry
+def DiscretizationFunctor (n m : ℕ∞) (n_le_m : n ≤ m) : ICat.{u} n ⥤ ICat.{u} m :=
+  match n, m with
+  | fin n, fin m => by sorry
+  | fin n, ω => by sorry
+  | ω, ω => by sorry
 
 end DiscretizationFunctor
 

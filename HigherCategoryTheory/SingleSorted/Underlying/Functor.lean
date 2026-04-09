@@ -216,9 +216,11 @@ open CategoryTheory in
 (where $m < n$). Sends each $n$-category to its underlying $m$-category and each functor to its
 restriction to $m$-cells. -/
 @[simp]
-def UnderlyingFunctor (n : ℕ) (m : Fin n) : NCat n ⥤ NCat m where
-  obj C := Cat.of (cells m C)
-  map {C D} F := F.underlying m
+def UnderlyingFunctor (n m : ℕ∞) (m_le_n : m ≤ n) : ICat.{u} n ⥤ ICat.{u} m :=
+  match n, m with
+  | fin n, fin m => by sorry
+  | ω, fin m => by sorry
+  | ω, ω => by sorry
 
 end UnderlyingFunctor
 
