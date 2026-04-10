@@ -26,12 +26,12 @@ section ENat
 /- In some contexts, we use `ℕ∞` for indexing the category structure dimension, i.e., we use the top
 element of `ℕ∞` to represent $\omega$-categories and the finite elements to represent
 $n$-categories. The following notation provides concise syntax for these two cases. -/
-@[inherit_doc] notation "ω" => Top.top
-@[inherit_doc] notation "fin" => WithTop.some
+@[inherit_doc] scoped notation "ω" => Top.top
+@[inherit_doc] scoped notation "fin" => WithTop.some
 
 end ENat
 
-section IndexBelow
+section IndexTypes
 
 variable {Index : Type} [Preorder Index]
 
@@ -55,6 +55,6 @@ instance coeIndexBelowVal : Coe (IndexBelow j) (IndexBelow j.val) where
 
 end IndexBelow
 
-end IndexBelow
+end IndexTypes
 
 end HigherCategoryTheory
