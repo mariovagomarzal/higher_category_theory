@@ -74,12 +74,7 @@ class CategoryStruct (Index : Type) [Preorder Index] (C : Index → Type u) wher
   `g` at `(k, j)` equals the target of `f` at `(k, j)`. -/
   pcomp_dom : ∀ {k : Index} {j : IndexBelow k} {f g : C k},
       (pcomp k j g f).Dom ↔ sc k j g = tg k j f := by
-    intros
-    apply Iff.intro <;> {
-      intro h
-      simp at *
-      try exact h
-    }
+    hcat_disch
 
 namespace CategoryStruct
 
