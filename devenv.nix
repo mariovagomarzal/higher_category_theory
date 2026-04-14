@@ -27,16 +27,11 @@
       ]);
   };
 
-  languages.python.enable = true;
-
   packages = with pkgs; [
     just
     git
-    # Relax 'plastexshowmore' version check to work around a Nixpkgs issue with
-    # newer versions of 'leanblueprint'.
-    (leanblueprint.overridePythonAttrs (prev: {
-      pythonRelaxDeps = ["plastexshowmore"];
-    }))
+    leanblueprint
+    python313
   ];
 
   git-hooks = {
@@ -62,17 +57,7 @@
         enable = true;
         name = "bibtool";
         description = "Format BibTeX files using bibtool";
-        # Override 'bibtool' to compile with gnu89, fixing K&R function
-        # definition errors on GCC >= 14.
-        package = pkgs.bibtool.overrideAttrs (prev: {
-          env =
-            (prev.env or {})
-            // {
-              NIX_CFLAGS_COMPILE =
-                (prev.env.NIX_CFLAGS_COMPILE or "")
-                + " -std=gnu89";
-            };
-        });
+        package = pkgs.bibtool;
         entry = "./scripts/bibtool_format.py";
         files = "\\.bib$";
         pass_filenames = true;

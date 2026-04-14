@@ -36,7 +36,7 @@ jobs:
         with:
           name: devenv
       - name: Install devenv
-        run: nix profile install github:cachix/devenv/v2.0.4
+        run: nix profile install github:cachix/devenv/v2.0.6
       - name: Cache Lean dependencies
         uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
         with:
