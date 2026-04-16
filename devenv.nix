@@ -21,10 +21,7 @@
 
   languages.texlive = {
     enable = true;
-    base = pkgs.texliveSmall.withPackages (ps:
-      with ps; [
-        tocbibind
-      ]);
+    base = pkgs.texliveFull;
   };
 
   packages = with pkgs; [
