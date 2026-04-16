@@ -43,7 +43,7 @@ build TARGETS=lean_project:
 [group("docs")]
 [doc("Build the documentation for the Lean project.")]
 docs:
-  @./scripts/build_docs.sh {{lean_project}} {{get_lean_version}} \
+  @./scripts/build_docs.py {{lean_project}} {{get_lean_version}} \
     {{references}} {{docs_build_dir}} {{docs_dir}} {{docs_target}}
 
 [private]
