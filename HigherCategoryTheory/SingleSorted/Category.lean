@@ -7,6 +7,7 @@ import Mathlib.Data.Part
 import Mathlib.Data.PFun
 import Mathlib.Order.Fin.Basic
 import HigherCategoryTheory.Tactic
+import HigherCategoryTheory.Notation
 
 /-!
 # Single-sorted presentation of higher-order categories

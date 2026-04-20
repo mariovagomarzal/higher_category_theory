@@ -1,6 +1,6 @@
 import HigherCategoryTheory.Init
 import HigherCategoryTheory.Tactic
-import HigherCategoryTheory.Indices
+import HigherCategoryTheory.Notation
 import HigherCategoryTheory.SingleSorted.Category
 import HigherCategoryTheory.SingleSorted.Functor
 import HigherCategoryTheory.SingleSorted.Cells
