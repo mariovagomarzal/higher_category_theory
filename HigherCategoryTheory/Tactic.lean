@@ -29,7 +29,9 @@ The `suggest` argument controls whether to use `aesop?` (producing a "Try this" 
 -/
 private meta def evalAesop (suggest : Bool) (clauses : TSyntaxArray `Aesop.tactic_clause) :
     TacticM Unit := do
-  let configClause ← `(Aesop.tactic_clause| (config := { terminal := true }))
+  let suggest := suggest || hcat.tactic.suggest.get (← getOptions)
+  let nonterminal := hcat.tactic.nonterminal.get (← getOptions)
+  let configClause ← `(Aesop.tactic_clause| (config := { terminal := $(quote !nonterminal) }))
   let rsClause ← `(Aesop.tactic_clause| (rule_sets := [$(mkIdent `HigherCategoryTheory):ident]))
   let clauses := clauses |>.push configClause |>.push rsClause
   evalTactic (← if suggest
@@ -53,11 +55,17 @@ The `suggest` argument controls whether to produce "Try this" suggestions on suc
 simple tactics are wrapped with `try_this` and `aesop_hcat` is replaced by `aesop_hcat?`.
 -/
 private meta def higherCategoryTheoryDischarger (suggest : Bool) : TacticM Unit := do
+  let suggest := suggest || hcat.tactic.suggest.get (← getOptions)
   let wrap (tac : TSyntax `tactic) : TacticM (TSyntax `tactic) :=
     if suggest then `(tactic| try_this $tac) else pure tac
   let rflTac ← wrap (← `(tactic| (intros; rfl)))
   let aesopTac ← if suggest then `(tactic| aesop_hcat?) else `(tactic| aesop_hcat)
-  evalTactic (← `(tactic| first | $rflTac:tactic | $aesopTac:tactic))
+  let useOmega := hcat.tactic.omega.get (← getOptions)
+  if useOmega then
+    let omegaTac ← wrap (← `(tactic| (intros; omega)))
+    evalTactic (← `(tactic| first | $rflTac:tactic | $omegaTac:tactic | $aesopTac:tactic))
+  else
+    evalTactic (← `(tactic| first | $rflTac:tactic | $aesopTac:tactic))
 
 /-- A tactic for discharging common goals in higher category theory proofs. -/
 elab (name := hcat_disch) "hcat_disch" : tactic =>
@@ -66,8 +74,5 @@ elab (name := hcat_disch) "hcat_disch" : tactic =>
 /-- A suggestive version of `hcat_disch` that produces a "Try this" suggestion on success. -/
 elab (name := hcat_disch?) "hcat_disch?" : tactic =>
   higherCategoryTheoryDischarger true
-
--- Add the `omega` tactic as a safe rule for the `HigherCategoryTheory` Aesop rule set.
-add_aesop_rules safe (rule_sets := [HigherCategoryTheory]) [(by omega)]
 
 end HigherCategoryTheory

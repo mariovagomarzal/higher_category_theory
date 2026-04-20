@@ -346,6 +346,7 @@ attribute [simp] sck_scj_eq_scj scj_sck_eq_scj scj_tgk_eq_scj tgk_tgj_eq_tgj tgj
 representing a category with exactly `n` dimensions. -/
 abbrev NCategory (n : ℕ) (C : Type u) := Category (Fin n) C
 
+set_option hcat.tactic.omega true in
 /--
 Any `PreCategory (Fin 1) C` lifts to a full `NCategory 1 C`.
 

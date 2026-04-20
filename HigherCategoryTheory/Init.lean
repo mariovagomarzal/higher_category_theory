@@ -13,3 +13,21 @@ controlling custom behavior of the library.
 -/
 
 declare_aesop_rule_sets [HigherCategoryTheory]
+
+/-- Option to override the suggestive behavior of `hcat_disch` and `aesop_hcat`. -/
+register_option hcat.tactic.suggest : Bool := {
+  defValue := false
+  descr := "The `hcat_disch` and `aesop_hcat` tactics produce \"Try this\" suggestions."
+}
+
+/-- Option to control whether `aesop_hcat` runs in non-terminal mode. -/
+register_option hcat.tactic.nonterminal : Bool := {
+  defValue := false
+  descr := "The `aesop_hcat` tactic runs in non-terminal mode."
+}
+
+/-- Option to control whether a wrapped `omega` is tried as part of `hcat_disch`. -/
+register_option hcat.tactic.omega : Bool := {
+  defValue := false
+  descr := "A wrapped version of `omega` is tried as part of the `hcat_disch` tactic."
+}
