@@ -58,14 +58,12 @@ private meta def higherCategoryTheoryDischarger (suggest : Bool) : TacticM Unit 
   let suggest := suggest || hcat.tactic.suggest.get (← getOptions)
   let wrap (tac : TSyntax `tactic) : TacticM (TSyntax `tactic) :=
     if suggest then `(tactic| try_this $tac) else pure tac
-  let rflTac ← wrap (← `(tactic| (intros; rfl)))
-  let aesopTac ← if suggest then `(tactic| aesop_hcat?) else `(tactic| aesop_hcat)
-  let useOmega := hcat.tactic.omega.get (← getOptions)
-  if useOmega then
-    let omegaTac ← wrap (← `(tactic| (intros; omega)))
-    evalTactic (← `(tactic| first | $rflTac:tactic | $omegaTac:tactic | $aesopTac:tactic))
-  else
-    evalTactic (← `(tactic| first | $rflTac:tactic | $aesopTac:tactic))
+  let mut tactics : Array (TSyntax `tactic) := #[]
+  tactics := tactics.push (← wrap (← `(tactic| (intros; rfl))))
+  if hcat.tactic.omega.get (← getOptions) then
+    tactics := tactics.push (← wrap (← `(tactic| (intros; omega))))
+  tactics := tactics.push (← if suggest then `(tactic| aesop_hcat?) else `(tactic| aesop_hcat))
+  evalTactic (← `(tactic| first $[| $tactics:tactic]*))
 
 /-- A tactic for discharging common goals in higher category theory proofs. -/
 elab (name := hcat_disch) "hcat_disch" : tactic =>
