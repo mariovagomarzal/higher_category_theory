@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Enric Cosme Llópez, Raul Ruiz Mora, Mario Vago Marzal
 -/
 import HigherCategoryTheory.Init
+import Mathlib.Tactic.TryThis
 
 /-!
 # Proof automation for higher category theory
@@ -12,29 +13,61 @@ This file provides the `hcat_disch` tactic, a proof automation tool for discharg
 higher category theory proofs. It is used extensively as the default proof method for most of the
 definitions of the library.
 
-TODO: The tactics in this file are currently incomplete.
+The `hcat_disch` tactic first tries a simple set of tactics and if those fail, it falls back to
+`aesop_hcat`, a wrapper around Aesop with the `HigherCategoryTheory` rule set.
 -/
 
 namespace HigherCategoryTheory
 
--- Add the `omega` tactic as a safe rule for the `HigherCategoryTheory` Aesop rule set.
-add_aesop_rules safe (rule_sets := [HigherCategoryTheory]) [(by omega)]
+open Lean Meta Elab Tactic in
+/--
+Core implementation for the `aesop_hcat` family of tactics. Calls Aesop with the
+`HigherCategoryTheory` rule set and appropriate configuration.
+
+The `suggest` argument controls whether to use `aesop?` (producing a "Try this" suggestion) or plain
+`aesop`. The `clauses` argument allows passing additional Aesop tactic clauses.
+-/
+private meta def evalAesop (suggest : Bool) (clauses : TSyntaxArray `Aesop.tactic_clause) :
+    TacticM Unit := do
+  let configClause ← `(Aesop.tactic_clause| (config := { terminal := true }))
+  let rsClause ← `(Aesop.tactic_clause| (rule_sets := [$(mkIdent `HigherCategoryTheory):ident]))
+  let clauses := clauses |>.push configClause |>.push rsClause
+  evalTactic (← if suggest
+    then `(tactic| aesop? $clauses*)
+    else `(tactic| aesop $clauses*))
 
 /-- A wrapper around Aesop for the `HigherCategoryTheory` rule set. -/
-macro (name := aesop_hcat) "aesop_hcat" c:Aesop.tactic_clause* : tactic =>
-  `(tactic| aesop $c* (rule_sets := [HigherCategoryTheory]))
+elab (name := aesop_hcat) "aesop_hcat" clauses:Aesop.tactic_clause* : tactic =>
+  evalAesop false clauses
 
+/-- A suggestive version of `aesop_hcat` that produces a "Try this" suggestion on success. -/
+elab (name := aesop_hcat?) "aesop_hcat?" clauses:Aesop.tactic_clause* : tactic =>
+  evalAesop true clauses
+
+open Lean Meta Elab Tactic in
 /--
-A tactic for discharging common goals in higher category theory proofs. This tactic first attempts
-reflexivity (for definitional equalities), then omega (for arithmetic goals on indices), and finally
-grind (for more complex goals involving equational reasoning).
+Core implementation for the `hcat_disch` family of tactics. Tries a sequence of tactics to discharge
+common higher category theory goals, and falls back to Aesop if those tactics fail.
 
-TODO: This tactic is incomplete.
+The `suggest` argument controls whether to produce "Try this" suggestions on success. When `true`,
+simple tactics are wrapped with `try_this` and `aesop_hcat` is replaced by `aesop_hcat?`.
 -/
-macro (name := hcat_disch) "hcat_disch" : tactic =>
-  `(tactic|
-    first
-    | (intros; rfl)
-    | aesop_hcat)
+private meta def higherCategoryTheoryDischarger (suggest : Bool) : TacticM Unit := do
+  let wrap (tac : TSyntax `tactic) : TacticM (TSyntax `tactic) :=
+    if suggest then `(tactic| try_this $tac) else pure tac
+  let rflTac ← wrap (← `(tactic| (intros; rfl)))
+  let aesopTac ← if suggest then `(tactic| aesop_hcat?) else `(tactic| aesop_hcat)
+  evalTactic (← `(tactic| first | $rflTac:tactic | $aesopTac:tactic))
+
+/-- A tactic for discharging common goals in higher category theory proofs. -/
+elab (name := hcat_disch) "hcat_disch" : tactic =>
+  higherCategoryTheoryDischarger false
+
+/-- A suggestive version of `hcat_disch` that produces a "Try this" suggestion on success. -/
+elab (name := hcat_disch?) "hcat_disch?" : tactic =>
+  higherCategoryTheoryDischarger true
+
+-- Add the `omega` tactic as a safe rule for the `HigherCategoryTheory` Aesop rule set.
+add_aesop_rules safe (rule_sets := [HigherCategoryTheory]) [(by omega)]
 
 end HigherCategoryTheory
