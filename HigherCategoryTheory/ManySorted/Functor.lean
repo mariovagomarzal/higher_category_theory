@@ -22,7 +22,7 @@ collectively preserve sources, targets, identities, and composition at each pair
 
 ## Notation
 
-* `F.map k f`: Application of functor `F` to a `k`-morphism `f`.
+* `F k f`: Application of functor `F` to a `k`-morphism `f` (via `CoeFun`).
 * `G ⊚ F`: Composition of functors `G` and `F`.
 * `idₘ C`: The identity functor on a many-sorted category `C`.
 -/
@@ -34,42 +34,42 @@ namespace HigherCategoryTheory.ManySorted
 /--
 A functor between many-sorted categories.
 
-A `Functor index C D` is a structure-preserving family of maps from a many-sorted category `C` to
+A `Functor Index C D` is a structure-preserving family of maps from a many-sorted category `C` to
 a many-sorted category `D`. It consists of:
 * A family of functions `map k : C k → D k` on morphisms at each dimension `k`.
 * Proofs that the family preserves sources, targets, identities, and composition at each pair
   of dimensions.
 -/
-structure Functor (index : Type) [LinearOrder index] (C : index → Type u₁) (D : index → Type u₂)
-    [Category index C] [Category index D] where
+structure Functor (Index : Type) [Preorder Index] (C : Index → Type u₁) [Category Index C]
+    (D : Index → Type u₂) [Category Index D] where
   /-- The underlying family of functions on morphisms. -/
-  map : (k : index) → C k → D k
+  map : (k : Index) → C k → D k
   /-- The map preserves sources at dimensions `(k, j)`. -/
-  map_sc_eq_sc_map : ∀ {k j : index} (f : C k) (_ : j < k),
-      map j (sc k j f) = sc k j (map k f) := by
+  map_sc_eq_sc_map : ∀ {k j : Index} (j_lt_k : j < k) (f : C k),
+      map j (sc j_lt_k f) = sc j_lt_k (map k f) := by
     hcat_disch
   /-- The map preserves targets at dimensions `(k, j)`. -/
-  map_tg_eq_tg_map : ∀ {k j : index} (f : C k) (_ : j < k),
-      map j (tg k j f) = tg k j (map k f) := by
+  map_tg_eq_tg_map : ∀ {k j : Index} (j_lt_k : j < k) (f : C k),
+      map j (tg j_lt_k f) = tg j_lt_k (map k f) := by
     hcat_disch
   /-- The map preserves identities at dimensions `(k, j)`. -/
-  map_idm_eq_idm_map : ∀ {k j : index} (f : C j) (_ : j < k),
-      map k (idm k j f) = idm k j (map j f) := by
+  map_idm_eq_idm_map : ∀ {k j : Index} (j_lt_k : j < k) (f : C j),
+      map k (idm j_lt_k f) = idm j_lt_k (map j f) := by
     hcat_disch
   /-- If `g` and `f` are `(k, j)`-composable in `C`, then `F k g` and `F k f` are
   `(k, j)`-composable in `D`. This is an auxiliary method for `map_comp_eq_comp_map`. -/
-  protected comp_map {k j : index} {f g : C k} (j_lt_k : j < k)
-      (sc_tg_gf : sc_is_tg k j g f) :
-      sc_is_tg k j (map k g) (map k f) := calc
-    sc k j (map k g)
-    _ = map j (sc k j g) := (map_sc_eq_sc_map g j_lt_k).symm
-    _ = map j (tg k j f) := by rw [sc_tg_gf]
-    _ = tg k j (map k f) := map_tg_eq_tg_map f j_lt_k
+  protected comp_map {k j : Index} {j_lt_k : j < k} {f g : C k}
+      (sc_tg_gf : sc_is_tg j_lt_k g f) :
+      sc_is_tg j_lt_k (map k g) (map k f) := calc
+    sc j_lt_k (map k g)
+    _ = map j (sc j_lt_k g) := (map_sc_eq_sc_map j_lt_k g).symm
+    _ = map j (tg j_lt_k f) := by rw [sc_tg_gf]
+    _ = tg j_lt_k (map k f) := map_tg_eq_tg_map j_lt_k f
   /-- The map preserves composition at dimensions `(k, j)`. -/
-  map_comp_eq_comp_map : ∀ {k j : index} {f g : C k} (j_lt_k : j < k)
-      (sc_tg_gf : sc_is_tg k j g f),
-      map k (g ♯[k,j] f ← sc_tg_gf) =
-      (map k g) ♯[k,j] (map k f) ← (comp_map j_lt_k sc_tg_gf) := by
+  map_comp_eq_comp_map : ∀ {k j : Index} {j_lt_k : j < k} {f g : C k}
+      (sc_tg_gf : sc_is_tg j_lt_k g f),
+      map k (g ♯[j_lt_k] f ← sc_tg_gf) =
+      (map k g) ♯[j_lt_k] (map k f) ← (comp_map sc_tg_gf) := by
     hcat_disch
 
 -- Use `Functor` axioms as simp lemmas.
@@ -78,51 +78,57 @@ attribute [simp] map_sc_eq_sc_map map_tg_eq_tg_map map_idm_eq_idm_map map_comp_e
 
 namespace Functor
 
-variable {index : Type} [LinearOrder index]
-  {C : index → Type u₁} [Category index C]
-  {D : index → Type u₂} [Category index D]
-  {E : index → Type u₃} [Category index E]
+variable {Index : Type} [Preorder Index]
+  {C : Index → Type u₁} [Category Index C]
+  {D : Index → Type u₂} [Category Index D]
+  {E : Index → Type u₃} [Category Index E]
+
+/-- Coercion allowing us to write `F k f` instead of `F.map k f` for the action of a functor `F` on
+a `k`-morphism `f`. -/
+instance : CoeFun (Functor Index C D) fun _ ↦ (k : Index) → C k → D k := ⟨fun F ↦ F.map⟩
+
+attribute [coe] Functor.map
 
 /-- Composition of many-sorted functors. Given functors `F : C → D` and `G : D → E`, their
 composite `G ⊚ F : C → E` is defined componentwise by `(G ⊚ F) k f = G k (F k f)`. -/
 @[simp]
-def comp (G : Functor index D E) (F : Functor index C D) :
-    Functor index C E where
-  map k f := G.map k (F.map k f)
+def comp (G : Functor Index D E) (F : Functor Index C D) :
+    Functor Index C E where
+  map k f := G k (F k f)
   map_sc_eq_sc_map := by
-    intro k j f j_lt_k
+    intro k j j_lt_k f
     calc
-      G.map j (F.map j (sc k j f))
-      _ = G.map j (sc k j (F.map k f)) := by rw [F.map_sc_eq_sc_map f j_lt_k]
-      _ = sc k j (G.map k (F.map k f)) := G.map_sc_eq_sc_map (F.map k f) j_lt_k
+      G j (F j (sc j_lt_k f))
+      _ = G j (sc j_lt_k (F k f)) := by rw [F.map_sc_eq_sc_map j_lt_k f]
+      _ = sc j_lt_k (G k (F k f)) := G.map_sc_eq_sc_map j_lt_k (F k f)
   map_tg_eq_tg_map := by
-    intro k j f j_lt_k
+    intro k j j_lt_k f
     calc
-      G.map j (F.map j (tg k j f))
-      _ = G.map j (tg k j (F.map k f)) := by rw [F.map_tg_eq_tg_map f j_lt_k]
-      _ = tg k j (G.map k (F.map k f)) := G.map_tg_eq_tg_map (F.map k f) j_lt_k
+      G j (F j (tg j_lt_k f))
+      _ = G j (tg j_lt_k (F k f)) := by rw [F.map_tg_eq_tg_map j_lt_k f]
+      _ = tg j_lt_k (G k (F k f)) := G.map_tg_eq_tg_map j_lt_k (F k f)
   map_idm_eq_idm_map := by
-    intro k j f j_lt_k
+    intro k j j_lt_k f
     calc
-      G.map k (F.map k (idm k j f))
-      _ = G.map k (idm k j (F.map j f)) := by rw [F.map_idm_eq_idm_map f j_lt_k]
-      _ = idm k j (G.map j (F.map j f)) := G.map_idm_eq_idm_map (F.map j f) j_lt_k
+      G k (F k (idm j_lt_k f))
+      _ = G k (idm j_lt_k (F j f)) := by rw [F.map_idm_eq_idm_map j_lt_k f]
+      _ = idm j_lt_k (G j (F j f)) := G.map_idm_eq_idm_map j_lt_k (F j f)
   map_comp_eq_comp_map := by
-    intro k j f g j_lt_k sc_tg_gf
+    intro k j j_lt_k f g sc_tg_gf
     calc
-      G.map k (F.map k (g ♯[k,j] f ← sc_tg_gf))
-      _ = G.map k ((F.map k g) ♯[k,j] (F.map k f) ← F.comp_map j_lt_k sc_tg_gf) := by
-        rw [F.map_comp_eq_comp_map j_lt_k sc_tg_gf]
-      _ = (G.map k (F.map k g)) ♯[k,j] (G.map k (F.map k f)) ←
-        G.comp_map j_lt_k (F.comp_map j_lt_k sc_tg_gf) :=
-        G.map_comp_eq_comp_map j_lt_k (F.comp_map j_lt_k sc_tg_gf)
+      G k (F k (g ♯[j_lt_k] f ← sc_tg_gf))
+      _ = G k ((F k g) ♯[j_lt_k] (F k f) ← F.comp_map sc_tg_gf) := by
+        rw [F.map_comp_eq_comp_map sc_tg_gf]
+      _ = (G k (F k g)) ♯[j_lt_k] (G k (F k f)) ←
+        G.comp_map (F.comp_map sc_tg_gf) :=
+        G.map_comp_eq_comp_map (F.comp_map sc_tg_gf)
 
 @[inherit_doc] scoped[HigherCategoryTheory.ManySorted] infixr:100 " ⊚ " => Functor.comp
 
 /-- The identity functor on a many-sorted category `C`. It maps each morphism to itself and
 trivially preserves all structure. -/
 @[simp]
-def id (C : index → Type u₁) [Category index C] : Functor index C C where
+def id (C : Index → Type u₁) [Category Index C] : Functor Index C C where
   map _ f := f
 
 @[inherit_doc] scoped[HigherCategoryTheory.ManySorted] notation "idₘ" => Functor.id

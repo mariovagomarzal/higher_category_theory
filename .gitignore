@@ -17,5 +17,9 @@ devenv.local.nix
 # Lake
 **/.lake
 
+# Python
+__pycache__/
+*.py[cod]
+
 # Lean documentation build directory
 docbuild

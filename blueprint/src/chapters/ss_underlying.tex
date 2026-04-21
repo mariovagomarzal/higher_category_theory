@@ -1,0 +1,287 @@
+\chapter{Single-sorted underlying transformations}
+\label{ch:ss_underlying}
+
+Every single-sorted $n$-category contains a lower-dimensional $m$-category obtained by restricting
+to the $m$-cells: one can show that the source, target, and composition operations preserve the set
+of $m$-cells, so we may consider their birestrictions to it. This construction extends naturally to
+the $\omega$-categorical setting. Moreover, any single-sorted $n$-functor maps $m$-cells to
+$m$-cells, so it restricts to a functor between the resulting lower-dimensional categories. We call
+this process the \emph{underlying} transformation, and we show that it is functorial and that
+underlying transformations at different dimensions are compatible with one another.
+
+We conclude the chapter by showing that the categories $n\Cat$ together with the underlying functors
+form a projective system, and that $\omega\Cat$ is its projective limit.
+
+\section{Underlying single-sorted categories}
+
+We begin by showing that, for any dimension $k < m$, the source, target, and composition operations
+at dimension $k$ of a single-sorted category can be birestricted to the set of $m$-cells.
+
+\begin{lemma}
+  \label{lem:underlying_source_is_cell}
+  \uses{def:cell}
+  \lean{HigherCategoryTheory.SingleSorted.underlying_source_is_cell}
+  \leanok
+  Let $\cat{C}$ be a single-sorted $\Index$-category and $m \in \Index$. Then, for every $f \in
+  \cat{C}$ and every $k \in \Index$ such that $k < m$, we have that $\Sc^k (f)$ is a $m$-cell in
+  $\cat{C}$.
+\end{lemma}
+
+\begin{proof}
+  \leanok
+  Applying Axiom~\refaxiom{def:SingleSortedCategory}{ax:ss_cross_glob}, we have that
+  \[
+    \Sc^m (\Sc^k f) = \Sc^k (f).
+  \]
+\end{proof}
+
+\begin{corollary}
+  \label{cor:underlying_source_birestriction}
+  \uses{lem:underlying_source_is_cell}
+  \lean{HigherCategoryTheory.SingleSorted.Category.sc_birestriction}
+  \leanok
+  Let $\cat{C}$ be a single-sorted $\Index$-category and $m \in \Index$. Then, for every $k \in
+  \Index$ such that $k < m$, the source operation $\Sc^k$ birestricts to the set of $m$-cells $C_m$.
+\end{corollary}
+
+\begin{proof}
+  \leanok
+  Follows directly from Lemma~\ref{lem:underlying_source_is_cell}.
+\end{proof}
+
+\begin{lemma}
+  \label{lem:underlying_target_is_cell}
+  \uses{thm:cell_sc_iff_cell_tg}
+  \lean{HigherCategoryTheory.SingleSorted.underlying_target_is_cell}
+  \leanok
+  Let $\cat{C}$ be a single-sorted $\Index$-category and $m \in \Index$. Then, for every $f \in
+  \cat{C}$ and every $k \in \Index$ such that $k < m$, we have that $\Tg^k (f)$ is a $m$-cell in
+  $\cat{C}$.
+\end{lemma}
+
+\begin{proof}
+  \leanok
+  Applying Axiom~\refaxiom{def:SingleSortedCategory}{ax:ss_cross_glob}, we have that
+  \[
+    \Tg^m (\Tg^k f) = \Tg^k (f).
+  \]
+  That is, $\Tg^k (f)$ is a target-based $m$-cell in $\cat{C}$. However, we know that every
+  target-based $m$-cell is also a $m$-cell.
+\end{proof}
+
+\begin{corollary}
+  \label{cor:underlying_target_birestriction}
+  \uses{lem:underlying_target_is_cell}
+  \lean{HigherCategoryTheory.SingleSorted.Category.tg_birestriction}
+  \leanok
+  Let $\cat{C}$ be a single-sorted $\Index$-category and $m \in \Index$. Then, for every $k \in
+  \Index$ such that $k < m$, the target operation $\Tg^k$ birestricts to the set of $m$-cells $C_m$.
+\end{corollary}
+
+\begin{proof}
+  \leanok
+  Follows directly from Lemma~\ref{lem:underlying_target_is_cell}.
+\end{proof}
+
+\begin{lemma}
+  \label{lem:underlying_comp_is_cell}
+  \uses{def:cell}
+  \lean{HigherCategoryTheory.SingleSorted.underlying_comp_is_cell}
+  \leanok
+  Let $\cat{C}$ be a single-sorted $\Index$-category and $m \in \Index$. Then, for every $f, g \in
+  C_m$ and every $k \in \Index$ such that $k < m$, if $f$ and $g$ are composable at dimension $k$,
+  then $g \Pcomp^k f$ is an $m$-cell in $\cat{C}$.
+\end{lemma}
+
+\begin{proof}
+  \leanok
+  Applying Axiom~\refaxiom{def:SingleSortedCategory}{ax:ss_cross_sc_tg_comp} and the fact that $f$
+  and $g$ are $m$-cells, we have that
+  \[
+    \Sc^m (g \Pcomp^k f) = \Sc^m (g) \Pcomp^k \Sc^m (f) = g \Pcomp^k f.
+  \]
+\end{proof}
+
+\begin{corollary}
+  \label{cor:underlying_comp_birestriction}
+  \uses{lem:underlying_comp_is_cell}
+  \lean{HigherCategoryTheory.SingleSorted.Category.pcomp_birestriction}
+  \leanok
+  Let $\cat{C}$ be a single-sorted $\Index$-category and $m \in \Index$. Then, for every $k \in
+  \Index$ such that $k < m$, the composition operation $\Pcomp^k$ birestricts to the set of
+  $m$-cells $C_m$.
+\end{corollary}
+
+\begin{proof}
+  \leanok
+  Follows directly from Lemma~\ref{lem:underlying_comp_is_cell}.
+\end{proof}
+
+\begin{construction}[Underlying single-sorted finite category]
+  \label{def:NCategory_underlying}
+  \uses{
+    cor:underlying_source_birestriction,
+    cor:underlying_target_birestriction,
+    cor:underlying_comp_birestriction
+  }
+  \lean{HigherCategoryTheory.SingleSorted.NCategory.underlying}
+  \leanok
+  Let $\cat{C}$ be a single-sorted $n$-category, and let $m \in \NN$ with $m < n$. The
+  \emph{underlying $m$-category} of $\cat{C}$ is the single-sorted $m$-category $\cat{C}^{<m}$
+  defined on the set of $m$-cells $C_m$, with the source, target, and composition operations given
+  by the birestrictions of those of $\cat{C}$ to $C_m$.
+\end{construction}
+
+\begin{proof}
+  \leanok
+  The birestrictions are well-defined by Corollaries~\ref{cor:underlying_source_birestriction},
+  \ref{cor:underlying_target_birestriction}, and~\ref{cor:underlying_comp_birestriction}. Each axiom
+  of single-sorted categories for $\cat{C}^{<m}$ follows directly from the corresponding axiom for
+  $\cat{C}$.
+\end{proof}
+
+\begin{construction}[Underlying single-sorted omega category]
+  \label{def:OmegaCategory_underlying}
+  \uses{
+    def:SingleSortedOmegaCategory,
+    cor:underlying_source_birestriction,
+    cor:underlying_target_birestriction,
+    cor:underlying_comp_birestriction
+  }
+  \lean{HigherCategoryTheory.SingleSorted.OmegaCategory.underlying}
+  \leanok
+  Let $\cat{C}$ be a single-sorted $\omega$-category, and let $m \in \NN$. The \emph{underlying
+  $m$-category} of $\cat{C}$ is the single-sorted $m$-category $\cat{C}^{<m}$ defined by the same
+  construction as in Definition~\ref{def:NCategory_underlying}.
+\end{construction}
+
+\begin{proof}
+  \leanok
+  The single-sorted category axioms follow by the same argument as in
+  Definition~\ref{def:NCategory_underlying}.
+\end{proof}
+
+\section{Underlying single-sorted functors}
+
+\begin{lemma}
+  \label{lem:underlying_functor_is_cell}
+  \uses{def:cell, def:SingleSortedFunctor}
+  \lean{HigherCategoryTheory.SingleSorted.underlying_functor_is_cell}
+  \leanok
+  Let $\cat{C}$ and $\cat{D}$ be single-sorted $\Index$-categories, $F \colon \cat{C} \to \cat{D}$
+  be a single-sorted functor, and $m \in \Index$. Then, for every $f \in C_m$ we have that $F(f) \in
+  D_m$.
+\end{lemma}
+
+\begin{proof}
+  \leanok
+  Applying Axiom~\refaxiom{def:SingleSortedFunctor}{ax:ss_fun_sc_tg} and the fact that $f$ is an
+  $m$-cell, we have that
+  \[
+    \Sc^m (F(f)) = F(\Sc^m (f)) = F(f).
+  \]
+\end{proof}
+
+\begin{corollary}
+  \label{cor:underlying_functor_birestriction}
+  \uses{lem:underlying_functor_is_cell}
+  \lean{HigherCategoryTheory.SingleSorted.Functor.map_birestriction}
+  \leanok
+  Let $\cat{C}$ and $\cat{D}$ be single-sorted $\Index$-categories, $F \colon \cat{C} \to \cat{D}$
+  be a single-sorted functor, and $m \in \Index$. Then $F$ birestricts to a function from $C_m$ to
+  $D_m$.
+\end{corollary}
+
+\begin{proof}
+  \leanok
+  Follows directly from Lemma~\ref{lem:underlying_functor_is_cell}.
+\end{proof}
+
+\begin{construction}[Underlying single-sorted finite functor]
+  \label{def:NFunctor_underlying}
+  \uses{def:NCategory_underlying, cor:underlying_functor_birestriction}
+  \lean{HigherCategoryTheory.SingleSorted.NFunctor.underlying}
+  \leanok
+  Let $\cat{C}$ and $\cat{D}$ be single-sorted $n$-categories, and let $F \colon \cat{C} \to
+  \cat{D}$ be a single-sorted $n$-functor. For any $m \in \NN$ with $m < n$, the birestriction of
+  $F$ to the sets of $m$-cells defines a single-sorted $m$-functor $F^{<m} \colon \cat{C}^{<m} \to
+  \cat{D}^{<m}$.
+\end{construction}
+
+\begin{proof}
+  \leanok
+  The birestriction is well-defined by Corollary~\ref{cor:underlying_functor_birestriction}. Each
+  preservation axiom for $F^{<m}$ follows directly from the corresponding axiom for $F$.
+\end{proof}
+
+\begin{construction}[Underlying single-sorted omega functor]
+  \label{def:OmegaFunctor_underlying}
+  \uses{def:OmegaCategory_underlying, cor:underlying_functor_birestriction}
+  \lean{HigherCategoryTheory.SingleSorted.OmegaFunctor.underlying}
+  \leanok
+  Let $\cat{C}$ and $\cat{D}$ be single-sorted $\omega$-categories, and let $F \colon \cat{C} \to
+  \cat{D}$ be a single-sorted $\omega$-functor. For any $m \in \NN$, the birestriction of $F$ to the
+  sets of $m$-cells defines a single-sorted $m$-functor $F^{<m} \colon \cat{C}^{<m} \to
+  \cat{D}^{<m}$.
+\end{construction}
+
+\begin{proof}
+  \leanok
+  The argument is identical to that of Definition~\ref{def:NFunctor_underlying}.
+\end{proof}
+
+\section{Single-sorted underlying functors}
+
+The underlying constructions of the previous sections are in fact functorial, as the following
+definition makes precise.
+
+\begin{construction}[Underlying functor]
+  \label{def:UnderlyingFunctor}
+  \uses{
+    def:NCategory_underlying,
+    def:OmegaCategory_underlying,
+    def:NFunctor_underlying,
+    def:OmegaFunctor_underlying
+  }
+  \lean{HigherCategoryTheory.SingleSorted.UnderlyingFunctor}
+  Let $n, m \in \ENat$ with $m \leq n$. The \emph{underlying functor} $\Underlying^{(n, m)}$ from
+  $n\Cat$ to $m\Cat$ is the functor that maps every single-sorted $n$-category $\cat{C}$ to its
+  underlying $m$-category $\cat{C}^{<m}$ and every single-sorted $n$-functor $F \colon \cat{C} \to
+  \cat{D}$ to its underlying $m$-functor $F^{<m} \colon \cat{C}^{<m} \to \cat{D}^{<m}$. If $n = m$,
+  then $\Underlying^{(n, n)}$ stands for the identity functor on $n\Cat$.
+\end{construction}
+
+\begin{proof}
+  Functoriality follows from the fact that the underlying constructions preserve the birestriction
+  structure: the identity functor on $\cat{C}$ yields the identity functor on $\cat{C}^{<m}$, and
+  the composition of two $n$-functors yields the composition of their underlying $m$-functors.
+\end{proof}
+
+Moreover, underlying transformations at different dimensions are compatible with one another.
+
+\begin{theorem}[Compatibility of underlying functors]
+  \label{thm:UnderlyingFunctor_compatibility}
+  \uses{def:UnderlyingFunctor}
+  \notready
+  The assignment $(n, m) \mapsto \Underlying^{(n, m)}$ defines a functor from $(\ENat, \leq)^{op}$
+  to $\cat{Cat}$. That is, for all $k \leq m \leq n$ in $\ENat$,
+  \[
+    \Underlying^{(m, k)} \circ \Underlying^{(n, m)} = \Underlying^{(n, k)}.
+  \]
+\end{theorem}
+
+\begin{proof}
+  Both sides act as the same birestriction on the underlying map. The categorical structures
+  coincide because restricting to $m$-cells and then to $k$-cells is the same as restricting to
+  $k$-cells directly, since every $k$-cell is also an $m$-cell.
+\end{proof}
+
+\section{The projective limit of single-sorted categories}
+
+\begin{theorem}[Projective limit of single-sorted categories]
+  \label{thm:Underlying_projective_limit}
+  \uses{thm:UnderlyingFunctor_compatibility}
+  \notready
+  The category $\omega\Cat$ is the projective limit of the system $(n\Cat, \Underlying^{(n, m)})_{m
+  \leq n}$.
+\end{theorem}

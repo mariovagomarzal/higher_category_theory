@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Enric Cosme Llópez, Raul Ruiz Mora, Mario Vago Marzal
 -/
 import Mathlib.CategoryTheory.Category.Basic
+import Mathlib.Data.ENat.Basic
 import HigherCategoryTheory.ManySorted.Category
 import HigherCategoryTheory.ManySorted.Functor
 
@@ -21,9 +22,14 @@ many-sorted functors.
 
 ## Implementation notes
 
-The `Cat` structure bundles a type family `index → Type u` with a many-sorted `Category` instance,
-enabling the construction of categories of many-sorted structured objects. This is analogous to
-`StructureFamily` from the single-sorted setting, but adapted for type families.
+The `Cat` structure bundles a family of types `Index → Type u` with a many-sorted `Category`
+instance. Coercion to the carrier family is provided so that the underlying types can be used
+directly.
+
+The specialization `NCat` is an abbreviation for `Cat (FinSucc n)`, and `OmegaCat` for `Cat ℕ`
+(since many-sorted `OmegaCategory` is defined as `Category ℕ` without additional axioms). Both have
+separate `Category` instances that narrow the morphisms to `NFunctor` and `OmegaFunctor`
+respectively.
 -/
 
 universe u
@@ -31,67 +37,95 @@ universe u
 namespace HigherCategoryTheory.ManySorted
 
 /--
-A bundled many-sorted category: a family of types equipped with a `Category` instance.
+The category of many-sorted categories with a given index type.
 
-Objects of `Cat index` are families of types `(C k)_{k ∈ index}` together with a many-sorted
-`Category index C` structure.
+Bundles a family of types `C : Index → Type u` with a `Category Index C` instance.
 -/
-structure Cat (index : Type) [LinearOrder index] : Type (u + 1) where
-  /-- The underlying family of types indexed by `index`. -/
-  obj : index → Type u
+structure Cat (Index : Type) [Preorder Index] where
+  /-- Build a `Cat` from a carrier family with a `Category` instance. -/
+  of ::
+  /-- The underlying family of types indexed by `Index`. -/
+  carrier : Index → Type u
   /-- The many-sorted category structure on the family. -/
-  str : Category index obj := by infer_instance
-
-namespace Cat
+  [str : Category Index carrier]
 
 attribute [instance] Cat.str
 
-variable {index : Type} [LinearOrder index]
+namespace Cat
 
-set_option checkBinderAnnotations false in
-/--
-Convenience constructor for `Cat` that automatically infers the category instance.
+variable {Index : Type} [Preorder Index]
 
-Given a family of types `obj` with an instance of `Category index obj`, this constructs a
-`Cat index`.
--/
-def of (obj : index → Type u) [str : Category index obj] : Cat index := ⟨obj, str⟩
+/-- Coercion allowing a `Cat` to be applied to an index, yielding the type at that dimension. -/
+instance : CoeFun (Cat Index) fun _ ↦ Index → Type u := ⟨Cat.carrier⟩
+
+attribute [coe] Cat.carrier
 
 /--
-Category instance for `Cat index`.
+Category instance for `Cat Index`.
 
-The morphisms between objects `C` and `D` are many-sorted functors `Functor index C D`, the
+The morphisms between objects `C` and `D` are many-sorted functors `Functor Index C D`, the
 identity morphism is the identity functor `idₘ`, and composition is functor composition `⊚`.
 -/
-instance category : CategoryTheory.Category (Cat.{u} index) where
-  Hom C D := Functor index C.obj D.obj
-  id C := idₘ C.obj
+instance category : CategoryTheory.LargeCategory.{u} (Cat Index) where
+  Hom C D := Functor Index C D
   comp F G := G ⊚ F
+  id C := idₘ C
 
 end Cat
 
 /-- The category of many-sorted $n$-categories. -/
-abbrev NCat (n : ℕ) := Cat.{u} (FinSucc n)
+abbrev NCat (n : ℕ) := Cat (FinSucc n)
+
+namespace NCat
+
+variable {n : ℕ}
 
 /--
 Category instance for `NCat n`.
 
-Reuses the category structure from `Cat` but specifying that morphisms are of type `NFunctor`.
+The morphisms between objects `C` and `D` are `NFunctor n C D`, the identity morphism is the
+identity functor `idₘ`, and composition is functor composition `⊚`.
 -/
-instance NCat.category {n : ℕ} : CategoryTheory.Category (NCat.{u} n) :=
-  { Cat.category with
-    Hom C D := NFunctor n C.obj D.obj }
+instance category : CategoryTheory.LargeCategory.{u} (NCat n) where
+  Hom C D := NFunctor n C D
+  comp F G := G ⊚ F
+  id C := idₘ C
+
+end NCat
 
 /-- The category of many-sorted $\omega$-categories. -/
-abbrev OmegaCat := Cat.{u} ℕ
+abbrev OmegaCat := Cat ℕ
+
+namespace OmegaCat
 
 /--
 Category instance for `OmegaCat`.
 
-Reuses the category structure from `Cat` but specifying that morphisms are of type `OmegaFunctor`.
+The morphisms between objects `C` and `D` are many-sorted $\omega$-functors
+`OmegaFunctor C D`, the identity morphism is the identity functor `idₘ`, and composition
+is functor composition `⊚`.
 -/
-instance OmegaCat.category : CategoryTheory.Category OmegaCat.{u} :=
-  { Cat.category with
-    Hom C D := OmegaFunctor C.obj D.obj }
+instance category : CategoryTheory.LargeCategory.{u} OmegaCat where
+  Hom C D := OmegaFunctor C D
+  comp F G := G ⊚ F
+  id C := idₘ C
+
+end OmegaCat
+
+/--
+The category of many-sorted categories of a given dimension in `ℕ∞`.
+
+Returns `NCat n` when the dimension is finite and `OmegaCat` when the dimension is $\omega$.
+-/
+abbrev ICat (dimension : ℕ∞) : Type (u + 1) := match dimension with
+  | fin n => NCat n
+  | ω => OmegaCat
+
+/-- Category instance for `ICat dimension`, where the category instance for each case of `dimension`
+is inferred from the corresponding category instance of `NCat n` or `OmegaCat`. -/
+instance ICat.category {dimension : ℕ∞} : CategoryTheory.LargeCategory.{u} (ICat dimension) :=
+  match dimension with
+  | fin _ => NCat.category
+  | ω => OmegaCat.category
 
 end HigherCategoryTheory.ManySorted

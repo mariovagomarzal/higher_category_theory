@@ -8,20 +8,21 @@ import HigherCategoryTheory.SingleSorted.Category
 /-!
 # The single-sorted category on the unit type
 
-This file defines the trivial single-sorted $1$-category structure on the unit type.
+This file defines the trivial single-sorted category structure on the unit type.
 -/
 
-universe u
-
-namespace Unit
+namespace Unit.SingleSorted
 
 open HigherCategoryTheory.SingleSorted
 
-/-- The unit type with its unique element forms a single-sorted $1$-category, where composition is
+/-- The unit type with its unique element forms a single-sorted category, where composition is
 always defined and its value is the unique element of the unit type. -/
-instance inst1Category : NCategory 1 Unit where
+instance instCategory (Index : Type) [Preorder Index] : Category Index Unit where
   sc _ _ := ()
   tg _ _ := ()
   pcomp _ _ _ := ⟨True, fun _ ↦ ()⟩
 
-end Unit
+/-- Specialization of the unit category instance to `NCategory 1`. -/
+instance (priority := 1100) inst1Category : NCategory 1 Unit := PreCategory.lift
+
+end Unit.SingleSorted

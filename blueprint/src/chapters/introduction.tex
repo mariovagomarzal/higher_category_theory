@@ -1,31 +1,106 @@
-\chapter*{Introduction}
+\chapter{Introduction}
 \label{chp:introduction}
 
-\paragraph{What is a formalization project?} A \textbf{formalization project} is an effort to
-translate mathematical definitions, theorems, and proofs into a formal language that can be verified
-by a computer proof assistant. In this project, we use \textbf{Lean 4}, a theorem prover and
-programming language developed at Microsoft Research with Leonardo de Moura as the lead developer.
-Lean is particularly well-suited for formalizing modern mathematics.
+\section{Formalization and this document}
 
-\paragraph{What is this docuemnt?} This document is a \textbf{blueprint} for a formalization project
-in Lean 4. A blueprint serves as a roadmap for mathematical formalization, providing a
-human-readable mathematical exposition alongside references to the corresponding formal code. It
-acts as a bridge between traditional mathematical writing and computer-verified proofs, allowing us
-to understand the mathematical content while tracking the progress of its formalization. Refer to
-the official \href{https://github.com/PatrickMassot/leanblueprint}{Lean Blueprint GitHub repository}
-for more information on blueprints.
+A \textbf{formalization project} is an effort to translate mathematical definitions, theorems, and
+proofs into a formal language that can be checked by a computer program known as a \textbf{proof
+assistant}. The proof assistant verifies that each logical step is valid, ensuring that the
+resulting proofs are correct beyond any doubt. In this project, we use \textbf{Lean 4}, a theorem
+prover and programming language originally developed at Microsoft Research. Lean has a growing
+mathematical library called \textbf{Mathlib}, which provides a large collection of formalized
+mathematics that we build upon throughout this work.
 
-\paragraph{What is this project about?} This project formalizes the theory of \textbf{higher-order
-categories} and their different presentations. Specifically, we formalize:
+This document is a \textbf{blueprint} for the formalization. A blueprint serves as a bridge between
+traditional mathematical writing and computer-verified proofs: it presents the mathematical content
+in a human-readable form while linking each definition and theorem to its corresponding formal
+counterpart in the Lean source code. It also tracks the formalization progress, making it easy to
+see which parts have been completed and which remain to be done. Refer to the official
+\href{https://github.com/PatrickMassot/leanblueprint}{Lean Blueprint GitHub repository} for more
+information on the blueprint tool.
 
-\begin{enumerate}
-  \item \textbf{Single-sorted categories}: Where objects, morphisms, 2-morphisms, and higher
-    morphisms all live in a single type.
-  \item \textbf{Many-sorted categories}: The traditional presentation where objects, morphisms, and
-    higher morphisms live in separate types.
-  \item \textbf{The equivalence between these presentations}: Proving that these two approaches of
-    higher-order categories are equivalent.
-\end{enumerate}
+\section{Project overview}
 
-This project is based on the work by Enric Cosme Llópez and Raul Ruiz Mora in
-\cite{vidal2024higher}.
+This project is based on the work by Enric Cosme Llópez and Raúl Ruiz Mora in
+\cite{vidal2024higher}. In their work, they define the notion of higher-order categories in two
+different presentations:
+
+\begin{description}
+  \item[Single-sorted presentation] All morphisms --- objects, 1-morphisms, 2-morphisms, and so on
+    --- live in a single set (or type). Source, target, and composition operations at each dimension
+    give the set its multidimensional categorical structure.
+  \item[Many-sorted presentation] Morphisms of each dimension live in a separate set (or type). For
+    each pair of dimensions $(j, k)$ with $j < k$, there are source, target, identity, and
+    composition operations relating the two levels.
+\end{description}
+
+For each presentation, the corresponding notion of functor is also defined. With these categories as
+objects and functors as morphisms, one can construct the categories of single-sorted and many-sorted
+$n$-categories, as well as their $\omega$-categorical counterparts.
+
+Two functorial transformations are then introduced for each presentation:
+\begin{description}
+  \item[Discretization] Transforms $n$-categories into $m$-categories for $n < m$ (where $m$ may be
+    $\omega$) by adding trivial higher-dimensional structure.
+  \item[Underlying] Transforms $n$-categories into $m$-categories for $n > m$ (where $n$ may be
+    $\omega$) by forgetting the higher dimensions.
+\end{description}
+
+Each family of transformations is internally compatible: the discretization functors commute with
+one another, and the underlying functors commute with one another. Moreover, the underlying
+transformations form a projective system whose limit is the category of $\omega$-categories.
+
+Finally, the two presentations are shown to be equivalent through a pair of functors between
+single-sorted and many-sorted $n$-categories:
+\begin{description}
+  \item[Graduation] Transforms a single-sorted $n$-category into a many-sorted one by distributing
+    the morphisms into separate types according to their dimension.
+  \item[Unification] Transforms a many-sorted $n$-category into a single-sorted one by collecting
+    all morphisms into a single type.
+\end{description}
+
+The composition $\Uf^{(n)} \circ \Gd^{(n)}$ is the identity functor, while $\Gd^{(n)} \circ
+\Uf^{(n)}$ is naturally isomorphic to the identity. This establishes the equivalence of the two
+presentations for finite-dimensional $n$-categories.
+
+It is then shown that, since the underlying transformations form a projective system with the
+category of $\omega$-categories as its limit, this equivalence extends to $\omega$-categories as
+well.
+
+\section{Notation and terminology}
+
+Throughout this text, the terms \emph{category} and \emph{functor}, when used outside the
+single-sorted or many-sorted framework defined in this work, refer to the standard notions of
+category theory. In the accompanying Lean~4 formalization, these correspond to the definitions
+provided by Mathlib.
+
+\begin{notation}[Standard categorical notation]
+  \label{not:standard_category_theory}
+  We adopt the following standard categorical notation:
+  \begin{itemize}
+    \item $\Cat$ denotes the category whose objects are classical categories and whose morphisms
+      are classical functors between them.
+    \item For a category $\cat{C}$, we write $\cat{C}^{\mathrm{op}}$ for its opposite category.
+    \item When a preordered set $(S, \leq)$ appears in a categorical context, it is understood as
+      the category whose objects are the elements of $S$ and where there is a unique morphism from
+      $a$ to $b$ if and only if $a \leq b$.
+  \end{itemize}
+\end{notation}
+
+The core definitions in this work are parametrized by a general index set, which is then
+specialized to obtain finite-dimensional and infinite-dimensional categories. We introduce the
+following notation for this purpose.
+
+\begin{notation}[Index set]
+  \label{not:index_set}
+  If not otherwise specified, we use $\Index$ to denote a set of indices equipped with a preorder
+  relation $<$. This general setting is used to define the core structures. In practice, the main
+  definitions specialize $\Index$ to either a finite set $n = \set{0, 1, \ldots, n - 1}$ or the set
+  $\NN$ of natural numbers.
+\end{notation}
+
+\begin{notation}[Extended natural numbers]
+  \label{not:extended_naturals}
+  We write $\ENat = \NN \cup \set{\omega}$ for the extended natural numbers, where the top element
+  of the inherited order is the symbol $\omega$, that is, $n < \omega$ for every $n \in \NN$.
+\end{notation}

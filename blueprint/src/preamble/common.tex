@@ -20,15 +20,20 @@
 
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
+\newtheorem{construction}[theorem]{Definition}
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{notation}[theorem]{Notation}
 \newtheorem{example}[theorem]{Example}
 
 %== Macros. ==%
+% Reference an axiom as "X.Y" with the dot styled as a hyperlink.
+\newcommand{\refaxiom}[2]{\hyperref[#2]{\ref*{#1}.\ref*{#2}}}
+
 % Set-related.
 \newcommand{\set}[1]{\left\{ #1 \right\}}
 \newcommand{\Index}{\mathcal{I}}
 \newcommand{\NN}{\mathbb{N}}
+\newcommand{\ENat}{\overline{\NN}}
 \newcommand{\cat}[1]{\mathsf{#1}}
 \newcommand{\Cat}{\cat{Cat}}
 \newcommand{\CatMS}{\Cat_{\mathrm{ms}}}
@@ -38,5 +43,8 @@
 \DeclareMathOperator{\Tg}{tg}
 \DeclareMathOperator{\Pcomp}{\#}
 \DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\Discrete}{\mathcal{D}}
 \DeclareMathOperator{\Underlying}{\mathcal{U}}
 \DeclareMathOperator{\Idm}{i}
+\DeclareMathOperator{\Gd}{Gd}
+\DeclareMathOperator{\Uf}{Uf}

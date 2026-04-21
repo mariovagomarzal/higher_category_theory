@@ -1,0 +1,133 @@
+\chapter{Single-sorted discretization transformations}
+\label{ss_discrete}
+
+Every single-sorted $n$-category can be embedded into a higher-dimensional $m$-category by declaring
+all dimensions above $n$ to be trivial: sources and targets act as the identity, so composition is
+only defined between equal morphisms, and we set it to return the morphism itself. This construction
+extends naturally to the $\omega$-categorical setting. Moreover, any single-sorted $n$-functor
+automatically preserves this extended structure, giving rise to a functor between the resulting
+higher-dimensional categories. We call this process the \emph{discretization} transformation, and we
+show that it is functorial and that discretization transformations at different dimensions commute
+with one another.
+
+\section{Discrete single-sorted categories}
+
+\begin{construction}[Discrete single-sorted finite category]
+  \label{def:NCategory_discrete}
+  \uses{def:SingleSortedNCategory}
+  \lean{HigherCategoryTheory.SingleSorted.NCategory.discrete}
+  \leanok
+  Let $\cat{C}$ be a single-sorted $n$-category, and let $m \in \NN$ with $n < m$. The
+  \emph{discrete $m$-category} of $\cat{C}$ is the single-sorted $m$-category $\cat{C}^{>m}$ defined
+  on the same underlying set $C$, where\footnote{Since no ambiguity arises, we denote the source,
+  target, and composition operations of $\cat{C}^{>m}$ by the same symbols as those of $\cat{C}$.}:
+
+  \begin{itemize}
+    \item For $k < n$, the source, target, and composition at dimension $k$ are those of $\cat{C}$.
+    \item For $n \leq k < m$, the source and target at dimension $k$ are the identity, and
+      composition is defined only between equal morphisms, returning the morphism itself.
+  \end{itemize}
+\end{construction}
+
+\begin{proof}
+  \leanok
+  Each axiom either involves only dimensions below $n$, reducing to the corresponding axiom of
+  $\cat{C}$, or involves a dimension $k \geq n$, where it trivially follows from the fact that all
+  operations are trivial.
+\end{proof}
+
+\begin{construction}[Discrete single-sorted omega category]
+  \label{def:NCategory_discreteOmega}
+  \uses{def:SingleSortedNCategory, def:SingleSortedOmegaCategory}
+  \lean{HigherCategoryTheory.SingleSorted.NCategory.discreteOmega}
+  \leanok
+  Let $\cat{C}$ be a single-sorted $n$-category. The \emph{discrete $\omega$-category} of $\cat{C}$
+  is the single-sorted $\omega$-category $\cat{C}^{>\omega}$ defined by the same case distinction as
+  in Definition~\ref{def:NCategory_discrete}, now with $k$ ranging over all of $\NN$.
+\end{construction}
+
+\begin{proof}
+  \leanok
+  The single-sorted category axioms follow by the same argument as in
+  Definition~\ref{def:NCategory_discrete}. The $\omega$-categorical axiom holds because $\Sc^n (f) =
+  f$ for every $f \in C$, so every morphism is an $n$-cell.
+\end{proof}
+
+\section{Discrete single-sorted functors}
+
+\begin{construction}[Discrete single-sorted finite functor]
+  \label{def:NFunctor_discrete}
+  \uses{def:SingleSortedNFunctor, def:NCategory_discrete}
+  \lean{HigherCategoryTheory.SingleSorted.NFunctor.discrete}
+  \leanok
+  Let $\cat{C}$ and $\cat{D}$ be single-sorted $n$-categories, and let $F \colon \cat{C} \to
+  \cat{D}$ be a single-sorted $n$-functor. For any $m \in \NN$ with $n < m$, the same underlying map
+  $F$ defines a single-sorted $m$-functor $F^{>m} \colon \cat{C}^{>m} \to \cat{D}^{>m}$.
+\end{construction}
+
+\begin{proof}
+  \leanok
+  Each preservation axiom either involves only dimensions below $n$, where it follows from $F$ being
+  an $n$-functor, or involves a dimension $k \geq n$, where it trivially follows from the fact that
+  all operations are trivial.
+\end{proof}
+
+\begin{construction}[Discrete single-sorted omega functor]
+  \label{def:NFunctor_discreteOmega}
+  \uses{def:SingleSortedOmegaFunctor, def:NCategory_discreteOmega}
+  \lean{HigherCategoryTheory.SingleSorted.NFunctor.discreteOmega}
+  \leanok
+  Let $\cat{C}$ and $\cat{D}$ be single-sorted $n$-categories, and let $F \colon \cat{C} \to
+  \cat{D}$ be a single-sorted $n$-functor. The same underlying map $F$ defines a single-sorted
+  $\omega$-functor $F^{>\omega} \colon \cat{C}^{>\omega} \to \cat{D}^{>\omega}$.
+\end{construction}
+
+\begin{proof}
+  \leanok
+  The argument is identical to that of Definition~\ref{def:NFunctor_discrete}.
+\end{proof}
+
+\section{Single-sorted discretization functors}
+
+The discrete constructions of the previous sections are in fact functorial, as the following
+definition makes precise.
+
+\begin{construction}[Discretization functor]
+  \label{def:DiscretizationFunctor}
+    \uses{
+    def:NCategory_discrete,
+    def:NCategory_discreteOmega,
+    def:NFunctor_discrete,
+    def:NFunctor_discreteOmega
+  }
+  Let $n, m \in \ENat$ with $n \leq m$. The \emph{discretization functor} $\Discrete^{(n, m)}$ from
+  $n\Cat$ to $m\Cat$ is the functor that maps every single-sorted $n$-category $\cat{C}$ to its
+  discrete $m$-category $\cat{C}^{>m}$ and every single-sorted $n$-functor $F \colon \cat{C} \to
+  \cat{D}$ to its discrete $m$-functor $F^{>m} \colon \cat{C}^{>m} \to \cat{D}^{>m}$. If $n = m$,
+  then $\Discrete^{(n, n)}$ stands for the identity functor on $n\Cat$.
+\end{construction}
+
+\begin{proof}
+  Functoriality follows from the fact that the discrete constructions preserve the underlying map:
+  the identity functor on $\cat{C}$ yields the identity functor on $\cat{C}^{>m}$, and the
+  composition of two $n$-functors yields the composition of their discrete $m$-functors.
+\end{proof}
+
+Moreover, discretization transformations at different dimensions are compatible with one another.
+
+\begin{theorem}[Compatibility of discretization functors]
+  \label{thm:DiscretizationFunctor_compatibility}
+  \uses{def:DiscretizationFunctor}
+  \notready
+  The assignment $(n, m) \mapsto \Discrete^{(n, m)}$ defines a functor from $(\ENat, \leq)$ to
+  $\cat{Cat}$. That is, for all $k \leq n \leq m$ in $\ENat$,
+  \[
+    \Discrete^{(m, n)} \circ \Discrete^{(n, k)} = \Discrete^{(m, k)}.
+  \]
+\end{theorem}
+
+\begin{proof}
+  Both sides act as the identity on the underlying map. The categorical structures coincide because
+  making dimensions $k \leq j < n$ trivial and then $n \leq j < m$ trivial is the same as making all
+  dimensions $k \leq j < m$ trivial at once.
+\end{proof}
