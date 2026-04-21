@@ -79,8 +79,7 @@ attribute [simp] CategoryStruct.pcomp_dom
 
 namespace CategoryStruct
 
-variable {Index : Type} {C : Type u} [CategoryStruct Index C]
-variable {k : Index} {f g : C}
+variable {Index : Type} {C : Type u} [CategoryStruct Index C] {k : Index} {f g : C}
 
 @[inherit_doc]
 scoped[HigherCategoryTheory.SingleSorted] notation g " ♯.[" k "] " f:100 =>
@@ -118,8 +117,7 @@ export CategoryStruct (sc tg sc_is_tg)
 
 section Congruence
 
-variable {Index : Type} {C : Type u} [CategoryStruct Index C]
-variable {k : Index} {f₁ f₂ g₁ g₂ : C}
+variable {Index : Type} {C : Type u} [CategoryStruct Index C] {k : Index} {f₁ f₂ g₁ g₂ : C}
 
 /-- Congruence lemma for the domain of partial composition: if `f₁ = f₂` and `g₁ = g₂`, and the
 partial composition `g₁ ♯.[k] f₁` is defined, then `g₂ ♯.[k] f₂` is also defined. -/
