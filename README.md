@@ -118,7 +118,7 @@ There are no strict rules for branching in this repository.
 
 ## License
 
-Copyright (c) 2025 Mario Vago Marzal. All rights reserved.
+Copyright (c) 2025-2026 Mario Vago Marzal. All rights reserved.
 
 This project is licensed under the Apache License 2.0. See the
 [LICENSE](LICENSE) file for details.
