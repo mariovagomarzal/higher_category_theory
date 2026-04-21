@@ -6,12 +6,15 @@ Authors: Enric Cosme Llópez, Raúl Ruiz Mora, Mario Vago Marzal
 import Mathlib.Order.TypeTags
 import Mathlib.Data.Nat.Notation
 import Mathlib.Order.Defs.PartialOrder
+-- import Mathlib.Order.Fin.Basic
 
 /-!
 # Notation
 
 This file defines notation and abbreviations used throughout the library.
 -/
+
+universe u
 
 namespace HigherCategoryTheory
 
@@ -31,6 +34,16 @@ scoped notation "fin" => WithTop.some
 /-- Abbreviation for `Fin (n + 1)`, used as the index type for $n$-categories in the many-sorted
 presentation. -/
 abbrev FinSucc (n : ℕ) := Fin (n + 1)
+
+/-- A family of types indexed by a preordered type, used as the carrier for many-sorted categories.
+-/
+abbrev TypeFamily (Index : Type) := Index → Type u
+
+/-- A family of types indexed by `FinSucc n`, used as the carrier for many-sorted $n$-categories. -/
+abbrev NTypeFamily (n : ℕ) := TypeFamily.{u} (FinSucc n)
+
+/-- A family of types indexed by `ℕ`, used as the carrier for many-sorted $\omega$-categories. -/
+abbrev OmegaTypeFamily := TypeFamily.{u} ℕ
 
 /-- Notation for `lt_trans`, used to compose strict inequality proofs when passing index arguments
 to source, target, or composition operations in the many-sorted presentation. In any other context,

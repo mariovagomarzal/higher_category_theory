@@ -45,7 +45,7 @@ structure Cat (Index : Type) [Preorder Index] where
   /-- Build a `Cat` from a carrier family with a `Category` instance. -/
   of ::
   /-- The underlying family of types indexed by `Index`. -/
-  carrier : Index → Type u
+  carrier : TypeFamily.{u} Index
   /-- The many-sorted category structure on the family. -/
   [str : Category Index carrier]
 
