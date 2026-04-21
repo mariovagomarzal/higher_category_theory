@@ -113,7 +113,7 @@ There are no strict rules for branching in this repository.
 ## Authors
 
 - [Enric Cosme Llópez][enric]
-- [Raul Ruiz Mora][raul]
+- [Raúl Ruiz Mora][raul]
 - [Mario Vago Marzal][mario]
 
 ## License
