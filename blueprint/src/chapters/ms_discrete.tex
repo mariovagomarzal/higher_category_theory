@@ -1,0 +1,188 @@
+\chapter{Many-sorted discretization transformations}
+\label{ch:ms_discrete}
+
+Every many-sorted $n$-category can be embedded into a higher-dimensional $m$-category by extending
+the family of sets with copies of the top-level set: dimensions above $n$ are filled with the
+$n$-morphism set, and the extra operations are declared trivial. This construction extends naturally
+to the $\omega$-categorical setting. Moreover, any many-sorted $n$-functor automatically preserves
+this extended structure, giving rise to a functor between the resulting higher-dimensional
+categories, with the extra dimensions acted upon by the top-level component of the original functor.
+We call this process the \emph{discretization} transformation, and we show that it is functorial and
+that discretization transformations at different dimensions commute with one another.
+
+\section{Discrete many-sorted categories}
+
+We begin by defining the extended family of sets and then construct a many-sorted category structure
+on it.
+
+\begin{definition}[Discrete many-sorted finite family]
+  \label{def:ManySortedDiscreteFamily}
+  \uses{def:ManySortedNCategory}
+  Let $\cat{C}$ be a many-sorted $n$-category on a family $(C_k)_{k \leq n}$, and let $m \in \NN$
+  with $n < m$. The \emph{discrete finite family} $(C^{>m}_k)_{k \leq m}$ is defined by
+  \[
+    C^{>m}_k =
+    \begin{cases}
+      C_k & \text{if } k \leq n, \\
+      C_n & \text{if } n < k \leq m.
+    \end{cases}
+  \]
+\end{definition}
+
+\begin{construction}[Discrete many-sorted finite category]
+  \label{def:ManySortedNCategory_discrete}
+  \uses{def:ManySortedDiscreteFamily, def:ManySortedNCategory}
+  \notready
+  Let $\cat{C}$ be a many-sorted $n$-category on a family $(C_k)_{k \leq n}$, and let $m \in \NN$
+  with $n < m$. The \emph{discrete $m$-category} of $\cat{C}$ is the many-sorted $m$-category
+  $\cat{C}^{>m}$ on the discrete family $(C^{>m}_k)_{k \leq m}$ of
+  Definition~\ref{def:ManySortedDiscreteFamily}, where the operations at each pair $(k, j)$ with $j
+  < k$ are defined as follows:
+
+  \begin{itemize}
+    \item If $k \leq n$ (and hence $j < k \leq n$): the source $\Sc^{(k,j)}$, target $\Tg^{(k,j)}$,
+      identity $\Idm^{(k,j)}$, and composition $\circ^{(k,j)}$ are those of $\cat{C}$.
+    \item If $k > n$ and $j \leq n$: we have $C^{>m}_k = C_n$ and $C^{>m}_j = C_j$, so the source
+      and target maps $\Sc^{(k,j)}, \Tg^{(k,j)} \colon C_n \to C_j$ are defined as $\Sc^{(n,j)}$ and
+      $\Tg^{(n,j)}$ respectively; the identity map $\Idm^{(k,j)} \colon C_j \to C_n$ is defined as
+      $\Idm^{(n,j)}$; and composition $\circ^{(k,j)}$ is defined as $\circ^{(n,j)}$.
+    \item If $j > n$ (and hence $k > j > n$): we have $C^{>m}_k = C^{>m}_j = C_n$. The source and
+      target maps are the identity on $C_n$, the identity map $\Idm^{(k,j)}$ is also the identity,
+      and composition is defined only between equal morphisms and returns the morphism itself.
+  \end{itemize}
+\end{construction}
+
+\begin{proof}
+  Each axiom, whether a pre-category axiom at a pair $(k, j)$ or a cross-dimensional axiom at a
+  triple $i < j < k$, either involves only indices at most $n$, in which case it reduces to the
+  corresponding axiom of $\cat{C}$; involves indices above $n$ whose operations coincide with those
+  at the top dimension $n$, in which case it again follows from an axiom of $\cat{C}$; or involves
+  only indices above $n$, where all operations are trivial and the axiom holds immediately.
+\end{proof}
+
+\begin{definition}[Discrete many-sorted omega family]
+  \label{def:ManySortedDiscreteOmegaFamily}
+  \uses{def:ManySortedNCategory}
+  Let $\cat{C}$ be a many-sorted $n$-category on a family $(C_k)_{k \leq n}$. The \emph{discrete
+  omega family} $(C^{>\omega}_k)_{k \in \NN}$ is defined by
+  \[
+    C^{>\omega}_k =
+    \begin{cases}
+      C_k & \text{if } k \leq n, \\
+      C_n & \text{if } k > n.
+    \end{cases}
+  \]
+\end{definition}
+
+\begin{construction}[Discrete many-sorted omega category]
+  \label{def:ManySortedNCategory_discreteOmega}
+  \uses{def:ManySortedDiscreteOmegaFamily, def:ManySortedNCategory, def:ManySortedOmegaCategory}
+  \notready
+  Let $\cat{C}$ be a many-sorted $n$-category on a family $(C_k)_{k \leq n}$. The \emph{discrete
+  $\omega$-category} of $\cat{C}$ is the many-sorted $\omega$-category $\cat{C}^{>\omega}$ on the
+  discrete omega family $(C^{>\omega}_k)_{k \in \NN}$ of
+  Definition~\ref{def:ManySortedDiscreteOmegaFamily}, defined by the same case distinction as in
+  Definition~\ref{def:ManySortedNCategory_discrete}, now with the indices $k$ and $j$ ranging over
+  all of $\NN$.
+\end{construction}
+
+\begin{proof}
+  The many-sorted category axioms follow by the same argument as in
+  Definition~\ref{def:ManySortedNCategory_discrete}.
+\end{proof}
+
+\section{Discrete many-sorted functors}
+
+\begin{construction}[Discrete many-sorted finite functor]
+  \label{def:ManySortedNFunctor_discrete}
+  \uses{def:ManySortedNFunctor, def:ManySortedNCategory_discrete}
+  \notready
+  Let $\cat{C}$ and $\cat{D}$ be many-sorted $n$-categories, and let $F = (F_k)_{k \leq n} \colon
+  \cat{C} \to \cat{D}$ be a many-sorted $n$-functor. For any $m \in \NN$ with $n < m$, the family
+  $(F^{>m}_k)_{k \leq m}$ defined by
+  \[
+    F^{>m}_k =
+    \begin{cases}
+      F_k & \text{if } k \leq n, \\
+      F_n & \text{if } n < k \leq m
+    \end{cases}
+  \]
+  is a many-sorted $m$-functor $F^{>m} \colon \cat{C}^{>m} \to \cat{D}^{>m}$.
+\end{construction}
+
+\begin{proof}
+  Each preservation axiom at a pair $(k, j)$ with $j < k$ either involves only indices at most $n$,
+  where it follows from the functor axioms of $F$; involves indices above $n$ whose maps and
+  operations coincide with those at the top dimension $n$, where it again follows from a functor
+  axiom of $F$; or involves only indices above $n$, where all maps coincide and all operations are
+  trivial, so the axiom holds immediately.
+\end{proof}
+
+\begin{construction}[Discrete many-sorted omega functor]
+  \label{def:ManySortedNFunctor_discreteOmega}
+  \uses{def:ManySortedOmegaFunctor, def:ManySortedNCategory_discreteOmega}
+  \notready
+  Let $\cat{C}$ and $\cat{D}$ be many-sorted $n$-categories, and let $F = (F_k)_{k \leq n} \colon
+  \cat{C} \to \cat{D}$ be a many-sorted $n$-functor. The family $(F^{>\omega}_k)_{k \in \NN}$
+  defined by
+  \[
+    F^{>\omega}_k =
+    \begin{cases}
+      F_k & \text{if } k \leq n, \\
+      F_n & \text{if } k > n
+    \end{cases}
+  \]
+  is a many-sorted $\omega$-functor $F^{>\omega} \colon \cat{C}^{>\omega} \to \cat{D}^{>\omega}$.
+\end{construction}
+
+\begin{proof}
+  The argument is identical to that of Definition~\ref{def:ManySortedNFunctor_discrete}.
+\end{proof}
+
+\section{Many-sorted discretization functors}
+
+The discrete constructions of the previous sections are in fact functorial, as the following
+definition makes precise.
+
+\begin{construction}[Many-sorted discretization functor]
+  \label{def:ManySortedDiscretizationFunctor}
+  \uses{
+    def:ManySortedNCategory_discrete,
+    def:ManySortedNCategory_discreteOmega,
+    def:ManySortedNFunctor_discrete,
+    def:ManySortedNFunctor_discreteOmega
+  }
+  \notready
+  Let $n, m \in \ENat$ with $n \leq m$. The \emph{many-sorted discretization functor}
+  $\DiscreteMS^{(n, m)}$ from $n\CatMS$ to $m\CatMS$ is the functor that maps every many-sorted
+  $n$-category $\cat{C}$ to its discrete $m$-category $\cat{C}^{>m}$ and every many-sorted
+  $n$-functor $F \colon \cat{C} \to \cat{D}$ to its discrete $m$-functor $F^{>m} \colon \cat{C}^{>m}
+  \to \cat{D}^{>m}$. If $n = m$, then $\DiscreteMS^{(n, n)}$ stands for the identity functor on
+  $n\CatMS$.
+\end{construction}
+
+\begin{proof}
+  Functoriality follows from the fact that the discrete constructions preserve the underlying maps:
+  the identity functor on $\cat{C}$ yields the identity functor on $\cat{C}^{>m}$, and the
+  composition of two $n$-functors yields the composition of their discrete $m$-functors.
+\end{proof}
+
+Moreover, discretization transformations at different dimensions are compatible with one another.
+
+\begin{theorem}[Compatibility of many-sorted discretization functors]
+  \label{thm:ManySortedDiscretizationFunctor_compatibility}
+  \uses{def:ManySortedDiscretizationFunctor}
+  \notready
+  The assignment $(n, m) \mapsto \DiscreteMS^{(n, m)}$ defines a functor from $(\ENat, \leq)$ to
+  $\cat{Cat}$. That is, for all $k \leq n \leq m$ in $\ENat$,
+  \[
+    \DiscreteMS^{(n, m)} \circ \DiscreteMS^{(k, n)} =
+    \DiscreteMS^{(k, m)}.
+  \]
+\end{theorem}
+
+\begin{proof}
+  Both sides produce the same family of sets and the same operations. The categorical structures
+  coincide because extending first to dimension $n$ and then to $m$ introduces the same trivial
+  structure on dimensions above $k$ as extending directly to $m$.
+\end{proof}

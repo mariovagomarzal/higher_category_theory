@@ -27,11 +27,11 @@ different presentations:
 
 \begin{description}
   \item[Single-sorted presentation] All morphisms --- objects, 1-morphisms, 2-morphisms, and so on
-    --- live in a single set (or type). Source, target, and composition operations at each dimension
-    give the set its multidimensional categorical structure.
-  \item[Many-sorted presentation] Morphisms of each dimension live in a separate set (or type). For
-    each pair of dimensions $(j, k)$ with $j < k$, there are source, target, identity, and
-    composition operations relating the two levels.
+    live in a single set. Source, target, and composition operations at each dimension give the set
+    its multidimensional categorical structure.
+  \item[Many-sorted presentation] Morphisms of each dimension live in a separate set. For each pair
+    of dimensions $(j, k)$ with $j < k$, there are source, target, identity, and composition
+    operations relating the two levels.
 \end{description}
 
 For each presentation, the corresponding notion of functor is also defined. With these categories as
@@ -54,9 +54,9 @@ Finally, the two presentations are shown to be equivalent through a pair of func
 single-sorted and many-sorted $n$-categories:
 \begin{description}
   \item[Graduation] Transforms a single-sorted $n$-category into a many-sorted one by distributing
-    the morphisms into separate types according to their dimension.
+    the morphisms into separate sets according to their dimension.
   \item[Unification] Transforms a many-sorted $n$-category into a single-sorted one by collecting
-    all morphisms into a single type.
+    all morphisms into a single set.
 \end{description}
 
 The composition $\Uf^{(n)} \circ \Gd^{(n)}$ is the identity functor, while $\Gd^{(n)} \circ
@@ -73,6 +73,15 @@ Throughout this text, the terms \emph{category} and \emph{functor}, when used ou
 single-sorted or many-sorted framework defined in this work, refer to the standard notions of
 category theory. In the accompanying Lean~4 formalization, these correspond to the definitions
 provided by Mathlib.
+
+\begin{notation}[Types versus sets]
+  \label{not:types_vs_sets}
+  Following the convention of~\cite{vidal2024higher}, we use the word \emph{set} throughout this
+  text in the classical mathematical sense. In the accompanying Lean~4 formalization, sets
+  correspond to Lean types, and not necessarily to the Lean implementation of sets. In particular,
+  all notions involving sets in this document, such as families of sets, maps between sets, and so
+  on, are compatible with their counterparts for types in Lean.
+\end{notation}
 
 \begin{notation}[Standard categorical notation]
   \label{not:standard_category_theory}
