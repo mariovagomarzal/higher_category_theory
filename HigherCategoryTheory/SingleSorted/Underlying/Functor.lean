@@ -26,6 +26,8 @@ underlying $m$-categories induced by a functor between $n$-categories (or $\omeg
   $m$-categories.
 * `OmegaFunctor.underlying`: Restriction of a functor between $\omega$-categories to their
   underlying $m$-categories.
+* `UnderlyingFunctor`: The functor from `ICat n` to `ICat m` sending each category and functor to
+  its underlying lower-dimensional counterpart.
 
 ## Implementation notes
 
@@ -183,11 +185,11 @@ def NFunctor.underlying (F : NFunctor n C D) (m : Fin n) :
     map_comp_eq_comp_map := by inherit_axiom F.map_comp_eq_comp_map
   }
 
-/-- Restricts a functor between $\omega$-categories to a functor between their underlying
+/--
+Restricts a functor between $\omega$-categories to a functor between their underlying
 $m$-categories. This is called the underlying $\omega$-functor.
 
-This definition is analogous to `NFunctor.underlying`, but applies to
-`OmegaFunctor` objects.
+This definition is analogous to `NFunctor.underlying`, but applies to `OmegaFunctor` objects.
 -/
 @[simp]
 def OmegaFunctor.underlying (F : OmegaFunctor C D) (m : ℕ) :

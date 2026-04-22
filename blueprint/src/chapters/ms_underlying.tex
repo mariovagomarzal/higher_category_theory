@@ -20,8 +20,9 @@ simply restrict the index set.
 
 \begin{construction}[Underlying many-sorted finite category]
   \label{def:ManySortedNCategory_underlying}
+  \lean{HigherCategoryTheory.ManySorted.NCategory.underlying}
   \uses{def:ManySortedNCategory}
-  \notready
+  \leanok
   Let $\cat{C}$ be a many-sorted $n$-category on a family $(C_k)_{k \leq n}$, and let $m \in \NN$
   with $m < n$. The \emph{underlying $m$-category} of $\cat{C}$ is the many-sorted $m$-category
   $\cat{C}^{<m}$ on the restricted family $(C_k)_{k \leq m}$, with the source, target, identity, and
@@ -29,13 +30,15 @@ simply restrict the index set.
 \end{construction}
 
 \begin{proof}
+  \leanok
   Every axiom of $\cat{C}^{<m}$ is an axiom of $\cat{C}$ restricted to lower dimensions.
 \end{proof}
 
 \begin{construction}[Underlying many-sorted omega category]
   \label{def:ManySortedOmegaCategory_underlying}
+  \lean{HigherCategoryTheory.ManySorted.OmegaCategory.underlying}
   \uses{def:ManySortedOmegaCategory, def:ManySortedNCategory}
-  \notready
+  \leanok
   Let $\cat{C}$ be a many-sorted $\omega$-category on a family $(C_k)_{k \in \NN}$, and let $m \in
   \NN$. The \emph{underlying $m$-category} of $\cat{C}$ is the many-sorted $m$-category
   $\cat{C}^{<m}$ on the restricted family $(C_k)_{k \leq m}$, defined by the same construction as in
@@ -43,6 +46,7 @@ simply restrict the index set.
 \end{construction}
 
 \begin{proof}
+  \leanok
   The many-sorted category axioms follow by the same argument as in
   Definition~\ref{def:ManySortedNCategory_underlying}.
 \end{proof}
@@ -51,8 +55,9 @@ simply restrict the index set.
 
 \begin{construction}[Underlying many-sorted finite functor]
   \label{def:ManySortedNFunctor_underlying}
+  \lean{HigherCategoryTheory.ManySorted.NFunctor.underlying}
   \uses{def:ManySortedNFunctor, def:ManySortedNCategory_underlying}
-  \notready
+  \leanok
   Let $\cat{C}$ and $\cat{D}$ be many-sorted $n$-categories, and let $F = (F_k)_{k \leq n} \colon
   \cat{C} \to \cat{D}$ be a many-sorted $n$-functor. For any $m \in \NN$ with $m < n$, the
   restricted family $(F_k)_{k \leq m}$ is a many-sorted $m$-functor $F^{<m} \colon \cat{C}^{<m} \to
@@ -60,14 +65,16 @@ simply restrict the index set.
 \end{construction}
 
 \begin{proof}
+  \leanok
   Every preservation axiom of $F^{<m}$ is a preservation axiom of $F$ restricted to lower
   dimensions.
 \end{proof}
 
 \begin{construction}[Underlying many-sorted omega functor]
   \label{def:ManySortedOmegaFunctor_underlying}
+  \lean{HigherCategoryTheory.ManySorted.OmegaFunctor.underlying}
   \uses{def:ManySortedOmegaFunctor, def:ManySortedOmegaCategory_underlying}
-  \notready
+  \leanok
   Let $\cat{C}$ and $\cat{D}$ be many-sorted $\omega$-categories, and let $F = (F_k)_{k \in \NN}
   \colon \cat{C} \to \cat{D}$ be a many-sorted $\omega$-functor. For any $m \in \NN$, the restricted
   family $(F_k)_{k \leq m}$ is a many-sorted $m$-functor $F^{<m} \colon \cat{C}^{<m} \to
@@ -75,6 +82,7 @@ simply restrict the index set.
 \end{construction}
 
 \begin{proof}
+  \leanok
   The argument is identical to that of Definition~\ref{def:ManySortedNFunctor_underlying}.
 \end{proof}
 
@@ -85,13 +93,14 @@ definition makes precise.
 
 \begin{construction}[Many-sorted underlying functor]
   \label{def:ManySortedUnderlyingFunctor}
+  \lean{HigherCategoryTheory.ManySorted.UnderlyingFunctor}
   \uses{
     def:ManySortedNCategory_underlying,
     def:ManySortedOmegaCategory_underlying,
     def:ManySortedNFunctor_underlying,
     def:ManySortedOmegaFunctor_underlying
   }
-  \notready
+  \leanok
   Let $n, m \in \ENat$ with $m \leq n$. The \emph{many-sorted underlying functor}
   $\UnderlyingMS^{(n, m)}$ from $n\CatMS$ to $m\CatMS$ is the functor that maps every many-sorted
   $n$-category $\cat{C}$ to its underlying $m$-category $\cat{C}^{<m}$ and every many-sorted

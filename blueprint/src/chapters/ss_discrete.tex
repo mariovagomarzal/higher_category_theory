@@ -94,12 +94,14 @@ definition makes precise.
 
 \begin{construction}[Single-sorted discretization functor]
   \label{def:SingleSortedDiscretizationFunctor}
+  \lean{HigherCategoryTheory.SingleSorted.DiscretizationFunctor}
   \uses{
     def:SingleSortedNCategory_discrete,
     def:SingleSortedNCategory_discreteOmega,
     def:SingleSortedNFunctor_discrete,
     def:SingleSortedNFunctor_discreteOmega
   }
+  \leanok
   Let $n, m \in \ENat$ with $n \leq m$. The \emph{discretization functor} $\Discrete^{(n, m)}$ from
   $n\Cat$ to $m\Cat$ is the functor that maps every single-sorted $n$-category $\cat{C}$ to its
   discrete $m$-category $\cat{C}^{>m}$ and every single-sorted $n$-functor $F \colon \cat{C} \to
