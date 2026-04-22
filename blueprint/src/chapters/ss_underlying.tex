@@ -18,7 +18,7 @@ We begin by showing that, for any dimension $k < m$, the source, target, and com
 at dimension $k$ of a single-sorted category can be birestricted to the set of $m$-cells.
 
 \begin{lemma}
-  \label{lem:underlying_source_is_cell}
+  \label{lem:SingleSorted_underlying_source_is_cell}
   \uses{def:cell}
   \lean{HigherCategoryTheory.SingleSorted.underlying_source_is_cell}
   \leanok
@@ -36,8 +36,8 @@ at dimension $k$ of a single-sorted category can be birestricted to the set of $
 \end{proof}
 
 \begin{corollary}
-  \label{cor:underlying_source_birestriction}
-  \uses{lem:underlying_source_is_cell}
+  \label{cor:SingleSorted_underlying_source_birestriction}
+  \uses{lem:SingleSorted_underlying_source_is_cell}
   \lean{HigherCategoryTheory.SingleSorted.Category.sc_birestriction}
   \leanok
   Let $\cat{C}$ be a single-sorted $\Index$-category and $m \in \Index$. Then, for every $k \in
@@ -46,11 +46,11 @@ at dimension $k$ of a single-sorted category can be birestricted to the set of $
 
 \begin{proof}
   \leanok
-  Follows directly from Lemma~\ref{lem:underlying_source_is_cell}.
+  Follows directly from Lemma~\ref{lem:SingleSorted_underlying_source_is_cell}.
 \end{proof}
 
 \begin{lemma}
-  \label{lem:underlying_target_is_cell}
+  \label{lem:SingleSorted_underlying_target_is_cell}
   \uses{thm:cell_sc_iff_cell_tg}
   \lean{HigherCategoryTheory.SingleSorted.underlying_target_is_cell}
   \leanok
@@ -70,8 +70,8 @@ at dimension $k$ of a single-sorted category can be birestricted to the set of $
 \end{proof}
 
 \begin{corollary}
-  \label{cor:underlying_target_birestriction}
-  \uses{lem:underlying_target_is_cell}
+  \label{cor:SingleSorted_underlying_target_birestriction}
+  \uses{lem:SingleSorted_underlying_target_is_cell}
   \lean{HigherCategoryTheory.SingleSorted.Category.tg_birestriction}
   \leanok
   Let $\cat{C}$ be a single-sorted $\Index$-category and $m \in \Index$. Then, for every $k \in
@@ -80,11 +80,11 @@ at dimension $k$ of a single-sorted category can be birestricted to the set of $
 
 \begin{proof}
   \leanok
-  Follows directly from Lemma~\ref{lem:underlying_target_is_cell}.
+  Follows directly from Lemma~\ref{lem:SingleSorted_underlying_target_is_cell}.
 \end{proof}
 
 \begin{lemma}
-  \label{lem:underlying_comp_is_cell}
+  \label{lem:SingleSorted_underlying_comp_is_cell}
   \uses{def:cell}
   \lean{HigherCategoryTheory.SingleSorted.underlying_comp_is_cell}
   \leanok
@@ -103,8 +103,8 @@ at dimension $k$ of a single-sorted category can be birestricted to the set of $
 \end{proof}
 
 \begin{corollary}
-  \label{cor:underlying_comp_birestriction}
-  \uses{lem:underlying_comp_is_cell}
+  \label{cor:SingleSorted_underlying_comp_birestriction}
+  \uses{lem:SingleSorted_underlying_comp_is_cell}
   \lean{HigherCategoryTheory.SingleSorted.Category.pcomp_birestriction}
   \leanok
   Let $\cat{C}$ be a single-sorted $\Index$-category and $m \in \Index$. Then, for every $k \in
@@ -114,15 +114,15 @@ at dimension $k$ of a single-sorted category can be birestricted to the set of $
 
 \begin{proof}
   \leanok
-  Follows directly from Lemma~\ref{lem:underlying_comp_is_cell}.
+  Follows directly from Lemma~\ref{lem:SingleSorted_underlying_comp_is_cell}.
 \end{proof}
 
 \begin{construction}[Underlying single-sorted finite category]
-  \label{def:NCategory_underlying}
+  \label{def:SingleSortedNCategory_underlying}
   \uses{
-    cor:underlying_source_birestriction,
-    cor:underlying_target_birestriction,
-    cor:underlying_comp_birestriction
+    cor:SingleSorted_underlying_source_birestriction,
+    cor:SingleSorted_underlying_target_birestriction,
+    cor:SingleSorted_underlying_comp_birestriction
   }
   \lean{HigherCategoryTheory.SingleSorted.NCategory.underlying}
   \leanok
@@ -134,37 +134,38 @@ at dimension $k$ of a single-sorted category can be birestricted to the set of $
 
 \begin{proof}
   \leanok
-  The birestrictions are well-defined by Corollaries~\ref{cor:underlying_source_birestriction},
-  \ref{cor:underlying_target_birestriction}, and~\ref{cor:underlying_comp_birestriction}. Each axiom
-  of single-sorted categories for $\cat{C}^{<m}$ follows directly from the corresponding axiom for
-  $\cat{C}$.
+  The birestrictions are well-defined by
+  Corollaries~\ref{cor:SingleSorted_underlying_source_birestriction},
+  \ref{cor:SingleSorted_underlying_target_birestriction},
+  and~\ref{cor:SingleSorted_underlying_comp_birestriction}. Each axiom of single-sorted categories
+  for $\cat{C}^{<m}$ follows directly from the corresponding axiom for $\cat{C}$.
 \end{proof}
 
 \begin{construction}[Underlying single-sorted omega category]
-  \label{def:OmegaCategory_underlying}
+  \label{def:SingleSortedOmegaCategory_underlying}
   \uses{
     def:SingleSortedOmegaCategory,
-    cor:underlying_source_birestriction,
-    cor:underlying_target_birestriction,
-    cor:underlying_comp_birestriction
+    cor:SingleSorted_underlying_source_birestriction,
+    cor:SingleSorted_underlying_target_birestriction,
+    cor:SingleSorted_underlying_comp_birestriction
   }
   \lean{HigherCategoryTheory.SingleSorted.OmegaCategory.underlying}
   \leanok
   Let $\cat{C}$ be a single-sorted $\omega$-category, and let $m \in \NN$. The \emph{underlying
   $m$-category} of $\cat{C}$ is the single-sorted $m$-category $\cat{C}^{<m}$ defined by the same
-  construction as in Definition~\ref{def:NCategory_underlying}.
+  construction as in Definition~\ref{def:SingleSortedNCategory_underlying}.
 \end{construction}
 
 \begin{proof}
   \leanok
   The single-sorted category axioms follow by the same argument as in
-  Definition~\ref{def:NCategory_underlying}.
+  Definition~\ref{def:SingleSortedNCategory_underlying}.
 \end{proof}
 
 \section{Underlying single-sorted functors}
 
 \begin{lemma}
-  \label{lem:underlying_functor_is_cell}
+  \label{lem:SingleSorted_underlying_functor_is_cell}
   \uses{def:cell, def:SingleSortedFunctor}
   \lean{HigherCategoryTheory.SingleSorted.underlying_functor_is_cell}
   \leanok
@@ -183,8 +184,8 @@ at dimension $k$ of a single-sorted category can be birestricted to the set of $
 \end{proof}
 
 \begin{corollary}
-  \label{cor:underlying_functor_birestriction}
-  \uses{lem:underlying_functor_is_cell}
+  \label{cor:SingleSorted_underlying_functor_birestriction}
+  \uses{lem:SingleSorted_underlying_functor_is_cell}
   \lean{HigherCategoryTheory.SingleSorted.Functor.map_birestriction}
   \leanok
   Let $\cat{C}$ and $\cat{D}$ be single-sorted $\Index$-categories, $F \colon \cat{C} \to \cat{D}$
@@ -194,12 +195,12 @@ at dimension $k$ of a single-sorted category can be birestricted to the set of $
 
 \begin{proof}
   \leanok
-  Follows directly from Lemma~\ref{lem:underlying_functor_is_cell}.
+  Follows directly from Lemma~\ref{lem:SingleSorted_underlying_functor_is_cell}.
 \end{proof}
 
 \begin{construction}[Underlying single-sorted finite functor]
-  \label{def:NFunctor_underlying}
-  \uses{def:NCategory_underlying, cor:underlying_functor_birestriction}
+  \label{def:SingleSortedNFunctor_underlying}
+  \uses{def:SingleSortedNCategory_underlying, cor:SingleSorted_underlying_functor_birestriction}
   \lean{HigherCategoryTheory.SingleSorted.NFunctor.underlying}
   \leanok
   Let $\cat{C}$ and $\cat{D}$ be single-sorted $n$-categories, and let $F \colon \cat{C} \to
@@ -210,13 +211,14 @@ at dimension $k$ of a single-sorted category can be birestricted to the set of $
 
 \begin{proof}
   \leanok
-  The birestriction is well-defined by Corollary~\ref{cor:underlying_functor_birestriction}. Each
-  preservation axiom for $F^{<m}$ follows directly from the corresponding axiom for $F$.
+  The birestriction is well-defined by
+  Corollary~\ref{cor:SingleSorted_underlying_functor_birestriction}. Each preservation axiom for
+  $F^{<m}$ follows directly from the corresponding axiom for $F$.
 \end{proof}
 
 \begin{construction}[Underlying single-sorted omega functor]
-  \label{def:OmegaFunctor_underlying}
-  \uses{def:OmegaCategory_underlying, cor:underlying_functor_birestriction}
+  \label{def:SingleSortedOmegaFunctor_underlying}
+  \uses{def:SingleSortedOmegaCategory_underlying, cor:SingleSorted_underlying_functor_birestriction}
   \lean{HigherCategoryTheory.SingleSorted.OmegaFunctor.underlying}
   \leanok
   Let $\cat{C}$ and $\cat{D}$ be single-sorted $\omega$-categories, and let $F \colon \cat{C} \to
@@ -227,7 +229,7 @@ at dimension $k$ of a single-sorted category can be birestricted to the set of $
 
 \begin{proof}
   \leanok
-  The argument is identical to that of Definition~\ref{def:NFunctor_underlying}.
+  The argument is identical to that of Definition~\ref{def:SingleSortedNFunctor_underlying}.
 \end{proof}
 
 \section{Single-sorted underlying functors}
@@ -235,15 +237,16 @@ at dimension $k$ of a single-sorted category can be birestricted to the set of $
 The underlying constructions of the previous sections are in fact functorial, as the following
 definition makes precise.
 
-\begin{construction}[Underlying functor]
-  \label{def:UnderlyingFunctor}
-  \uses{
-    def:NCategory_underlying,
-    def:OmegaCategory_underlying,
-    def:NFunctor_underlying,
-    def:OmegaFunctor_underlying
-  }
+\begin{construction}[Single-sorted underlying functor]
+  \label{def:SingleSortedUnderlyingFunctor}
   \lean{HigherCategoryTheory.SingleSorted.UnderlyingFunctor}
+  \uses{
+    def:SingleSortedNCategory_underlying,
+    def:SingleSortedOmegaCategory_underlying,
+    def:SingleSortedNFunctor_underlying,
+    def:SingleSortedOmegaFunctor_underlying
+  }
+  \leanok
   Let $n, m \in \ENat$ with $m \leq n$. The \emph{underlying functor} $\Underlying^{(n, m)}$ from
   $n\Cat$ to $m\Cat$ is the functor that maps every single-sorted $n$-category $\cat{C}$ to its
   underlying $m$-category $\cat{C}^{<m}$ and every single-sorted $n$-functor $F \colon \cat{C} \to
@@ -260,8 +263,8 @@ definition makes precise.
 Moreover, underlying transformations at different dimensions are compatible with one another.
 
 \begin{theorem}[Compatibility of underlying functors]
-  \label{thm:UnderlyingFunctor_compatibility}
-  \uses{def:UnderlyingFunctor}
+  \label{thm:SingleSortedUnderlyingFunctor_compatibility}
+  \uses{def:SingleSortedUnderlyingFunctor}
   \notready
   The assignment $(n, m) \mapsto \Underlying^{(n, m)}$ defines a functor from $(\ENat, \leq)^{op}$
   to $\cat{Cat}$. That is, for all $k \leq m \leq n$ in $\ENat$,
@@ -279,8 +282,8 @@ Moreover, underlying transformations at different dimensions are compatible with
 \section{The projective limit of single-sorted categories}
 
 \begin{theorem}[Projective limit of single-sorted categories]
-  \label{thm:Underlying_projective_limit}
-  \uses{thm:UnderlyingFunctor_compatibility}
+  \label{thm:SingleSortedUnderlying_projective_limit}
+  \uses{thm:SingleSortedUnderlyingFunctor_compatibility}
   \notready
   The category $\omega\Cat$ is the projective limit of the system $(n\Cat, \Underlying^{(n, m)})_{m
   \leq n}$.

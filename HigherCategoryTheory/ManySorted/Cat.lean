@@ -1,7 +1,7 @@
 /-
 Copyright (c) 2025 Mario Vago Marzal. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Enric Cosme Llópez, Raul Ruiz Mora, Mario Vago Marzal
+Authors: Enric Cosme Llópez, Raúl Ruiz Mora, Mario Vago Marzal
 -/
 import Mathlib.CategoryTheory.Category.Basic
 import Mathlib.Data.ENat.Basic
@@ -45,7 +45,7 @@ structure Cat (Index : Type) [Preorder Index] where
   /-- Build a `Cat` from a carrier family with a `Category` instance. -/
   of ::
   /-- The underlying family of types indexed by `Index`. -/
-  carrier : Index → Type u
+  carrier : TypeFamily.{u} Index
   /-- The many-sorted category structure on the family. -/
   [str : Category Index carrier]
 

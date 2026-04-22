@@ -13,7 +13,7 @@ with one another.
 \section{Discrete single-sorted categories}
 
 \begin{construction}[Discrete single-sorted finite category]
-  \label{def:NCategory_discrete}
+  \label{def:SingleSortedNCategory_discrete}
   \uses{def:SingleSortedNCategory}
   \lean{HigherCategoryTheory.SingleSorted.NCategory.discrete}
   \leanok
@@ -37,27 +37,27 @@ with one another.
 \end{proof}
 
 \begin{construction}[Discrete single-sorted omega category]
-  \label{def:NCategory_discreteOmega}
+  \label{def:SingleSortedNCategory_discreteOmega}
   \uses{def:SingleSortedNCategory, def:SingleSortedOmegaCategory}
   \lean{HigherCategoryTheory.SingleSorted.NCategory.discreteOmega}
   \leanok
   Let $\cat{C}$ be a single-sorted $n$-category. The \emph{discrete $\omega$-category} of $\cat{C}$
   is the single-sorted $\omega$-category $\cat{C}^{>\omega}$ defined by the same case distinction as
-  in Definition~\ref{def:NCategory_discrete}, now with $k$ ranging over all of $\NN$.
+  in Definition~\ref{def:SingleSortedNCategory_discrete}, now with $k$ ranging over all of $\NN$.
 \end{construction}
 
 \begin{proof}
   \leanok
   The single-sorted category axioms follow by the same argument as in
-  Definition~\ref{def:NCategory_discrete}. The $\omega$-categorical axiom holds because $\Sc^n (f) =
-  f$ for every $f \in C$, so every morphism is an $n$-cell.
+  Definition~\ref{def:SingleSortedNCategory_discrete}. The $\omega$-categorical axiom holds because
+  $\Sc^n (f) = f$ for every $f \in C$, so every morphism is an $n$-cell.
 \end{proof}
 
 \section{Discrete single-sorted functors}
 
 \begin{construction}[Discrete single-sorted finite functor]
-  \label{def:NFunctor_discrete}
-  \uses{def:SingleSortedNFunctor, def:NCategory_discrete}
+  \label{def:SingleSortedNFunctor_discrete}
+  \uses{def:SingleSortedNFunctor, def:SingleSortedNCategory_discrete}
   \lean{HigherCategoryTheory.SingleSorted.NFunctor.discrete}
   \leanok
   Let $\cat{C}$ and $\cat{D}$ be single-sorted $n$-categories, and let $F \colon \cat{C} \to
@@ -73,8 +73,8 @@ with one another.
 \end{proof}
 
 \begin{construction}[Discrete single-sorted omega functor]
-  \label{def:NFunctor_discreteOmega}
-  \uses{def:SingleSortedOmegaFunctor, def:NCategory_discreteOmega}
+  \label{def:SingleSortedNFunctor_discreteOmega}
+  \uses{def:SingleSortedOmegaFunctor, def:SingleSortedNCategory_discreteOmega}
   \lean{HigherCategoryTheory.SingleSorted.NFunctor.discreteOmega}
   \leanok
   Let $\cat{C}$ and $\cat{D}$ be single-sorted $n$-categories, and let $F \colon \cat{C} \to
@@ -84,7 +84,7 @@ with one another.
 
 \begin{proof}
   \leanok
-  The argument is identical to that of Definition~\ref{def:NFunctor_discrete}.
+  The argument is identical to that of Definition~\ref{def:SingleSortedNFunctor_discrete}.
 \end{proof}
 
 \section{Single-sorted discretization functors}
@@ -92,14 +92,16 @@ with one another.
 The discrete constructions of the previous sections are in fact functorial, as the following
 definition makes precise.
 
-\begin{construction}[Discretization functor]
-  \label{def:DiscretizationFunctor}
-    \uses{
-    def:NCategory_discrete,
-    def:NCategory_discreteOmega,
-    def:NFunctor_discrete,
-    def:NFunctor_discreteOmega
+\begin{construction}[Single-sorted discretization functor]
+  \label{def:SingleSortedDiscretizationFunctor}
+  \lean{HigherCategoryTheory.SingleSorted.DiscretizationFunctor}
+  \uses{
+    def:SingleSortedNCategory_discrete,
+    def:SingleSortedNCategory_discreteOmega,
+    def:SingleSortedNFunctor_discrete,
+    def:SingleSortedNFunctor_discreteOmega
   }
+  \leanok
   Let $n, m \in \ENat$ with $n \leq m$. The \emph{discretization functor} $\Discrete^{(n, m)}$ from
   $n\Cat$ to $m\Cat$ is the functor that maps every single-sorted $n$-category $\cat{C}$ to its
   discrete $m$-category $\cat{C}^{>m}$ and every single-sorted $n$-functor $F \colon \cat{C} \to
@@ -116,8 +118,8 @@ definition makes precise.
 Moreover, discretization transformations at different dimensions are compatible with one another.
 
 \begin{theorem}[Compatibility of discretization functors]
-  \label{thm:DiscretizationFunctor_compatibility}
-  \uses{def:DiscretizationFunctor}
+  \label{thm:SingleSortedDiscretizationFunctor_compatibility}
+  \uses{def:SingleSortedDiscretizationFunctor}
   \notready
   The assignment $(n, m) \mapsto \Discrete^{(n, m)}$ defines a functor from $(\ENat, \leq)$ to
   $\cat{Cat}$. That is, for all $k \leq n \leq m$ in $\ENat$,

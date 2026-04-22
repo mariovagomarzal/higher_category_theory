@@ -1,7 +1,7 @@
 /-
 Copyright (c) 2025 Mario Vago Marzal. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Enric Cosme Llópez, Raul Ruiz Mora, Mario Vago Marzal
+Authors: Enric Cosme Llópez, Raúl Ruiz Mora, Mario Vago Marzal
 -/
 import HigherCategoryTheory.ManySorted.Category
 
@@ -40,8 +40,8 @@ a many-sorted category `D`. It consists of:
 * Proofs that the family preserves sources, targets, identities, and composition at each pair
   of dimensions.
 -/
-structure Functor (Index : Type) [Preorder Index] (C : Index → Type u₁) [Category Index C]
-    (D : Index → Type u₂) [Category Index D] where
+structure Functor (Index : Type) [Preorder Index] (C : TypeFamily.{u₁} Index) [Category Index C]
+    (D : TypeFamily.{u₂} Index) [Category Index D] where
   /-- The underlying family of functions on morphisms. -/
   map : (k : Index) → C k → D k
   /-- The map preserves sources at dimensions `(k, j)`. -/
@@ -79,9 +79,9 @@ attribute [simp] map_sc_eq_sc_map map_tg_eq_tg_map map_idm_eq_idm_map map_comp_e
 namespace Functor
 
 variable {Index : Type} [Preorder Index]
-  {C : Index → Type u₁} [Category Index C]
-  {D : Index → Type u₂} [Category Index D]
-  {E : Index → Type u₃} [Category Index E]
+  {C : TypeFamily.{u₁} Index} [Category Index C]
+  {D : TypeFamily.{u₂} Index} [Category Index D]
+  {E : TypeFamily.{u₃} Index} [Category Index E]
 
 /-- Coercion allowing us to write `F k f` instead of `F.map k f` for the action of a functor `F` on
 a `k`-morphism `f`. -/
@@ -128,7 +128,7 @@ def comp (G : Functor Index D E) (F : Functor Index C D) :
 /-- The identity functor on a many-sorted category `C`. It maps each morphism to itself and
 trivially preserves all structure. -/
 @[simp]
-def id (C : Index → Type u₁) [Category Index C] : Functor Index C C where
+def id (C : TypeFamily.{u₁} Index) [Category Index C] : Functor Index C C where
   map _ f := f
 
 @[inherit_doc] scoped[HigherCategoryTheory.ManySorted] notation "idₘ" => Functor.id
@@ -137,14 +137,14 @@ end Functor
 
 /-- A functor between many-sorted $n$-categories. -/
 abbrev NFunctor (n : ℕ)
-    (C : FinSucc n → Type u₁) [NCategory n C]
-    (D : FinSucc n → Type u₂) [NCategory n D] :=
+    (C : NTypeFamily.{u₁} n) [NCategory n C]
+    (D : NTypeFamily.{u₂} n) [NCategory n D] :=
   Functor (FinSucc n) C D
 
 /-- A functor between many-sorted $\omega$-categories. -/
 abbrev OmegaFunctor
-    (C : ℕ → Type u₁) [OmegaCategory C]
-    (D : ℕ → Type u₂) [OmegaCategory D] :=
+    (C : OmegaTypeFamily.{u₁}) [OmegaCategory C]
+    (D : OmegaTypeFamily.{u₂}) [OmegaCategory D] :=
   Functor ℕ C D
 
 end HigherCategoryTheory.ManySorted

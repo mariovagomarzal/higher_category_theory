@@ -1,0 +1,147 @@
+\chapter{Many-sorted underlying transformations}
+\label{ch:ms_underlying}
+
+Every many-sorted $n$-category contains a lower-dimensional $m$-category obtained by restricting the
+family to its first $m + 1$ sets: one simply discards the sets and operations at dimensions above
+$m$, keeping only those at pairs $(k, j)$ with $j < k \leq m$. This construction extends naturally
+to the $\omega$-categorical setting. Moreover, any many-sorted $n$-functor restricts to a functor
+between the resulting lower-dimensional categories by keeping only the maps at dimensions up to $m$.
+We call this process the \emph{underlying} transformation, and we show that it is functorial and
+that underlying transformations at different dimensions are compatible with one another.
+
+We conclude the chapter by showing that the categories $n\CatMS$ together with the underlying
+functors form a projective system, and that $\omega\CatMS$ is its projective limit.
+
+\section{Underlying many-sorted categories}
+
+Unlike the single-sorted case, where the underlying construction requires showing that the
+operations preserve the subset of $m$-cells, the many-sorted construction is straightforward: we
+simply restrict the index set.
+
+\begin{construction}[Underlying many-sorted finite category]
+  \label{def:ManySortedNCategory_underlying}
+  \lean{HigherCategoryTheory.ManySorted.NCategory.underlying}
+  \uses{def:ManySortedNCategory}
+  \leanok
+  Let $\cat{C}$ be a many-sorted $n$-category on a family $(C_k)_{k \leq n}$, and let $m \in \NN$
+  with $m < n$. The \emph{underlying $m$-category} of $\cat{C}$ is the many-sorted $m$-category
+  $\cat{C}^{<m}$ on the restricted family $(C_k)_{k \leq m}$, with the source, target, identity, and
+  composition operations at each pair $(k, j)$ with $j < k \leq m$ being those of $\cat{C}$.
+\end{construction}
+
+\begin{proof}
+  \leanok
+  Every axiom of $\cat{C}^{<m}$ is an axiom of $\cat{C}$ restricted to lower dimensions.
+\end{proof}
+
+\begin{construction}[Underlying many-sorted omega category]
+  \label{def:ManySortedOmegaCategory_underlying}
+  \lean{HigherCategoryTheory.ManySorted.OmegaCategory.underlying}
+  \uses{def:ManySortedOmegaCategory, def:ManySortedNCategory}
+  \leanok
+  Let $\cat{C}$ be a many-sorted $\omega$-category on a family $(C_k)_{k \in \NN}$, and let $m \in
+  \NN$. The \emph{underlying $m$-category} of $\cat{C}$ is the many-sorted $m$-category
+  $\cat{C}^{<m}$ on the restricted family $(C_k)_{k \leq m}$, defined by the same construction as in
+  Definition~\ref{def:ManySortedNCategory_underlying}.
+\end{construction}
+
+\begin{proof}
+  \leanok
+  The many-sorted category axioms follow by the same argument as in
+  Definition~\ref{def:ManySortedNCategory_underlying}.
+\end{proof}
+
+\section{Underlying many-sorted functors}
+
+\begin{construction}[Underlying many-sorted finite functor]
+  \label{def:ManySortedNFunctor_underlying}
+  \lean{HigherCategoryTheory.ManySorted.NFunctor.underlying}
+  \uses{def:ManySortedNFunctor, def:ManySortedNCategory_underlying}
+  \leanok
+  Let $\cat{C}$ and $\cat{D}$ be many-sorted $n$-categories, and let $F = (F_k)_{k \leq n} \colon
+  \cat{C} \to \cat{D}$ be a many-sorted $n$-functor. For any $m \in \NN$ with $m < n$, the
+  restricted family $(F_k)_{k \leq m}$ is a many-sorted $m$-functor $F^{<m} \colon \cat{C}^{<m} \to
+  \cat{D}^{<m}$.
+\end{construction}
+
+\begin{proof}
+  \leanok
+  Every preservation axiom of $F^{<m}$ is a preservation axiom of $F$ restricted to lower
+  dimensions.
+\end{proof}
+
+\begin{construction}[Underlying many-sorted omega functor]
+  \label{def:ManySortedOmegaFunctor_underlying}
+  \lean{HigherCategoryTheory.ManySorted.OmegaFunctor.underlying}
+  \uses{def:ManySortedOmegaFunctor, def:ManySortedOmegaCategory_underlying}
+  \leanok
+  Let $\cat{C}$ and $\cat{D}$ be many-sorted $\omega$-categories, and let $F = (F_k)_{k \in \NN}
+  \colon \cat{C} \to \cat{D}$ be a many-sorted $\omega$-functor. For any $m \in \NN$, the restricted
+  family $(F_k)_{k \leq m}$ is a many-sorted $m$-functor $F^{<m} \colon \cat{C}^{<m} \to
+  \cat{D}^{<m}$.
+\end{construction}
+
+\begin{proof}
+  \leanok
+  The argument is identical to that of Definition~\ref{def:ManySortedNFunctor_underlying}.
+\end{proof}
+
+\section{Many-sorted underlying functors}
+
+The underlying constructions of the previous sections are in fact functorial, as the following
+definition makes precise.
+
+\begin{construction}[Many-sorted underlying functor]
+  \label{def:ManySortedUnderlyingFunctor}
+  \lean{HigherCategoryTheory.ManySorted.UnderlyingFunctor}
+  \uses{
+    def:ManySortedNCategory_underlying,
+    def:ManySortedOmegaCategory_underlying,
+    def:ManySortedNFunctor_underlying,
+    def:ManySortedOmegaFunctor_underlying
+  }
+  \leanok
+  Let $n, m \in \ENat$ with $m \leq n$. The \emph{many-sorted underlying functor}
+  $\UnderlyingMS^{(n, m)}$ from $n\CatMS$ to $m\CatMS$ is the functor that maps every many-sorted
+  $n$-category $\cat{C}$ to its underlying $m$-category $\cat{C}^{<m}$ and every many-sorted
+  $n$-functor $F \colon \cat{C} \to \cat{D}$ to its underlying $m$-functor $F^{<m} \colon
+  \cat{C}^{<m} \to \cat{D}^{<m}$. If $n = m$, then $\UnderlyingMS^{(n, n)}$ stands for the identity
+  functor on $n\CatMS$.
+\end{construction}
+
+\begin{proof}
+  Functoriality follows from the fact that restricting the family preserves identities and
+  compositions: the identity functor on $\cat{C}$ restricts to the identity functor on
+  $\cat{C}^{<m}$, and the composition of two $n$-functors restricts to the composition of their
+  underlying $m$-functors.
+\end{proof}
+
+Moreover, underlying transformations at different dimensions are compatible with one another.
+
+\begin{theorem}[Compatibility of many-sorted underlying functors]
+  \label{thm:ManySortedUnderlyingFunctor_compatibility}
+  \uses{def:ManySortedUnderlyingFunctor}
+  \notready
+  The assignment $(n, m) \mapsto \UnderlyingMS^{(n, m)}$ defines a functor from $(\ENat, \leq)^{op}$
+  to $\cat{Cat}$. That is, for all $k \leq m \leq n$ in $\ENat$,
+  \[
+    \UnderlyingMS^{(m, k)} \circ \UnderlyingMS^{(n, m)} =
+    \UnderlyingMS^{(n, k)}.
+  \]
+\end{theorem}
+
+\begin{proof}
+  Both sides restrict the family to $(C_j)_{j \leq k}$, whether by first restricting to dimension
+  $m$ and then to $k$, or directly to $k$. The operations at each pair $(j_2, j_1)$ with $j_1 < j_2
+  \leq k$ are the same in both cases.
+\end{proof}
+
+\section{The projective limit of many-sorted categories}
+
+\begin{theorem}[Projective limit of many-sorted categories]
+  \label{thm:ManySortedUnderlying_projective_limit}
+  \uses{thm:ManySortedUnderlyingFunctor_compatibility}
+  \notready
+  The category $\omega\CatMS$ is the projective limit of the system $(n\CatMS, \UnderlyingMS^{(n,
+  m)})_{m \leq n}$.
+\end{theorem}

@@ -1,7 +1,7 @@
 /-
 Copyright (c) 2025 Mario Vago Marzal. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Enric Cosme Llópez, Raul Ruiz Mora, Mario Vago Marzal
+Authors: Enric Cosme Llópez, Raúl Ruiz Mora, Mario Vago Marzal
 -/
 import Mathlib.Data.Part
 import Mathlib.Data.PFun
@@ -61,7 +61,7 @@ The basic structure of a many-sorted category, parametrized by an index type and
 This structure contains only the data and the composability condition; the structure axioms are
 defined in `PreCategory` and `Category`.
 -/
-class CategoryStruct (Index : Type) [Preorder Index] (C : Index → Type u) where
+class CategoryStruct (Index : Type) [Preorder Index] (C : TypeFamily.{u} Index) where
   /-- Source operation at dimensions `(k, j)`. Maps `k`-morphisms to `j`-morphisms. -/
   sc : {k j : Index} → j < k → C k → C j
   /-- Target operation at dimensions `(k, j)`. Maps `k`-morphisms to `j`-morphisms. -/
@@ -80,7 +80,7 @@ attribute [simp] CategoryStruct.pcomp_dom
 
 namespace CategoryStruct
 
-variable {Index : Type} [Preorder Index] {C : Index → Type u} [CategoryStruct Index C]
+variable {Index : Type} [Preorder Index] {C : TypeFamily.{u} Index} [CategoryStruct Index C]
   {k j : Index} {j_lt_k : j < k} {f g : C k}
 
 @[inherit_doc]
@@ -124,7 +124,7 @@ export CategoryStruct (sc tg idm sc_is_tg)
 
 section Congruence
 
-variable {Index : Type} [Preorder Index] {C : Index → Type u} [CategoryStruct Index C]
+variable {Index : Type} [Preorder Index] {C : TypeFamily.{u} Index} [CategoryStruct Index C]
   {k j : Index} {j_lt_k : j < k} {f₁ f₂ g₁ g₂ : C k}
 
 /-- Congruence lemma for the domain of partial composition: if `f₁ = f₂` and `g₁ = g₂`, and the
@@ -183,7 +183,7 @@ classical category with objects `C j` and morphisms `C k`.
 This serves as an intermediate step in the construction of `Category`, allowing us to establish
 per-pair properties before enforcing cross-dimensional compatibility.
 -/
-class PreCategory (Index : Type) [Preorder Index] (C : Index → Type u)
+class PreCategory (Index : Type) [Preorder Index] (C : TypeFamily.{u} Index)
     extends CategoryStruct Index C where
   /-- The source of a composite `g ♯[j_lt_k] f` at dimensions `(k, j)` is the source of `f`. -/
   sckj_compkj_eq_sckj : ∀ {k j : Index} {j_lt_k : j < k} {f g : C k}
@@ -242,7 +242,7 @@ attribute [simp] sckj_compkj_eq_sckj tgkj_compkj_eq_tgkj sckj_idmkj tgkj_idmkj
 
 /-- In a `PreCategory`, the identity map at `(k, j)` is injective as a function from `C j` to
 `C k`. -/
-theorem PreCategory.injetive_idm {Index : Type} [Preorder Index] {C : Index → Type u}
+theorem PreCategory.injetive_idm {Index : Type} [Preorder Index] {C : TypeFamily.{u} Index}
     [PreCategory Index C] {k j : Index} {j_lt_k : j < k} :
     Function.Injective (idm j_lt_k : C j → C k) := by
   intros f g eq_idm
@@ -265,7 +265,7 @@ operations at different dimensions interact:
 * **Interchange law**: Composing first at one dimension and then at another yields the same result
   regardless of the order.
 -/
-class Category (Index : Type) [Preorder Index] (C : Index → Type u)
+class Category (Index : Type) [Preorder Index] (C : TypeFamily.{u} Index)
     extends PreCategory Index C where
   /-- Applying source at `(j, i)` to a source at `(k, j)` yields the source at `(k, i)`. -/
   scji_sckj_eq_scki : ∀ {k j i : Index} (j_lt_k : j < k) (i_lt_j : i < j) (f : C k),
@@ -422,7 +422,7 @@ attribute [simp] scji_sckj_eq_scki scji_tgkj_eq_scki tgji_tgkj_eq_tgki tgji_sckj
 
 /-- A **many-sorted $n$-category** is a `Category` with index type `Fin n`,
 representing a category with exactly `n` dimensions. -/
-abbrev NCategory (n : ℕ) (C : FinSucc n → Type u) := Category (FinSucc n) C
+abbrev NCategory (n : ℕ) (C : NTypeFamily.{u} n) := Category (FinSucc n) C
 
 /--
 Any `PreCategory (FinSucc 1) C` lifts to a full `NCategory 1 C`.
@@ -434,11 +434,11 @@ Since `FinSucc 1 = Fin 2` has exactly two elements, there are no triples of dist
 -- TODO: All cross-dimensional axioms are vacuously satisfied since `FinSucc 1 = Fin 2` has no
 -- triples `i < j < k`. The proof should be `{S with}`, but the default `hcat_disch` tactic
 -- cannot synthesize the vacuous proofs.
-def PreCategory.lift {C : FinSucc 1 → Type u} [S : PreCategory (FinSucc 1) C] : NCategory 1 C :=
+def PreCategory.lift {C : NTypeFamily.{u} 1} [S : PreCategory (FinSucc 1) C] : NCategory 1 C :=
   by sorry
 
 /-- A **many-sorted $\omega$-category** is a `Category` with index type `ℕ`, representing a category
 with infinitely (countably) many dimensions. -/
-abbrev OmegaCategory (C : ℕ → Type u) := Category ℕ C
+abbrev OmegaCategory (C : OmegaTypeFamily.{u}) := Category ℕ C
 
 end HigherCategoryTheory.ManySorted
