@@ -17,7 +17,9 @@ on it.
 
 \begin{definition}[Discrete many-sorted finite family]
   \label{def:ManySortedDiscreteFamily}
+  \lean{HigherCategoryTheory.ManySorted.NTypeFamily.discrete}
   \uses{def:ManySortedNCategory}
+  \leanok
   Let $\cat{C}$ be a many-sorted $n$-category on a family $(C_k)_{k \leq n}$, and let $m \in \NN$
   with $n < m$. The \emph{discrete finite family} $(C^{>m}_k)_{k \leq m}$ is defined by
   \[
@@ -32,7 +34,6 @@ on it.
 \begin{construction}[Discrete many-sorted finite category]
   \label{def:ManySortedNCategory_discrete}
   \uses{def:ManySortedDiscreteFamily, def:ManySortedNCategory}
-  \notready
   Let $\cat{C}$ be a many-sorted $n$-category on a family $(C_k)_{k \leq n}$, and let $m \in \NN$
   with $n < m$. The \emph{discrete $m$-category} of $\cat{C}$ is the many-sorted $m$-category
   $\cat{C}^{>m}$ on the discrete family $(C^{>m}_k)_{k \leq m}$ of
@@ -62,7 +63,9 @@ on it.
 
 \begin{definition}[Discrete many-sorted omega family]
   \label{def:ManySortedDiscreteOmegaFamily}
+  \lean{HigherCategoryTheory.ManySorted.OmegaTypeFamily.discrete}
   \uses{def:ManySortedNCategory}
+  \leanok
   Let $\cat{C}$ be a many-sorted $n$-category on a family $(C_k)_{k \leq n}$. The \emph{discrete
   omega family} $(C^{>\omega}_k)_{k \in \NN}$ is defined by
   \[
@@ -77,7 +80,6 @@ on it.
 \begin{construction}[Discrete many-sorted omega category]
   \label{def:ManySortedNCategory_discreteOmega}
   \uses{def:ManySortedDiscreteOmegaFamily, def:ManySortedNCategory, def:ManySortedOmegaCategory}
-  \notready
   Let $\cat{C}$ be a many-sorted $n$-category on a family $(C_k)_{k \leq n}$. The \emph{discrete
   $\omega$-category} of $\cat{C}$ is the many-sorted $\omega$-category $\cat{C}^{>\omega}$ on the
   discrete omega family $(C^{>\omega}_k)_{k \in \NN}$ of
