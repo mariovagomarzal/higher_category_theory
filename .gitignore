@@ -1,4 +1,4 @@
-# Local files for custom configurations
+# Local development files
 *.local.*
 
 # Devenv

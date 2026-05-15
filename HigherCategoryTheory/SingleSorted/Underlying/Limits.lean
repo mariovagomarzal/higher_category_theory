@@ -12,13 +12,6 @@ universe u v
 
 namespace HigherCategoryTheory.SingleSorted
 
--- TODO: Remove this definition when the original `UnderlyingFunctor` definition is ready to be used
--- in the definition of `UnderlyingConeFunctor`.
-open CategoryTheory in
-def UnderlyingFunctor' (n : ℕ) (m : Fin n) : NCat n ⥤ NCat m where
-  obj C := Cat.of (cells m C)
-  map {C D} F := F.underlying m
-
 open CategoryTheory in
 /-- TODO: Comment. -/
 def UnderlyingConeFunctor : ℕᵒᵖ ⥤ CategoryTheory.Cat where
@@ -30,7 +23,7 @@ def UnderlyingConeFunctor : ℕᵒᵖ ⥤ CategoryTheory.Cat where
       eqToHom (by rw [h_mn])
     else
       CategoryTheory.Functor.toCatHom
-        (UnderlyingFunctor' n.unop ⟨m.unop, Nat.lt_of_le_of_ne f.unop.le h_mn⟩)
+        (FinUnderlyingFunctor n.unop ⟨m.unop, Nat.lt_of_le_of_ne f.unop.le h_mn⟩)
   map_comp := by
     intro n m k f g
     have n_ge_m : n.unop ≥ m.unop := f.unop.le
