@@ -26,6 +26,8 @@ between discrete categories induced by a functor between $n$-categories.
   $m$-categories.
 * `NFunctor.discreteOmega`: Lifts a functor between $n$-categories to a functor between their
   discrete $\omega$-categories.
+* `DiscretizationFunctor`: The functor from `ICat n` to `ICat m` sending each category and functor
+  to its discrete higher-dimensional counterpart.
 
 ## Implementation notes
 
@@ -466,14 +468,38 @@ end Functor
 
 section DiscretizationFunctor
 
-open CategoryTheory in
-/-- TODO: Document. -/
+open CategoryTheory
+
+/-- The discretization functor from the category of $n$-categories to the category of
+$m$-categories for finite dimensions, where $n < m$. Sends each $n$-category to its discrete
+$m$-category and each functor to its lift between the discrete categories. -/
+def FinDiscretizationFunctor (n m : ℕ) (n_lt_m : n < m) : ICat.{u} n ⥤ ICat.{u} m where
+  obj C := letI := NCategory.discrete C.str m n_lt_m; Cat.of C
+  map {C D} F := F.discrete m n_lt_m
+
+/-- The discretization functor from the category of $n$-categories to the category of
+$\omega$-categories. Sends each $n$-category to its discrete $\omega$-category and each functor to
+its lift between the discrete categories. -/
+def OmegaDiscretizationFunctor (n : ℕ) : ICat.{u} n ⥤ ICat.{u} ω where
+  obj C := letI := NCategory.discreteOmega C.str; OmegaCat.of C
+  map {C D} F := F.discreteOmega
+
+/-- The discretization functor from the category of $n$-categories to the category of $m$-categories
+(where $n \leq m$). Sends each $n$-category to its discrete $m$-category by declaring all dimensions
+above $n$ to be trivial, and each functor to its lift between the discrete categories. -/
 @[simp]
 def DiscretizationFunctor (n m : ℕ∞) (n_le_m : n ≤ m) : ICat.{u} n ⥤ ICat.{u} m :=
   match n, m with
-  | fin n, fin m => by sorry
-  | fin n, ω => by sorry
-  | ω, ω => by sorry
+  | fin n, fin m =>
+    if h : n < m then
+      FinDiscretizationFunctor n m h
+    else by
+      simp only [ENat.some_eq_coe, Nat.cast_le] at n_le_m
+      have : n = m := n_le_m.eq_of_not_lt h
+      rw [this]
+      exact 𝟭 (ICat.{u} m)
+  | fin n, ω => OmegaDiscretizationFunctor n
+  | ω, ω => 𝟭 (ICat.{u} ω)
 
 end DiscretizationFunctor
 

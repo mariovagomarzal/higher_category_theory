@@ -209,20 +209,38 @@ end Functor
 
 section UnderlyingFunctor
 
-/-- The underlying $m$-category instance for the type of $m$-cells of an $n$-category. -/
-instance {n : ℕ} {m : Fin n} {C : Type u} [S : NCategory n C] : NCategory m (cells m C) :=
-  S.underlying m
+open CategoryTheory
 
-open CategoryTheory in
+/-- The underlying functor from the category of $n$-categories to the category of $m$-categories
+for finite dimensions, where $m < n$. Sends each $n$-category to its underlying $m$-category and
+each functor to its restriction to $m$-cells. -/
+def FinUnderlyingFunctor (n : ℕ) (m : Fin n) : ICat.{u} n ⥤ ICat.{u} m where
+  obj C := letI := NCategory.underlying C.str m; Cat.of (cells m C)
+  map {C D} F := F.underlying m
+
+/-- The underlying functor from the category of $\omega$-categories to the category of
+$m$-categories. Sends each $\omega$-category to its underlying $m$-category and each functor to its
+restriction to $m$-cells. -/
+def OmegaUnderlyingFunctor (m : ℕ) : ICat.{u} ω ⥤ ICat.{u} m where
+  obj C := letI := OmegaCategory.underlying C.str m; Cat.of (cells m C)
+  map {C D} F := F.underlying m
+
 /-- The underlying functor from the category of $n$-categories to the category of $m$-categories
 (where $m < n$). Sends each $n$-category to its underlying $m$-category and each functor to its
 restriction to $m$-cells. -/
 @[simp]
 def UnderlyingFunctor (n m : ℕ∞) (m_le_n : m ≤ n) : ICat.{u} n ⥤ ICat.{u} m :=
   match n, m with
-  | fin n, fin m => by sorry
-  | ω, fin m => by sorry
-  | ω, ω => by sorry
+  | fin n, fin m =>
+    if h : m < n then
+      FinUnderlyingFunctor n ⟨m, h⟩
+    else by
+      simp only [ENat.some_eq_coe, Nat.cast_le] at m_le_n
+      have : m = n := m_le_n.eq_of_not_lt h
+      rw [this]
+      exact 𝟭 (ICat.{u} n)
+  | ω, fin m => OmegaUnderlyingFunctor m
+  | ω, ω => 𝟭 (ICat.{u} ω)
 
 end UnderlyingFunctor
 
