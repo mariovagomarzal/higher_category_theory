@@ -15,3 +15,5 @@ import HigherCategoryTheory.SingleSorted.Monoid
 import HigherCategoryTheory.ManySorted.Category
 import HigherCategoryTheory.ManySorted.Functor
 import HigherCategoryTheory.ManySorted.Cat
+import HigherCategoryTheory.ManySorted.Underlying.Functor
+import HigherCategoryTheory.ManySorted.Discrete.Functor
