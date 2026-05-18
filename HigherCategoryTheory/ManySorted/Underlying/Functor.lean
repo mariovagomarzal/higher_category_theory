@@ -30,20 +30,13 @@ between many-sorted $n$-categories (or $\omega$-categories).
   its underlying lower-dimensional counterpart.
 -/
 
-/- TODO: The proofs in `NCategory.underlying` and `OmegaCategory.underlying` currently mix three
-different styles for discharging axioms: direct assignment (`:= S.axiom`), explicit lambdas (`fun h
-=> S.axiom h`), and tactic mode (`by intros; apply S.axiom <;> assumption`). Moreover, the two
-definitions are not consistent with each other in which style they use for analogous fields (e.g.,
-`compkj_idmkj_sckj_eq_id` uses a lambda in `NCategory.underlying` but direct assignment in
-`OmegaCategory.underlying`). These proofs should be revised to follow a single uniform pattern. -/
-
 universe u v
 
 namespace HigherCategoryTheory.ManySorted
 
 /-- The restriction of a `NTypeFamily n` to `NTypeFamily m` for `m < n` -/
 abbrev NTypeFamily.underlying {n : ℕ} (C : NTypeFamily.{u} n) (m : Fin n) : NTypeFamily m :=
-  fun k ↦ C ⟨k, by omega⟩ -- TODO: Find an explicit proof for `k < n` instead of using `omega`.
+  fun k ↦ C ⟨k, by omega⟩
 
 /-- The restriction of an `OmegaTypeFamily` to `NTypeFamily m` for any natural `m` -/
 abbrev OmegaTypeFamily.underlying (C : OmegaTypeFamily.{u}) (m : ℕ) : NTypeFamily m :=
@@ -127,7 +120,7 @@ def NFunctor.underlying (F : NFunctor n C D) (m : Fin n) :
   letI := SC.underlying m
   letI := SD.underlying m
   {
-    map := fun k f ↦ F.map ⟨k, by omega⟩ f -- TODO: Find an explicit proof instead of using `omega`.
+    map := fun k f ↦ F.map ⟨k, by omega⟩ f
     map_comp_eq_comp_map := F.map_comp_eq_comp_map
   }
 

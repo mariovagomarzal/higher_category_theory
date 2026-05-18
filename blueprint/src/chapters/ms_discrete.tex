@@ -181,22 +181,3 @@ definition makes precise.
   composition of two $n$-functors yields the composition of their discrete $m$-functors.
 \end{proof}
 
-Moreover, discretization transformations at different dimensions are compatible with one another.
-
-\begin{theorem}[Compatibility of many-sorted discretization functors]
-  \label{thm:ManySortedDiscretizationFunctor_compatibility}
-  \uses{def:ManySortedDiscretizationFunctor}
-  \notready
-  The assignment $(n, m) \mapsto \DiscreteMS^{(n, m)}$ defines a functor from $(\ENat, \leq)$ to
-  $\cat{Cat}$. That is, for all $k \leq n \leq m$ in $\ENat$,
-  \[
-    \DiscreteMS^{(n, m)} \circ \DiscreteMS^{(k, n)} =
-    \DiscreteMS^{(k, m)}.
-  \]
-\end{theorem}
-
-\begin{proof}
-  Both sides produce the same family of sets and the same operations. The categorical structures
-  coincide because extending first to dimension $n$ and then to $m$ introduces the same trivial
-  structure on dimensions above $k$ as extending directly to $m$.
-\end{proof}

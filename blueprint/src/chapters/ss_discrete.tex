@@ -116,21 +116,3 @@ definition makes precise.
   composition of two $n$-functors yields the composition of their discrete $m$-functors.
 \end{proof}
 
-Moreover, discretization transformations at different dimensions are compatible with one another.
-
-\begin{theorem}[Compatibility of discretization functors]
-  \label{thm:SingleSortedDiscretizationFunctor_compatibility}
-  \uses{def:SingleSortedDiscretizationFunctor}
-  \notready
-  The assignment $(n, m) \mapsto \Discrete^{(n, m)}$ defines a functor from $(\ENat, \leq)$ to
-  $\cat{Cat}$. That is, for all $k \leq n \leq m$ in $\ENat$,
-  \[
-    \Discrete^{(m, n)} \circ \Discrete^{(n, k)} = \Discrete^{(m, k)}.
-  \]
-\end{theorem}
-
-\begin{proof}
-  Both sides act as the identity on the underlying map. The categorical structures coincide because
-  making dimensions $k \leq j < n$ trivial and then $n \leq j < m$ trivial is the same as making all
-  dimensions $k \leq j < m$ trivial at once.
-\end{proof}

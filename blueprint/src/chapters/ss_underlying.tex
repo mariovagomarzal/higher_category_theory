@@ -6,11 +6,7 @@ to the $m$-cells: one can show that the source, target, and composition operatio
 of $m$-cells, so we may consider their birestrictions to it. This construction extends naturally to
 the $\omega$-categorical setting. Moreover, any single-sorted $n$-functor maps $m$-cells to
 $m$-cells, so it restricts to a functor between the resulting lower-dimensional categories. We call
-this process the \emph{underlying} transformation, and we show that it is functorial and that
-underlying transformations at different dimensions are compatible with one another.
-
-We conclude the chapter by showing that the categories $n\Cat$ together with the underlying functors
-form a projective system, and that $\omega\Cat$ is its projective limit.
+this process the \emph{underlying} transformation, and we show that it is functorial.
 
 \section{Underlying single-sorted categories}
 
@@ -260,32 +256,3 @@ definition makes precise.
   structure: the identity functor on $\cat{C}$ yields the identity functor on $\cat{C}^{<m}$, and
   the composition of two $n$-functors yields the composition of their underlying $m$-functors.
 \end{proof}
-
-Moreover, underlying transformations at different dimensions are compatible with one another.
-
-\begin{theorem}[Compatibility of underlying functors]
-  \label{thm:SingleSortedUnderlyingFunctor_compatibility}
-  \uses{def:SingleSortedUnderlyingFunctor}
-  \notready
-  The assignment $(n, m) \mapsto \Underlying^{(n, m)}$ defines a functor from $(\ENat, \leq)^{op}$
-  to $\cat{Cat}$. That is, for all $k \leq m \leq n$ in $\ENat$,
-  \[
-    \Underlying^{(m, k)} \circ \Underlying^{(n, m)} = \Underlying^{(n, k)}.
-  \]
-\end{theorem}
-
-\begin{proof}
-  Both sides act as the same birestriction on the underlying map. The categorical structures
-  coincide because restricting to $m$-cells and then to $k$-cells is the same as restricting to
-  $k$-cells directly, since every $k$-cell is also an $m$-cell.
-\end{proof}
-
-\section{The projective limit of single-sorted categories}
-
-\begin{theorem}[Projective limit of single-sorted categories]
-  \label{thm:SingleSortedUnderlying_projective_limit}
-  \uses{thm:SingleSortedUnderlyingFunctor_compatibility}
-  \notready
-  The category $\omega\Cat$ is the projective limit of the system $(n\Cat, \Underlying^{(n, m)})_{m
-  \leq n}$.
-\end{theorem}

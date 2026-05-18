@@ -79,7 +79,6 @@ end Functor
 
 end Birestrictions
 
--- TODO: Review this tactic for possible improvements.
 /--
 A tactic for proving axioms of underlying categories by inheritance from the parent category.
 

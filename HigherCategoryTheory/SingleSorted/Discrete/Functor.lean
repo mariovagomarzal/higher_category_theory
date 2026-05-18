@@ -37,9 +37,6 @@ trivially follows from the fact that all operations act as the identity. The `sp
 used to handle the case distinction.
 -/
 
--- TODO: Proofs should be improved and, if possible, automated or unified by a tactic similar to
--- `inherit_axiom` in `HigherCategoryTheory.SingleSorted.Underlying.Functor`.
-
 universe u v
 
 namespace HigherCategoryTheory.SingleSorted
