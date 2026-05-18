@@ -424,6 +424,7 @@ attribute [simp] scji_sckj_eq_scki scji_tgkj_eq_scki tgji_tgkj_eq_tgki tgji_sckj
 representing a category with exactly `n` dimensions. -/
 abbrev NCategory (n : ℕ) (C : NTypeFamily.{u} n) := Category (FinSucc n) C
 
+
 /--
 Any `PreCategory (FinSucc 1) C` lifts to a full `NCategory 1 C`.
 
@@ -431,11 +432,17 @@ Since `FinSucc 1 = Fin 2` has exactly two elements, there are no triples of dist
 < k`, making all cross-dimensional axioms of `Category` vacuously satisfied. Thus, a pre-many-sorted
 1-category is essentially a many-sorted 1-category.
 -/
--- TODO: All cross-dimensional axioms are vacuously satisfied since `FinSucc 1 = Fin 2` has no
--- triples `i < j < k`. The proof should be `{S with}`, but the default `hcat_disch` tactic
--- cannot synthesize the vacuous proofs.
 def PreCategory.lift {C : NTypeFamily.{u} 1} [S : PreCategory (FinSucc 1) C] : NCategory 1 C :=
-  by sorry
+  { S with
+    scji_sckj_eq_scki := by fin_omega
+    scji_tgkj_eq_scki := by fin_omega
+    tgji_tgkj_eq_tgki := by fin_omega
+    tgji_sckj_eq_tgki := by fin_omega
+    sckj_compki_eq_compji_sckj := by fin_omega
+    tgkj_compki_eq_compji_tgkj := by fin_omega
+    idmkj_idmji_eq_idmki := by fin_omega
+    idmkj_compji_eq_compki_idmkj := by fin_omega
+    interchange := by fin_omega }
 
 /-- A **many-sorted $\omega$-category** is a `Category` with index type `ℕ`, representing a category
 with infinitely (countably) many dimensions. -/
