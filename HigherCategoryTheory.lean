@@ -6,7 +6,6 @@ import HigherCategoryTheory.SingleSorted.Functor
 import HigherCategoryTheory.SingleSorted.Cells
 import HigherCategoryTheory.SingleSorted.Cat
 import HigherCategoryTheory.SingleSorted.Underlying.Functor
-import HigherCategoryTheory.SingleSorted.Underlying.Limits
 import HigherCategoryTheory.SingleSorted.Discrete.Functor
 import HigherCategoryTheory.SingleSorted.Types.Prod
 import HigherCategoryTheory.SingleSorted.Types.Unit
@@ -15,3 +14,5 @@ import HigherCategoryTheory.SingleSorted.Monoid
 import HigherCategoryTheory.ManySorted.Category
 import HigherCategoryTheory.ManySorted.Functor
 import HigherCategoryTheory.ManySorted.Cat
+import HigherCategoryTheory.ManySorted.Underlying.Functor
+import HigherCategoryTheory.ManySorted.Discrete.Functor

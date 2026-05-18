@@ -6,7 +6,6 @@ Authors: Enric Cosme Llópez, Raúl Ruiz Mora, Mario Vago Marzal
 import Mathlib.Order.TypeTags
 import Mathlib.Data.Nat.Notation
 import Mathlib.Order.Defs.PartialOrder
--- import Mathlib.Order.Fin.Basic
 
 /-!
 # Notation
@@ -18,7 +17,6 @@ universe u
 
 namespace HigherCategoryTheory
 
--- TODO: Instead of inheriting the docstring, explain the notation relating to `ℕ∞`.
 /- In some contexts, we use `ℕ∞` for indexing the category structure dimension, i.e., we use the top
 element of `ℕ∞` to represent $\omega$-categories and the finite elements to represent
 $n$-categories. The following notation provides concise syntax for these two cases. -/

@@ -34,6 +34,8 @@ on it.
 \begin{construction}[Discrete many-sorted finite category]
   \label{def:ManySortedNCategory_discrete}
   \uses{def:ManySortedDiscreteFamily, def:ManySortedNCategory}
+  \lean{HigherCategoryTheory.ManySorted.NCategory.discrete}
+  \leanok
   Let $\cat{C}$ be a many-sorted $n$-category on a family $(C_k)_{k \leq n}$, and let $m \in \NN$
   with $n < m$. The \emph{discrete $m$-category} of $\cat{C}$ is the many-sorted $m$-category
   $\cat{C}^{>m}$ on the discrete family $(C^{>m}_k)_{k \leq m}$ of
@@ -54,6 +56,7 @@ on it.
 \end{construction}
 
 \begin{proof}
+  \leanok
   Each axiom, whether a pre-category axiom at a pair $(k, j)$ or a cross-dimensional axiom at a
   triple $i < j < k$, either involves only indices at most $n$, in which case it reduces to the
   corresponding axiom of $\cat{C}$; involves indices above $n$ whose operations coincide with those
@@ -80,6 +83,8 @@ on it.
 \begin{construction}[Discrete many-sorted omega category]
   \label{def:ManySortedNCategory_discreteOmega}
   \uses{def:ManySortedDiscreteOmegaFamily, def:ManySortedNCategory, def:ManySortedOmegaCategory}
+  \lean{HigherCategoryTheory.ManySorted.OmegaCategory.discrete}
+  \leanok
   Let $\cat{C}$ be a many-sorted $n$-category on a family $(C_k)_{k \leq n}$. The \emph{discrete
   $\omega$-category} of $\cat{C}$ is the many-sorted $\omega$-category $\cat{C}^{>\omega}$ on the
   discrete omega family $(C^{>\omega}_k)_{k \in \NN}$ of
@@ -89,6 +94,7 @@ on it.
 \end{construction}
 
 \begin{proof}
+  \leanok
   The many-sorted category axioms follow by the same argument as in
   Definition~\ref{def:ManySortedNCategory_discrete}.
 \end{proof}
@@ -98,7 +104,8 @@ on it.
 \begin{construction}[Discrete many-sorted finite functor]
   \label{def:ManySortedNFunctor_discrete}
   \uses{def:ManySortedNFunctor, def:ManySortedNCategory_discrete}
-  \notready
+  \lean{HigherCategoryTheory.ManySorted.NFunctor.discrete}
+  \leanok
   Let $\cat{C}$ and $\cat{D}$ be many-sorted $n$-categories, and let $F = (F_k)_{k \leq n} \colon
   \cat{C} \to \cat{D}$ be a many-sorted $n$-functor. For any $m \in \NN$ with $n < m$, the family
   $(F^{>m}_k)_{k \leq m}$ defined by
@@ -113,6 +120,7 @@ on it.
 \end{construction}
 
 \begin{proof}
+  \leanok
   Each preservation axiom at a pair $(k, j)$ with $j < k$ either involves only indices at most $n$,
   where it follows from the functor axioms of $F$; involves indices above $n$ whose maps and
   operations coincide with those at the top dimension $n$, where it again follows from a functor
@@ -123,7 +131,8 @@ on it.
 \begin{construction}[Discrete many-sorted omega functor]
   \label{def:ManySortedNFunctor_discreteOmega}
   \uses{def:ManySortedOmegaFunctor, def:ManySortedNCategory_discreteOmega}
-  \notready
+  \lean{HigherCategoryTheory.ManySorted.OmegaFunctor.discrete}
+  \leanok
   Let $\cat{C}$ and $\cat{D}$ be many-sorted $n$-categories, and let $F = (F_k)_{k \leq n} \colon
   \cat{C} \to \cat{D}$ be a many-sorted $n$-functor. The family $(F^{>\omega}_k)_{k \in \NN}$
   defined by
@@ -138,6 +147,7 @@ on it.
 \end{construction}
 
 \begin{proof}
+  \leanok
   The argument is identical to that of Definition~\ref{def:ManySortedNFunctor_discrete}.
 \end{proof}
 
@@ -154,7 +164,8 @@ definition makes precise.
     def:ManySortedNFunctor_discrete,
     def:ManySortedNFunctor_discreteOmega
   }
-  \notready
+  \lean{HigherCategoryTheory.ManySorted.DiscretizationFunctor}
+  \leanok
   Let $n, m \in \ENat$ with $n \leq m$. The \emph{many-sorted discretization functor}
   $\DiscreteMS^{(n, m)}$ from $n\CatMS$ to $m\CatMS$ is the functor that maps every many-sorted
   $n$-category $\cat{C}$ to its discrete $m$-category $\cat{C}^{>m}$ and every many-sorted
@@ -164,27 +175,9 @@ definition makes precise.
 \end{construction}
 
 \begin{proof}
+  \leanok
   Functoriality follows from the fact that the discrete constructions preserve the underlying maps:
   the identity functor on $\cat{C}$ yields the identity functor on $\cat{C}^{>m}$, and the
   composition of two $n$-functors yields the composition of their discrete $m$-functors.
 \end{proof}
 
-Moreover, discretization transformations at different dimensions are compatible with one another.
-
-\begin{theorem}[Compatibility of many-sorted discretization functors]
-  \label{thm:ManySortedDiscretizationFunctor_compatibility}
-  \uses{def:ManySortedDiscretizationFunctor}
-  \notready
-  The assignment $(n, m) \mapsto \DiscreteMS^{(n, m)}$ defines a functor from $(\ENat, \leq)$ to
-  $\cat{Cat}$. That is, for all $k \leq n \leq m$ in $\ENat$,
-  \[
-    \DiscreteMS^{(n, m)} \circ \DiscreteMS^{(k, n)} =
-    \DiscreteMS^{(k, m)}.
-  \]
-\end{theorem}
-
-\begin{proof}
-  Both sides produce the same family of sets and the same operations. The categorical structures
-  coincide because extending first to dimension $n$ and then to $m$ introduces the same trivial
-  structure on dimensions above $k$ as extending directly to $m$.
-\end{proof}
