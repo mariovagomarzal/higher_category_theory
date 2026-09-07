@@ -53,7 +53,7 @@ Given a many-sorted $n$-category `S` and $m < n$, this produces a many-sorted $m
 restricted family. The source, target, identity, and composition operations are inherited from `S`,
 with dimensions reindexed to `Fin m`. All category axioms are inherited from `S`.
 -/
-@[simp]
+@[simp, instance_reducible]
 def NCategory.underlying (S : NCategory n C) (m : Fin n) :
     NCategory m (NTypeFamily.underlying C m) where
   sc j_lt_k f := S.sc j_lt_k f
@@ -78,7 +78,7 @@ family.
 
 This definition is analogous to `NCategory.underlying`, but applies to `OmegaCategory` objects.
 -/
-@[simp]
+@[simp, instance_reducible]
 def OmegaCategory.underlying {C : OmegaTypeFamily.{u}} (S : OmegaCategory C) (m : ℕ) :
     NCategory m (OmegaTypeFamily.underlying C m) where
   sc j_lt_k f := S.sc j_lt_k f
@@ -121,7 +121,10 @@ def NFunctor.underlying (F : NFunctor n C D) (m : Fin n) :
   letI := SD.underlying m
   {
     map := fun k f ↦ F.map ⟨k, by omega⟩ f
-    map_comp_eq_comp_map := F.map_comp_eq_comp_map
+    map_sc_eq_sc_map := fun j_lt_k f ↦ F.map_sc_eq_sc_map j_lt_k f
+    map_tg_eq_tg_map := fun j_lt_k f ↦ F.map_tg_eq_tg_map j_lt_k f
+    map_idm_eq_idm_map := fun j_lt_k f ↦ F.map_idm_eq_idm_map j_lt_k f
+    map_comp_eq_comp_map := fun sc_tg_gf ↦ F.map_comp_eq_comp_map sc_tg_gf
   }
 
 /--
@@ -141,6 +144,9 @@ def OmegaFunctor.underlying {C : OmegaTypeFamily.{u}} {D : OmegaTypeFamily.{v}}
   letI := SD.underlying m
   {
     map := fun k f ↦ F.map k f
+    map_sc_eq_sc_map := F.map_sc_eq_sc_map
+    map_tg_eq_tg_map := F.map_tg_eq_tg_map
+    map_idm_eq_idm_map := F.map_idm_eq_idm_map
     map_comp_eq_comp_map := F.map_comp_eq_comp_map
   }
 
@@ -160,7 +166,7 @@ def FinUnderlyingFunctor (n : ℕ) (m : Fin n) : ICat.{u} n ⥤ ICat.{u} m where
 /-- The underlying functor from the category of many-sorted $\omega$-categories to the category of
 many-sorted $m$-categories. Sends each $\omega$-category to its underlying $m$-category and each
 functor to its restriction to dimensions at most $m$. -/
-def OmegaUnderlyingFunctor (m : ℕ) : ICat.{u} ω ⥤ ICat.{u} m where
+def OmegaUnderlyingFunctor (m : ℕ) : OmegaCat.{u} ⥤ ICat.{u} m where
   obj C := letI := OmegaCategory.underlying C.str m; Cat.of (OmegaTypeFamily.underlying C m)
   map {C D} F := F.underlying m
 
@@ -172,12 +178,10 @@ $m$-category and each functor to its restriction to dimensions at most $m$. -/
 def UnderlyingFunctor (n m : ℕ∞) (m_le_n : m ≤ n) : ICat.{u} n ⥤ ICat.{u} m :=
   match n, m with
   | fin n, fin m =>
-    if h : m < n then
-      FinUnderlyingFunctor n ⟨m, h⟩
+    if m_lt_n : m < n then
+      FinUnderlyingFunctor n ⟨m, m_lt_n⟩
     else by
-      simp only [ENat.some_eq_coe, Nat.cast_le] at m_le_n
-      have : m = n := m_le_n.eq_of_not_lt h
-      rw [this]
+      rw [(WithTop.coe_le_coe.mp m_le_n).eq_of_not_lt m_lt_n]
       exact 𝟭 (ICat.{u} n)
   | ω, fin m => OmegaUnderlyingFunctor m
   | ω, ω => 𝟭 (ICat.{u} ω)

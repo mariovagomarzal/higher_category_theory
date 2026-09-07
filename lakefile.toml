@@ -13,12 +13,12 @@ maxSynthPendingDepth = 3
 [[require]]
 name = "mathlib"
 scope = "leanprover-community"
-rev = "v4.28.0"
+rev = "v4.33.1"
 
 [[require]]
 name = "doc-gen4"
 scope = "leanprover"
-rev = "v4.28.0"
+rev = "v4.33.1"
 
 [[require]]
 name = "checkdecls"
@@ -28,7 +28,7 @@ rev = "3d425859e73fcfbef85b9638c2a91708ef4a22d4"
 [[require]]
 name = "subverso"
 scope = "leanprover"
-rev = "ce893b9042128037e2d3c0158b9567fab9fae268"
+rev = "verso-v4.33.0"
 
 [[lean_lib]]
 name = "HigherCategoryTheory"

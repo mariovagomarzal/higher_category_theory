@@ -352,6 +352,7 @@ Since `Fin 1` has exactly one element, there are no pairs of distinct indices `j
 cross-dimensional axioms of `Category` vacuously satisfied. Thus, a pre-single-sorted 1-category is
 essentially a single-sorted 1-category.
 -/
+@[instance_reducible]
 def PreCategory.lift {C : Type u} [S : PreCategory (Fin 1) C] : NCategory 1 C := {S with}
 
 section Cells

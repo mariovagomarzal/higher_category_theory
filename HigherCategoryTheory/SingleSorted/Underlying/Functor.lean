@@ -79,16 +79,30 @@ end Functor
 
 end Birestrictions
 
+/-- Unfolds the birestrictions to $m$-cells, together with the derived composability and composition
+operations, and compares $m$-cells and dimensions componentwise, so that a statement about an
+underlying category becomes a statement about the parent category. -/
+local macro "unfold_birestrictions" loc:(Lean.Parser.Tactic.location)? : tactic =>
+  `(tactic| simp only [Category.sc_birestriction, Category.tg_birestriction,
+      Category.pcomp_birestriction, Functor.map_birestriction, CategoryStruct.sc_is_tg,
+      CategoryStruct.comp, Subtype.ext_iff, Fin.lt_def] $(loc)?)
+
 /--
 A tactic for proving axioms of underlying categories by inheritance from the parent category.
 
 This tactic automates the common proof pattern where an axiom of an underlying category (whose
 objects are $m$-cells) follows from the corresponding axiom of the full category. It introduces
-variables, rewrites subtype equality to component equality, and applies the parent axiom with
-simplification.
+variables, unfolds the birestrictions everywhere, and applies the parent axiom, discharging the
+resulting composability and dimension side goals the same way.
 -/
 macro (name := inherit_axiom) "inherit_axiom" axiom_name:ident : tactic =>
-  `(tactic| (intros; rw [Subtype.mk.injEq]; try (apply $axiom_name <;> (simp at *; assumption))))
+  `(tactic| (
+    intros
+    unfold_birestrictions at *
+    try (apply $axiom_name <;>
+      first
+        | assumption
+        | (unfold_birestrictions at *; assumption))))
 
 section Category
 
@@ -101,11 +115,12 @@ Given an $n$-category `S` and $m < n$, this produces an $m$-category whose objec
 $m$-cells of `S`. The source, target, and composition operations are inherited from `S`, with
 dimensions reindexed to `Fin m`. All category axioms are inherited using the `inherit_axiom` tactic.
 -/
-@[simp]
+@[simp, instance_reducible]
 def NCategory.underlying (S : NCategory n C) (m : Fin n) : NCategory m (cells m C) where
   sc k := S.sc_birestriction ⟨k, lt_trans k.isLt m.isLt⟩ k.isLt
   tg k := S.tg_birestriction ⟨k, lt_trans k.isLt m.isLt⟩ k.isLt
   pcomp k := S.pcomp_birestriction ⟨k, lt_trans k.isLt m.isLt⟩ k.isLt
+  pcomp_dom := by inherit_axiom S.pcomp_dom
   sck_sck_eq_sck := by inherit_axiom S.sck_sck_eq_sck
   tgk_sck_eq_sck := by inherit_axiom S.tgk_sck_eq_sck
   sck_tgk_eq_tgk := by inherit_axiom S.sck_tgk_eq_tgk
@@ -130,7 +145,7 @@ Constructs the underlying $m$-category of an $\omega$-category by restricting to
 
 This definition is analogous to `NCategory.underlying`, but applies to `OmegaCategory` objects.
 -/
-@[simp]
+@[simp, instance_reducible]
 def OmegaCategory.underlying (S : OmegaCategory C) (m : ℕ) : NCategory m (cells m C) where
   sc k := S.sc_birestriction k k.isLt
   tg k := S.tg_birestriction k k.isLt
@@ -220,7 +235,7 @@ def FinUnderlyingFunctor (n : ℕ) (m : Fin n) : ICat.{u} n ⥤ ICat.{u} m where
 /-- The underlying functor from the category of $\omega$-categories to the category of
 $m$-categories. Sends each $\omega$-category to its underlying $m$-category and each functor to its
 restriction to $m$-cells. -/
-def OmegaUnderlyingFunctor (m : ℕ) : ICat.{u} ω ⥤ ICat.{u} m where
+def OmegaUnderlyingFunctor (m : ℕ) : OmegaCat.{u} ⥤ ICat.{u} m where
   obj C := letI := OmegaCategory.underlying C.str m; Cat.of (cells m C)
   map {C D} F := F.underlying m
 
@@ -231,12 +246,10 @@ restriction to $m$-cells. -/
 def UnderlyingFunctor (n m : ℕ∞) (m_le_n : m ≤ n) : ICat.{u} n ⥤ ICat.{u} m :=
   match n, m with
   | fin n, fin m =>
-    if h : m < n then
-      FinUnderlyingFunctor n ⟨m, h⟩
+    if m_lt_n : m < n then
+      FinUnderlyingFunctor n ⟨m, m_lt_n⟩
     else by
-      simp only [ENat.some_eq_coe, Nat.cast_le] at m_le_n
-      have : m = n := m_le_n.eq_of_not_lt h
-      rw [this]
+      rw [(WithTop.coe_le_coe.mp m_le_n).eq_of_not_lt m_lt_n]
       exact 𝟭 (ICat.{u} n)
   | ω, fin m => OmegaUnderlyingFunctor m
   | ω, ω => 𝟭 (ICat.{u} ω)
