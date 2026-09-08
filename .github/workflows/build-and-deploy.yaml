@@ -48,6 +48,8 @@ jobs:
           restore-keys: ${{ runner.os }}-lake-${{ runner.arch }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}
       - name: Build the Lean project within devenv
         run: devenv shell just -- build
+      - name: Allow memory overcommit
+        run: sudo sysctl -w vm.overcommit_memory=1
       - name: Build the Lean documentation within devenv
         run: devenv shell just -- docs
       - name: Build the Lean Blueprint PDF and web within devenv
