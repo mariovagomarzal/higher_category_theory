@@ -90,7 +90,7 @@ scoped[HigherCategoryTheory.ManySorted] notation g " ♯.[" j_lt_k "] " f:100 =>
 /-- A method to express the composability condition for morphisms `g` and `f` at dimensions `(k,
 j)`, that is, that the source of `g` at `(k, j)` equals the target of `f` at `(k, j)`. -/
 @[simp high]
-def sc_is_tg {k j : Index} (j_lt_k : j < k) [CategoryStruct Index C] (g f : C k) : Prop :=
+def sc_is_tg {k j : Index} (j_lt_k : j < k) (g f : C k) : Prop :=
   sc j_lt_k g = tg j_lt_k f
 
 /-- If `g` and `f` satisfy the composability condition `sc_is_tg j_lt_k g f`, then the partial
@@ -109,8 +109,7 @@ lemma sc_is_tg_of_dom (dom_gf : (g ♯.[j_lt_k] f).Dom) : sc_is_tg j_lt_k g f :=
 Given morphisms `f` and `g` with a proof of `sc_is_tg j_lt_k g f`, this returns their composite
 `g ♯[j_lt_k] f`. -/
 @[simp high]
-def comp {k j : Index} (j_lt_k : j < k) [CategoryStruct Index C] (g f : C k)
-    (sc_tg_gf : sc_is_tg j_lt_k g f) : C k :=
+def comp {k j : Index} (j_lt_k : j < k) (g f : C k) (sc_tg_gf : sc_is_tg j_lt_k g f) : C k :=
   (g ♯.[j_lt_k] f).get (dom_of_sc_is_tg sc_tg_gf)
 
 @[inherit_doc]
@@ -432,6 +431,7 @@ Since `FinSucc 1 = Fin 2` has exactly two elements, there are no triples of dist
 < k`, making all cross-dimensional axioms of `Category` vacuously satisfied. Thus, a pre-many-sorted
 1-category is essentially a many-sorted 1-category.
 -/
+@[instance_reducible]
 def PreCategory.lift {C : NTypeFamily.{u} 1} [S : PreCategory (FinSucc 1) C] : NCategory 1 C :=
   { S with
     scji_sckj_eq_scki := by fin_omega

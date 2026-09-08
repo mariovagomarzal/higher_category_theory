@@ -53,7 +53,7 @@ Given an $n$-category `S` and $n < m$, this produces an $m$-category on the same
 where dimensions below $n$ retain the original structure, and dimensions $n \leq k < m$ have
 identity source and target, with composition defined only between equal morphisms.
 -/
-@[simp]
+@[simp, instance_reducible]
 def NCategory.discrete (S : NCategory n C) (m : ℕ) (_n_lt_m : n < m) : NCategory m C where
   sc k f := if k_lt_n : k < n then S.sc ⟨k, k_lt_n⟩ f else f
   tg k f := if k_lt_n : k < n then S.tg ⟨k, k_lt_n⟩ f else f
@@ -211,6 +211,29 @@ def NCategory.discrete (S : NCategory n C) (m : ℕ) (_n_lt_m : n < m) : NCatego
     · rfl
     · rfl
 
+/-- The source operation of a discrete $m$-category acts as the source operation of the original
+$n$-category below dimension $n$, and as the identity from dimension $n$ on. -/
+@[simp]
+lemma NCategory.discrete_sc (S : NCategory n C) (m : ℕ) (n_lt_m : n < m) (k : Fin m) (f : C) :
+    (S.discrete m n_lt_m).sc k f = if k_lt_n : k < n then S.sc ⟨k, k_lt_n⟩ f else f :=
+  rfl
+
+/-- The target operation of a discrete $m$-category acts as the target operation of the original
+$n$-category below dimension $n$, and as the identity from dimension $n$ on. -/
+@[simp]
+lemma NCategory.discrete_tg (S : NCategory n C) (m : ℕ) (n_lt_m : n < m) (k : Fin m) (f : C) :
+    (S.discrete m n_lt_m).tg k f = if k_lt_n : k < n then S.tg ⟨k, k_lt_n⟩ f else f :=
+  rfl
+
+/-- The partial composition of a discrete $m$-category is the partial composition of the original
+$n$-category below dimension $n$, and is defined only between equal morphisms from dimension $n$
+on. -/
+@[simp]
+lemma NCategory.discrete_pcomp (S : NCategory n C) (m : ℕ) (n_lt_m : n < m) (k : Fin m) (g f : C) :
+    (S.discrete m n_lt_m).pcomp k g f =
+      if k_lt_n : k < n then S.pcomp ⟨k, k_lt_n⟩ g f else ⟨g = f, fun _ ↦ f⟩ :=
+  rfl
+
 /--
 Constructs the discrete $\omega$-category of an $n$-category.
 
@@ -218,7 +241,7 @@ This definition is analogous to `NCategory.discrete`, but produces an $\omega$-c
 dimensions ranging over all of $\mathbb{N}$. The $\omega$-categorical axiom holds because every
 morphism is an $n$-cell.
 -/
-@[simp]
+@[simp, instance_reducible]
 def NCategory.discreteOmega (S : NCategory n C) : OmegaCategory C where
   sc k f := if k_lt_n : k < n then S.sc ⟨k, k_lt_n⟩ f else f
   tg k f := if k_lt_n : k < n then S.tg ⟨k, k_lt_n⟩ f else f
@@ -378,8 +401,31 @@ def NCategory.discreteOmega (S : NCategory n C) : OmegaCategory C where
   is_cell := by
     intro f
     use n
-    have not_n_lt_n : ¬(n < n) := (lt_self_iff_false n).mp
-    simp only [cell, dif_neg not_n_lt_n]
+    -- From dimension `n` on, the source operation acts as the identity.
+    exact dif_neg (lt_irrefl n)
+
+/-- The source operation of a discrete $\omega$-category acts as the source operation of the
+original $n$-category below dimension $n$, and as the identity from dimension $n$ on. -/
+@[simp]
+lemma NCategory.discreteOmega_sc (S : NCategory n C) (k : ℕ) (f : C) :
+    S.discreteOmega.sc k f = if k_lt_n : k < n then S.sc ⟨k, k_lt_n⟩ f else f :=
+  rfl
+
+/-- The target operation of a discrete $\omega$-category acts as the target operation of the
+original $n$-category below dimension $n$, and as the identity from dimension $n$ on. -/
+@[simp]
+lemma NCategory.discreteOmega_tg (S : NCategory n C) (k : ℕ) (f : C) :
+    S.discreteOmega.tg k f = if k_lt_n : k < n then S.tg ⟨k, k_lt_n⟩ f else f :=
+  rfl
+
+/-- The partial composition of a discrete $\omega$-category is the partial composition of the
+original $n$-category below dimension $n$, and is defined only between equal morphisms from
+dimension $n$ on. -/
+@[simp]
+lemma NCategory.discreteOmega_pcomp (S : NCategory n C) (k : ℕ) (g f : C) :
+    S.discreteOmega.pcomp k g f =
+      if k_lt_n : k < n then S.pcomp ⟨k, k_lt_n⟩ g f else ⟨g = f, fun _ ↦ f⟩ :=
+  rfl
 
 end Category
 
@@ -405,19 +451,19 @@ def NFunctor.discrete (F : NFunctor n C D) (m : ℕ) (n_lt_m : n < m) :
     map := F.map
     map_sc_eq_sc_map := by
       intro k f
-      simp only [NCategory.discrete]
+      simp only [NCategory.discrete_sc]
       split_ifs
       · apply F.map_sc_eq_sc_map
       · rfl
     map_tg_eq_tg_map := by
       intro k f
-      simp only [NCategory.discrete]
+      simp only [NCategory.discrete_tg]
       split_ifs
       · apply F.map_tg_eq_tg_map
       · rfl
     map_comp_eq_comp_map := by
       intro k f g sc_tg_gf
-      simp only [NCategory.discrete, CategoryStruct.comp]
+      simp only [CategoryStruct.comp, NCategory.discrete_pcomp]
       split_ifs with h
       · apply F.map_comp_eq_comp_map
         simp [h] at sc_tg_gf
@@ -441,19 +487,19 @@ def NFunctor.discreteOmega (F : NFunctor n C D) :
     map := F.map
     map_sc_eq_sc_map := by
       intro k f
-      simp only [NCategory.discreteOmega]
+      simp only [NCategory.discreteOmega_sc]
       split_ifs
       · apply F.map_sc_eq_sc_map
       · rfl
     map_tg_eq_tg_map := by
       intro k f
-      simp only [NCategory.discreteOmega]
+      simp only [NCategory.discreteOmega_tg]
       split_ifs
       · apply F.map_tg_eq_tg_map
       · rfl
     map_comp_eq_comp_map := by
       intro k f g sc_tg_gf
-      simp only [NCategory.discreteOmega, CategoryStruct.comp]
+      simp only [CategoryStruct.comp, NCategory.discreteOmega_pcomp]
       split_ifs with h
       · apply F.map_comp_eq_comp_map
         simp [h] at sc_tg_gf
@@ -488,12 +534,10 @@ above $n$ to be trivial, and each functor to its lift between the discrete categ
 def DiscretizationFunctor (n m : ℕ∞) (n_le_m : n ≤ m) : ICat.{u} n ⥤ ICat.{u} m :=
   match n, m with
   | fin n, fin m =>
-    if h : n < m then
-      FinDiscretizationFunctor n m h
+    if n_lt_m : n < m then
+      FinDiscretizationFunctor n m n_lt_m
     else by
-      simp only [ENat.some_eq_coe, Nat.cast_le] at n_le_m
-      have : n = m := n_le_m.eq_of_not_lt h
-      rw [this]
+      rw [(WithTop.coe_le_coe.mp n_le_m).eq_of_not_lt n_lt_m]
       exact 𝟭 (ICat.{u} m)
   | fin n, ω => OmegaDiscretizationFunctor n
   | ω, ω => 𝟭 (ICat.{u} ω)

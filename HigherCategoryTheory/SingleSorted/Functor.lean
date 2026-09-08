@@ -64,8 +64,7 @@ structure Functor (Index : Type) [Preorder Index] (C : Type u₁) [Category Inde
     hcat_disch
 
 -- Use `Functor` axioms as simp lemmas.
-open Functor in
-attribute [simp] map_sc_eq_sc_map map_tg_eq_tg_map map_comp_eq_comp_map
+attribute [simp] Functor.map_sc_eq_sc_map Functor.map_tg_eq_tg_map Functor.map_comp_eq_comp_map
 
 namespace Functor
 

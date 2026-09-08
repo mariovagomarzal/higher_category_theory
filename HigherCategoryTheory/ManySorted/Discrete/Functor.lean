@@ -159,7 +159,7 @@ extended type family `NTypeFamily.discrete C m`. Dimensions below $n$ retain the
 structure, and dimensions $n \leq k < m$ have identity source, target and identity-cell operations
 (modulo casts along retract-equalities), with composition defined only between equal morphisms.
 -/
-@[simp]
+@[simp, instance_reducible]
 def NCategory.discrete (S : NCategory n C) (m : ℕ) (_n_lt_m : n < m) :
     NCategory m (NTypeFamily.discrete C m) where
   sc {k j} j_lt_k f :=
@@ -359,13 +359,65 @@ def NCategory.discrete (S : NCategory n C) (m : ℕ) (_n_lt_m : n < m) :
       · simp only [CategoryStruct.comp, dif_neg h_j, dif_pos h_i]
       · simp only [CategoryStruct.comp, dif_neg h_j, dif_neg h_i]
 
+/-- The source operation of a discrete $m$-category acts as the source operation of the original
+$n$-category below dimension $n$, and as the identity, modulo a retract-equality cast, from
+dimension $n$ on. -/
+@[simp]
+lemma NCategory.discrete_sc (S : NCategory n C) (m : ℕ) (n_lt_m : n < m) {k j : FinSucc m}
+    (j_lt_k : j < k) (f : NTypeFamily.discrete C m k) :
+    (S.discrete m n_lt_m).sc j_lt_k f =
+      if h : j < n then
+        S.sc (retract.strict_mono j_lt_k h) f
+      else
+        cast (congrArg C (retract.eq_of_ge j_lt_k (not_lt.mp h)).symm) f :=
+  rfl
+
+/-- The target operation of a discrete $m$-category acts as the target operation of the original
+$n$-category below dimension $n$, and as the identity, modulo a retract-equality cast, from
+dimension $n$ on. -/
+@[simp]
+lemma NCategory.discrete_tg (S : NCategory n C) (m : ℕ) (n_lt_m : n < m) {k j : FinSucc m}
+    (j_lt_k : j < k) (f : NTypeFamily.discrete C m k) :
+    (S.discrete m n_lt_m).tg j_lt_k f =
+      if h : j < n then
+        S.tg (retract.strict_mono j_lt_k h) f
+      else
+        cast (congrArg C (retract.eq_of_ge j_lt_k (not_lt.mp h)).symm) f :=
+  rfl
+
+/-- The identity-cell operation of a discrete $m$-category acts as the identity-cell operation of
+the original $n$-category below dimension $n$, and as the identity, modulo a retract-equality cast,
+from dimension $n$ on. -/
+@[simp]
+lemma NCategory.discrete_idm (S : NCategory n C) (m : ℕ) (n_lt_m : n < m) {k j : FinSucc m}
+    (j_lt_k : j < k) (f : NTypeFamily.discrete C m j) :
+    (S.discrete m n_lt_m).idm j_lt_k f =
+      if h : j < n then
+        S.idm (retract.strict_mono j_lt_k h) f
+      else
+        cast (congrArg C (retract.eq_of_ge j_lt_k (not_lt.mp h))) f :=
+  rfl
+
+/-- The partial composition of a discrete $m$-category is the partial composition of the original
+$n$-category below dimension $n$, and is defined only between equal morphisms from dimension $n$
+on. -/
+@[simp]
+lemma NCategory.discrete_pcomp (S : NCategory n C) (m : ℕ) (n_lt_m : n < m) {k j : FinSucc m}
+    (j_lt_k : j < k) (g f : NTypeFamily.discrete C m k) :
+    (S.discrete m n_lt_m).pcomp j_lt_k g f =
+      if h : j < n then
+        S.pcomp (retract.strict_mono j_lt_k h) g f
+      else
+        ⟨g = f, fun _ ↦ f⟩ :=
+  rfl
+
 /--
 Constructs the discrete $\omega$-category of a many-sorted $n$-category.
 
 This definition is analogous to `NCategory.discrete`, but produces a many-sorted $\omega$-category
 on the extended type family `OmegaTypeFamily.discrete C`.
 -/
-@[simp]
+@[simp, instance_reducible]
 def OmegaCategory.discrete (S : NCategory n C) : OmegaCategory (OmegaTypeFamily.discrete C) where
   sc {k j} j_lt_k f :=
     if h : j < n then
@@ -564,6 +616,58 @@ def OmegaCategory.discrete (S : NCategory n C) : OmegaCategory (OmegaTypeFamily.
       · simp only [CategoryStruct.comp, dif_neg h_j, dif_pos h_i]
       · simp only [CategoryStruct.comp, dif_neg h_j, dif_neg h_i]
 
+/-- The source operation of a discrete $\omega$-category acts as the source operation of the
+original $n$-category below dimension $n$, and as the identity, modulo a retract-equality cast,
+from dimension $n$ on. -/
+@[simp]
+lemma OmegaCategory.discrete_sc (S : NCategory n C) {k j : ℕ} (j_lt_k : j < k)
+    (f : OmegaTypeFamily.discrete C k) :
+    (OmegaCategory.discrete S).sc j_lt_k f =
+      if h : j < n then
+        S.sc (retract.strict_mono j_lt_k h) f
+      else
+        cast (congrArg C (retract.eq_of_ge j_lt_k (not_lt.mp h)).symm) f :=
+  rfl
+
+/-- The target operation of a discrete $\omega$-category acts as the target operation of the
+original $n$-category below dimension $n$, and as the identity, modulo a retract-equality cast,
+from dimension $n$ on. -/
+@[simp]
+lemma OmegaCategory.discrete_tg (S : NCategory n C) {k j : ℕ} (j_lt_k : j < k)
+    (f : OmegaTypeFamily.discrete C k) :
+    (OmegaCategory.discrete S).tg j_lt_k f =
+      if h : j < n then
+        S.tg (retract.strict_mono j_lt_k h) f
+      else
+        cast (congrArg C (retract.eq_of_ge j_lt_k (not_lt.mp h)).symm) f :=
+  rfl
+
+/-- The identity-cell operation of a discrete $\omega$-category acts as the identity-cell operation
+of the original $n$-category below dimension $n$, and as the identity, modulo a retract-equality
+cast, from dimension $n$ on. -/
+@[simp]
+lemma OmegaCategory.discrete_idm (S : NCategory n C) {k j : ℕ} (j_lt_k : j < k)
+    (f : OmegaTypeFamily.discrete C j) :
+    (OmegaCategory.discrete S).idm j_lt_k f =
+      if h : j < n then
+        S.idm (retract.strict_mono j_lt_k h) f
+      else
+        cast (congrArg C (retract.eq_of_ge j_lt_k (not_lt.mp h))) f :=
+  rfl
+
+/-- The partial composition of a discrete $\omega$-category is the partial composition of the
+original $n$-category below dimension $n$, and is defined only between equal morphisms from
+dimension $n$ on. -/
+@[simp]
+lemma OmegaCategory.discrete_pcomp (S : NCategory n C) {k j : ℕ} (j_lt_k : j < k)
+    (g f : OmegaTypeFamily.discrete C k) :
+    (OmegaCategory.discrete S).pcomp j_lt_k g f =
+      if h : j < n then
+        S.pcomp (retract.strict_mono j_lt_k h) g f
+      else
+        ⟨g = f, fun _ ↦ f⟩ :=
+  rfl
+
 end Category
 
 section Functor
@@ -613,32 +717,32 @@ def NFunctor.discrete (F : NFunctor n C D) (m : ℕ) (n_lt_m : n < m) :
     map_sc_eq_sc_map := by
       intro k j j_lt_k f
       by_cases h : j < n
-      · simp only [NCategory.discrete, dif_pos h]
+      · simp only [NCategory.discrete_sc, dif_pos h]
         apply F.map_sc_eq_sc_map
-      · simp only [NCategory.discrete, dif_neg h]
+      · simp only [NCategory.discrete_sc, dif_neg h]
         exact map_cast (retract.eq_of_ge j_lt_k (not_lt.mp h)) f
     map_tg_eq_tg_map := by
       intro k j j_lt_k f
       by_cases h : j < n
-      · simp only [NCategory.discrete, dif_pos h]
+      · simp only [NCategory.discrete_tg, dif_pos h]
         apply F.map_tg_eq_tg_map
-      · simp only [NCategory.discrete, dif_neg h]
+      · simp only [NCategory.discrete_tg, dif_neg h]
         exact map_cast (retract.eq_of_ge j_lt_k (not_lt.mp h)) f
     map_idm_eq_idm_map := by
       intro k j j_lt_k f
       by_cases h : j < n
-      · simp only [NCategory.discrete, dif_pos h]
+      · simp only [NCategory.discrete_idm, dif_pos h]
         apply F.map_idm_eq_idm_map
-      · simp only [NCategory.discrete, dif_neg h]
+      · simp only [NCategory.discrete_idm, dif_neg h]
         exact cast_map (retract.eq_of_ge j_lt_k (not_lt.mp h)) f
     map_comp_eq_comp_map := by
       intro k j j_lt_k f g sc_tg_gf
       by_cases h : j < n
-      · simp only [NCategory.discrete, CategoryStruct.comp, dif_pos h]
+      · simp only [CategoryStruct.comp, NCategory.discrete_pcomp, dif_pos h]
         apply F.map_comp_eq_comp_map
-        simp only [NCategory.discrete, sc_is_tg, dif_pos h] at sc_tg_gf
+        simp only [sc_is_tg, NCategory.discrete_sc, NCategory.discrete_tg, dif_pos h] at sc_tg_gf
         exact sc_tg_gf
-      · simp only [NCategory.discrete, CategoryStruct.comp, dif_neg h]
+      · simp only [CategoryStruct.comp, NCategory.discrete_pcomp, dif_neg h]
   }
 
 /--
@@ -659,32 +763,33 @@ def OmegaFunctor.discrete (F : NFunctor n C D) :
     map_sc_eq_sc_map := by
       intro k j j_lt_k f
       by_cases h : j < n
-      · simp only [OmegaCategory.discrete, dif_pos h]
+      · simp only [OmegaCategory.discrete_sc, dif_pos h]
         apply F.map_sc_eq_sc_map
-      · simp only [OmegaCategory.discrete, dif_neg h]
+      · simp only [OmegaCategory.discrete_sc, dif_neg h]
         exact map_cast (retract.eq_of_ge j_lt_k (not_lt.mp h)) f
     map_tg_eq_tg_map := by
       intro k j j_lt_k f
       by_cases h : j < n
-      · simp only [OmegaCategory.discrete, dif_pos h]
+      · simp only [OmegaCategory.discrete_tg, dif_pos h]
         apply F.map_tg_eq_tg_map
-      · simp only [OmegaCategory.discrete, dif_neg h]
+      · simp only [OmegaCategory.discrete_tg, dif_neg h]
         exact map_cast (retract.eq_of_ge j_lt_k (not_lt.mp h)) f
     map_idm_eq_idm_map := by
       intro k j j_lt_k f
       by_cases h : j < n
-      · simp only [OmegaCategory.discrete, dif_pos h]
+      · simp only [OmegaCategory.discrete_idm, dif_pos h]
         apply F.map_idm_eq_idm_map
-      · simp only [OmegaCategory.discrete, dif_neg h]
+      · simp only [OmegaCategory.discrete_idm, dif_neg h]
         exact cast_map (retract.eq_of_ge j_lt_k (not_lt.mp h)) f
     map_comp_eq_comp_map := by
       intro k j j_lt_k f g sc_tg_gf
       by_cases h : j < n
-      · simp only [OmegaCategory.discrete, CategoryStruct.comp, dif_pos h]
+      · simp only [CategoryStruct.comp, OmegaCategory.discrete_pcomp, dif_pos h]
         apply F.map_comp_eq_comp_map
-        simp only [OmegaCategory.discrete, sc_is_tg, dif_pos h] at sc_tg_gf
+        simp only [sc_is_tg, OmegaCategory.discrete_sc, OmegaCategory.discrete_tg,
+          dif_pos h] at sc_tg_gf
         exact sc_tg_gf
-      · simp only [OmegaCategory.discrete, CategoryStruct.comp, dif_neg h]
+      · simp only [CategoryStruct.comp, OmegaCategory.discrete_pcomp, dif_neg h]
   }
 
 end Functor
@@ -715,12 +820,10 @@ discrete categories. -/
 def DiscretizationFunctor (n m : ℕ∞) (n_le_m : n ≤ m) : ICat.{u} n ⥤ ICat.{u} m :=
   match n, m with
   | fin n, fin m =>
-    if h : n < m then
-      FinDiscretizationFunctor n m h
+    if n_lt_m : n < m then
+      FinDiscretizationFunctor n m n_lt_m
     else by
-      simp only [ENat.some_eq_coe, Nat.cast_le] at n_le_m
-      have : n = m := n_le_m.eq_of_not_lt h
-      rw [this]
+      rw [(WithTop.coe_le_coe.mp n_le_m).eq_of_not_lt n_lt_m]
       exact 𝟭 (ICat.{u} m)
   | fin n, ω => OmegaDiscretizationFunctor n
   | ω, ω => 𝟭 (ICat.{u} ω)
